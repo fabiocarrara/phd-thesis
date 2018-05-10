@@ -1,0 +1,222 @@
+% For printing in a4
+\documentclass[a4,10pt,twoside,openright,italian,english]{book}% twoside!
+
+% For printing with the A5 format
+%\documentclass[10pt,twoside,openright,english,italian]{book}% twoside!
+
+% Set paper size
+\usepackage[twoside=true]{geometry}
+
+%For printing with the weird format
+%\geometry{
+%	paperwidth=17cm,
+%	paperheight=24cm,
+%	margin=2cm,
+%	top=2.3cm,
+%	bindingoffset=0.4cm
+%}
+% For printing in a4
+\geometry{a4paper,
+  margin=3cm,
+  top=3.8cm,
+  bindingoffset=0.4cm
+}
+
+%Uncomment this for final prints: this just enables printing on a4 paper
+\usepackage[cam,center,a4,pdflatex,axes]{crop}
+
+\usepackage{phdthesis}
+
+\usepackage{fancyhdr}
+\usepackage{color}
+\usepackage{array}
+\usepackage{mdwmath}
+\usepackage{mdwtab}
+\usepackage{amsmath,amssymb}
+\usepackage{cite}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{subfig}
+\usepackage{booktabs}
+\usepackage{latexsym}
+\usepackage{color}
+\usepackage{url}
+\usepackage{bnf}
+\usepackage{rotating}
+\usepackage{multirow}
+\usepackage{phdtitle}
+\usepackage{paralist}
+\usepackage{bibentry}
+%\usepackage[algochapter]{algorithm2e}
+\usepackage[bookmarks=true,
+%pdftex=false,
+bookmarksopen=true,hidelinks]{hyperref}
+\usepackage[toc,acronym]{glossaries}
+\usepackage{lscape}
+\usepackage{algorithmic}
+\usepackage{algorithm}
+\usepackage{longtable}
+\usepackage[T1]{fontenc} 
+%\usepackage[latin1]{inputenc}
+\usepackage[utf8]{inputenc}
+%\usepackage{fontspec}
+%\setmainfont{Calibri}
+%% \hyphenation{} is used to force the 
+\hyphenation{}
+
+\newtheorem{Definition}{Definition}[section]
+
+\lstset{tabsize=2,basicstyle=\footnotesize,breaklines=true}
+
+\usepackage[english,italian]{babel}
+\usepackage{ulem}
+\normalem
+
+\hypersetup{pdftitle={Title}, pdfauthor={Author}}
+
+\nobibliography*
+
+\department {Dottorato di ricerca in Ingegneria dell'Informazione}
+
+% Please fulfil the followed fields with your data
+\author{Name Surname} 
+\title{Title}
+\tutor{Tutor Name}
+\supervisor{Coordinator Name}
+\titleimage{img/unipi.png} %please not change
+\phdyear{Year}
+\phdmonth{Month}
+\phdcycle{Cycle}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Let's Start The Real Document
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{chapters/Notation}
+\input{chapters/Acronyms}
+\makeglossaries
+
+\begin{document}
+\selectlanguage{english}
+
+\maketitle
+
+\pagestyle{empty}
+
+\cleardoublepage
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Dedication - For removing dedication, please comment or delete the code inside \thispagestyle{empty}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\thispagestyle{empty}
+    \null\vspace{\stretch {1}}
+        \begin{flushright}
+                This thesis is dedicated to....
+        \end{flushright}
+\vspace{\stretch{2}}\null
+
+\cleardoublepage
+\newpage
+
+\pagestyle{empty}
+%% change numbering into Roman numbers for the introductory part
+%\setcounter{page}{1}
+%\pagenumbering{Roman}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Quotes - For removing quotes, please comment or delete the code inside \thispagestyle{empty}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\thispagestyle{empty}
+    \null\vspace{\stretch {1}}
+        \begin{flushright}
+                "A few first rate research papers are preferable to a large number \\
+                that are poorly conceived or half-finished.\\
+                The latter are no credit to their writers and \\
+                a waste of time to their readers"\\
+                Claude Shannon
+                %IRE Transactions on Information Theory (1956), volume 2, issue 1, page 3. Shannon, Claude E. (March 1956), The Bandwagon, 2, doi:10.1109/TIT.1956.1056774.
+        \end{flushright}
+\vspace{\stretch{2}}\null
+
+\cleardoublepage
+\newpage
+
+\pagestyle{empty}
+%% change numbering into Roman numbers for the introductory part
+\setcounter{page}{1}
+\pagenumbering{Roman}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Acknowledgement
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{chapters/acknowledge}
+
+\selectlanguage{italian}
+\input{chapters/Ringraziamenti}
+\selectlanguage{english}
+
+\cleardoublepage
+\newpage
+
+\pagestyle{fancy}
+% change numbering into Roman numbers for the introductory part
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Summary
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\selectlanguage{english}
+\input{chapters/summary}
+\selectlanguage{english}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Italian Summary
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%There must be an Italian version of the summary
+\selectlanguage{italian}
+\input{chapters/it_summary}
+\selectlanguage{english}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Publications
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%List of publications of the PhD candidate
+\selectlanguage{english}
+\input{chapters/publications}
+\selectlanguage{english}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% List of Abbreviation and Symbols
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Have a look at \gls command... you can refer a term in multiple ways
+\printglossary[type=\acronymtype,title=List of Abbreviations]
+\let\cleardoublepage\clearpage
+\printglossary[title=Notation]
+\cleardoublepage
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% TOC
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\tableofcontents
+\cleardoublepage
+\newpage
+
+% Now lets go back to normal numbering
+\setcounter{page}{1}
+\pagenumbering{arabic}
+
+\cleardoublepage
+\input{chapters/chapter1} % uncomment if you want part I
+% Insert further chapters using the following syntax
+% \input{Source_Folder_Name/FileName}
+
+
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{chapter}{\bibname}
+\small
+\bibliographystyle{plain}
+\bibliography{thesis}
+
+\end{document}
