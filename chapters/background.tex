@@ -1,0 +1,133 @@
+%============================= BACKGROUND =================================
+
+\chapter{Background}
+\label{ch:background}
+
+In this chapter, we present the basic concepts about \gls{dl} and an overview of the research fields on which its application has been investigated in this thesis, namely Image Classification and \gls{cbir}.
+The chapter is organized as follows.
+In Section~\ref{sec:back:deep-learning}, we provide the reader with a quick introduction to \gls{dl}, focusing on deep neural networks for image and text processing and gradient-based optimization.
+In Section~\ref{sec:back:image-classification}, an introduction to image classification using convolutional neural networks is presented together with a review of successful approaches in this field.
+In Section~\ref{sec:back:image-retrieval}, we describe the main aspects of \gls{cbir} based on image representations extracted from deep neural networks, and we discuss some state-of-the-art methodologies to build effecive description of images and to efficiently index them in large-scale scenarios.
+Section~\ref{sec:back:datasets} summarizes the public datasets used in the experiments presented in this thesis.
+
+
+\section{Deep Learning}
+\label{sec:back:deep-learning}
+
+\acrfull{dl} defines the set of \gls{ml} methods aiming to learn from data a \emph{hierarchy of representations} specialized for the task under consideration~\cite{goodfellow2016deep}.
+\gls{dl} models are usually organized as a sequence (or more generally a graph) of parametric non-linear transformations, known as \emph{layers}, that acts like features extractors;
+starting from raw data, each layer searches for useful patterns in its input and provides higher-level representation of the data to the next layer.
+More formally, given an input $\mathbf{x}$ and $L$ non-linear transformations $f_l(\cdot; \theta_l)$ parametrized by $\theta_l$ ($l=1, \dots, L$), we can express the output \mathbf{y} of the cascade of transformations as:
+
+\begin{align} \label{eq:back:deepnet}
+    \mathbf{y} & = f(\mathbf{x}, \Theta) \\
+               & = f_L(\dots f_2(f_1(\mathbf{x}; \theta_1); \theta_2); \theta_L)
+\end{align}
+
+where $\Theta = \{\theta_l, l = 1, \dots L\}$ indicates the set of all parameters, also known as \emph{weights}.
+
+Given a training set $\mathbf{X} = \{(\mathbf{x}_i, \mathbf{y^\star}_i), i=1,\dots,N\}$ comprised by $N$ couples of inputs and desired outputs, the quality of a particular setting of parameters is quantitatively defined by a \emph{loss function} $\mathcal{L}(X; \Theta)$ that measures how much predictions and targets differ;
+the loss function is usually defined as the average of the individual loss values computed on each sample of the dataset:
+
+\begin{align}
+    \mathcal{L}(X; \Theta) &= \frac{1}{N} \sum_{i=1}^N \mathcal{L}(\mathbf{y}_i, \mathbf{y^\star}_i) \\
+                           &= \frac{1}{N} \sum_{i=1}^N \mathcal{L}(f(\mathbf{x}_i; \Theta), \mathbf{y^\star}_i)
+\end{align}
+
+where the particular formulation of $\mathcal{L}(\mathbf{y}_i, \mathbf{y^\star}_i)$ is task-dependent and further discussed in Section~\ref{}. % TODO
+%In the learning phase, the model is optimized by changing the parameters $\Theta$ in such a way that the output $\mathbf{y}$ reflects the desired target $\mathbf{y^\star}$.
+The learning problem is an optimization problem in which we search the best parameter setting $\Theta^\star$ that minimizes the loss function $\mathcal{L}(X; \Theta)$:
+
+\begin{equation} \label{eq:back:optim}
+    \Theta^\star = \argmin_\Theta \mathcal{L}(X; \Theta)
+\end{equation}
+
+For historical reasons, \gls{dl} models are also referred to as \emph{\glspl{dnn}} due to the resemblance of layers and their organization to the way neurons are interconnected and organized in the mammalian brain~\cite{}.  % TODO
+\Glspl{dnn} can be roughly categorized in \glspl{ffnn}, in which information flows from input to output in a non-recursive cascade of computations, and \glspl{rnn}, which present a feedback loop in their computation graph.
+In the following sections, we will review some practical and successful formulations of \glspl{dnn} in terms of their layers
+%that are useful when dealing with image data
+, and we will provide the reader with the basics of gradient-based optimization of~\eqref{eq:back:optim}.
+
+\subsection{Feed-Forward Neural Network}
+\label{subsec:back:ffnn}
+
+\Acrlongpl{ffnn} are \gls{dl} models whose computation graph can be expressed as a directed acyclic graph, i.e.\,there are no feedback loops and information flows from inputs to outputs in a cascade fashion.
+Thus, when computing of the whole chain from inputs to outputs, called the \emph{forward} pass of the network, each transformation defined by layers is computed only once.
+
+In the following, we summarize some of the most relevant layers used in \glspl{dnn}.
+
+\subsubsection{Fully Connected Layer}
+
+The Fully Connected (or Inner Product) layer is a basic building block for \glspl{dnn}.
+It performs a linear projection of the input followed by a usually non-linear element-wise activation function.
+Formally, the output  $\mathbf{y} \in \mathcal{R}^m$ of the layer is obtained as follows:
+
+\begin{equation}
+    \mathbf{y} = \varphi ( \mathbf{W} \mathbf{x} + \mathbf{b} )
+\end{equation}
+
+where $\mathbf{x} \in \mathcal{R}^n$ is the input data, $\mathbf{W} \in \mathcal{R}^{n \times m}$ and $\mathbf{b} \in \mathcal{R}^m$ are the parameters of a linear projection to a $m$-dimensional space.
+Usual choices for the activation function $\varphi: \mathcal{R} \to \mathcal{R}$ are the \gls{relu}, the sigmoid $\sigma$, or $\tanh$ functions (see Figure~\ref{}). % TODO figures of activations
+
+% TODO FC as M perceptrons and biological discussion
+% The weights in an artificial neural networks are interpreted as the strength of the interconnection between neuron cells
+
+%MLP
+%Convolutional Neural Networks
+%Recurrent Neural Networks
+%LSTMs (Bidir)
+%Loss Functions
+%Cross-entropy
+%MSE
+%L2 Weight decay
+%Gradient-Based Optimization
+%Backprop
+%Optimizers: SGD (with momentum) / Adam
+%Dropout (here?)
+
+\section{Image Classification}
+\label{sec:back:image-classification}
+
+%Problem Setting
+%Single-label binary- and multi-class image classification problem
+%Examples (simple classif., sentiment analysis, etc.)
+%Evaluation Metrics
+%Top-k Accuracy
+%AUC of ROC (TPR, FPR, confusion matrix)
+%Recent Advances
+%ILSVRC winners (Hybrid, VGG, Inception, Residual, ResNeXT, SENets?)
+%Transfer Learning
+
+%% probably move in the chapter
+%Adversarial Examples for DNNs
+%Definition
+%Adv example formal definition
+%Properties
+%Adv. Generation Algorithms
+%L-BFGS
+%FGSM
+%etc.
+%Defense Strategies
+%Change the net: Adversarial Training / other..
+%Detect attacks: some rel. works on that
+
+
+\section{Image Retrieval}
+\label{sec:back:image-retrieval}
+
+%Problem Setting
+%CBIR (query-by-example)
+%kNN schemes
+%Image Representations
+%Deep Features (fc7 -> RMAC)
+%Permutation-based representations
+%Deep Permutations
+%Cross-media Retrieval
+%Textual / visual / common space retrievals
+%Datasets & Evaluation Metrics
+%mAP, R@K, nDCG, medR, MRR
+
+\setion{Datasets}
+\label{sec:back:datasets}
+%ILSVRC (+Places)?, (PKLot, CNRPark)? TwitTestDataset? T4SA?
+%Holidays, Oxford, Paris + distr, COCO
