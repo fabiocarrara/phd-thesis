@@ -27,19 +27,19 @@
 
 \usepackage{phdthesis}
 
-\usepackage{fancyhdr}
+%\usepackage{fancyhdr}
 \usepackage{color}
 \usepackage{array}
 \usepackage{mdwmath}
 \usepackage{mdwtab}
 \usepackage{amsmath,amssymb}
 \usepackage{cite}
-\usepackage{graphicx}
+%\usepackage{graphicx}
 \usepackage{listings}
 \usepackage{subfig}
 \usepackage{booktabs}
 \usepackage{latexsym}
-\usepackage{color}
+%\usepackage{color}
 \usepackage{url}
 \usepackage{bnf}
 \usepackage{rotating}
@@ -51,7 +51,7 @@
 \usepackage[bookmarks=true,
 %pdftex=false,
 bookmarksopen=true,hidelinks]{hyperref}
-\usepackage[toc,acronym]{glossaries}
+%\usepackage[toc,acronym]{glossaries}
 \usepackage{lscape}
 \usepackage{algorithmic}
 \usepackage{algorithm}
@@ -65,10 +65,11 @@ bookmarksopen=true,hidelinks]{hyperref}
 \hyphenation{}
 
 \newtheorem{Definition}{Definition}[section]
+\DeclareMathOperator*{\argmin}{arg\,min}
 
 \lstset{tabsize=2,basicstyle=\footnotesize,breaklines=true}
 
-\usepackage[english,italian]{babel}
+\usepackage[main=english,italian]{babel}
 \usepackage{ulem}
 \normalem
 
@@ -80,7 +81,7 @@ bookmarksopen=true,hidelinks]{hyperref}
 
 % Please fulfil the followed fields with your data
 \author{Fabio Carrara}
-\title{Title}
+\title{Deep Learning for Image Classification and Retrieval: Opportunities and Limitations}
 \tutor{Tutor Name}
 \supervisor{Coordinator Name}
 \titleimage{img/unipi.png} %please not change
