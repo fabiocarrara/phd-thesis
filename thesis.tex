@@ -34,6 +34,10 @@
 \usepackage{mdwtab}
 \usepackage{amsmath,amssymb}
 \usepackage{cite}
+\usepackage{asymptote}
+\def\asylatexdir{aux}
+\graphicspath{{aux/}}
+
 %\usepackage{graphicx}
 \usepackage{listings}
 \usepackage{subfig}
@@ -42,15 +46,17 @@
 %\usepackage{color}
 \usepackage{url}
 \usepackage{bnf}
+\usepackage{cleveref} % adds "Figure" / "Section" words to cites
+% \crefname{subsection}{subsection}{subsections}
 \usepackage{rotating}
 \usepackage{multirow}
 \usepackage{phdtitle}
 \usepackage{paralist}
 \usepackage{bibentry}
 %\usepackage[algochapter]{algorithm2e}
-\usepackage[bookmarks=true,
+%\usepackage[bookmarks=true,
 %pdftex=false,
-bookmarksopen=true,hidelinks]{hyperref}
+%bookmarksopen=true,hidelinks]{hyperref}
 %\usepackage[toc,acronym]{glossaries}
 \usepackage{lscape}
 \usepackage{algorithmic}
@@ -69,7 +75,7 @@ bookmarksopen=true,hidelinks]{hyperref}
 
 \lstset{tabsize=2,basicstyle=\footnotesize,breaklines=true}
 
-\usepackage[main=english,italian]{babel}
+\usepackage[italian,main=english]{babel}
 \usepackage{ulem}
 \normalem
 
@@ -193,7 +199,7 @@ bookmarksopen=true,hidelinks]{hyperref}
 %Have a look at \gls command... you can refer a term in multiple ways
 \printglossary[type=\acronymtype,title=List of Abbreviations]
 \let\cleardoublepage\clearpage
-\printglossary[title=Notation]
+%\printglossary[title=Notation]
 \cleardoublepage
 \newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -208,6 +214,7 @@ bookmarksopen=true,hidelinks]{hyperref}
 \pagenumbering{arabic}
 
 \cleardoublepage
+\let\ref\Cref % override \ref using cleveref \Cref command
 \input{chapters/introduction}
 \input{chapters/background}
 
