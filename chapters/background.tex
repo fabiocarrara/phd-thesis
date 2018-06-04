@@ -130,13 +130,13 @@ A \gls{mlp} with $L$ layers can be defined as follows:
 \end{figure}
 
 This kind of layer computes the cross-correlation between the input and a set of $k$ learnable filters.
-Since there is a strong similarity between the convolution and the cross-correlation operations, this layer is often attributed with the name ``convolution'' in the \gls{dl} literature;
-thus we will adopt this terminology throughout this thesis.
+Since there is a strong similarity between the convolution and the cross-correlation operations, this layer is often attributed with the adjective ``convolutional'' in the \gls{dl} literature;
+thus we will adopt the same terminology throughout this thesis.
 We will provide the reader with the formulation of the two-dimensional version of the cross-correlation due to its massive adoption in image-related fields that are of interest for this work.
 Given a two-dimensional input matrix $\x \in \R^{H \times W}$ and a two-dimensional filter $\w \in \R^{K_1 \times K_2}$, %with $K \ll \min(H,W)$,
 the cross-correlation $\y \in \R^{H' \times W'}$ between $\x$ and $\w$ expressed as follows:
 
-\begin{equation}
+\begin{equation}\label{eq:back:cross-correlation}
     \y_{u,v} = \sum_{i=1}^{K_1} \sum_{j=1}^{K_2} \w_{i,j} \x_{i+u-1,j+v-1}
 \end{equation}
 
@@ -147,7 +147,16 @@ Depending on the presence of padding $P$ added to each side of the input and the
     H' = \left \lfloor \frac{H + 2 \times P - K_1}{S} \right \rfloor + 1 \qquad
     W' &= \left \lfloor \frac{W + 2 \times P - K_2}{S} \right \rfloor + 1
 \end{align*}
+
 A depiction of this computation is reported in~\ref{fig:back:convolution}.
+Inputs and outputs of convolutional layers are also called \emph{feature maps}, since each value in the two-dimensional map usually is interpreted as the presence or absence of a feature a particular filter has learnt to identify.
+\ref{eq:back:cross-correlation} defines the cross-correlation operation for inputs and outputs having both a single feature maps.
+Images instead are represented as 3-D tensors having $C$ channels (e.g. $C=3$ for RGB data, $C=1$ for grayscale); thus the definition of the cross-correlation is extended in such way that filters span the depth of the input tensor.
+Formally, given an input tensor $\x \in \R^{H \times W \times C}$ and a filter $\w \in \R^{K_1 \times K_2 \times C}$ the cross-correlation $\y \in \R^{H' \times W'}$ between $\x$ and $\w$ is defined as:
+
+\begin{equation}\label{eq:back:channel-cross-correlation}
+    \y_{u,v} = \sum_{i=1}^{K_1} \sum_{j=1}^{K_2} \sum_{k=1}^C \w_{i,j,k} \x_{i+u-1,j+v-1,k}
+\end{equation}
 
 %Convolutional Neural Networks
 %Recurrent Neural Networks
