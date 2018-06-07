@@ -1,6 +1,6 @@
 TMP_DIR=aux
 PDFLATEX_FLAGS=-interaction=nonstopmode -output-directory $(TMP_DIR)
-ASY_FLAGS=-o $(TMP_DIR)/
+ASY_FLAGS=-o $(TMP_DIR)/ -q
 
 
 all: compile

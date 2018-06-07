@@ -34,9 +34,10 @@
 \usepackage{mdwtab}
 \usepackage{amsmath,amssymb}
 \usepackage{cite}
-\usepackage{asymptote}
+\usepackage[inline]{asymptote}
 \def\asylatexdir{aux}
-\graphicspath{{aux/}}
+%\def\asydir{aux}
+%\graphicspath{{aux/}}
 
 %\usepackage{graphicx}
 \usepackage{listings}
@@ -214,7 +215,9 @@
 \pagenumbering{arabic}
 
 \cleardoublepage
+%%% CUSTOM COMMANDS
 \let\ref\Cref % override \ref using cleveref \Cref command
+
 \input{chapters/introduction}
 \input{chapters/background}
 
