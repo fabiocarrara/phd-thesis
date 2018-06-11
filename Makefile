@@ -1,6 +1,6 @@
 TMP_DIR=aux
 PDFLATEX_FLAGS=-interaction=nonstopmode -output-directory $(TMP_DIR)
-ASY_FLAGS=-o $(TMP_DIR)/ -q
+ASY_FLAGS=-o $(TMP_DIR)/ -q -tex pdflatex -offscreen -gray
 
 
 all: compile
@@ -14,6 +14,10 @@ compile: $(TMP_DIR)
 	bibtex $(TMP_DIR)/thesis > /dev/null || true
 	makeglossaries -d $(TMP_DIR) thesis > /dev/null || true
 	pdflatex $(PDFLATEX_FLAGS) thesis.tex > /dev/null || true
+	pdflatex $(PDFLATEX_FLAGS) thesis.tex > /dev/null || true
+	mv $(TMP_DIR)/thesis.pdf .
+
+update: aux
 	pdflatex $(PDFLATEX_FLAGS) thesis.tex > /dev/null || true
 	mv $(TMP_DIR)/thesis.pdf .
 
