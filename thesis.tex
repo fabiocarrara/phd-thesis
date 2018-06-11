@@ -33,15 +33,21 @@
 \usepackage{mdwmath}
 \usepackage{mdwtab}
 \usepackage{amsmath,amssymb}
-\usepackage{cite}
+%\usepackage{cite}
+\usepackage[numbers]{natbib}
 \usepackage[inline]{asymptote}
 \def\asylatexdir{aux}
+\begin{asydef}
+// Global Asymptote definitions.
+
+\end{asydef}
+
 %\def\asydir{aux}
 %\graphicspath{{aux/}}
 
 %\usepackage{graphicx}
 \usepackage{listings}
-\usepackage{subfig}
+\usepackage{subcaption}
 \usepackage{booktabs}
 \usepackage{latexsym}
 %\usepackage{color}
@@ -217,6 +223,8 @@
 \cleardoublepage
 %%% CUSTOM COMMANDS
 \let\ref\Cref % override \ref using cleveref \Cref command
+\newcommand{\figfrom}[1]{Image by~\citet{#1}}
+%%% END CUSTOM COMMANDS
 
 \input{chapters/introduction}
 \input{chapters/background}
@@ -226,7 +234,7 @@
 \phantomsection
 \addcontentsline{toc}{chapter}{\bibname}
 \small
-\bibliographystyle{plain}
+\bibliographystyle{plainnat}
 \bibliography{thesis}
 
 \end{document}
