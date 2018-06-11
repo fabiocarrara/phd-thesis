@@ -1,7 +1,7 @@
 settings.render = 0;
-unitsize(1cm);
 import three;
 
+// defaultpen(fontsize(8pt));
 currentprojection = oblique;
 
 triple wO = (4,2,2);
@@ -51,16 +51,15 @@ void drawPlane(real[][] map, triple origin=O) {
 }
 
 // INPUT PLANE
-// draw(scale(1, xSide, xSide) * surface(O--Y--(Z+Y)--Z--cycle), lightgray);
-draw(shift(0,2,2) * scale(1, w.length, w.length) * surface(O--Y--(Z+Y)--Z--cycle), surfacepen=material(emissivepen=gray(0.7)));
+draw(shift(0,2,2) * scale(1, w.length, w.length) * surface(O--Y--(Z+Y)--Z--cycle), surfacepen=emissive(gray(0.7)));
 drawPlane(x);
 
 // WEIGHTS PLANE
-draw(shift(wO) * scale(1, w.length, w.length) * surface(O--Y--(Z+Y)--Z--cycle), surfacepen=material(emissivepen=gray(0.6)));
+draw(shift(wO) * scale(1, w.length, w.length) * surface(O--Y--(Z+Y)--Z--cycle), surfacepen=emissive(gray(0.6)));
 drawPlane(w, wO);
 
 // OUTPUT PLANE
-draw(shift(yO) * scale(1, y.length, y.length) * surface(O--Y--(Z+Y)--Z--cycle), surfacepen=material(emissivepen=white));
+draw(shift(yO) * scale(1, y.length, y.length) * surface(O--Y--(Z+Y)--Z--cycle), surfacepen=emissive(white));
 drawPlane(y, yO);
 
 // DASHED LINES
