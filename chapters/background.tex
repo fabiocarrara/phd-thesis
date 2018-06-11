@@ -3,12 +3,22 @@
 % Often used notations
 \def\x{\mathbf{x}} % input vector
 \def\X{\mathbf{X}} % input dataset
+
 \def\y{\mathbf{y}} % target/output vector
 \def\Y{\mathbf{Y}} % target/output dataset
+
 \def\w{\mathbf{w}} % weight vector
 \def\W{\mathbf{W}} % weight matrix
 \def\b{\mathbf{b}} % bias vector
+
 \def\h{\mathbf{h}} % hidden state
+
+\def\i{\mathbf{i}} % lstm input gate
+\def\f{\mathbf{f}} % lstm forget gate
+\def\o{\mathbf{o}} % lstm output gate
+\def\u{\mathbf{u}} % lstm update gate
+\def\c{\mathbf{c}} % lstm cell state
+
 \def\R{\mathbb{R}} % real numbers
 \def\L{\mathcal{L}} % loss function
 \def\a{\varphi} % activation function
@@ -78,7 +88,7 @@ Thus, when computing of the whole chain from inputs to outputs, called the \emph
 \subsubsection{Multilayer Perceptron}
 
 \begin{figure}
-    % TODO add figure of activations
+    \asyinclude[inline, width=\linewidth]{figures/activations.asy}
     \caption{Commonly used activation functions in \glspl{dnn}.}
     \label{fig:back:activations}
 \end{figure}
@@ -216,13 +226,15 @@ The visual aspect of object is images follow a hierarchical organization: an obj
 \subsection{Recurrent Neural Network}
 \label{subsec:back:rnn}
 
-A \acrfull{rnn} is a stateful artificial neural network in which the output depends not only on the input, but also on the current state of the network.
+% TODO add rnn cites
+A \acrfull{rnn} is a stateful artificial neural network in which the output depends not only on the input, but also on the current state of the network~\cite{}.
 The state of the network acts as a memory which is updated at each input, allowing information to persist between inputs.
 This architecture is naturally able to process sequences of inputs -- elements of the sequence can be fed to the network one by one, updating the internal state of the network to compactly represent the sequence processed so far regardless of its length.
 % This is achieved by adding a cycle in the computation graph --
 
 \begin{figure}
     % TODO add rnn figure (definition + unrolled)
+    \asyinclude[inline,width=\linewidth]{figures/rnn.asy}
     \centering
     \caption{Example of vanilla \acrlong{rnn}}
     \label{fig:back:rnn}
@@ -230,8 +242,8 @@ This architecture is naturally able to process sequences of inputs -- elements o
 
 Given $\x_t \in \R^n, t = 1 \dots T$ a sequence of inputs of length $T$, and $\h_t \in \R^m, t = 1 \dots T$ the hidden state of the network when all inputs until $\x_t$ have been processed, a \gls{rnn} can be described as follows:
 
-\begin{equation}
-    \h_t = f(\x_t, \h_{t-1})
+\begin{equation}\label{eq:back:rnn}
+    \h_t = f\(\x_t, \h_{t-1}\)
 \end{equation}
 
 where $f(\cdot)$ is called the \emph{recurrent cell} of the \gls{rnn}.
@@ -239,17 +251,88 @@ In its simplest form, the recurrent cell can be implemented using a fully-connec
 on the concatenation of the current state and input:
 
 \begin{equation}
-    \h_t = \W [ \x_t || \h_{t-1} ] + \b
+    \h_t = \W [ \x_t | \h_{t-1} ] + \b
 \end{equation}
 
-where \W and \b are the parameters of a fully-connected layer, and $||$ is the concatenation operation.
-
+where $\W$ and $\b$ are the parameters of a fully-connected layer, and $[\cdot|\cdot]$ is the concatenation operation.
+During learning, the \gls{rnn} is unrolled in time to the length of the input sequence to create an acyclic computation graph similar to \glspl{ffnn} (see \ref{fig:back:rnn}) on which the standard training procedures can be applied (that will be discussed in \ref{subsec:back:optim}).
 Depending on the task we want to model, we could be interested in the last hidden state $h_T$ compactly represent the whole sequence, or we could use a combination of each hidden state $h_i$ to get access to the evolution of the information processed through time.
 
-During learning, the \gls{rnn} is unrolled in time to the length of the input sequence to create an acyclic computation graph similar to \glspl{ffnn} on which the standard training procedures can be applied (that will be discussed in \ref{subsec:back:optim}).
+% TODO add bidirectional rnn cite
+In many tasks such as sequence classification and segmentation, also the future context of the sequence is informative. However, \ref{eq:back:rnn} defines a \gls{rnn} encoding only past information, i.e.\   $\h_t$ depends only on information at time step $t' < t$.
+To overcome this limitation, \emph{bidirectional} \glspl{rnn} have been proposed~\cite{}.
+Bidirectional architectures adds a separate recurrent cell which process the sequence in reverse order (from future to past):
 
-\subsubsection{Long-Short Term Memory}
-%LSTMs (Bidir)
+\begin{equation}
+    \h'_t = f'\(\x_t, \h'_{t+1}\)
+\end{equation}
+
+where $\h'_t$ encodes the "future" part of the sequence, i.e.\ depends on information at time step $t' > t$.
+The concatenation of the internal states of both past-to-future and future-to-past \glspl{rnn} $\h_t | \h'_t$ is often used as the representation of the whole sequence.
+
+\subsubsection{Long Short-Term Memory}
+
+% TODO add LSTM application cites
+\Glspl{lstm}~\cite{hochreiter1997long} are a type of \glspl{rnn} with a special formulation of the recurrent cell that has proved its effectiveness in several sequence-modeling tasks~\cite{}.
+This particular formulation is aimed at solving some major drawbacks of vanilla \glspl{rnn}, most importantly the inability to encode long-term dependencies in sequences.
+\Gls{lstm} cells are comprised by four learnable gating functions that help mitigate the vanishing gradient problem in RNNs when coping with long sequences.
+Let $\x_t \in \R^n$ an element of a sequence, and $\h_{t-1} \in \R^m$ the current hidden state.
+The \emph{forget} gate $\f_t$ decides which information need to be discarded at the current step, and it is implemented as a fully-connected layer with $p$ output features and parameters $\w_f \in \R^{(n+m)\times p}, \b_f \in \R^p$ followed by a sigmoid activation:
+\begin{equation*}
+    \f_t = \sigma\(\w_f [\h_{t-1} | \x_t] + \b_f\)
+\end{equation*}
+The input gate $\i_t$ encodes the information that need to be inserted in the internal state of the cell $\c_t$, and it is implemented with the same rationale of the previous gate.
+\begin{equation*}
+    \i_t = \sigma\(\w_i [\h_{t-1} | \x_t] + \b_i\)
+\end{equation*}
+The update gate $\u_t$ modulates the amount of new input to be inserted in the internal state of the cell $\c_t$.
+\begin{equation*}
+    \u_t = \tanh\(\w_u [\h_{t-1} | \x_t] + \b_u\)
+\end{equation*}
+The new cell state $\c_t \in \R^p$ is computed as the sum of two terms;
+the first one, given by the element-wise product ($*$) between the forget gate and the previous cell state, represent the part of the old state not to be forgotten;
+the second one, computed as the element-wise product of the input and update gates, represent the modulated input to be kept in the new state;
+\begin{equation*}
+    \c_t = \f_t * \c_{t-1} + \i_t * \u_t
+\end{equation*}
+The output gate $\o_t$ decides which information in the cell needs to be transferred to the final state $\h_t$.
+\begin{equation*}
+    \o_t = \sigma\(\w_o [\h_{t-1} | \x_t] + \b_o\)
+\end{equation*}
+The final output state $\h_t$ is then computed as follows:
+\begin{equation*}
+    \h_t = \o_t * \tanh\(\c_t\)
+\end{equation*}
+
+With an abuse of notation, the complete \gls{lstm} formulation can be compactly written as follows:
+
+%\begin{align}\label{eq:back:lstm}
+    % \begin{pmatrix} \i_t\\ \f_t \\ \o_t \\ \u_t \end{pmatrix}
+%    \i_t &= \sigma\(\W_i [\h_{t-1} | \x_t] + \b_i\) \\
+%    \f_t &= \sigma\(\W_f [\h_{t-1} | \x_t] + \b_f\) \\
+%    \o_t &= \sigma\(\W_o [\h_{t-1} | \x_t] + \b_o\) \\
+%    \u_t &= \tanh\(\W_u [\h_{t-1} | \x_t] + \b_u\) \\[2ex]
+%    \c_t &= \f_t * \c_{t-1} + \i_t * \u_t \\
+%    \h_t &= \o_t * \tanh\(\c_t\)
+%\end{align}
+\begin{align}\label{eq:back:lstm}
+\begin{split}
+    \begin{pmatrix} \i_t\\ \f_t \\ \o_t \\ \u_t \end{pmatrix} &=
+    \begin{pmatrix} \sigma \\ \sigma \\ \sigma \\ \tanh \end{pmatrix}
+    \( \W \begin{pmatrix} \x_t \\ \h_{t-1} \end{pmatrix} \) \\[2ex]
+    \c_t &= \f_t * \c_{t-1} + \i_t * \u_t \\
+    \h_t &= \o_t * \tanh\(\c_t\)
+\end{split}
+\end{align}
+where $\W \in \R^{(n+m) \times 4p}$ summarizes all the parameters of all the fully-connected layers forming the gates.
+A depiction of the \gls{lstm} cell is aslo available in \ref{fig:back:lstm}.
+
+\begin{figure}
+    \centering
+    \asyinclude[inline, width=\linewidth]{figures/lstm.asy}
+    \caption{Example of \gls{lstm} cell}
+    \label{fig:back:lstm}
+\end{figure}
 
 \subsection{Loss Functions}
 \label{subsec:back:loss}
