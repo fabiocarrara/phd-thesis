@@ -226,28 +226,27 @@ The visual aspect of object is images follow a hierarchical organization: an obj
 \subsection{Recurrent Neural Network}
 \label{subsec:back:rnn}
 
-% TODO add rnn cites
-A \acrfull{rnn} is a stateful artificial neural network in which the output depends not only on the input, but also on the current state of the network~\cite{}.
+% TODO add rnn cites: non c'è un paper di riferimento
+A \acrfull{rnn} is a stateful artificial neural network with feedback connections in which the output depends not only on the input, but also on the current state of the network~\cite{}.
 The state of the network acts as a memory which is updated at each input, allowing information to persist between inputs.
 This architecture is naturally able to process sequences of inputs -- elements of the sequence can be fed to the network one by one, updating the internal state of the network to compactly represent the sequence processed so far regardless of its length.
 % This is achieved by adding a cycle in the computation graph --
 
 \begin{figure}
-    % TODO add rnn figure (definition + unrolled)
-    \asyinclude[inline,width=\linewidth]{figures/rnn.asy}
     \centering
-    \caption{Example of vanilla \acrlong{rnn}}
+    \asyinclude[inline,width=.9\linewidth]{figures/rnn.asy}
+    \caption{Basic architecture of a \acrlong{rnn} (left). On the right, its unrolled version for a sequence of length 5.}
     \label{fig:back:rnn}
 \end{figure}
 
-Given $\x_t \in \R^n, t = 1 \dots T$ a sequence of inputs of length $T$, and $\h_t \in \R^m, t = 1 \dots T$ the hidden state of the network when all inputs until $\x_t$ have been processed, a \gls{rnn} can be described as follows:
+Given a sequence of inputs of length $T$ $\x_t \in \R^n, t = 1 \dots T$, and an initial state $\h_0 \in \R^m$, a \gls{rnn} can be described as a parametric function mapping the input and the state at a certain timestep to the next hidden state:
 
 \begin{equation}\label{eq:back:rnn}
-    \h_t = f\(\x_t, \h_{t-1}\)
+    \h_t = f\(\x_t, \h_{t-1}; \W\)
 \end{equation}
 
-where $f(\cdot)$ is called the \emph{recurrent cell} of the \gls{rnn}.
-In its simplest form, the recurrent cell can be implemented using a fully-connected layer that operates
+where $f(\cdot)$ is the \emph{recurrent cell} of the \gls{rnn} parametrized by the weights $\W$, and $\h_t \in \R^m, t = 1 \dots T$ is the hidden state at timestep $t$, i.e.\ the state of the network after all inputs until $\x_t$ have been processed.
+In its simplest form, the recurrent cell $f$ can be implemented using a fully-connected layer that operates
 on the concatenation of the current state and input:
 
 \begin{equation}
@@ -255,20 +254,26 @@ on the concatenation of the current state and input:
 \end{equation}
 
 where $\W$ and $\b$ are the parameters of a fully-connected layer, and $[\cdot|\cdot]$ is the concatenation operation.
-During learning, the \gls{rnn} is unrolled in time to the length of the input sequence to create an acyclic computation graph similar to \glspl{ffnn} (see \ref{fig:back:rnn}) on which the standard training procedures can be applied (that will be discussed in \ref{subsec:back:optim}).
-Depending on the task we want to model, we could be interested in the last hidden state $h_T$ compactly represent the whole sequence, or we could use a combination of each hidden state $h_i$ to get access to the evolution of the information processed through time.
+During learning, the \gls{rnn} is unrolled in time to the length of the input sequence to create an acyclic computation graph similar to \glspl{ffnn} (see \ref{fig:back:rnn}) on which standard training procedures can be applied (that will be discussed in \ref{subsec:back:optim}).
+Depending on the task we want to model, we could be interested in the last hidden state $h_T$ compactly represent the whole sequence, or we could use a combination of all hidden states $h_i, i=1 \dots T$ to get access to the evolution of the information processed through time.
 
-% TODO add bidirectional rnn cite
 In many tasks such as sequence classification and segmentation, also the future context of the sequence is informative. However, \ref{eq:back:rnn} defines a \gls{rnn} encoding only past information, i.e.\   $\h_t$ depends only on information at time step $t' < t$.
-To overcome this limitation, \emph{bidirectional} \glspl{rnn} have been proposed~\cite{}.
+To overcome this limitation, \emph{bidirectional} \glspl{rnn} have been proposed~\cite{schuster1997bidirectional}.
 Bidirectional architectures adds a separate recurrent cell which process the sequence in reverse order (from future to past):
 
 \begin{equation}
-    \h'_t = f'\(\x_t, \h'_{t+1}\)
+    \h'_t = f'\(\x_t, \h'_{t+1}; \W'\)
 \end{equation}
 
 where $\h'_t$ encodes the "future" part of the sequence, i.e.\ depends on information at time step $t' > t$.
-The concatenation of the internal states of both past-to-future and future-to-past \glspl{rnn} $\h_t | \h'_t$ is often used as the representation of the whole sequence.
+The concatenation of the internal states of both past-to-future and future-to-past \glspl{rnn} $[\h_t | \h'_t]$ is often used as the representation of the whole sequence.
+
+\begin{figure}
+    \centering
+    \asyinclude[inline,width=.9\linewidth]{figures/bidir-rnn.asy}
+    \caption{Unrolled version of a Bidirectional \gls{rnn} for a sequence of length 5}
+    \label{fig:back:bidir-rnn}
+\end{figure}
 
 \subsubsection{Long Short-Term Memory}
 
@@ -325,6 +330,7 @@ With an abuse of notation, the complete \gls{lstm} formulation can be compactly 
 \end{split}
 \end{align}
 where $\W \in \R^{(n+m) \times 4p}$ summarizes all the parameters of all the fully-connected layers forming the gates.
+% TODO: [PLUS] lstm figure
 A depiction of the \gls{lstm} cell is aslo available in \ref{fig:back:lstm}.
 
 \begin{figure}
@@ -336,6 +342,8 @@ A depiction of the \gls{lstm} cell is aslo available in \ref{fig:back:lstm}.
 
 \subsection{Loss Functions}
 \label{subsec:back:loss}
+
+
 %Loss Functions
 %Cross-entropy
 %MSE
