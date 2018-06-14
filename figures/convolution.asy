@@ -1,4 +1,4 @@
-// settings.outformat = "pdf";
+unitsize(0.75cm);
 settings.render = 16; // TODO render 0 not showing box lines..
 import three;
 

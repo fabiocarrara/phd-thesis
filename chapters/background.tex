@@ -53,17 +53,9 @@ More formally, given an input $\x$ and $L$ non-linear transformations $f_l\(\cdo
 
 where $\Theta = \{\theta_l, l = 1, \dots L\}$ indicates the set of all parameters, also known as \emph{weights}.
 
-Given a training set $\X = \{\(\x_i, \y^\star_i\), i=1,\dots,N\}$ comprised by $N$ couples of inputs and desired outputs, the quality of a particular setting of parameters is quantitatively defined by a \emph{loss function} $\L\(\X; \Theta\)$ that measures how much predictions and targets differ;
-the loss function is usually defined as the average of the individual loss values computed on each sample of the dataset:
-
-\begin{align}
-    \L\(\X; \Theta\) &= \frac{1}{N} \sum_{i=1}^N \mathcal{L}\(\y_i, \y^\star_i\) \\
-                   &= \frac{1}{N} \sum_{i=1}^N \mathcal{L}\(f\(\x_i; \Theta\), \y^\star_i\)
-\end{align}
-
-where the particular formulation of $\L\(\y_i, \y^\star_i\)$ is task-dependent and further discussed in \ref{subsec:back:loss}.
-%In the learning phase, the model is optimized by changing the parameters $\Theta$ in such a way that the output $\mathbf{y}$ reflects the desired target $\mathbf{y^\star}$.
-The learning problem is an optimization problem in which we search the best parameter setting $\Theta^\star$ that minimizes the loss function $\L\(\X; \Theta\)$:
+Given a training set $\X$, the quality of a particular setting of parameters is quantitatively defined by a \emph{loss function} $\L\(\X; \Theta\)$ that measures how much the model predictions differ from the targets provided by $\X$.
+The particular formulation of $\L$ is task-dependent and further discussed in \ref{subsec:back:loss}.
+In the end, the learning problem reduces to an optimization problem in which we search the best parameter setting $\Theta^\star$ that minimizes the loss function $\L\(\X; \Theta\)$:
 
 \begin{equation} \label{eq:back:optim}
     \Theta^\star = \argmin_\Theta \L\(\X; \Theta\)
@@ -88,7 +80,7 @@ Thus, when computing of the whole chain from inputs to outputs, called the \emph
 \subsubsection{Multilayer Perceptron}
 
 \begin{figure}
-    \asyinclude[inline, width=\linewidth]{figures/activations.asy}
+    \includegraphics[ width=\linewidth]{figures/activations}
     \caption{Commonly used activation functions in \glspl{dnn}.}
     \label{fig:back:activations}
 \end{figure}
@@ -108,7 +100,7 @@ The dimensionality of the input $n$ and of the output $m$ are referred to as res
 
 \begin{figure}
     \centering
-    % TODO add neuron figure?
+    \includegraphics[width=0.8\linewidth]{figures/neuron}
     \caption{Parallelism between real and artificial neurons in \glspl{mlp}}
     \label{fig:back:neuron}
 \end{figure}
@@ -140,8 +132,9 @@ A \gls{mlp} with $L$ layers can be defined as follows:
 \subsubsection{Convolutional Neural Network}
 
 \begin{figure}
+    % TODO add dimensions to cross-corr2d figure
     \centering
-    \asyinclude[inline,width=0.5\linewidth]{figures/cross-correlation2d.asy}
+    \includegraphics[width=0.5\linewidth]{figures/cross-correlation2d}
     \caption{Example of cross-correlation between 2D signals}
     \label{fig:back:2d-cross-corr}
 \end{figure}
@@ -175,7 +168,7 @@ A depiction of 2D cross-correlation is reported in~\ref{fig:back:2d-cross-corr}.
 
 \begin{figure}
     \centering
-    \asyinclude[inline,width=\linewidth]{figures/convolution.asy}
+    \includegraphics[width=\linewidth]{figures/convolution}
     \caption{Depiction of 2D cross-correlation on volumes implemented in convolutional layers}
     \label{fig:back:convolution}
 \end{figure}
@@ -234,7 +227,7 @@ This architecture is naturally able to process sequences of inputs -- elements o
 
 \begin{figure}
     \centering
-    \asyinclude[inline,width=.9\linewidth]{figures/rnn.asy}
+    \includegraphics[width=.9\linewidth]{figures/rnn}
     \caption{Basic architecture of a \acrlong{rnn} (left). On the right, its unrolled version for a sequence of length 5.}
     \label{fig:back:rnn}
 \end{figure}
@@ -270,7 +263,7 @@ The concatenation of the internal states of both past-to-future and future-to-pa
 
 \begin{figure}
     \centering
-    \asyinclude[inline,width=.9\linewidth]{figures/bidir-rnn.asy}
+    \includegraphics[width=.9\linewidth]{figures/bidir-rnn}
     \caption{Unrolled version of a Bidirectional \gls{rnn} for a sequence of length 5}
     \label{fig:back:bidir-rnn}
 \end{figure}
@@ -335,7 +328,7 @@ A depiction of the \gls{lstm} cell is aslo available in \ref{fig:back:lstm}.
 
 \begin{figure}
     \centering
-    \asyinclude[inline, width=\linewidth]{figures/lstm.asy}
+    \includegraphics[ width=\linewidth]{figures/lstm}
     \caption{Example of \gls{lstm} cell}
     \label{fig:back:lstm}
 \end{figure}
@@ -343,8 +336,25 @@ A depiction of the \gls{lstm} cell is aslo available in \ref{fig:back:lstm}.
 \subsection{Loss Functions}
 \label{subsec:back:loss}
 
+Loss functions are a key component of \gls{ml} methods.
+Its role is to quantitatively assign a value of goodness of a model in reference to the particular task we want to solve.
 
-%Loss Functions
+Given a training set $\X = \{\(\x_i, \y^\star_i\), i=1,\dots,N\}$ comprised by $N$ couples of inputs and desired outputs, the quality of a particular setting of parameters $\Theta$ is quantitatively defined by a \emph{loss function} $\L\(\X; \Theta\)$ that measures how much predictions and targets differ.
+A loss function is usually defined as one of more terms summed together.
+The main term is often defined as the average of the individual loss values computed on each sample of the dataset $\L\(\y_i, \y^\star_i\)$.
+% TODO assign name data and regularization terms and indicate them in formula
+A secondary optional term is often used to regularize the network and depends only on the model parameters $\Theta$; we indicate this term as $\L_r(\Theta)$.
+
+\begin{align}
+    \L\(\X; \Theta\) &= \frac{1}{N} \sum_{i=1}^N \mathcal{L}\(\y_i, \y^\star_i\) + \L_r\(\Theta\) \\
+                   &= \frac{1}{N} \sum_{i=1}^N \mathcal{L}\(f\(\x_i; \Theta\), \y^\star_i\) + \L_r\(\Theta\)
+\end{align}
+
+In the next paragraphs, we will provide the reader with some of the most used formulations of $\L\(\y_i, \y^\star_i\)$ and $\L_r(\Theta)$ of interest for this work.
+
+
+%We are interested in differentiable loss functions
+
 %Cross-entropy
 %MSE
 %L2 Weight decay

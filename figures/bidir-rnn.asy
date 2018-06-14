@@ -1,6 +1,4 @@
-//settings.outformat = "pdf";
-settings.render = 0;
-// unitsize(1cm);
+unitsize(1cm);
 
 real w = 1;
 real h = 1;

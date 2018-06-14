@@ -1,4 +1,4 @@
-settings.render = 0;
+unitsize(1cm);
 import three;
 
 // defaultpen(fontsize(8pt));

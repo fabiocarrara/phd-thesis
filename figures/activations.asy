@@ -1,6 +1,4 @@
-// settings.outformat = "pdf";
-settings.render = 0;
-// unitsize(1cm);
+unitsize(1cm);
 import graph;
 
 defaultpen(fontsize(10pt));

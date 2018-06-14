@@ -1,6 +1,4 @@
-//settings.outformat = "pdf";
-settings.render = 0;
-//unitsize(1cm);
+unitsize(1cm);
 
 real w = 1;
 real h = 1;
@@ -12,7 +10,7 @@ void drawCell(pair o=(0,0), string t="t", bool recur=false, bool last=false) {
     draw(p);
 
     label("$f$", shift(o) * (w/2, h/2));
-    
+
     // input
     path i = (w/2, -a) -- (w/2, 0);
     i = shift(o) * i;
@@ -36,7 +34,7 @@ void drawCell(pair o=(0,0), string t="t", bool recur=false, bool last=false) {
             l = Label(hLabel, position=EndPoint);
         else
             l = Label(hLabel, position=MidPoint, align=N);
-        
+
         draw(r, arrow=ArcArrow(), L=l);
     }
 }

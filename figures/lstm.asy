@@ -1,1 +1,0 @@
-settings.render = 0;
