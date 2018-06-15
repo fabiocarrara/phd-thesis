@@ -1,7 +1,7 @@
-unitsize(1cm);
+unitsize(0.5cm);
 import graph;
 
-defaultpen(fontsize(10pt));
+// defaultpen(fontsize(12pt));
 
 typedef real func(real);
 
