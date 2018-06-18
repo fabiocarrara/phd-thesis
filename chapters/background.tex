@@ -11,6 +11,7 @@
 \def\W{\mathbf{W}} % weight matrix
 \def\b{\mathbf{b}} % bias vector
 
+\def\z{\mathbf{z}} % aux variable (logits)
 \def\h{\mathbf{h}} % hidden state
 
 \def\i{\mathbf{i}} % lstm input gate
@@ -344,13 +345,13 @@ Its role is to quantitatively assign a value of goodness to a model in reference
 
 Given a training set $\X = \{\(\x_i, \y^\star_i\), i=1,\dots,N\}$ comprised by $N$ couples of inputs and desired outputs, the quality of a particular setting of parameters $\Theta$ is quantitatively defined by a \emph{loss function} $\L\(\X; \Theta\)$ that measures how much predictions and targets differ.
 A loss function is usually defined as one of more terms summed together.
-The main term is often defined as the average of the individual loss values computed on each sample of the dataset $\L\(\y_i, \y^\star_i\)$.
-% TODO assign name data and regularization terms and indicate them in formula
-A secondary optional term is often used to regularize the network and depends only on the model parameters $\Theta$; we indicate this term as $\L_r(\Theta)$.
+The main term is defined as the average of the individual loss values computed on each sample of the dataset $\L\(\y_i, \y^\star_i\)$ - we denote this the \emph{data term}.
+A secondary optional term is often used to regularize the network and depends only on the model parameters $\Theta$; we indicate this \emph{regularization term} as $\L_r(\Theta)$.
 
 \begin{align}
-    \L\(\X; \Theta\) &= \frac{1}{N} \sum_{i=1}^N \mathcal{L}\(\y_i, \y^\star_i\) + \L_r\(\Theta\) \\
-                   &= \frac{1}{N} \sum_{i=1}^N \underbrace{\mathcal{L}\(f\(\x_i; \Theta\), \y^\star_i\)}_{\textrm{data term}} + \underbrace{\L_r\(\Theta\)}_{\textrm{regularization term}}
+    \L\(\X; \Theta\) &= \underbrace{\L_d\(\X; \Theta\)}_{\textrm{data term}}&+& \underbrace{\L_r\(\Theta\)}_{\textrm{regularization term}}\\
+                     &= \frac{1}{N} \sum_{i=1}^N \L\(\y_i, \y^\star_i\)&+& \quad \L_r\(\Theta\) \\
+                     &= \frac{1}{N} \sum_{i=1}^N \L\(f\(\x_i; \Theta\), \y^\star_i\)&+& \quad  \L_r\(\Theta\)
 \end{align}
 
 In the next paragraphs, we will provide the reader with some of the most used formulations of $\L\(\y_i, \y^\star_i\)$ and $\L_r(\Theta)$ of interest for this work.
@@ -358,27 +359,45 @@ In the next paragraphs, we will provide the reader with some of the most used fo
 \paragraph{Mean Squared Error Loss}
 When dealing with regression problems, we want our predictions to be close to the one or more real-valued targets.
 For example, in an age estimation problem, we want our network to predict the exact age expressed as a real value, e.g. $46,5$.
-The mean squared error between predictions and targets is a commonly used loss function to measure the goodness of regressions:
-
+The mean squared error between predictions $\z$ and targets $\z^\star$ is a commonly used loss function to measure the goodness of regressions:
 \begin{equation} \label{eq:back:mse}
-    \L(\y_i, \y_i^\star) = \frac{1}{2} \( \y_i - \y_i^\star \)^2
+    \L_\textrm{MSE}(\z, \z^\star) = \frac{1}{2} \( \z - \z^\star \)^2
 \end{equation}
 
 The scale factor $\frac{1}{2}$ is usually introduced to simplify the gradient computation when using this loss function (more details on this in \ref{subsec:back:optim}).
 
 \paragraph{Cross-entropy Loss}
-The cross-entropy loss measures the distance between two multinomial distributions.
+The cross-entropy loss is commonly used in \gls{ml} to measure the distance between two categorical distributions.
 It is commonly adopted in single-label classification tasks, where a single label have to be assigned to a piece of data choosing from $N$ labels ($N \geq 2$).
-Classification models are often designed to output $N$ values that are mapped to a multinomial distribution via the \emph{softmax} function:
-\begin{equation}
-    \y_i = \exp^{\x_i} ...
+Let $\z$ and $\z^\star$ the probability masses of two $N$-way categorical distributions, i.e. $\z_i, \z^\star_i \in [0,1],\; \sum_{i=1}^N \z_i = 1, \sum_{i=1}^N \z^\star_i = 1$;
+the cross-entropy loss between the predicted distribution $\z$ and the target one $\z^\star$ is defined as follows:
+\begin{equation} \label{eq:back:cross-entropy}
+    \L_\textrm{CE}(\z, \z^\star) = - \sum_{i=1}^N \z^\star_i \log \z_i
+\end{equation}
+Classification models are often designed to output a $N$-dimensional vector $\z$ that is mapped to a categorical distribution via the \emph{softmax} function:
+\begin{equation} \label{eq:back:softmax}
+    \textrm{softmax}(\z)_i = \frac{e^{\z_i}}{\sum_{j=1}^N e^{\z_j}}
 \end{equation}
 
-%We are interested in differentiable loss functions
+\paragraph{$\mathbf{L_p}$ weight decay}
+The most used regulatization terms in the \gls{dl} literature are the ones penalizing the parameters having large norm.
+This is usually implemented defining the regularization term $\L_r\(\Theta\)$ added to the loss to be minimized as the $p$-norm of the parameters.
+Practical definitions have been adopted for $p=2$ ($\mathbf{L_2}$ weight decay) and for $p=1$ ($\mathbf{L_1}$ weight decay).
+% TODO add cites to L2 and L1 regularizations (starting from DL book)
+The former produces a more uniform utilization of all the available parameters, penalizing under-utilized and over-utilized weights \cite{}.
+\begin{equation} \label{eq:back:l2-weight-decay}
+    \L_r\(\Theta\) = \frac{1}{2} ||\Theta||_2^2 = \frac{1}{2} \sum_i \theta_i^2
+\end{equation}
+The latter instead tends to produce a more sparse weight configuration, i.e. with many parameters having a null optimal value \cite{}.
+\begin{equation} \label{eq:back:l1-weight-decay}
+    \L_r\(\Theta\) = ||\Theta||_1 = \sum_i |\theta_i|
+\end{equation}
 
-%Cross-entropy
-%MSE
-%L2 Weight decay
+The regularization term is usually multiplied by a hyperparameter $\lambda$ and then added to the total loss:
+\begin{equation}
+    \L\(\X, \Theta\) =
+\end{equation}
+
 
 \subsection{Gradient-Based Optimization}
 \label{subsec:back:optim}
