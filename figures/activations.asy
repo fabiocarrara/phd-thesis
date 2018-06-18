@@ -37,6 +37,6 @@ void drawAct(func a, string yLabel, pair o=(0,0), pen p=black, int[] asym={}) {
     }
 }
 
-drawAct(relu, "\textrm{ReLU}(x) = \max(x,0)");
-drawAct(sigmoid, "\sigma(x) = \displaystyle \frac{1}{1+e^{-x}}", o=(10, 0), asym=new int[] {1});
+drawAct(relu, "\max(x,0)");
+drawAct(sigmoid, "\displaystyle \frac{1}{1+e^{-x}}", o=(10, 0), asym=new int[] {1});
 drawAct(tanh, "\tanh(x)", o=(20, 0), asym=new int[] {1, -1});

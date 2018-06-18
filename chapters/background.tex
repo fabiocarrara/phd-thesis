@@ -68,7 +68,7 @@ In the following sections, we will review some practical and successful formulat
 %that are useful when dealing with image data
 and we will provide the reader with the basics of gradient-based optimization of~\eqref{eq:back:optim}.
 
-\subsection{Feed-Forward Neural Network}
+\subsection{Feed-Forward Neural Networks}
 \label{subsec:back:ffnn}
 
 \Acrlongpl{ffnn} are \gls{dl} models whose computation graph can be expressed as a directed acyclic graph, i.e.\,there are no feedback loops and information flows from inputs to outputs in a cascade fashion.
@@ -77,11 +77,11 @@ Thus, when computing of the whole chain from inputs to outputs, called the \emph
 % In the following, we summarize some of the most relevant layers used in \glspl{dnn}.
 
 %\subsubsection{Fully Connected Layer}
-\subsubsection{Multilayer Perceptron}
+\subsubsection{Multilayer Perceptrons}
 
 \begin{figure}
     \includegraphics[ width=\linewidth]{figures/activations}
-    \caption{Commonly used activation functions in \glspl{dnn}.}
+    \caption{Commonly used activation functions in \glspl{dnn}. The \acrfull{relu} on the left, the sigmoid $\sigma$ in the middle, and hyperbolic tangent on the right.}
     \label{fig:back:activations}
 \end{figure}
 
@@ -93,7 +93,7 @@ Formally, given an input comprised by $n$ features $\x \in \R^n$, the output  $\
 \begin{equation} \label{eq:back:fully-connected}
     \y = \a \( \W \x + \b \)
 \end{equation}
-
+%
 where $\W \in \R^{n \times m}$ and $\b \in \R^m$ are learnable parameters of a linear projection to a $m$-dimensional space.
 Commonly used activation functions $\a: \R \to \R$ are the \gls{relu}, the sigmoid $\sigma\(\cdot\)$, or $\tanh\(\cdot\)$ functions (see~\Cref{fig:back:activations}).
 The dimensionality of the input $n$ and of the output $m$ are referred to as respectively the number of \emph{input features} and \emph{output features}.
@@ -115,10 +115,10 @@ The neuron ``fires'' when the combination of their weighted inputs gets above a 
 \begin{equation}
     \y_j = \a \( \sum_{i=1}^n \w_i \x_i + b\)
 \end{equation}
-
+%
 where $\y_j$ is the output of a particular neuron and $b \in \R$ is an optional weight used as bias term.
 % The weight vector $\w$ is tuned in the training phase in order to
-A layer composed by $m$ perceptrons (and thus $m$ outputs $\y_j, j=1 \dots m$) sharing the same input $\x$ can be formalized with ~\ref{eq:back:fully-connected}, where the columns of $\W$ correspond to the weights of the $m$ perceptrons.
+A layer composed by $m$ perceptrons (and thus $m$ outputs $\y_j, j=1 \dots m$) sharing the same input $\x$ can be formalized with \ref{eq:back:fully-connected}, where the columns of $\W$ correspond to the weights of the $m$ perceptrons.
 % Feed-forward artificial neural networks built stacking layers of perceptrons are called \glspl{mlp}.
 In \glspl{mlp}, the outputs of a layer are densely connected to the input of each neuron comprising the next layer, hence the name ``fully-connected layer''.
 A \gls{mlp} with $L$ layers can be defined as follows:
@@ -126,10 +126,10 @@ A \gls{mlp} with $L$ layers can be defined as follows:
 \begin{equation}
     \y = \a \( \W_L \( \dots \a \( \W_2 \( \a \( \W_1 \x + \b_1 \) \) + \b_2 \) \) + \b_L \)
 \end{equation}
+%
+where $\(\W_i, \b_i \)$ are the parameters of the $i$-th fully-connected layer in the network.
 
-% TODO brutto finire con la formula
-
-\subsubsection{Convolutional Neural Network}
+\subsubsection{Convolutional Neural Networks}
 
 \begin{figure}
     % TODO add dimensions to cross-corr2d figure
@@ -154,7 +154,7 @@ the cross-correlation $\y \in \R^{H' \times W'}$ between $\x$ and $\w$ expressed
 \begin{equation}\label{eq:back:cross-correlation}
     \y_{u,v} = \sum_{i=1}^{K_1} \sum_{j=1}^{K_2} \w_{i,j} \x_{i+u-1,j+v-1}
 \end{equation}
-
+%
 where $u = 1, \dots, H'$ and $v = 1, \dots W'$.
 Intuitively, the filter $\w$ is superimposed on the input $\x$, and for each possible position $(u,v)$ the scalar product between the covered input and the filter is computed.
 Depending on the presence of padding $P$ added to each side of the input and the stride $S$ of the filter application, the output dimensionality changes following this relations:
@@ -216,7 +216,7 @@ The visual aspect of object is images follow a hierarchical organization: an obj
 \Glspl{cnn} trained to recognize objects, directly or indirectly, often organize their hierarchy of detectors following this kind of visual decomposition of objects (see \ref{fig:back:filter-hier}).
 
 
-\subsection{Recurrent Neural Network}
+\subsection{Recurrent Neural Networks}
 \label{subsec:back:rnn}
 
 % TODO add rnn cites: non c'è un paper di riferimento
@@ -237,7 +237,7 @@ Given a sequence of inputs of length $T$ $\x_t \in \R^n, t = 1 \dots T$, and an 
 \begin{equation}\label{eq:back:rnn}
     \h_t = f\(\x_t, \h_{t-1}; \W\)
 \end{equation}
-
+%
 where $f(\cdot)$ is the \emph{recurrent cell} of the \gls{rnn} parametrized by the weights $\W$, and $\h_t \in \R^m, t = 1 \dots T$ is the hidden state at timestep $t$, i.e.\ the state of the network after all inputs until $\x_t$ have been processed.
 In its simplest form, the recurrent cell $f$ can be implemented using a fully-connected layer that operates
 on the concatenation of the current state and input:
@@ -271,15 +271,17 @@ The concatenation of the internal states of both past-to-future and future-to-pa
 \subsubsection{Long Short-Term Memory}
 
 % TODO add LSTM application cites
-\Glspl{lstm}~\cite{hochreiter1997long} are a type of \glspl{rnn} with a special formulation of the recurrent cell that has proved its effectiveness in several sequence-modeling tasks~\cite{}.
+\Glspl{lstm}~\cite{hochreiter1997long} are a type of \gls{rnn} with a special formulation of the recurrent cell that has proved its effectiveness in several sequence-modeling tasks~\cite{}.
 This particular formulation is aimed at solving some major drawbacks of vanilla \glspl{rnn}, most importantly the inability to encode long-term dependencies in sequences.
-\Gls{lstm} cells are comprised by four learnable gating functions that help mitigate the vanishing gradient problem in RNNs when coping with long sequences.
+% TODO add LSTM solving vanishing gradient cite
+\Gls{lstm} cells are comprised by four learnable gating functions that better control the evolution of the internal state of the cell when dealing with long sequences, and mitigating problems occurring in vanilla RNNs, such as vanishing gradients~\cite{}.
+
 Let $\x_t \in \R^n$ an element of a sequence, and $\h_{t-1} \in \R^m$ the current hidden state.
 The \emph{forget} gate $\f_t$ decides which information need to be discarded at the current step, and it is implemented as a fully-connected layer with $p$ output features and parameters $\w_f \in \R^{(n+m)\times p}, \b_f \in \R^p$ followed by a sigmoid activation:
 \begin{equation*}
     \f_t = \sigma\(\w_f [\h_{t-1} | \x_t] + \b_f\)
 \end{equation*}
-The input gate $\i_t$ encodes the information that need to be inserted in the internal state of the cell $\c_t$, and it is implemented with the same rationale of the previous gate.
+The input gate $\i_t$ encodes the information that need to be inserted in the internal state of the cell $\c_t$, and it is implemented following the same rationale of the previous gate.
 \begin{equation*}
     \i_t = \sigma\(\w_i [\h_{t-1} | \x_t] + \b_i\)
 \end{equation*}
@@ -288,7 +290,7 @@ The update gate $\u_t$ modulates the amount of new input to be inserted in the i
     \u_t = \tanh\(\w_u [\h_{t-1} | \x_t] + \b_u\)
 \end{equation*}
 The new cell state $\c_t \in \R^p$ is computed as the sum of two terms;
-the first one, given by the element-wise product ($*$) between the forget gate and the previous cell state, represent the part of the old state not to be forgotten;
+the first one, given by the element-wise product ($*$) between the forget gate and the previous cell state, represents the part of the old state not to be forgotten;
 the second one, computed as the element-wise product of the input and update gates, represent the modulated input to be kept in the new state;
 \begin{equation*}
     \c_t = \f_t * \c_{t-1} + \i_t * \u_t
@@ -322,6 +324,7 @@ With an abuse of notation, the complete \gls{lstm} formulation can be compactly 
     \h_t &= \o_t * \tanh\(\c_t\)
 \end{split}
 \end{align}
+%
 where $\W \in \R^{(n+m) \times 4p}$ summarizes all the parameters of all the fully-connected layers forming the gates.
 % TODO: [PLUS] lstm figure
 A depiction of the \gls{lstm} cell is aslo available in \ref{fig:back:lstm}.
@@ -337,7 +340,7 @@ A depiction of the \gls{lstm} cell is aslo available in \ref{fig:back:lstm}.
 \label{subsec:back:loss}
 
 Loss functions are a key component of \gls{ml} methods.
-Its role is to quantitatively assign a value of goodness of a model in reference to the particular task we want to solve.
+Its role is to quantitatively assign a value of goodness to a model in reference to the particular task we want to solve.
 
 Given a training set $\X = \{\(\x_i, \y^\star_i\), i=1,\dots,N\}$ comprised by $N$ couples of inputs and desired outputs, the quality of a particular setting of parameters $\Theta$ is quantitatively defined by a \emph{loss function} $\L\(\X; \Theta\)$ that measures how much predictions and targets differ.
 A loss function is usually defined as one of more terms summed together.
@@ -347,11 +350,29 @@ A secondary optional term is often used to regularize the network and depends on
 
 \begin{align}
     \L\(\X; \Theta\) &= \frac{1}{N} \sum_{i=1}^N \mathcal{L}\(\y_i, \y^\star_i\) + \L_r\(\Theta\) \\
-                   &= \frac{1}{N} \sum_{i=1}^N \mathcal{L}\(f\(\x_i; \Theta\), \y^\star_i\) + \L_r\(\Theta\)
+                   &= \frac{1}{N} \sum_{i=1}^N \underbrace{\mathcal{L}\(f\(\x_i; \Theta\), \y^\star_i\)}_{\textrm{data term}} + \underbrace{\L_r\(\Theta\)}_{\textrm{regularization term}}
 \end{align}
 
 In the next paragraphs, we will provide the reader with some of the most used formulations of $\L\(\y_i, \y^\star_i\)$ and $\L_r(\Theta)$ of interest for this work.
 
+\paragraph{Mean Squared Error Loss}
+When dealing with regression problems, we want our predictions to be close to the one or more real-valued targets.
+For example, in an age estimation problem, we want our network to predict the exact age expressed as a real value, e.g. $46,5$.
+The mean squared error between predictions and targets is a commonly used loss function to measure the goodness of regressions:
+
+\begin{equation} \label{eq:back:mse}
+    \L(\y_i, \y_i^\star) = \frac{1}{2} \( \y_i - \y_i^\star \)^2
+\end{equation}
+
+The scale factor $\frac{1}{2}$ is usually introduced to simplify the gradient computation when using this loss function (more details on this in \ref{subsec:back:optim}).
+
+\paragraph{Cross-entropy Loss}
+The cross-entropy loss measures the distance between two multinomial distributions.
+It is commonly adopted in single-label classification tasks, where a single label have to be assigned to a piece of data choosing from $N$ labels ($N \geq 2$).
+Classification models are often designed to output $N$ values that are mapped to a multinomial distribution via the \emph{softmax} function:
+\begin{equation}
+    \y_i = \exp^{\x_i} ...
+\end{equation}
 
 %We are interested in differentiable loss functions
 
