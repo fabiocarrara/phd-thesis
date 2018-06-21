@@ -13,6 +13,7 @@
 
 \def\z{\mathbf{z}} % aux variable (logits)
 \def\h{\mathbf{h}} % hidden state
+\def\o{\mathbf{o}} % output variable
 
 \def\i{\mathbf{i}} % lstm input gate
 \def\f{\mathbf{f}} % lstm forget gate
@@ -31,6 +32,10 @@
 \chapter{Background}
 \label{ch:background}
 
+% TODO add overfit, underfit to background?
+% TODO add train good practices? (train/val/test splits, epochs, etc.)
+% TODO add dropout to regularizations
+
 In this chapter, we present the basic concepts about \gls{dl} and an overview of the research fields on which its application has been investigated in this thesis, namely Image Classification and \gls{cbir}.
 The chapter is organized as follows.
 In \ref{sec:back:deep-learning}, we provide the reader with a quick introduction to \gls{dl}, focusing on deep neural networks for image and text processing and gradient-based optimization.
@@ -43,24 +48,26 @@ In \ref{sec:back:image-retrieval}, we describe the main aspects of \gls{cbir} ba
 \label{sec:back:deep-learning}
 
 \acrfull{dl} defines the set of \gls{ml} methods aiming to learn from data a \emph{hierarchy of representations} specialized for the task under consideration~\cite{goodfellow2016deep}.
-\gls{dl} models are usually organized as a sequence (or more generally a graph) of parametric non-linear transformations, known as \emph{layers}, that acts like features extractors;
+\gls{dl} models are usually organized as a sequence (or more generally a graph) of parametric non-linear transformations, known as \emph{layers}, that acts like features extractors --
 starting from raw data, each layer searches for useful patterns in its input and provides higher-level representation of the data to the next layer.
-More formally, given an input $\x$ and $L$ non-linear transformations $f_l\(\cdot; \theta_l\)$ parametrized by $\theta_l$ ($l=1,\, \dots\,, L$), we can express the output $\y$ of the cascade of transformations as:
-
+More formally, given an input $\x$ and $L$ non-linear transformations $f_l\(\cdot; \theta_l\)$ parametrized by $\theta_l$ ($l=1,\, \dots\,, L$), we can express the output $\y$ of the cascade of transformations as
+%
 \begin{align} \label{eq:back:deepnet}
     \y & = f\(\x, \Theta\) \\
-       & = f_L\(\dots f_2\(f_1\(\x; \theta_1\); \theta_2\); \theta_L\)
+       & = f_L\(\dots f_2\(f_1\(\x; \theta_1\); \theta_2\); \theta_L\) \,,
 \end{align}
-
+%
 where $\Theta = \{\theta_l, l = 1, \dots L\}$ indicates the set of all parameters, also known as \emph{weights}.
 
 Given a training set $\X$, the quality of a particular setting of parameters is quantitatively defined by a \emph{loss function} $\L\(\X; \Theta\)$ that measures how much the model predictions differ from the targets provided by $\X$.
 The particular formulation of $\L$ is task-dependent and further discussed in \ref{subsec:back:loss}.
-In the end, the learning problem reduces to an optimization problem in which we search the best parameter setting $\Theta^\star$ that minimizes the loss function $\L\(\X; \Theta\)$:
-
+In the end, the learning problem reduces to the optimization problem
+%
 \begin{equation} \label{eq:back:optim}
     \Theta^\star = \argmin_\Theta \L\(\X; \Theta\)
 \end{equation}
+%
+in which we search the best parameter setting $\Theta^\star$ that minimizes the loss function $\L\(\X; \Theta\)$.
 
 % TODO add reference to similarities to mammalian brain (perceptron?)
 For historical reasons, \gls{dl} models are also referred to as \emph{\glspl{dnn}} due to the resemblance of layers and their organization to the way neurons are interconnected and organized in the mammalian brain~\cite{}.
@@ -89,10 +96,10 @@ Thus, when computing of the whole chain from inputs to outputs, called the \emph
 The \gls{mlp} is the simplest form of artificial neural network in the \Acrlong{dl} field.
 A \gls{mlp} is comprised by a cascade of \emph{inner product} (or \emph{fully connected}) layers, which are the basic building block for \glspl{dnn}.
 A inner product layer performs a linear projection of the input followed by a usually non-linear element-wise activation function.
-Formally, given an input comprised by $n$ features $\x \in \R^n$, the output  $\y \in \R^m$ of the layer is obtained as follows:
-
+Formally, given an input comprised by $n$ features $\x \in \R^n$, the output  $\y \in \R^m$ of the layer is obtained as
+%
 \begin{equation} \label{eq:back:fully-connected}
-    \y = \a \( \W \x + \b \)
+    \y = \a \( \W \x + \b \) \,,
 \end{equation}
 %
 where $\W \in \R^{n \times m}$ and $\b \in \R^m$ are learnable parameters of a linear projection to a $m$-dimensional space.
@@ -111,10 +118,10 @@ The perceptron~\cite{rosenblatt1958perceptron} is a biologically-inspired buildi
 As a neuron cell, it is composed by $n$ inputs $\x_i$ ($i=1 \dots n$), usually connected to the output of other neurons, and a single output $\mathbf{y}$ (axon).
 Each input connection is associated with a weight $\w_i$ ($i=1 \dots n$) expressing how much of the signal coming through that connection is promoted or inhibited.
 Weights in a perceptron are interpreted as the strength of the interconnection between neuron cells.
-The neuron ``fires'' when the combination of their weighted inputs gets above a certain threshold -- this is modelled in the perceptron defining its output as the activation function $\a$ applied to the inner product between input and weights:
-
+The neuron ``fires'' when the combination of their weighted inputs gets above a certain threshold -- this is modelled in the perceptron defining its output as the activation function $\a$ applied to the inner product between input and weights
+%
 \begin{equation}
-    \y_j = \a \( \sum_{i=1}^n \w_i \x_i + b\)
+    \y_j = \a \( \sum_{i=1}^n \w_i \x_i + b\) \,,
 \end{equation}
 %
 where $\y_j$ is the output of a particular neuron and $b \in \R$ is an optional weight used as bias term.
@@ -123,9 +130,9 @@ A layer composed by $m$ perceptrons (and thus $m$ outputs $\y_j, j=1 \dots m$) s
 % Feed-forward artificial neural networks built stacking layers of perceptrons are called \glspl{mlp}.
 In \glspl{mlp}, the outputs of a layer are densely connected to the input of each neuron comprising the next layer, hence the name ``fully-connected layer''.
 A \gls{mlp} with $L$ layers can be defined as follows:
-
+%
 \begin{equation}
-    \y = \a \( \W_L \( \dots \a \( \W_2 \( \a \( \W_1 \x + \b_1 \) \) + \b_2 \) \) + \b_L \)
+    \y = \a \( \W_L \( \dots \a \( \W_2 \( \a \( \W_1 \x + \b_1 \) \) + \b_2 \) \) + \b_L \) \,,
 \end{equation}
 %
 where $\(\W_i, \b_i \)$ are the parameters of the $i$-th fully-connected layer in the network.
@@ -145,23 +152,24 @@ This kind of layer computes the cross-correlation between the input and a set of
 Since there is a strong similarity between the convolution and the cross-correlation operations, this layer is often attributed with the adjective ``convolutional'' in the \gls{dl} literature;
 thus we will adopt the same terminology throughout this thesis.
 
+\paragraph{Cross-correlation}
 % TODO 'local'?
 The \emph{cross-correlation} (also called \emph{sliding inner product}) is typically used in signal processing to search for local matches between two signals.
 Intuitively, a small signal called \emph{filter} containing the prototype we want to match is slided on a bigger input signal, and for each position, the inner product between the intersection of the two signals measures the quality of the match.
 We will provide the reader with the formulation of the two-dimensional version of the cross-correlation due to its massive adoption in image-related fields that are of interest for this work.
 Given a two-dimensional input matrix $\x \in \R^{H \times W}$ and a two-dimensional filter $\w \in \R^{K_1 \times K_2}$, %with $K \ll \min(H,W)$,
-the cross-correlation $\y \in \R^{H' \times W'}$ between $\x$ and $\w$ expressed as follows:
-
+the cross-correlation $\y \in \R^{H' \times W'}$ between $\x$ and $\w$ is given by
+%
 \begin{equation}\label{eq:back:cross-correlation}
-    \y_{u,v} = \sum_{i=1}^{K_1} \sum_{j=1}^{K_2} \w_{i,j} \x_{i+u-1,j+v-1}
+    \y_{u,v} = \sum_{i=1}^{K_1} \sum_{j=1}^{K_2} \w_{i,j} \x_{i+u-1,j+v-1} \,,
 \end{equation}
 %
 where $u = 1, \dots, H'$ and $v = 1, \dots W'$.
 Intuitively, the filter $\w$ is superimposed on the input $\x$, and for each possible position $(u,v)$ the scalar product between the covered input and the filter is computed.
-Depending on the presence of padding $P$ added to each side of the input and the stride $S$ of the filter application, the output dimensionality changes following this relations:
+Depending on the presence of padding $P$ added to each side of the input and the stride $S$ of the filter application, the output dimensionality changes following these relations
 \begin{align*}
-    H' = \left \lfloor \frac{H + 2 \times P - K_1}{S} \right \rfloor + 1 \qquad
-    W' &= \left \lfloor \frac{W + 2 \times P - K_2}{S} \right \rfloor + 1
+    H' = \left \lfloor \frac{H + 2 \times P - K_1}{S} \right \rfloor + 1 \,,\quad
+    W' &= \left \lfloor \frac{W + 2 \times P - K_2}{S} \right \rfloor + 1 \,.
 \end{align*}
 
 Inputs and outputs of convolutional layers are also called \emph{feature maps}, since high values in the two-dimensional map is usually interpreted as the presence of a feature a particular filter has learnt to identify.
@@ -174,14 +182,15 @@ A depiction of 2D cross-correlation is reported in~\ref{fig:back:2d-cross-corr}.
     \label{fig:back:convolution}
 \end{figure}
 
+\paragraph{2D Cross-correlation on Volumes}
 \ref{eq:back:cross-correlation} defines the cross-correlation operation for inputs and outputs having both a single feature map.
 Images instead are represented as 3-D tensors having $C$ channels (e.g. $C=3$ for RGB data, $C=1$ for grayscale) and two spatial dimensions $H$ and $W$;
 thus, the definition of the 2D cross-correlation is extended to 3D tensors letting the filters span the depth of the input tensor.
 In such way, filters are still applied over the two spatial dimensions $H$ and $W$, but each output value depends on all the input feature maps in a particular spatial position.
-Formally, given an input tensor $\x \in \R^{H \times W \times C}$ and a filter $\w \in \R^{K_1 \times K_2 \times C}$ the cross-correlation $\y \in \R^{H' \times W'}$ between $\x$ and $\w$ is defined as:
-
+Formally, given an input tensor $\x \in \R^{H \times W \times C}$ and a filter $\w \in \R^{K_1 \times K_2 \times C}$ the cross-correlation $\y \in \R^{H' \times W'}$ between $\x$ and $\w$ is defined as
+%
 \begin{equation}\label{eq:back:channel-cross-correlation}
-    \y_{u,v} = \sum_{i=1}^{K_1} \sum_{j=1}^{K_2} \sum_{k=1}^C \w_{i,j,k} \x_{i+u-1,j+v-1,k}
+    \y_{u,v} = \sum_{i=1}^{K_1} \sum_{j=1}^{K_2} \sum_{k=1}^C \w_{i,j,k} \x_{i+u-1,j+v-1,k} \,.
 \end{equation}
 
 A convolution layer is often composed by a bank of $K$ filters.
@@ -192,6 +201,7 @@ The entire process is depicted in \ref{fig:back:convolution}.
 The main difference between fully-connected layers and convolutional layers is the way weights are utilized;
 while fully-connected layers have a dedicated weight for each couple of input and output features, a convolutional layer shares the weights of its filters across the spatial dimensions, thus learning to detect translation-invariant features by design.
 
+\paragraph{Features hierarchy in \glspl{cnn}}
 % TODO add some cites of successful CNNs in DL literature
 Convolutional layers are stacked to build deep \glspl{cnn}, that are the one of the core tools of Deep Learning for image perception and analysis \cite{}.
 Once trained, filters in a deep \gls{cnn} tend to organize in a hierarchy of detectors, where layers near the input detect the presence of simple features in the input data, while the following layers build up from them and detect more complex features.
@@ -233,32 +243,33 @@ This architecture is naturally able to process sequences of inputs -- elements o
     \label{fig:back:rnn}
 \end{figure}
 
-Given a sequence of inputs of length $T$ $\x_t \in \R^n, t = 1 \dots T$, and an initial state $\h_0 \in \R^m$, a \gls{rnn} can be described as a parametric function mapping the input and the state at a certain timestep to the next hidden state:
-
+Given a sequence of inputs of length $T$ $\x_t \in \R^n, t = 1 \dots T$, and an initial state $\h_0 \in \R^m$, a \gls{rnn} can be described as a parametric function mapping the input and the state at a certain timestep to the next hidden state
+%
 \begin{equation}\label{eq:back:rnn}
-    \h_t = f\(\x_t, \h_{t-1}; \W\)
+    \h_t = f\(\x_t, \h_{t-1}; \W\) \,,
 \end{equation}
 %
 where $f(\cdot)$ is the \emph{recurrent cell} of the \gls{rnn} parametrized by the weights $\W$, and $\h_t \in \R^m, t = 1 \dots T$ is the hidden state at timestep $t$, i.e.\ the state of the network after all inputs until $\x_t$ have been processed.
 In its simplest form, the recurrent cell $f$ can be implemented using a fully-connected layer that operates
-on the concatenation of the current state and input:
-
+on the concatenation of the current state and input
+%
 \begin{equation}
-    \h_t = \W [ \x_t | \h_{t-1} ] + \b
+    \h_t = \W [ \x_t | \h_{t-1} ] + \b \,,
 \end{equation}
-
+%
 where $\W$ and $\b$ are the parameters of a fully-connected layer, and $[\cdot|\cdot]$ is the concatenation operation.
 During learning, the \gls{rnn} is unrolled in time to the length of the input sequence to create an acyclic computation graph similar to \glspl{ffnn} (see \ref{fig:back:rnn}) on which standard training procedures can be applied (that will be discussed in \ref{subsec:back:optim}).
 Depending on the task we want to model, we could be interested in the last hidden state $h_T$ compactly represent the whole sequence, or we could use a combination of all hidden states $h_i, i=1 \dots T$ to get access to the evolution of the information processed through time.
 
+\paragraph{Bidirectional \glspl{rnn}}
 In many tasks such as sequence classification and segmentation, also the future context of the sequence is informative. However, \ref{eq:back:rnn} defines a \gls{rnn} encoding only past information, i.e.\   $\h_t$ depends only on information at time step $t' < t$.
 To overcome this limitation, \emph{bidirectional} \glspl{rnn} have been proposed~\cite{schuster1997bidirectional}.
-Bidirectional architectures adds a separate recurrent cell which process the sequence in reverse order (from future to past):
-
+Bidirectional architectures adds a separate recurrent cell which process the sequence in reverse order (from future to past)
+%
 \begin{equation}
-    \h'_t = f'\(\x_t, \h'_{t+1}; \W'\)
+    \h'_t = f'\(\x_t, \h'_{t+1}; \W'\) \,,
 \end{equation}
-
+%
 where $\h'_t$ encodes the "future" part of the sequence, i.e.\ depends on information at time step $t' > t$.
 The concatenation of the internal states of both past-to-future and future-to-past \glspl{rnn} $[\h_t | \h'_t]$ is often used as the representation of the whole sequence.
 
@@ -278,31 +289,31 @@ This particular formulation is aimed at solving some major drawbacks of vanilla 
 \Gls{lstm} cells are comprised by four learnable gating functions that better control the evolution of the internal state of the cell when dealing with long sequences, and mitigating problems occurring in vanilla RNNs, such as vanishing gradients~\cite{}.
 
 Let $\x_t \in \R^n$ an element of a sequence, and $\h_{t-1} \in \R^m$ the current hidden state.
-The \emph{forget} gate $\f_t$ decides which information need to be discarded at the current step, and it is implemented as a fully-connected layer with $p$ output features and parameters $\w_f \in \R^{(n+m)\times p}, \b_f \in \R^p$ followed by a sigmoid activation:
+The \emph{forget} gate $\f_t$ decides which information need to be discarded at the current step, and it is implemented as a fully-connected layer with $p$ output features and parameters $\w_f \in \R^{(n+m)\times p}, \b_f \in \R^p$ followed by a sigmoid activation
 \begin{equation*}
-    \f_t = \sigma\(\w_f [\h_{t-1} | \x_t] + \b_f\)
+    \f_t = \sigma\(\w_f [\h_{t-1} | \x_t] + \b_f\) \,.
 \end{equation*}
-The input gate $\i_t$ encodes the information that need to be inserted in the internal state of the cell $\c_t$, and it is implemented following the same rationale of the previous gate.
+The input gate $\i_t$ encodes the information that need to be inserted in the internal state of the cell $\c_t$, and it is implemented following the same rationale of the previous gate
 \begin{equation*}
-    \i_t = \sigma\(\w_i [\h_{t-1} | \x_t] + \b_i\)
+    \i_t = \sigma\(\w_i [\h_{t-1} | \x_t] + \b_i\) \,.
 \end{equation*}
-The update gate $\u_t$ modulates the amount of new input to be inserted in the internal state of the cell $\c_t$.
+The update gate $\u_t$ modulates the amount of new input to be inserted in the internal state of the cell $\c_t$
 \begin{equation*}
-    \u_t = \tanh\(\w_u [\h_{t-1} | \x_t] + \b_u\)
+    \u_t = \tanh\(\w_u [\h_{t-1} | \x_t] + \b_u\) \,.
 \end{equation*}
 The new cell state $\c_t \in \R^p$ is computed as the sum of two terms;
 the first one, given by the element-wise product ($*$) between the forget gate and the previous cell state, represents the part of the old state not to be forgotten;
 the second one, computed as the element-wise product of the input and update gates, represent the modulated input to be kept in the new state;
 \begin{equation*}
-    \c_t = \f_t * \c_{t-1} + \i_t * \u_t
+    \c_t = \f_t * \c_{t-1} + \i_t * \u_t \,.
 \end{equation*}
-The output gate $\o_t$ decides which information in the cell needs to be transferred to the final state $\h_t$.
+The output gate $\o_t$ decides which information in the cell needs to be transferred to the final state $\h_t$
 \begin{equation*}
-    \o_t = \sigma\(\w_o [\h_{t-1} | \x_t] + \b_o\)
+    \o_t = \sigma\(\w_o [\h_{t-1} | \x_t] + \b_o\) \,.
 \end{equation*}
-The final output state $\h_t$ is then computed as follows:
+The final output state $\h_t$ is then computed as
 \begin{equation*}
-    \h_t = \o_t * \tanh\(\c_t\)
+    \h_t = \o_t * \tanh\(\c_t\) \,.
 \end{equation*}
 
 With an abuse of notation, the complete \gls{lstm} formulation can be compactly written as follows:
@@ -317,13 +328,13 @@ With an abuse of notation, the complete \gls{lstm} formulation can be compactly 
 %    \h_t &= \o_t * \tanh\(\c_t\)
 %\end{align}
 \begin{align}\label{eq:back:lstm}
-\begin{split}
+\begin{aligned}
     \begin{pmatrix} \i_t\\ \f_t \\ \o_t \\ \u_t \end{pmatrix} &=
     \begin{pmatrix} \sigma \\ \sigma \\ \sigma \\ \tanh \end{pmatrix}
     \( \W \begin{pmatrix} \x_t \\ \h_{t-1} \end{pmatrix} \) \\[2ex]
     \c_t &= \f_t * \c_{t-1} + \i_t * \u_t \\
-    \h_t &= \o_t * \tanh\(\c_t\)
-\end{split}
+    \h_t &= \o_t * \tanh\(\c_t\) \,,
+\end{aligned}
 \end{align}
 %
 where $\W \in \R^{(n+m) \times 4p}$ summarizes all the parameters of all the fully-connected layers forming the gates.
@@ -345,38 +356,49 @@ Its role is to quantitatively assign a value of goodness to a model in reference
 
 Given a training set $\X = \{\(\x_i, \y^\star_i\), i=1,\dots,N\}$ comprised by $N$ couples of inputs and desired outputs, the quality of a particular setting of parameters $\Theta$ is quantitatively defined by a \emph{loss function} $\L\(\X; \Theta\)$ that measures how much predictions and targets differ.
 A loss function is usually defined as one of more terms summed together.
-The main term is defined as the average of the individual loss values computed on each sample of the dataset $\L\(\y_i, \y^\star_i\)$ - we denote this the \emph{data term}.
-A secondary optional term is often used to regularize the network and depends only on the model parameters $\Theta$; we indicate this \emph{regularization term} as $\L_r(\Theta)$.
-
-\begin{align}
-    \L\(\X; \Theta\) &= \underbrace{\L_d\(\X; \Theta\)}_{\textrm{data term}}&+& \underbrace{\L_r\(\Theta\)}_{\textrm{regularization term}}\\
-                     &= \frac{1}{N} \sum_{i=1}^N \L\(\y_i, \y^\star_i\)&+& \quad \L_r\(\Theta\) \\
-                     &= \frac{1}{N} \sum_{i=1}^N \L\(f\(\x_i; \Theta\), \y^\star_i\)&+& \quad  \L_r\(\Theta\)
-\end{align}
+The main term $\L_d\(\X; \Theta\)$ is defined as the average of the individual loss values computed on each sample of the dataset $\L\(\y_i, \y^\star_i\)$ -- we denote it the \emph{data term}.
+A secondary optional term $\L_r(\Theta)$ is often used to regularize the network and depends only on the model parameters $\Theta$ -- we indicate this as \emph{regularization term}.
+Regularization consists of model constraints added to avoid other undesired properties during training.
+Regularization has gained importance in the \gls{dl} field due to the huge amount of parameters models are usually comprised of, thus increasing the risk of \emph{overfit} on the train data.
+The regularization term is usually multiplied by a hyperparameter $\alpha$ and then added to the loss function.
+A general formulation of the loss function is
+%
+\begin{equation} \label{eq:back:loss}
+\begin{aligned}
+    \L\(\X; \Theta\) &= \overbrace{\L_d\(\X; \Theta\)}^{\textrm{data term}}&+\, \alpha &\overbrace{\L_r\(\Theta\)}^{\textrm{regularization term}}\\
+                     &= \frac{1}{N} \sum_{i=1}^N \L\(\y_i, \y^\star_i\)&+\alpha & \,\quad \L_r\(\Theta\) \\
+                     &= \frac{1}{N} \sum_{i=1}^N \L\(f\(\x_i; \Theta\), \y^\star_i\)&+\alpha & \,\quad\L_r\(\Theta\) \,.
+\end{aligned}
+\end{equation}
+%
+%where the optimal value of $\alpha depends on the absolute values of the loss terms and
 
 In the next paragraphs, we will provide the reader with some of the most used formulations of $\L\(\y_i, \y^\star_i\)$ and $\L_r(\Theta)$ of interest for this work.
 
 \paragraph{Mean Squared Error Loss}
 When dealing with regression problems, we want our predictions to be close to the one or more real-valued targets.
 For example, in an age estimation problem, we want our network to predict the exact age expressed as a real value, e.g. $46,5$.
-The mean squared error between predictions $\z$ and targets $\z^\star$ is a commonly used loss function to measure the goodness of regressions:
+The mean squared error between predictions $\z$ and targets $\z^\star$ is a commonly used loss function to measure the goodness of regressions
 \begin{equation} \label{eq:back:mse}
-    \L_\textrm{MSE}(\z, \z^\star) = \frac{1}{2} \( \z - \z^\star \)^2
+    \L_\textrm{MSE}(\z, \z^\star) = \frac{1}{2} \( \z - \z^\star \)^2 \,.
 \end{equation}
-
+%
 The scale factor $\frac{1}{2}$ is usually introduced to simplify the gradient computation when using this loss function (more details on this in \ref{subsec:back:optim}).
 
 \paragraph{Cross-entropy Loss}
 The cross-entropy loss is commonly used in \gls{ml} to measure the distance between two categorical distributions.
 It is commonly adopted in single-label classification tasks, where a single label have to be assigned to a piece of data choosing from $N$ labels ($N \geq 2$).
 Let $\z$ and $\z^\star$ the probability masses of two $N$-way categorical distributions, i.e. $\z_i, \z^\star_i \in [0,1],\; \sum_{i=1}^N \z_i = 1, \sum_{i=1}^N \z^\star_i = 1$;
-the cross-entropy loss between the predicted distribution $\z$ and the target one $\z^\star$ is defined as follows:
+the cross-entropy loss between the predicted distribution $\z$ and the target one $\z^\star$ is defined as
+%
 \begin{equation} \label{eq:back:cross-entropy}
-    \L_\textrm{CE}(\z, \z^\star) = - \sum_{i=1}^N \z^\star_i \log \z_i
+    \L_\textrm{CE}(\z, \z^\star) = - \sum_{i=1}^N \z^\star_i \log \z_i \,.
 \end{equation}
-Classification models are often designed to output a $N$-dimensional vector $\z$ that is mapped to a categorical distribution via the \emph{softmax} function:
+%
+Classification models are often designed to output a $N$-dimensional vector $\z$ that is mapped to a categorical distribution via the \emph{softmax} function
+%
 \begin{equation} \label{eq:back:softmax}
-    \textrm{softmax}(\z)_i = \frac{e^{\z_i}}{\sum_{j=1}^N e^{\z_j}}
+    \textrm{softmax}(\z)_i = \frac{e^{\z_i}}{\sum_{j=1}^N e^{\z_j}} \,.
 \end{equation}
 
 \paragraph{$\mathbf{L_p}$ weight decay}
@@ -384,28 +406,127 @@ The most used regulatization terms in the \gls{dl} literature are the ones penal
 This is usually implemented defining the regularization term $\L_r\(\Theta\)$ added to the loss to be minimized as the $p$-norm of the parameters.
 Practical definitions have been adopted for $p=2$ ($\mathbf{L_2}$ weight decay) and for $p=1$ ($\mathbf{L_1}$ weight decay).
 % TODO add cites to L2 and L1 regularizations (starting from DL book)
-The former produces a more uniform utilization of all the available parameters, penalizing under-utilized and over-utilized weights \cite{}.
+The former produces a more uniform utilization of all the available parameters, penalizing under-utilized and over-utilized weights \cite{}, and is defined as
+%
 \begin{equation} \label{eq:back:l2-weight-decay}
-    \L_r\(\Theta\) = \frac{1}{2} ||\Theta||_2^2 = \frac{1}{2} \sum_i \theta_i^2
+    \L_r\(\Theta\) = \frac{1}{2} ||\Theta||_2^2 = \frac{1}{2} \sum_i \theta_i^2 \,.
 \end{equation}
-The latter instead tends to produce a more sparse weight configuration, i.e. with many parameters having a null optimal value \cite{}.
+%
+The latter instead tends to produce a more sparse weight configuration, i.e. with many parameters having a null optimal value \cite{}, and is defined as
+%
 \begin{equation} \label{eq:back:l1-weight-decay}
-    \L_r\(\Theta\) = ||\Theta||_1 = \sum_i |\theta_i|
+    \L_r\(\Theta\) = ||\Theta||_1 = \sum_i |\theta_i| \,.
 \end{equation}
-
-The regularization term is usually multiplied by a hyperparameter $\lambda$ and then added to the total loss:
-\begin{equation}
-    \L\(\X, \Theta\) =
-\end{equation}
-
 
 \subsection{Gradient-Based Optimization}
 \label{subsec:back:optim}
-% TODO backprop (delta-rule) \cite{rumelhart1985learning}
 
-%Backprop
-%Optimizers: SGD (with momentum) / Adam
-%Dropout (here?)
+As already stated, solutions of \ref{eq:back:optim} are the best parameter configurations $\Theta$ that minimizes the loss function $\L$ defined over a given training set $\X$.
+% TODO add something abound convexness of loss
+Unfortunately, in very rare cases closed-form solutions of \ref{eq:back:optim} are available for practical formulations of \gls{dl} models $f(\cdot)$.
+Instead, suboptimal solutions can be found using iterative gradient-based optimization.
+
+\paragraph{Gradient Descent}
+In gradient-based optimization, given a training set $\X$ and a parameter configuration $\Theta$, we search for a new solution following the direction of the gradient of the loss function $\nabla\L\(\X, \Theta\)$ with respect to the parameters $\Theta$.
+The direction given by $\nabla\L\(\X, \Theta\)$ is the one of maximum steepness of the loss surface in the parameter space, that is, the one that maximize the loss change locally.
+A new parameter configuration $\Theta^\star$ is chosen \emph{descending} the loss surface along the direction of maximum steepness with a step size of $\lambda$, that is
+%
+\begin{equation} \label{eq:back:gradient-descent}
+    \Theta^\star = \Theta - \lambda \nabla\L\(\X, \Theta\) \,.
+\end{equation}
+%
+This update rule can be iterated until a (local or global) minimum of the loss function is reached.
+This procedure is called \emph{gradient descent} optimization, and in the \gls{ml} field $\lambda$ is referred to as the \emph{learning rate}.
+% TODO add gradient descent figure
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{figures/gradient-descent}
+    \caption{Example of gradient descent on a loss surface in a 2D parameter space}
+    \label{fig:back:gradient-descent}
+\end{figure}
+A depiction of this algorithm for a 2D toy example is reported in \ref{fig:back:gradient-descent}.
+Bigger learning rates correspond to bigger steps along the loss surface that usually improve the convergence rate and avoid local minima at the cost of a higher risk of oscillating around minimum points.
+Small learning rates, instead, bring a lower convergence rate but are able to better exploit the local topology of the loss function, reaching a locally better solution.
+
+\paragraph{Back-propagation}
+As formalized in \ref{eq:back:deepnet}, \glspl{dnn} are comprised by many composition of non-linear functions $f_i$ each having its own set of parameters $\theta_i$.
+Thus, to perform gradient descent on \gls{dl} models, we need to compute gradients $\nabla\L\(\X, \theta_i\)$ for each $\theta_i \in \Theta$.
+% TODO check (and add) cite, this is delta-rule, back-prop is generalized delta-rule
+This is efficiently done by \emph{back-propagation}~\cite{rumelhart1985learning,rumelhart1986learning}.
+
+In back-propagation, we start computing the gradient of the loss function from the last layer (the one that produce the final predictions), and we propagate the error backwards to previous layers using the chain-rule for computing derivatives of compound functions.
+Let $f(\x;\Theta)$ a \acrlong{ffnn} composed by $L$ layers with parameters $\Theta = \{\theta_1, \dots, \theta_L\}$ defined in \ref{eq:back:deepnet}, and let $\o_i$ the output of the $i$-th layer
+\begin{align*}
+    \o_0 &= \x \\
+    \o_i &= f_i \(\o_{i-1}; \theta_i \) \,.
+\end{align*}
+The gradient $\frac{\partial \L}{\partial \theta_i}$ of the loss function $\L$ with respect to $\theta_i$ can be decomposed using the chain-rule as follows:
+\begin{align*}
+    \frac{\partial \L}{\partial \theta_i} &= \frac{\partial \L}{\partial \o_i} \cdot \frac{\partial \o_i}{\partial \theta_i} \\
+                                          &= \frac{\partial \L}{\partial \o_L} \cdot \frac{\partial \o_L}{\partial \o_{L-1}} \cdots  \frac{\partial \o_{i+1}}{\partial \o_i} \cdot \frac{\partial \o_i}{\partial \theta_i} \,,
+\end{align*}
+%
+where the partial derivatives $\frac{\partial \o_{i+1}}{\partial \o_i}$ and $\frac{\partial \o_i}{\partial \theta_i}$ are well defined and depend on the implementation of the $i$-th layer $f_i$.
+The formulations of the loss function $\L$ and intermediate layers $f_i$ are chosen to be differentiable to ensure that also the entire model, being a composition of differentiable functions, is in turn differentiable, and that back-propagation can be applied to efficiently compute gradients.
+
+\paragraph{Stochastic Gradient Descent}
+In our presentation of gradient-based optimization so far, the computation of the loss function $\L\(\X; \Theta\)$ and its gradient depend on the whole dataset $\X$.
+This may be limiting for \gls{dl} applications where very large training sets are needed to train models, thus increasing the computational cost needed to compute the exact value of $\L\(\X; \Theta\)$.
+To overcome this problem, \gls{sgd} and in particular mini-batch \gls{sgd}~\cite{rumelhart1986learning} have been proposed to compute an estimate the loss function and its gradients at a lower computational cost.
+
+In mini-batch \gls{sgd}, we use a small random sample $\tilde{\X} = \{ (\tilde{\x_i}, \tilde{\y_i}), i = 1 \dots B \}$ of the entire training set (called \emph{batch} or \emph{mini-batch}) to compute an estimate of loss function
+\begin{equation} \label{eq:back:minibatch-sgd}
+\tilde{\L} \(\X; \Theta\) = \L (\tilde{\X}; \Theta) = \frac{1}{B} \sum_{i=1}^B \L(f(\tilde{\x_i}; \Theta), \tilde{\y_i})
+\end{equation}
+which in turn is used in back-propagation to estimate its gradient $\nabla \L(\tilde{\X}; \Theta)$ and perform the parameter update as specified in \ref{eq:back:gradient-descent}.
+The size of the mini-batch size $B$ is a hyperparameter that controls the trade-off between the computational cost needed to compute the loss and the quality of the loss estimate.
+
+\paragraph{\gls{sgd} with Momentum}
+A successful proposal to improve the parameter update rule presented in \ref{eq:back:gradient-descent} is \gls{sgd} with \emph{momentum}~\cite{qian1999momentum}.
+The key idea of momentum is to add to the current direction given by the loss gradient a fraction of the direction computed in the last iteration, such that the direction we are descending the loss surface gains inertia and smooths out eventual oscillations given by very steep loss manifolds.
+Given $m^{(k-1)}$ the update direction of the previous iteration, we define the new direction to follow $m^{(k+1)}$ as
+\begin{equation} \label{eq:back:momentum}
+\begin{aligned}
+    m^{(k)} &= \gamma m^{(k-1)} + \nabla\L\(\X; \Theta^{(k)}\) \\
+    \Theta^{(k+1)} &= \Theta^{(k)} - \lambda m^{(k)} \,,
+\end{aligned}
+\end{equation}
+%
+where $\gamma \in (0,1)$ is the momentum of the previous direction.
+Commonly used values for $\gamma$ are around $0.9$.
+A good analogy to comprehend the rationale behind momentum is a ball pushed down a hill:
+the higher the momentum $\gamma$, the more inertia the ball has and the less it is influenced by steepness variations during the descent.
+This modified update rule tends to discard the oscillating directions of the gradient while strengthening the stable directions over iterations -- this brings a reduction of oscillations while descending the loss manifold and thus a faster convergence.
+
+\paragraph{Adam}
+Another widely used parameter update rule in the \gls{dl} literature is \gls{adam}~\cite{kingma2014adam}.
+Similar to other proposed update rules (such as Adagrad~\cite{duchi2011adaptive} or Adadelta~\cite{zeiler2012adadelta}), this method computes an adaptive learning rate for each parameter to be optimized based on the second moment of the gradients (i.e. squared gradients), but in addition, it also estimates the first moment (the mean of the gradient itself) as in \gls{sgd} with momentum
+%
+\begin{equation} \label{eq:back:adam-moments}
+\begin{aligned}
+    m^{(k)} &= \beta_1  m^{(k-1)} + \(1 - \beta_1 \)  \nabla\L\(\X; \Theta^{(k)}\) \\
+    v^{(k)} &= \beta_2  v^{(k-1)} + \(1 - \beta_2 \)  \nabla\L\(\X; \Theta^{(k)}\)^2 \,.
+\end{aligned}
+\end{equation}
+%
+The hyperparameters $\beta_1$ and $\beta_2$ are respectively controlling the aggressiveness of the exponential average of the two moments $m^{(k)}$ and $v^{(k)}$.
+Since the initial values of the moments are initialized to zero, the authors propose to use the bias-corrected version of the moments, that is
+%
+\begin{equation} \label{eq:back:adam-moments-bias}
+\begin{aligned}
+    \hat{m}^{(k)} &= \frac{m^{(k)}}{1 - \beta_1^k} \\
+    \hat{v}^{(k)} &= \frac{v^{(k)}}{1 - \beta_2^k} \,.
+\end{aligned}
+\end{equation}
+%
+Finally, moments estimates are used to formulate the \gls{adam} update rule
+%
+\begin{equation} \label{eq:back:adam}
+\theta^{(k+1)}_i &= \theta^{(k)}_i - \frac{\lambda}{\sqrt{\hat{v}^{(k)}_i} + \epsilon} m^{(k)}_i \qquad \forall \theta_i \in \Theta \,,
+\end{equation}
+%
+where $m^{(k)}_i$ and $\hat{v}^{(k)}_i$ are the first and second moments estimates of the gradients corresponding to parameter $\theta_i$, and $\epsilon$ is a small values to prevent division by zero.
+Commonly used values for hyperparameters are $\beta_1 = 0.9$, $\beta_2 = 0.999$, and $\epsilon = 10^{-8}$, as suggested by the authors.
 
 \section{Image Classification}
 \label{sec:back:image-classification}
