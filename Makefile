@@ -12,6 +12,8 @@ FIGS = $(ASY:.asy=.pdf)
 
 all: thesis.pdf
 
+figs: $(FIGS)
+
 thesis.pdf: aux aux/thesis.pdf
 	mv $(TMP_DIR)/thesis.pdf .
 
