@@ -50,17 +50,34 @@ void drawPlane(real[][] map, triple origin=O) {
     }
 }
 
+// DIMENSION LABELS
+void dimLabel(triple s, triple e, triple o, string l, triple disp, triple txtdisp, triple N) {
+    s += disp;
+    e += disp;
+    path3 p = shift(o + disp) * (s -- e);
+    draw(p, arrow=Arrows3(TeXHead2(normal=N), emissive(black)));
+    // triple m = 0.5 (s+e) + txtdisp;
+    label(Label(l, position=MidPoint, align=txtdisp), p);
+}
+
 // INPUT PLANE
 draw(shift(0,2,2) * scale(1, w.length, w.length) * surface(O--Y--(Z+Y)--Z--cycle), surfacepen=emissive(gray(0.7)));
 drawPlane(x);
+dimLabel(O, x.length*Z, O, "$W$", -0.15Y, -2Y-Z, X); // W
+dimLabel(x.length*Z, x.length*(Y+Z), O, "$H$", -0.12X, -X, Z); // H
 
 // WEIGHTS PLANE
 draw(shift(wO) * scale(1, w.length, w.length) * surface(O--Y--(Z+Y)--Z--cycle), surfacepen=emissive(gray(0.6)));
 drawPlane(w, wO);
+dimLabel(O, w.length*Z, wO, "$K_2$", -0.15Y, -2Y-Z, X); // K_2
+dimLabel(w.length*Z, w.length*(Y+Z), wO, "$K_1$", -0.12X, -X+Y, Z); // K_1
+
 
 // OUTPUT PLANE
 draw(shift(yO) * scale(1, y.length, y.length) * surface(O--Y--(Z+Y)--Z--cycle), surfacepen=emissive(white));
 drawPlane(y, yO);
+dimLabel(O, y.length*Z, yO, "$W'$", -0.15Y, -2Y-Z, X); // W'
+dimLabel(y.length*Z, y.length*(Y+Z), yO, "$H'$", -0.12X, -X, Z); // H'
 
 // DASHED LINES
 draw(2Z+2Y--      wO--2Z+2Y+yO, dashed); // bottom-right
@@ -69,7 +86,7 @@ draw(2Z+5Y--   3Y+wO--2Z+3Y+yO, dashed); // top-right
 draw(5Z+5Y--3Z+3Y+wO--3Z+3Y+yO, dashed); // top-left
 
 // PLANE LABELS
-label("$\mathbf{x}$", (0, -1, (x.length / 2) - 0.5));
-label("$\mathbf{w}$", (0, -1, (w.length / 2) - 0.5) + wO);
-label("$\mathbf{y}$", (0, -1, (y.length / 2) - 0.5) + yO);
+label("$\mathbf{x}$", (0, x.length + 1, (x.length / 2)));
+label("$\mathbf{w}$", (0, w.length + 1.5, (w.length / 2)) + wO);
+label("$\mathbf{y}$", (0, y.length + 1.5, (y.length / 2)) + yO);
 
