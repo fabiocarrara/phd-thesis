@@ -67,9 +67,9 @@ dot((wO.x + wDepth/2, (w2O.y * 0.45 + (wO.y + wSize) * (1 - 0.45)), 4));
 dot((wO.x + wDepth/2, (w2O.y * 0.65 + (wO.y + wSize) * (1 - 0.65)), 4));
 
 // VOLUME LABELS
-label("$\mathbf{x}$", ((xDepth / 2), -2.5, (xSize / 2) - 0.5));
-label("$\mathbf{w}$", ((wDepth / 2), -1.5, (wSize / 2) - 0.5) + wO);
-label("$\mathbf{y}$", ((yDepth / 2), -2.5, (ySize / 2) - 0.5) + yO);
+label("$\mathbf{x}$", ((xDepth / 2), xSize + 3, (xSize / 2)));
+label("$\mathbf{w}$", ((wDepth / 2), wSize + 1.5, (wSize / 2)) + w2O);
+label("$\mathbf{y}$", ((yDepth / 2), ySize + 3.5, (ySize / 2)) + yO);
 
 // FILTER LABELS
 label("filter $1$", ((wDepth / 2) + 0.2, (wSize / 2), wSize + 1) + w2O);
