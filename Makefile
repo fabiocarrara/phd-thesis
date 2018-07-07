@@ -17,7 +17,7 @@ figs: $(FIGS)
 thesis.pdf: aux aux/thesis.pdf
 	mv $(TMP_DIR)/thesis.pdf .
 
-aux/thesis.pdf: $(FIGS) aux/thesis.bbl aux/thesis.acr aux/thesis.aux
+aux/thesis.pdf: $(FIGS) aux/thesis.aux aux/thesis.bbl aux/thesis.acr
 	pdflatex $(PDFLATEX_FLAGS) thesis.tex > /dev/null || true
 	pdflatex $(PDFLATEX_FLAGS) thesis.tex > /dev/null || true
 
