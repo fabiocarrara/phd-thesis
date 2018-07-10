@@ -153,7 +153,6 @@ where $\(\W_i, \b_i \)$ are the parameters of the $i$-th fully-connected layer i
 \subsubsection{Convolutional Neural Networks}
 
 \begin{figure}
-    % TODO add dimensions to cross-corr2d figure
     % TODO add subfigure with example of crosscorr on image
     \centering
     \includegraphics[width=0.5\linewidth]{figures/cross-correlation2d}
@@ -308,9 +307,8 @@ The concatenation of the internal states of both past-to-future and future-to-pa
 
 % TODO add LSTM application cites
 \Gls{lstm}~\cite{hochreiter1997long} is a type of \gls{rnn} with a special formulation of the recurrent cell that has proved its effectiveness in several sequence-modeling tasks~\cite{}.
-This particular formulation is aimed at solving some major drawbacks of vanilla \glspl{rnn}, most importantly the inability to encode long-term dependencies in long sequences.
-% TODO add LSTM solving vanishing gradient cite
-\Gls{lstm} cells are comprised by four learnable gating functions that better control the evolution of the internal state of the cell when dealing with long sequences, and mitigating problems occurring in vanilla RNNs, such as vanishing gradients~\cite{}.
+This particular formulation is aimed at solving some major drawbacks of vanilla \glspl{rnn}, most importantly the inability to encode long-term dependencies in long sequences due to gradient instability problems, namely the problem of vanishing or exploding gradients ~\cite{pascanu2013difficulty}.
+\Gls{lstm} cells are comprised by four learnable gating functions that better control the evolution of the internal state of the cell when dealing with long sequences, and mitigating problems occurring in vanilla RNNs, such as vanishing gradients~\cite{bayer2015learning}.
 
 Let $\x_t \in \R^n$ an element of a sequence, and $\h_{t-1} \in \R^m$ the current hidden state.
 The \emph{forget} gate $\f_t$ decides which information need to be discarded at the current step, and it is implemented as a fully-connected layer with $p$ output features and parameters $\w_f \in \R^{(n+m)\times p}, \b_f \in \R^p$ followed by a sigmoid activation
@@ -429,14 +427,13 @@ Classification models are often designed to output a $N$-dimensional vector $\z$
 The most used regulatization terms in the \gls{dl} literature are the ones penalizing the parameters having large norm.
 This is usually implemented defining the regularization term $\L_r\(\Theta\)$ added to the loss to be minimized as the $p$-norm of the parameters.
 Practical definitions have been adopted for $p=2$ ($\mathbf{L_2}$ weight decay) and for $p=1$ ($\mathbf{L_1}$ weight decay).
-% TODO add cites to L2 and L1 regularizations (starting from DL book)
-The former produces a more uniform utilization of all the available parameters, penalizing under-utilized and over-utilized weights \cite{}, and is defined as
+The former produces a more uniform utilization of all the available parameters, penalizing under-utilized and over-utilized weights~\cite{ng2004feature}, and is defined as
 %
 \begin{equation} \label{eq:back:l2-weight-decay}
     \L_r\(\Theta\) = \frac{1}{2} ||\Theta||_2^2 = \frac{1}{2} \sum_i \theta_i^2 \,.
 \end{equation}
 %
-The latter instead tends to produce a more sparse weight configuration, i.e. with many parameters having a null optimal value \cite{}, and is defined as
+The latter instead tends to produce a more sparse weight configuration, i.e. with many parameters having a null optimal value~\cite{ng2004feature}, and is defined as
 %
 \begin{equation} \label{eq:back:l1-weight-decay}
     \L_r\(\Theta\) = ||\Theta||_1 = \sum_i |\theta_i| \,.
@@ -446,7 +443,7 @@ The latter instead tends to produce a more sparse weight configuration, i.e. wit
 \label{subsec:back:optim}
 
 As already stated, solutions of \ref{eq:back:optim} are the parameter configurations $\Theta$ that minimizes the loss function $\L$ defined over a given training set $\X$.
-% TODO add something abound convexness of loss
+% TODO add something abound convexness of loss, citing bengio2007scaling
 Unfortunately, in very rare cases closed-form solutions of \ref{eq:back:optim} are available for practical formulations of \gls{dl} models $f(\cdot)$.
 Instead, suboptimal solutions can be found using iterative gradient-based optimization.
 
@@ -461,7 +458,6 @@ A new parameter configuration $\Theta^\star$ is chosen \emph{descending} the los
 %
 This update rule can be iterated until a (local or global) minimum of the loss function is reached.
 This procedure is called \emph{gradient descent} optimization, and in the \gls{ml} field $\lambda$ is referred to as the \emph{learning rate}.
-% TODO add gradient descent figure
 \begin{figure}
     \centering
     \includegraphics[width=\linewidth]{figures/gradient-descent}
@@ -475,8 +471,7 @@ Small learning rates, instead, bring a lower convergence rate but are able to be
 \paragraph{Back-propagation}
 As formalized in \ref{eq:back:deepnet}, \glspl{dnn} are comprised by many composition of non-linear functions $f_i$ each having its own set of parameters $\theta_i$.
 Thus, to perform gradient descent on \gls{dl} models, we need to compute gradients $\nabla\L\(\X, \theta_i\)$ for each $\theta_i \in \Theta$.
-% TODO check (and add) cite, this is delta-rule, back-prop is generalized delta-rule
-This is efficiently done by \emph{back-propagation}~\cite{rumelhart1985learning,rumelhart1986learning}.
+This is efficiently done by \emph{back-propagation}~\cite{rumelhart1986learning,lecun1988theoretical}.
 
 In back-propagation, we start computing the gradient of the loss function from the last layer (the one that produce the final predictions), and we propagate the error backwards to previous layers using the chain-rule for computing derivatives of compound functions.
 For simplicity, we report the formulation of back-propagation for a \acrfull{ffnn}, but this mechanism is general and applies to all differentiable architectures.
@@ -590,24 +585,92 @@ Thus, the classifier is a function $f: I \to \p$ which maps an image to the para
 Soft assignments present a broad range of advantages with respect to hard assignments, the most important one being differentiability, which enables and facilitates gradient-based learning of models for $f$.
 
 ...
-
+%Evaluation Metrics
 \subsection{Evaluation}
 \label{subsec:back:classif-eval}
 
 In this section, we will report the most commonly used evaluation metrics to measure the quality of classification models.
-Assume $\Y = (y_1, \ldots, y_n)$ is a set of $N$ predictions and $\tilde{\Y} = (\tilde{y}_1, \ldots, \tilde{y}_n)$ the set of the ground-truth labels for a single-label $L$-way classification problem, with $y_i, \tilde{y}_i \in \{1, \ldots, L\}$ for $i \in \{1, \ldots, N\}$.
+Assume $\Y = (y_1, \ldots, y_n)$ is a set of predictions and $\tilde{\Y} = (\tilde{y}_1, \ldots, \tilde{y}_n)$ the set of the ground-truth labels for a single-label $L$-way classification problem, with $y_i, \tilde{y}_i \in \{1, \ldots, L\}$. % for $i \in \{1, \ldots, N\}$.
 
 \paragraph{Confusion Matrix}
-One of the fundamental tool for evaluating a set of label assignments is the \emph{confusion matrix}, which compactly report the co-occurence of predicted and ground-truth labels.
-% TODO check on wiki
+One of the fundamental tools for evaluating a set of label assignments is the \emph{confusion matrix}, which compactly reports the co-occurence of predicted and ground-truth labels.
 The element $c_{ij}$ of the matrix indicates the number of times the model predicted the class $i$ for a sample belonging to class $j$.
+We report in \ref{tab:back:confusion} the confusion matrix for the binary case ($L=2$) together with the terminology used to refer to particular values in the matrix.
+For the binary case, many useful metrics can be computed from the confusion matrix, and we will introduce some of them in the next paragraphs.
+Notice that the same metrics can be applied to cases with $L > 2$ by reformulating them as binary problems, where the one class is the positive class, and the other $L-1$ are condensed in the negative class;
+metrics can be computed multiple times considering each class as the positive one and then aggregated to obtain a global metric for the classification.
 
-% TODO metrics derived from Conf. Mat.
+\begin{table}
+\newcolumntype{M}[1]{>{\centering\arraybackslash}m{#1}}
+\renewcommand{\arraystretch}{1.5}
+
+\begin{tabularx}{\linewidth}{cr|M{1.3cm}|M{1.3cm}|>{\hskip 2cm}r@{\hskip 3pt}X}
+\multicolumn{4}{c}{}                                                                                                                                      & $TP=$ & True Positives, i.e. correct hits       \\
+\multicolumn{2}{c}{}                                                  & \multicolumn{2}{c}{\bfseries Actual class}                                                  & $TN=$ & True Negatives, i.e. correct rejections \\
+\multicolumn{2}{c}{}                                                  & \multicolumn{1}{c}{\it \small Positive} & \multicolumn{1}{c}{\it \small Negative} & $FP=$ & False Positives, i.e. false alarms      \\ \cline{3-4}
+\parbox[t]{2mm}{\multirow{2}{*}{\rotatebox[origin=c]{90}{\bfseries Predicted}}} & {\it \small Positive} & $TP$            & $FP$                                    & $FN=$ & False Negatives, i.e. misses            \\ \cline{3-4}
+                                                                      & {\it \small Negative} & $FN$            & $TN$                                    &  $P=$ & $TP+FN=$ Positive samples               \\ \cline{3-4}
+\multicolumn{4}{c}{}                                                                                                                                      &  $N=$ & $TN+FP=$ Negative samples               \\
+\end{tabularx}
+
+\caption{Confusion matrix for a binary classification problem and the related terminology}
+\label{tab:back:confusion}
+\end{table}
+
+% Accuracy
+\paragraph{Accuracy} The accuracy of a classification is defined for the binary case as
+\begin{equation} \label{eq:back:accuracy-binary}
+    \texrm{Acc.} = \frac{TP + TN}{P + N} = \frac{TP + TN}{TP + FN + TN + FP} \,,
+\end{equation}
+that is the fraction of correctly classified samples.
+For the general case with more than two classes, the accuracy is given by the sum of the elements on the diagonal of the confusion matrix -- which contains the counts for correct predictions -- and the total number of classified samples
+\begin{equation} \label{eq:back:accuracy}
+    \texrm{Acc.} = \frac{\sum_{i=1}^L c_{ii}}{|Y|} \,.
+\end{equation}
+
+% Top-K Accuracy
+\paragraph{Top-$K$ Accuracy}
+A common variant often used for probabilistic classifiers when many classes are considered, is the \emph{Top-$K$ Accuracy}.
+Given the $L$ probabilities (or scores) assigned to a sample by the classifier, we consider the prediction correct if the ground-truth class appears in the first $K$ highest scored classes.
+The metric then is computed as the fraction of correct predictions.
+
+The accuracy metric is a very simple and intuitive metric for evaluating classifiers, but it may be misleading when evaluating with unbalanced test sets.
+Consider for example a binary classification example with 95 positive and 5 negative samples;
+A classifier always predicting the positive class (a trivial acceptor) achieves an accuracy of $.95$ while behaving very poorly on negative classes.
+In this scenarios, other ratios derived from the classification matrix are used to better characterize the performances of a classifier.
+
+% TPR TNR
+\paragraph{\acrshort{tpr} and \acrshort{tnr}}
+The \emph{\gls{tpr}} is the ratio between correctly predicted positive samples and the number of actual positive samples
+\begin{equation} \label{eq:back:tpr}
+    TPR = \frac{TP}{P} = \frac{TP}{TP + FN} \,.
+\end{equation}
+It is also known as \emph{Recall} of the positive class, as it indicates the fraction of positive samples correctly accepted as positive.
+Similarly, the \gls{tnr} represent the same concept applied to the negative class, and it is defined as
+\begin{equation} \label{eq:back:tnr}
+    TNR = \frac{TN}{N} = \frac{TN}{TN + FP} \,.
+\end{equation}
+
+% FNR FPR
+\paragraph{\acrshort{fnr} and \acrshort{fpr}}
+While \gls{tpr} and \gls{tnr} measure how well a classifier perform on both classes, the \gls{fnr} and \gls{fpr} complementary measures that indicate instead the faction of classification errors.
+Specifically, the \gls{fnr} is defined as the fraction of positive examples wrongly classified as negatives, and it is complementary to the \gls{tpr}
+\begin{equation} \label{eq:back:fnr}
+    FNR = \frac{FN}{P} = \frac{FN}{TP + FN} = 1 - TPR\,.
+\end{equation}
+Similarly, the \gls{fpr} measures the fraction of errors on the negative class
+\begin{equation} \label{eq:back:fpr}
+    FPR = \frac{FP}{N} = \frac{FP}{TN + FP} = 1 - TNR\,.
+\end{equation}
+
+\paragraph{\acrshort{roc} and \acrshort{auc}}
+Probabilistic classifiers produce soft assignments of each sample to the available classes in the form of scores or confidences on which subsequently a threshold is applied to obtain the final classification.
+Depending on the choice of the threshold, the performance of the classifier may varies "a lot".
 
 \subsection{Relevant works}
 \label{subsec:back:classif-relwork}
 
-\paragraph{Before \gls{dl}}
+\paragraph{Before \acrlong{dl}}
 % TODO divide f in features and classifier, manually (?)
 Traditional approaches to image classification requires to manually design the classifier $f(\cdot)$.
 % ESWA: The traditional approaches to the classification problem use ad-hoc functions to extract from an image specific features that are considered to be indicative of certain objects.
@@ -650,9 +713,6 @@ Most importantly, huge amounts of data -- collected and labeled exploiting Web t
 % The training phase is usually extremely expensive from a computational point of view, and may take a long time to complete.
 % Once the network has been trained and the classifier has been initialized accordingly, the run time phase of prediction is quite fast and efficient.
 
-%Evaluation Metrics
-%Top-k Accuracy
-%AUC of ROC (TPR, FPR, confusion matrix)
 %Recent Advances
 %ILSVRC winners (Hybrid, VGG, Inception, Residual, ResNeXT, SENets?)
 %Transfer Learning
