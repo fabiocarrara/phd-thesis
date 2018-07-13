@@ -605,12 +605,12 @@ metrics can be computed multiple times considering each class as the positive on
 \renewcommand{\arraystretch}{1.5}
 
 \begin{tabularx}{\linewidth}{cr|M{1.3cm}|M{1.3cm}|>{\hskip 2cm}r@{\hskip 3pt}X}
-\multicolumn{4}{c}{}                                                                                                                                      & $TP=$ & True Positives, i.e. correct hits       \\
-\multicolumn{2}{c}{}                                                  & \multicolumn{2}{c}{\bfseries Actual class}                                                  & $TN=$ & True Negatives, i.e. correct rejections \\
-\multicolumn{2}{c}{}                                                  & \multicolumn{1}{c}{\it \small Positive} & \multicolumn{1}{c}{\it \small Negative} & $FP=$ & False Positives, i.e. false alarms      \\ \cline{3-4}
-\parbox[t]{2mm}{\multirow{2}{*}{\rotatebox[origin=c]{90}{\bfseries Predicted}}} & {\it \small Positive} & $TP$            & $FP$                                    & $FN=$ & False Negatives, i.e. misses            \\ \cline{3-4}
-                                                                      & {\it \small Negative} & $FN$            & $TN$                                    &  $P=$ & $TP+FN=$ Positive samples               \\ \cline{3-4}
-\multicolumn{4}{c}{}                                                                                                                                      &  $N=$ & $TN+FP=$ Negative samples               \\
+\multicolumn{4}{c}{}                                                                                                                                      & $\mathrm{TP}=$ & True Positives, i.e. correct hits           \\
+\multicolumn{2}{c}{}                                                  & \multicolumn{2}{c}{\bfseries Actual class}                                        & $\mathrm{TN}=$ & True Negatives, i.e. correct rejections     \\
+\multicolumn{2}{c}{}                                                  & \multicolumn{1}{c}{\it \small Positive} & \multicolumn{1}{c}{\it \small Negative} & $\mathrm{FP}=$ & False Positives, i.e. false alarms          \\ \cline{3-4}
+\parbox[t]{2mm}{\multirow{2}{*}{\rotatebox[origin=c]{90}{\bfseries Predicted}}} & {\it \small Positive} & $\mathrm{TP}$ & $\mathrm{FP}$                   & $\mathrm{FN}=$ & False Negatives, i.e. misses                \\ \cline{3-4}
+                                                                      & {\it \small Negative}           & $\mathrm{FN}$ & $\mathrm{TN}$                   &  $\mathrm{P}=$ & $\mathrm{TP}+\mathrm{FN}=$ Positive samples \\ \cline{3-4}
+\multicolumn{4}{c}{}                                                                                                                                      &  $\mathrm{N}=$ & $\mathrm{TN}+\mathrm{FP}=$ Negative samples \\
 \end{tabularx}
 
 \caption{Confusion matrix for a binary classification problem and the related terminology}
@@ -620,12 +620,12 @@ metrics can be computed multiple times considering each class as the positive on
 % Accuracy
 \paragraph{Accuracy} The accuracy of a classification is defined for the binary case as
 \begin{equation} \label{eq:back:accuracy-binary}
-    \texrm{Acc.} = \frac{TP + TN}{P + N} = \frac{TP + TN}{TP + FN + TN + FP} \,,
+    \mathrm{Acc.} = \frac{\mathrm{TP} + \mathrm{TN}}{\mathrm{P} + \mathrm{N}} = \frac{\mathrm{TP} + \mathrm{TN}}{\mathrm{TP} + \mathrm{FN} + \mathrm{TN} + \mathrm{FP}} \,,
 \end{equation}
 that is the fraction of correctly classified samples.
 For the general case with more than two classes, the accuracy is given by the sum of the elements on the diagonal of the confusion matrix -- which contains the counts for correct predictions -- and the total number of classified samples
 \begin{equation} \label{eq:back:accuracy}
-    \texrm{Acc.} = \frac{\sum_{i=1}^L c_{ii}}{|Y|} \,.
+    \mathrm{Acc.} = \frac{\sum_{i=1}^L c_{ii}}{|Y|} \,.
 \end{equation}
 
 % Top-K Accuracy
@@ -643,12 +643,12 @@ In this scenarios, other ratios derived from the classification matrix are used 
 \paragraph{\acrshort{tpr} and \acrshort{tnr}}
 The \emph{\gls{tpr}} is the ratio between correctly predicted positive samples and the number of actual positive samples
 \begin{equation} \label{eq:back:tpr}
-    TPR = \frac{TP}{P} = \frac{TP}{TP + FN} \,.
+    \mathrm{TPR} = \frac{\mathrm{TP}}{\mathrm{P}} = \frac{\mathrm{TP}}{\mathrm{TP} + \mathrm{FN}} \,.
 \end{equation}
 It is also known as \emph{Recall} of the positive class, as it indicates the fraction of positive samples correctly accepted as positive.
 Similarly, the \gls{tnr} represent the same concept applied to the negative class, and it is defined as
 \begin{equation} \label{eq:back:tnr}
-    TNR = \frac{TN}{N} = \frac{TN}{TN + FP} \,.
+    \mathrm{TNR} = \frac{\mathrm{TN}}{\mathrm{N}} = \frac{\mathrm{TN}}{\mathrm{TN} + \mathrm{FP}} \,.
 \end{equation}
 
 % FNR FPR
@@ -656,16 +656,40 @@ Similarly, the \gls{tnr} represent the same concept applied to the negative clas
 While \gls{tpr} and \gls{tnr} measure how well a classifier perform on both classes, the \gls{fnr} and \gls{fpr} complementary measures that indicate instead the faction of classification errors.
 Specifically, the \gls{fnr} is defined as the fraction of positive examples wrongly classified as negatives, and it is complementary to the \gls{tpr}
 \begin{equation} \label{eq:back:fnr}
-    FNR = \frac{FN}{P} = \frac{FN}{TP + FN} = 1 - TPR\,.
+    \mathrm{FNR} = \frac{\mathrm{FN}}{\mathrm{P}} = \frac{\mathrm{FN}}{\mathrm{TP} + \mathrm{FN}} = 1 - \mathrm{TPR}\,.
 \end{equation}
 Similarly, the \gls{fpr} measures the fraction of errors on the negative class
 \begin{equation} \label{eq:back:fpr}
-    FPR = \frac{FP}{N} = \frac{FP}{TN + FP} = 1 - TNR\,.
+    \mathrm{FPR} = \frac{\mathrm{FP}}{\mathrm{N}} = \frac{\mathrm{FP}}{\mathrm{TN} + \mathrm{FP}} = 1 - \mathrm{TNR}\,.
 \end{equation}
 
 \paragraph{\acrshort{roc} and \acrshort{auc}}
 Probabilistic classifiers produce soft assignments of each sample to the available classes in the form of scores or confidences on which subsequently a threshold is applied to obtain the final classification.
-Depending on the choice of the threshold, the performance of the classifier may varies "a lot".
+Depending on the choice of the threshold, the performance of the classifier may vary substantially.
+A useful tool to evaluate the performance of the classifier in relation to the threshold is the \gls{roc} plot~\cite{fawcett2006introduction}.
+Each point on a \gls{roc} plot represent the performance of the classifier for a given threshold $T$, and has as coordinates the \gls{fpr}$(T)$ (on the x-axis) and the \gls{tpr}$(T)$ (on y-axis) obtained by using $T$.
+An optimal classifier lies on the top-left point $(0,1)$, while a random-chance classifier lies on the $TPR = FPR$ line.
+A \gls{roc} curve for a given classifier is comprised by all the points obtained by varying the threshold.
+The curve starts from $(0,0)$ -- that correspond to having the most stringent threshold, thus a trivial rejector classifier -- and ends in $(1,1)$ -- corresponding to the most permissive threshold that results in a trivial acceptor.
+\Gls{roc} curves enables a visual comparison of classifiers, since higher curves lying nearer the optimal $(0,1)$ point are considered better classifiers independently from the particular threshold chosen.
+To quantitatively compare classifiers on the \gls{roc} plane, the \gls{auc} is often computed as a unique threshold-independent metric;
+the higher the \gls{roc} curve, the closer the \gls{auc} is to $1$ (see \ref{fig:back:roc}).
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{figures/roc-example}
+    \caption{Example of \acrfull{roc} curves for two binary classifiers, and the relation between their corresponding \acrfullpl{auc}. }
+    \label{fig:back:roc}
+\end{figure}
+
+\paragraph{\acrshort{eer} Accuracy}
+Another useful threshold-independent metric which is commonly used to compare classifiers is the \gls{eer} accuracy.
+This is the accuracy obtained by choosing the threshold yielding an equal error rate on both positive and negative classes, i.e.
+\begin{equation} \label{eq:back:eer-accuracy}
+    \mathrm{EER\ Acc.} = \mathrm{Acc}(T) \quad | \quad \mathrm{FPR}(T) = \mathrm{FNR}(T) \,,
+\end{equation}
+where $\mathrm{Acc}(T)$, $\mathrm{FPR}(T)$, and $\mathrm{FNR}(T)$ indicates respectively the accuracy, the \gls{fpr}, and the \gls{fnr} obtained using $T$ as threshold.
+On the \gls{roc} plot, this threshold setting corresponds to the point where the classifier curve intersect the second diagonal of the unit square, i.e. the $\mathrm{TPR} = 1 - \mathrm{FPR}$ line, which is equivalent to $\mathrm{FPR} = \mathrm{FNR}$ by substituting \ref{eq:back:fnr} in the line equation.
 
 \subsection{Relevant works}
 \label{subsec:back:classif-relwork}
@@ -674,7 +698,7 @@ Depending on the choice of the threshold, the performance of the classifier may 
 % TODO divide f in features and classifier, manually (?)
 Traditional approaches to image classification requires to manually design the classifier $f(\cdot)$.
 % ESWA: The traditional approaches to the classification problem use ad-hoc functions to extract from an image specific features that are considered to be indicative of certain objects.
-In particular, hand-crafted features detectors and descriptors were employed to extract information from the image considered indicative of certain objects.
+In particular, hand-crafted features detectors and descriptors -- such as .. -- were employed to extract information from the image considered indicative for the presence of certain objects.
 % TODO check SISAP paper for LF
 For example, the presence of features like hard corners and straight edges might be believed to indicate man-made objects in the image~\cite{}.
 % TODO add cites of shallow classifiers
@@ -682,17 +706,40 @@ Shallow classifiers based on \gls{ml} methods -- such as logistic regressors~\ci
 
 % ESWA: it is hard to think of general, robust, reliable features, which map to specific object types; - it is a huge task to find the right combination; - of features for every type of object to classify; - it is difficult to design functions that are robust to translations, rotations and scaling of objects in the image
 % ESWA: All these problems make developing high accuracy object detectors and classifiers for a broad range of objects very hard.
+% TODO insert LF and cites
 % TODO add examples of problems solved by LF
-However, manually engineered solutions are feasible for fairly simple problems -- such as ...~\cite{}.
+However, manually engineered solutions are feasible for very specific problems -- such as ...~\cite{} -- where the conditions are well known and modelled.
 In general, thinking of features that are invariant to transformations, reliable for many types of objects, and robust to noise and other exogenous factors is often very difficult and time-consuming.
 % ESWA: it is often very complex to develop robust and reliable feature detectors and descriptors by hand.
 % TODO better definition of VSA
 As an example, consider the problem of visual sentiment analysis (further discussed in \ref{ch:cross-learning}), which consist in detecting the emotions conveyed by images.
 Defining a good set of features to extract from images to solve this task is a cumbersome process and usually leads to suboptimal solutions.
-% TODO insert LF and cites
 % Successful hand-crafted features, such as ..., have been proposed to solve object recognition and localization.
 
 \paragraph{ImageNet Challenge and the Deep Learning era}
+
+\begin{table}
+    \begin{tabularx}{\linewidth}{p{4.5cm}X>{\centering}c}
+        \toprule
+        \textbf{Team} & \textbf{Method} & \textbf{Error} \\
+        \midrule
+        \emph{LEAR} \newline {\footnotesize LEAR INRIA Grenoble} \newline {\footnotesize TVPA Xerox Research Centre Europe} & (Mensink et al., 2012) & 34.5 \\ % -
+        \midrule
+        \emph{UvA} \newline {\footnotesize University of Amsterdam} & (Sanchez and Perronnin, 2011; Scheirer et al., 2012) & 29.6 \\ % -
+        \midrule
+        \emph{XRCE} \newline {\footnotesize Xerox Research Centre Europe} \newline {\footnotesize LEAR INRIA} & (Perronnin et al., 2012) & 27.1 \\ % -
+        \midrule
+        \emph{VGG} \newline {\footnotesize University of Oxford} & (Arandjelovic and Zisserman, 2012; Sanchez et al., 2012) & 27.0 \\ % 50.0
+        \midrule
+        \emph{ISI} \newline {\footnotesize University of Tokyo, JST PRESTO} & (Harada and Kuniyoshi, 2012) & 26.2 \\% 53.6
+        \midrule
+        \emph{SuperVision} \newline {\footnotesize University of Toronto} & (Krizhevsky et al., 2012) & \textbf{16.4} \\ % 34.2
+        \bottomrule
+    \end{tabularx}
+    \caption{ILSVRC12 leaderboard reporting the accuracy (as top-5 error percentage) on the image classification task obtained by the participating teams. Results taken from~\cite{russakovsky2015imagenet}}
+    \label{tab:ilsvrc12-results}
+\end{table}
+
 % ESWA: The Deep Learning approach, on the other hand, exploits a large number of ground-truth labeled data to discover which features and combinations of features are most discriminative for each class of objects to be recognized, and builds a combined feature extraction and classification model.
 On the other hand, \acrlong{dl} approaches rely on large amount of labeled data to automatically discover which features and combination of them are important for the task.
 The main advantage of this kind of approach is its general applicability even to large-scale scenarios where thousands of different classes of images have to be recognized.
@@ -700,10 +747,21 @@ Recent results in the \gls{ilsvrc} are a striking evidence of the success of \gl
 \gls{ilsvrc} is an annual challenge in which competitors are asked to recognize generic objects in images and classify them accordingly choosing from a vast label space (in the order of 1,000 labels).
 % TODO add table with cite ilsvrc2012 non-dl results
 Before \gls{dl} methods were applied in this competition, leading solutions were based on combinations and aggregation of hand-made local features~\cite{}.
-Interestingly, in the edition of the challenge occurred in 2012, \gls{dl} methods based on \acrlongpl{cnn}~\cite{} outperformed non-\gls{dl} solutions by a large margin (see \ref{tab:ilsvrc12-results}), marking the beginning of the \gls{dl}-era and the exponential growth of interest by research communities in the last six years.
+Interestingly, in the edition of the challenge occurred in 2012, a \gls{dl} method based on \acrlongpl{cnn}~\cite{} outperformed non-\gls{dl} solutions by a large margin (see \ref{tab:ilsvrc12-results}), marking the beginning of the \gls{dl}-era
+% TODO rephrase...
+and the exponential growth of interest by research communities in the last six years.
 % TODO add cites to ANN/ML back in the days, check years
 While the theories and concepts behind \gls{dl} approaches -- such as artificial neural networks and \acrlong{ml} -- were already studied and formalized back in the past~\cite{}, in the last years, the combination of different factors has allowed \acrlong{dl} to flourish.
 Most importantly, huge amounts of data -- collected and labeled exploiting Web technologies and crowd-sourcing -- provided the supervision needed by very deep models having millions of parameters to properly train, and modern hardware and accelerators such as \glspl{gpu} provided the computing power needed to speed up training and evaluation procedures.
+
+\paragraph{AlexNet}
+% Krizhevsky et al., 2012
+We start our review of relevant work in image classification right from the method that won the \gls{ilsvrc}12 challenge, that is the \gls{dcnn} proposed by~\citet{krizhevsky2012imagenet}, also knwon as \emph{AlexNet}.
+
+% ILSVRC12 LEADERBOARD: Our model is a large, deep convolutional neural network trained on raw RGB  pixel values. The neural network, which has 60 million parameters and 650,000 neurons, consists of five convolutional layers, some of which are followed by max-pooling layers, and three globally-connected layers with a final 1000-way softmax. It was trained on two NVIDIA GPUs for about a week. To make training faster, we used non-saturating neurons and a very efficient GPU implementation of convolutional nets. To reduce overfitting in the globally-connected layers we employed hidden-unit "dropout", a recently-developed regularization method that proved to be very effective.
+
+% Simonyan & Zisserman, 2014
+% Girshick et al., 2014
 
 % ESWA :
 % A Deep Learning approach particularly effective for vision tasks exploits Convolutional Neural Networks (CNN) (Krizhevsky et al., 2012; Simonyan & Zisserman, 2014; Girshick et al., 2014).
