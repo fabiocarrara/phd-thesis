@@ -285,7 +285,7 @@ During learning, the \gls{rnn} is unrolled in time to the length of the input se
 Depending on the task we want to model, we could be interested in the last hidden state $\h_T$ compactly represent the whole sequence, or we could use a combination of all hidden states $\h_i, i=1 \dots T$ to get access to the evolution of the information processed through time.
 
 \paragraph{Bidirectional \glspl{rnn}}
-In many tasks such as sequence classification and segmentation, also the future context of the sequence is informative. However, \ref{eq:back:rnn} defines a \gls{rnn} encoding only past information, i.e.\   $\h_t$ depends only on information at time step $t' < t$.
+In many tasks -- such as sequence classification and segmentation -- also the future context of the sequence is informative. However, \ref{eq:back:rnn} defines a \gls{rnn} encoding only past information, i.e.\   $\h_t$ depends only on information at time step $t' < t$.
 To overcome this limitation, \emph{bidirectional} \glspl{rnn} have been proposed~\cite{schuster1997bidirectional}.
 Bidirectional architectures adds a separate recurrent cell which process the sequence in reverse order (from future to past)
 %
@@ -561,7 +561,7 @@ Commonly used values for hyperparameters are $\beta_1 = 0.9$, $\beta_2 = 0.999$,
 % TODO intro to img classification, examples and applications
 % Examples (simple classif., sentiment analysis, etc.)
 % Classifying images is super cool bla bla
-In this section, we formally define the problem of image classification, and we analyze and review recent solutions based on \acrlong{dl}, and in particular Deep \acrlongpl{cnn}, proposed in the literature.
+In this section, we formally define the problem of image classification, and we analyze and review recent solutions based on \acrlong{dl} -- in particular Deep \acrlongpl{cnn} -- proposed in the literature.
 
 % TODO sentence dropped here at random
 In the case of image classification, the data on which classifiers must rely on is raw pixel data, usually organized in a tensor with shape $(H, W, C)$, respectively representing the height, the width, and the number of channels of the image.
@@ -572,7 +572,7 @@ For this reason, classification methods for images have received an increasing a
 \subsection{Problem Setting}
 \label{subsec:back:classification}
 Image classification consists of assigning one or more labels to an image $\x$ choosing from a finite set of $L$ labels.
-We refer to \emph{single-label} $L$-way classification if only one label have to be picked among the $L$ available, referring to the special case in which $L=2$ as \emph{binary} classification.
+We refer to \emph{single-label} $L$-way classification if only one label has to be picked among the $L$ available, referring to the special case in which $L=2$ as \emph{binary} classification.
 If multiple labels can be assigned to a piece of data, we talk about \emph{multi-label} classification.
 A multi-label $L$-way classification problem is often decomposed in $L$ independent binary classification sub-problems, each of them focusing on predicting the presence or the absence of one of the available $L$ labels.
 
@@ -593,12 +593,12 @@ In this section, we will report the most commonly used evaluation metrics to mea
 Assume $\Y = (y_1, \ldots, y_n)$ is a set of predictions and $\tilde{\Y} = (\tilde{y}_1, \ldots, \tilde{y}_n)$ the set of the ground-truth labels for a single-label $L$-way classification problem, with $y_i, \tilde{y}_i \in \{1, \ldots, L\}$. % for $i \in \{1, \ldots, N\}$.
 
 \paragraph{Confusion Matrix}
-One of the fundamental tools for evaluating a set of label assignments is the \emph{confusion matrix}, which compactly reports the co-occurence of predicted and ground-truth labels.
+One of the fundamental tools for evaluating a set of label assignments is the \emph{confusion matrix} $C = \{c_{ij}\}$, which compactly reports the co-occurence of predicted and ground-truth labels.
 The element $c_{ij}$ of the matrix indicates the number of times the model predicted the class $i$ for a sample belonging to class $j$.
 We report in \ref{tab:back:confusion} the confusion matrix for the binary case ($L=2$) together with the terminology used to refer to particular values in the matrix.
 For the binary case, many useful metrics can be computed from the confusion matrix, and we will introduce some of them in the next paragraphs.
-Notice that the same metrics can be applied to cases with $L > 2$ by reformulating them as binary problems, where the one class is the positive class, and the other $L-1$ are condensed in the negative class;
-metrics can be computed multiple times considering each class as the positive one and then aggregated to obtain a global metric for the classification.
+Notice that the same metrics can be applied to cases with $L > 2$ by reformulating them as binary problems, where the one class is the positive class, and the other $(L-1)$ are condensed in the negative class;
+metrics can be computed considering each class as the positive one and then aggregated to obtain a global metric for the classification.
 
 \begin{table}
 \newcolumntype{M}[1]{>{\centering\arraybackslash}m{#1}}
@@ -634,7 +634,7 @@ A common variant often used for probabilistic classifiers when many classes are 
 Given the $L$ probabilities (or scores) assigned to a sample by the classifier, we consider the prediction correct if the ground-truth class appears in the first $K$ highest scored classes.
 The metric then is computed as the fraction of correct predictions.
 
-The accuracy metric is a very simple and intuitive metric for evaluating classifiers, but it may be misleading when evaluating with unbalanced test sets.
+The accuracy metric is a very simple and intuitive metric for evaluating classifiers, but it may be misleading when employed on unbalanced test sets.
 Consider for example a binary classification example with 95 positive and 5 negative samples;
 A classifier always predicting the positive class (a trivial acceptor) achieves an accuracy of $.95$ while behaving very poorly on negative classes.
 In this scenarios, other ratios derived from the classification matrix are used to better characterize the performances of a classifier.
@@ -653,7 +653,7 @@ Similarly, the \gls{tnr} represent the same concept applied to the negative clas
 
 % FNR FPR
 \paragraph{\acrshort{fnr} and \acrshort{fpr}}
-While \gls{tpr} and \gls{tnr} measure how well a classifier perform on both classes, the \gls{fnr} and \gls{fpr} complementary measures that indicate instead the faction of classification errors.
+While \gls{tpr} and \gls{tnr} measure how well a classifier perform on both classes, the \gls{fnr} and \gls{fpr} are complementary measures that indicate instead the faction of classification errors.
 Specifically, the \gls{fnr} is defined as the fraction of positive examples wrongly classified as negatives, and it is complementary to the \gls{tpr}
 \begin{equation} \label{eq:back:fnr}
     \mathrm{FNR} = \frac{\mathrm{FN}}{\mathrm{P}} = \frac{\mathrm{FN}}{\mathrm{TP} + \mathrm{FN}} = 1 - \mathrm{TPR}\,.
@@ -664,10 +664,10 @@ Similarly, the \gls{fpr} measures the fraction of errors on the negative class
 \end{equation}
 
 \paragraph{\acrshort{roc} and \acrshort{auc}}
-Probabilistic classifiers produce soft assignments of each sample to the available classes in the form of scores or confidences on which subsequently a threshold is applied to obtain the final classification.
-Depending on the choice of the threshold, the performance of the classifier may vary substantially.
+Probabilistic classifiers produce soft assignments of each sample to the available classes in the form of scores or confidences from which the final hard classification is obtained.
+A common way to do so is by thresholding, and depending on the choice of the threshold, the performance of the classifier may vary substantially.
 A useful tool to evaluate the performance of the classifier in relation to the threshold is the \gls{roc} plot~\cite{fawcett2006introduction}.
-Each point on a \gls{roc} plot represent the performance of the classifier for a given threshold $T$, and has as coordinates the \gls{fpr}$(T)$ (on the x-axis) and the \gls{tpr}$(T)$ (on y-axis) obtained by using $T$.
+Each point on a \gls{roc} plot represents the performance of the classifier for a given threshold $T$, and has as coordinates the \gls{fpr}$(T)$ (on the x-axis) and the \gls{tpr}$(T)$ (on y-axis) obtained by using $T$.
 An optimal classifier lies on the top-left point $(0,1)$, while a random-chance classifier lies on the $TPR = FPR$ line.
 A \gls{roc} curve for a given classifier is comprised by all the points obtained by varying the threshold.
 The curve starts from $(0,0)$ -- that correspond to having the most stringent threshold, thus a trivial rejector classifier -- and ends in $(1,1)$ -- corresponding to the most permissive threshold that results in a trivial acceptor.
@@ -689,14 +689,14 @@ This is the accuracy obtained by choosing the threshold yielding an equal error 
     \mathrm{EER\ Acc.} = \mathrm{Acc}(T) \quad | \quad \mathrm{FPR}(T) = \mathrm{FNR}(T) \,,
 \end{equation}
 where $\mathrm{Acc}(T)$, $\mathrm{FPR}(T)$, and $\mathrm{FNR}(T)$ indicates respectively the accuracy, the \gls{fpr}, and the \gls{fnr} obtained using $T$ as threshold.
-On the \gls{roc} plot, this threshold setting corresponds to the point where the classifier curve intersect the second diagonal of the unit square, i.e. the $\mathrm{TPR} = 1 - \mathrm{FPR}$ line, which is equivalent to $\mathrm{FPR} = \mathrm{FNR}$ by substituting \ref{eq:back:fnr} in the line equation.
+On the \gls{roc} plot, this threshold setting corresponds to the point where the classifier curve intersect the second diagonal of the unit square, i.e. the $\mathrm{TPR} = 1 - \mathrm{FPR}$ line, which is equivalent to $\mathrm{FPR} = \mathrm{FNR}$ by substituting \ref{eq:back:fnr} in \ref{eq:back:eer-accuracy}.
 
 \subsection{Relevant works}
 \label{subsec:back:classif-relwork}
 
 \paragraph{Before \acrlong{dl}}
 % TODO divide f in features and classifier, manually (?)
-Traditional approaches to image classification requires to manually design the classifier $f(\cdot)$.
+Traditional approaches to image classification required to manually design the classifier $f(\cdot)$.
 % ESWA: The traditional approaches to the classification problem use ad-hoc functions to extract from an image specific features that are considered to be indicative of certain objects.
 In particular, hand-crafted features detectors and descriptors -- such as .. -- were employed to extract information from the image considered indicative for the presence of certain objects.
 % TODO check SISAP paper for LF
@@ -753,30 +753,51 @@ Interestingly, in the edition of the challenge occurred in 2012, a \gls{dl} meth
 and the exponential growth of interest by research communities in the last six years.
 % TODO add cites to ANN/ML back in the days, check years
 While the theories and concepts behind \gls{dl} approaches -- such as artificial neural networks and \acrlong{ml} -- were already studied and formalized back in the past~\cite{}, in the last years, the combination of different factors has allowed \acrlong{dl} to flourish.
-Most importantly, huge amounts of data -- collected and labeled exploiting Web technologies and crowd-sourcing -- provided the supervision needed by very deep models having millions of parameters to properly train, and modern hardware and accelerators such as \glspl{gpu} provided the computing power needed to speed up training and evaluation procedures.
+Most importantly, huge amounts of data -- collected and labeled exploiting Web technologies and crowd-sourcing -- provided the supervision needed by very deep models having millions of parameters to properly train, and modern hardware and accelerators -- such as \glspl{gpu} -- provided the computing power needed to speed up training and evaluation procedures.
 
 \paragraph{AlexNet}
 % Krizhevsky et al., 2012
 We start our review of relevant work in image classification right from the method that won the \gls{ilsvrc}12 challenge, that is the \gls{dcnn} proposed by~\citet{krizhevsky2012imagenet}, also knwon as \emph{AlexNet}.
 % TODO add lenet paper and check its application
-Inspired by previous work on handwritten digits recognition~\cite{}, the AlexNet model is composed by a deep convolutional neural network that maps directly RGB data to labels with no explicit feature engineering.
-It is comprised by 5 convolutional layers with \gls{relu} activation, the first three of them interleaved with a max-pooling operation to reduce the resolution of intermediate feature maps.
-This first part of the network is responsible to learn and extract good features, and it is followed by a classification sub-network comprised by three fully-connected layers with a final softmax transformation that maps the outputs to probabilities in the label space.
+Inspired by previous work on handwritten digits recognition~\cite{lecun1989backpropagation}, the AlexNet model is composed by a deep convolutional neural network that maps directly RGB data to labels without relying on explicit feature engineering.
+It is comprised by 5 convolutional layers with \gls{relu} activation, the first three of them interleaved with overlapping max-pooling operations to reduce the resolution of intermediate feature maps.
+This first part of the network is responsible to learn and extract good features, and it is followed by a classification sub-network consisted of three fully-connected layers with a final softmax transformation that maps the outputs to probabilities in the label space.
 The whole network -- both the feature extractor and the classifier -- has roughly 60 million parameters and 650,000 neurons, and it is trained end-to-end;
 it took initially two weeks on two GPUs to the authors to train the model with the 1.2 million images provided by the \gls{ilsvrc}12 train set.
+More details about the architecture are reported in \ref{fig:back:alexnet}.
 % TODO add dropout cite, then probably move to regularization section
 Another key ingredient of the success of this architecture is the \emph{dropout}~\cite{} of fully-connected layers -- a very effective technique the authors employed to reduce overfitting.
 AlexNet won the \gls{ilsvrc}12 competition with roughly a 10\% gap in error from the second place competitor.
+This amazing results provided a springboard for the research community for a new way to to do image classification and more in general to learn high-quality features for images.
+In the following years, many other researchers developed \glspl{cnn} for image classification or similar vision tasks, reaching always smaller error rates on important challenges such \gls{ilsvrc}.
 
-\paragraph{VGG Net}
-The amazing results obtained by AlexNet provided a springboard for other research group for a new way to to do image classification.
-% TODO gls
-The Visual Geometry Group of Oxford built upon ...
+\begin{figure}
+    \centering
+    % TODO alexnet figure
+    \includegraphics[width=\linewidth]{figures/alexnet}
+    \caption{Architecture of the AlexNet \gls{cnn}.}
+    \label{fig:back:alexnet}
+\end{figure}
 
+\paragraph{ZFNet} Despite \gls{cnn} models being remarkably good in solving vision task, it is common to treat them as black boxes without having a clear understanding of its internals.
+To alleviate this problem, \citet{zeiler2014visualizing} proposed a visualization technique baesd on deconvolutions to shed light on the representations learned by intermediate convolutional layers.
+\ref{fig:back:filter-visualization} shows an example of the proposed approach applied on a trained model.
+The usage of these visualizations lead the authors to debug the AlexNet architecture and to propose a new architecture, informally called \emph{ZFNet} in the research community, which incorporates some modifications, namely the reduction of the size and stride of the filters of the first layer, that enables the model to learn a more balanced set of feature extractors.
 
-% ILSVRC12 LEADERBOARD: Our model is a large, deep convolutional neural network trained on raw RGB  pixel values. The neural network, which has 60 million parameters and 650,000 neurons, consists of five convolutional layers, some of which are followed by max-pooling layers, and three globally-connected layers with a final 1000-way softmax. It was trained on two NVIDIA GPUs for about a week. To make training faster, we used non-saturating neurons and a very efficient GPU implementation of convolutional nets. To reduce overfitting in the globally-connected layers we employed hidden-unit "dropout", a recently-developed regularization method that proved to be very effective.
+\begin{figure}
+    \centering
+    % TODO add deconvolution figure from zeiler2014visualizing, big figure or fig 6?
+    \includegraphics[width=\linewidth]{img/filter-visualization}
+    \caption{Visualization of the top 9 most activated neurons in ....}
+    \label{fig:back:filter-visualization}
+\end{figure}
 
-% Simonyan & Zisserman, 2014
+\paragraph{OverFeat} \citet{sermanet2013overfeat} proposed \emph{OverFeat}, a modification of the AlexNet architecture optimized also for object localization and detection in images, where the model is asked to predict also the bounding boxes of the object of interest.
+The authors provide two different architectures: a \emph{fast} model having the same architecture of AlexNet with different parameters, i.e. a smaller stride in the first convolutional layers and non-overlapping max-pool operations, and a \emph{accurate} model counting an additional convolution layer, a higher number of output features and smaller strides.
+
+\paragraph{VGG Net} % Simonyan & Zisserman, 2014
+\citet{simonyan2014very} of the \gls{vgg} of Oxford University studied the effects of the depth of convolutional networks for large-scale image classification.
+
 % Girshick et al., 2014
 
 % ESWA :
