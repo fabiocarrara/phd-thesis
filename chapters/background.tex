@@ -706,7 +706,7 @@ Shallow classifiers based on \gls{ml} methods -- such as logistic regressors~\ci
 
 % ESWA: it is hard to think of general, robust, reliable features, which map to specific object types; - it is a huge task to find the right combination; - of features for every type of object to classify; - it is difficult to design functions that are robust to translations, rotations and scaling of objects in the image
 % ESWA: All these problems make developing high accuracy object detectors and classifiers for a broad range of objects very hard.
-% TODO insert LF and cites
+% TODO insert LF and aggregations (and related cites, see ILSVRC12 leaderboard)
 % TODO add examples of problems solved by LF
 However, manually engineered solutions are feasible for very specific problems -- such as ...~\cite{} -- where the conditions are well known and modelled.
 In general, thinking of features that are invariant to transformations, reliable for many types of objects, and robust to noise and other exogenous factors is often very difficult and time-consuming.
@@ -719,6 +719,7 @@ Defining a good set of features to extract from images to solve this task is a c
 \paragraph{ImageNet Challenge and the Deep Learning era}
 
 \begin{table}
+    % TODO add methods description from real leaderboard
     \begin{tabularx}{\linewidth}{p{4.5cm}X>{\centering}c}
         \toprule
         \textbf{Team} & \textbf{Method} & \textbf{Error} \\
@@ -745,7 +746,7 @@ On the other hand, \acrlong{dl} approaches rely on large amount of labeled data 
 The main advantage of this kind of approach is its general applicability even to large-scale scenarios where thousands of different classes of images have to be recognized.
 Recent results in the \gls{ilsvrc} are a striking evidence of the success of \gls{dl} methods in image classification.
 \gls{ilsvrc} is an annual challenge in which competitors are asked to recognize generic objects in images and classify them accordingly choosing from a vast label space (in the order of 1,000 labels).
-% TODO add table with cite ilsvrc2012 non-dl results
+% TODO add LF cites
 Before \gls{dl} methods were applied in this competition, leading solutions were based on combinations and aggregation of hand-made local features~\cite{}.
 Interestingly, in the edition of the challenge occurred in 2012, a \gls{dl} method based on \acrlongpl{cnn}~\cite{} outperformed non-\gls{dl} solutions by a large margin (see \ref{tab:ilsvrc12-results}), marking the beginning of the \gls{dl}-era
 % TODO rephrase...
@@ -757,6 +758,21 @@ Most importantly, huge amounts of data -- collected and labeled exploiting Web t
 \paragraph{AlexNet}
 % Krizhevsky et al., 2012
 We start our review of relevant work in image classification right from the method that won the \gls{ilsvrc}12 challenge, that is the \gls{dcnn} proposed by~\citet{krizhevsky2012imagenet}, also knwon as \emph{AlexNet}.
+% TODO add lenet paper and check its application
+Inspired by previous work on handwritten digits recognition~\cite{}, the AlexNet model is composed by a deep convolutional neural network that maps directly RGB data to labels with no explicit feature engineering.
+It is comprised by 5 convolutional layers with \gls{relu} activation, the first three of them interleaved with a max-pooling operation to reduce the resolution of intermediate feature maps.
+This first part of the network is responsible to learn and extract good features, and it is followed by a classification sub-network comprised by three fully-connected layers with a final softmax transformation that maps the outputs to probabilities in the label space.
+The whole network -- both the feature extractor and the classifier -- has roughly 60 million parameters and 650,000 neurons, and it is trained end-to-end;
+it took initially two weeks on two GPUs to the authors to train the model with the 1.2 million images provided by the \gls{ilsvrc}12 train set.
+% TODO add dropout cite, then probably move to regularization section
+Another key ingredient of the success of this architecture is the \emph{dropout}~\cite{} of fully-connected layers -- a very effective technique the authors employed to reduce overfitting.
+AlexNet won the \gls{ilsvrc}12 competition with roughly a 10\% gap in error from the second place competitor.
+
+\paragraph{VGG Net}
+The amazing results obtained by AlexNet provided a springboard for other research group for a new way to to do image classification.
+% TODO gls
+The Visual Geometry Group of Oxford built upon ...
+
 
 % ILSVRC12 LEADERBOARD: Our model is a large, deep convolutional neural network trained on raw RGB  pixel values. The neural network, which has 60 million parameters and 650,000 neurons, consists of five convolutional layers, some of which are followed by max-pooling layers, and three globally-connected layers with a final 1000-way softmax. It was trained on two NVIDIA GPUs for about a week. To make training faster, we used non-saturating neurons and a very efficient GPU implementation of convolutional nets. To reduce overfitting in the globally-connected layers we employed hidden-unit "dropout", a recently-developed regularization method that proved to be very effective.
 
