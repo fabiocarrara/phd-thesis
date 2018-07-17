@@ -755,6 +755,7 @@ and the exponential growth of interest by research communities in the last six y
 While the theories and concepts behind \gls{dl} approaches -- such as artificial neural networks and \acrlong{ml} -- were already studied and formalized back in the past~\cite{}, in the last years, the combination of different factors has allowed \acrlong{dl} to flourish.
 Most importantly, huge amounts of data -- collected and labeled exploiting Web technologies and crowd-sourcing -- provided the supervision needed by very deep models having millions of parameters to properly train, and modern hardware and accelerators -- such as \glspl{gpu} -- provided the computing power needed to speed up training and evaluation procedures.
 
+%ILSVRC winners (Hybrid, VGG, Inception, Residual, ResNeXT, SENets?)
 \paragraph{AlexNet}
 % Krizhevsky et al., 2012
 We start our review of relevant work in image classification right from the method that won the \gls{ilsvrc}12 challenge, that is the \gls{dcnn} proposed by~\citet{krizhevsky2012imagenet}, also knwon as \emph{AlexNet}.
@@ -779,10 +780,10 @@ In the following years, many other researchers developed \glspl{cnn} for image c
     \label{fig:back:alexnet}
 \end{figure}
 
-\paragraph{ZFNet} Despite \gls{cnn} models being remarkably good in solving vision task, it is common to treat them as black boxes without having a clear understanding of its internals.
+\paragraph{ZFNet} Despite \glspl{cnn} being remarkably good in solving vision task, it is common to treat them as black boxes without having a clear understanding of its internals. % TODO rephase
 To alleviate this problem, \citet{zeiler2014visualizing} proposed a visualization technique baesd on deconvolutions to shed light on the representations learned by intermediate convolutional layers.
 \ref{fig:back:filter-visualization} shows an example of the proposed approach applied on a trained model.
-The usage of these visualizations lead the authors to debug the AlexNet architecture and to propose a new architecture, informally called \emph{ZFNet} in the research community, which incorporates some modifications, namely the reduction of the size and stride of the filters of the first layer, that enables the model to learn a more balanced set of feature extractors.
+The usage of these visualizations lead the authors to debug the AlexNet architecture and to propose a new one, informally called \emph{ZFNet} in the research community, which incorporates some modifications, namely the reduction of the size and stride of the filters of the first layer, that enables the model to learn a more balanced set of feature extractors.
 
 \begin{figure}
     \centering
@@ -793,12 +794,21 @@ The usage of these visualizations lead the authors to debug the AlexNet architec
 \end{figure}
 
 \paragraph{OverFeat} \citet{sermanet2013overfeat} proposed \emph{OverFeat}, a modification of the AlexNet architecture optimized also for object localization and detection in images, where the model is asked to predict also the bounding boxes of the object of interest.
-The authors provide two different architectures: a \emph{fast} model having the same architecture of AlexNet with different parameters, i.e. a smaller stride in the first convolutional layers and non-overlapping max-pool operations, and a \emph{accurate} model counting an additional convolution layer, a higher number of output features and smaller strides.
+The authors proposed two different architectures: a \emph{fast} model having the same architecture of AlexNet with different parameters, i.e. a smaller stride in the first convolutional layers and non-overlapping max-pool operations, and a \emph{accurate} model counting an additional convolution layer, a higher number of output features and smaller strides.
 
 \paragraph{VGG Net} % Simonyan & Zisserman, 2014
 \citet{simonyan2014very} of the \gls{vgg} of Oxford University studied the effects of the depth of convolutional networks for large-scale image classification.
+...
+They finally proposes deeper architectures comprised by 10+ layers;
+in this work, we will refer to the 16-layer and 19-layer architectures respectively as \gls{vgg}-16 and \gls{vgg}-19.
 
 % Girshick et al., 2014
+
+\paragraph{Inception}
+
+\paragraph{Residual Networks}
+
+\paragraph{Recent Advances}
 
 % ESWA :
 % A Deep Learning approach particularly effective for vision tasks exploits Convolutional Neural Networks (CNN) (Krizhevsky et al., 2012; Simonyan & Zisserman, 2014; Girshick et al., 2014).
@@ -807,10 +817,6 @@ The authors provide two different architectures: a \emph{fast} model having the 
 % For a classification problem, the final outputs of the CNN are the classes which the network has been trained on.
 % The training phase is usually extremely expensive from a computational point of view, and may take a long time to complete.
 % Once the network has been trained and the classifier has been initialized accordingly, the run time phase of prediction is quite fast and efficient.
-
-%Recent Advances
-%ILSVRC winners (Hybrid, VGG, Inception, Residual, ResNeXT, SENets?)
-%Transfer Learning
 
 %% probably move in the chapter
 %Adversarial Examples for DNNs
@@ -833,6 +839,7 @@ The authors provide two different architectures: a \emph{fast} model having the 
 %CBIR (query-by-example)
 %kNN schemes
 %Image Representations
+%Transfer Learning
 %Deep Features (fc7 -> RMAC)
 %Permutation-based representations
 %Deep Permutations
@@ -843,5 +850,13 @@ The authors provide two different architectures: a \emph{fast} model having the 
 
 \section{Datasets}
 \label{sec:back:datasets}
+In this section, we will list the dataset -- either publicly available or collected -- used directly or indirectly in the experiments presented in this work.
+
+\paragraph{\acrfull{ilsvrc} 2012 Dataset}
+The \gls{ilsvrc}12 dataset is a large set of labelled images containing general objects collected for evaluating algorithms for large-scale visual object recognition.
+It is a subset of roughly 1.3 million images taken from the ImageNet database -- a big collection of images that are labelled and organized following the hierarchical categorization of WordNet.
+Images in \gls{ilsvrc}12 are single-labelled with one of 1,000 classes selected for the competition.
+% Train/dev..
+
 %ILSVRC (+Places)?, (PKLot, CNRPark)? TwitTestDataset? T4SA?
 %Holidays, Oxford, Paris + distr, COCO
