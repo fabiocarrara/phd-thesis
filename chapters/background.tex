@@ -798,9 +798,9 @@ The authors proposed two different architectures: a \emph{fast} model having the
 
 \paragraph{VGG Net} % Simonyan & Zisserman, 2014
 \citet{simonyan2014very} of the \gls{vgg} of Oxford University studied the effects of the depth of convolutional networks for large-scale image classification.
-...
-They finally proposes deeper architectures comprised by 10+ layers;
-in this work, we will refer to the 16-layer and 19-layer architectures respectively as \gls{vgg}-16 and \gls{vgg}-19.
+Employing small 3$\times$3 kernels for convolutions allowed them to stack more layers while keeping roughly the same amount of parameters.
+They proposed deeper architectures comprised by up to 19 learnable layers and demonstrated that the increased depth of \glspl{cnn} is beneficial for the classification accuracy.
+in this work, we will refer to the best-performing architectures, namely the 16-layer and 19-layer ones, respectively as \gls{vgg}-16 and \gls{vgg}-19.
 
 % Girshick et al., 2014
 
@@ -856,7 +856,8 @@ In this section, we will list the dataset -- either publicly available or collec
 The \gls{ilsvrc}12 dataset is a large set of images of general objects collected for evaluating algorithms for large-scale visual object recognition.
 It is a subset of roughly 1.3 million images taken from the ImageNet database -- a big collection of images that are labelled and organized following the hierarchical categorization of WordNet.
 Images in \gls{ilsvrc}12 are assigned a single label chosen from the 1,000 classes selected for the competition.
-Each class has roughly 1,000 images in the training set (the number oscillates between 900 and 1,300), and exactly 50 images in both the validation and test set, for a total of XXX images for the train set, 50,000 in the validation set, and 50,000 in the test set.
+Each class has roughly 1,000 images in the training set (the number oscillates between 700 and 1,300), and exactly 50 and 100 images respectively in the validation and test set, for a total of 1,281,167 images for the train set, 50,000 for the validation set, and 100,000 in the test set.
+Only the training and validation sets are publicly available.
 
 
 %ILSVRC (+Places)?, (PKLot, CNRPark)? TwitTestDataset? T4SA?
