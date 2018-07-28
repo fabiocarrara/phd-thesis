@@ -879,7 +879,56 @@ A small ensemble of SENet-154 -- a modified version of a ResNeXt-152 network~\ci
 \section{Image Retrieval}
 \label{sec:back:image-retrieval}
 
-%Problem Setting
+In this section, we will review the key concepts about \gls{cbir} and some of the relevant work employing Deep Learning techniques in this field.
+
+We indicate as \acrfull{cbir} the task of retrieving from a (potentially large) collection of images the ones relevant to a user query by looking only to its unstructured content, i.e. without exploiting additional information associated with images such as textual annotations or structured metadata.
+Most of the existing approaches to \gls{cbir} are feature-based;
+starting from raw pixels, the content of an image is encoded in a compact numerical representation, commonly called \emph{feature vector}, on which we rely to assess some kind of similarity between images.
+Different paradigms can be used to provide the query.
+The common one is the \emph{query-by-example} paradigm, in which the user provides an image similar to the ones to be retrieved.
+However, more complex paradigms are also possible.
+In this work, we will also explore the case in which the query comes from a different modality (e.g. a textual description), and in those cases we talk about \emph{cross-media} image retrieval.
+% TODO [CITES] add intention and semantic gaps examples
+\acrlong{cbir} presents two fundamental problematics, that is the \emph{intention gap} and the \emph{semantic gap}.
+The former refers to the difficulty for a user to precisely express the content to be retrieved given the query paradigm provided by the system; %
+the latter refers to the limitation of the employed content descriptors to represent high-level concepts.
+
+
+\subsection{Problem Setting}
+The image retrieval problem is not so different from classical textual information retrieval problem, thus it borrows from it much of the terminology, formulations and evaluation metrics.
+Given a collection of images $\X$ and a query image $\q$, the goal is to retrieve the set of images $\X_q \subset \X$ relevant to $\q$.
+In the feature-based approach, an image is represented by its feature vector $\x$, and a similarity $s(\cdot)$ (or distance $d(\cdot)$) function is defined to compare two feature vectors.
+This function permits to assign a similarity score (or a distance) to each element of our search collection and to sort them based on their relevancy to the query.
+Since the top elements on the candidate list are the ones to be most plausible to be consumed by the user, many of the evaluation metrics are thought to evaluate the goodness of the initial part of the candidate list.
+
+\subsection{Evaluation Metrics}
+Assume $\X$ %$= {\x_1, \ldots, \x_N}$
+is a collection of $N$ elements, $\q$ a query, $\Y^{\star}_{\q} \subset \X$ the subset of $\X$ relevant to $\q$, and $\Y_{\q}$ the retrieved candidate set to be evaluated.
+% = {\y_1, \ldots, \y_N} \subset \{0,1\}^N$ a set of $N$ indicator variables where $\y_i = 1$ if $\x_i$ is relevant for $\q$, 0 otherwise.
+
+\paragraph{Precision and Recall}
+With \emph{precision}, we refer to the fraction of retrieved samples that are relevant to the query
+\begin{equation} \label{eq:back:precision}
+\mathrm{Precision} = \frac{|\Y_{\q} \cap \Y^{\star}_{\q}|}{|\Y_{\q}|} \,,
+\end{equation}
+where $|\cdot|$ indicates the cardinality of a set.
+We refer to the fraction of relevant samples actually retrieved as \emph{recall}
+\begin{equation} \label{eq:back:recall}
+\mathrm{Recall} = \frac{|\Y_{\q} \cap \Y^{\star}_{\q}|}{|\Y^{\star}_{\q}|} \,.
+\end{equation}
+
+A trade-off between precision and recall is often tuned in retrieval systems;
+the system may be tuned to retrieve only object similar to the query with high confidence achieving high precision, but may leave behind some relevant samples, thus obtaining a low recall.
+Viceversa, a less stringent retrieval has a high recall, but more retrieved samples may not be relevant to the query, decreasing the precision of the system.
+
+\paragraph{Average Precision}
+The \emph{\gls{ap}} metric is commonly used to evaluate a retrieval system independently from the particular configuration of precision-recall.
+Similarly to the \acrfull{auc} of ROC plots -- discussed in \ref{subsec:back:classif-eval} -- the \gls{ap} represent the area under the precision-recall curve and is computed as
+\begin{equation} \label{eq:back:ap}
+    \mathrm{AP} = \sum_{r \in (0,1)} p(r)\,,
+\end{equation}
+where $r$ ...
+
 %CBIR (query-by-example)
 %kNN schemes
 %Image Representations
