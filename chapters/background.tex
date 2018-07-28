@@ -945,13 +945,33 @@ where $r$ ...
 \label{sec:back:datasets}
 In this section, we will list the dataset -- either publicly available or collected -- used directly or indirectly in the experiments presented in this work.
 
-\paragraph{\acrfull{ilsvrc} 2012 Dataset}
-The \gls{ilsvrc}12 dataset is a large set of images of general objects collected for evaluating algorithms for large-scale visual object recognition.
-It is a subset of roughly 1.3 million images taken from the ImageNet database -- a big collection of images that are labelled and organized following the hierarchical categorization of WordNet.
-Images in \gls{ilsvrc}12 are assigned a single label chosen from the 1,000 classes selected for the competition.
+\paragraph{\acrfull{ilsvrc} 2012~~\cite{russakovsky2015imagenet}}
+% TODO check imagenet dataset paper
+This dataset is composed by a large set of images of general objects collected for evaluating algorithms for large-scale visual object recognition.
+It is a subset of roughly 1.3 million images taken from the ImageNet database -- a big collection of images labelled and organized following the hierarchical categorization of WordNet.
+Images are assigned a single label chosen from the 1,000 classes selected for the competition, spanning general objects, animals, etc.
 Each class has roughly 1,000 images in the training set (the number oscillates between 700 and 1,300), and exactly 50 and 100 images respectively in the validation and test set, for a total of 1,281,167 images for the train set, 50,000 for the validation set, and 100,000 in the test set.
 Only the training and validation sets are publicly available.
 
+%ILSVRC (+Places)?,
+\paragraph{Places~\cite{zhou2014learning}}
 
-%ILSVRC (+Places)?, (PKLot, CNRPark)? TwitTestDataset? T4SA?
-%Holidays, Oxford, Paris + distr, COCO
+\paragraph{PKLot~\cite{de2015pklot}}
+
+\paragraph{CNRPark+EXT~\cite{amato2016car,amato2017deep}}
+
+\paragraph{NIPS Adversarial Attacks and Defences Competition DEV set~\cite{kurakin2018adversarial}}
+
+\paragraph{Twitter Testing Dataset~\cite{you2015robust}}
+
+\paragraph{\acrfull{t4sa}~\cite{vadicamo2017cross}}
+
+\paragraph{INRIA Holidays~\cite{jegou2008hamming}}
+
+\paragraph{Oxford Buildings~\cite{philbin2007object}}
+
+\paragraph{Paris~\cite{philbin2008lost}}
+
+\paragraph{Flickr100k and Flickr1M ~\cite{philbin2007object}}
+
+\paragraph{\acrfull{coco}~\cite{lin2014microsoft}}
