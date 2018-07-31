@@ -765,14 +765,14 @@ Most importantly, huge amounts of data -- collected and labeled exploiting Web t
 \paragraph{AlexNet}
 % Krizhevsky et al., 2012
 We start our review of relevant work in image classification right from the method that won the \gls{ilsvrc}'12 challenge, that is the \gls{dcnn} proposed by~\citet{krizhevsky2012imagenet}, also knwon as \emph{AlexNet}.
-% TODO add lenet paper and check its application
+% TODO check lenet application
 Inspired by previous work on handwritten digits recognition~\cite{lecun1989backpropagation}, the AlexNet model is composed by a deep convolutional neural network that maps directly RGB data to labels without relying on explicit feature engineering.
 It is comprised by 5 convolutional layers with \gls{relu} activation, the first three of them interleaved with overlapping max-pooling operations to reduce the resolution of intermediate feature maps.
 This first part of the network is responsible to learn and extract good features, and it is followed by a classification sub-network consisted of three fully-connected layers with a final softmax transformation that maps the outputs to probabilities in the label space.
 The whole network -- both the feature extractor and the classifier -- has roughly 60 million parameters and 650,000 neurons, and it is trained end-to-end;
 it took initially two weeks on two GPUs to the authors to train the model with the 1.2 million images provided by the \gls{ilsvrc}'12 train set.
 More details about the architecture are reported in \ref{fig:back:alexnet}.
-% TODO add dropout cite, then probably move to regularization section
+% TODO [CITE] dropout, then probably move to regularization section
 Another key ingredient of the success of this architecture is the \emph{dropout}~\cite{} of fully-connected layers -- a very effective technique the authors employed to reduce overfitting.
 AlexNet won the \gls{ilsvrc}'12 competition with roughly a 10\% gap in error from the second place competitor.
 This amazing results provided a springboard for the research community for a new way to to do image classification and more in general to learn high-quality features for images.
@@ -876,36 +876,84 @@ A small ensemble of SENet-154 -- a modified version of a ResNeXt-152 network~\ci
 %Detect attacks: some rel. works on that
 
 
-\section{Image Retrieval}
+\section{\acrlong{cbir}}
 \label{sec:back:image-retrieval}
+In this section, we will review the key concepts about \acrlong{cbir} and some of the relevant work employing Deep Learning techniques in this field.
 
-In this section, we will review the key concepts about \gls{cbir} and some of the relevant work employing Deep Learning techniques in this field.
+%CBIR (query-by-example)
+We indicate as \acrfull{cbir} the task of retrieving from a (potentially large) collection of images the ones relevant to a user query by looking only to their unstructured content, i.e. without exploiting additional information associated with images such as textual annotations or structured metadata as traditional approach would.
+\gls{cbir} systems are then valuable in the case image metadata -- e.g. annotations, surrounding text in documents, descriptions -- is scarce, misleading, or totally absent, and traditional approaches would fail.
+In general, it provides an orthogonal access method to a large imagery corpus which is solely based on the visual content of images.
 
-We indicate as \acrfull{cbir} the task of retrieving from a (potentially large) collection of images the ones relevant to a user query by looking only to its unstructured content, i.e. without exploiting additional information associated with images such as textual annotations or structured metadata.
+\begin{figure}
+    % TODO change "Represent." in CBIR figure
+    \includegraphics[width=\linewidth]{figures/cbir}
+    \caption{General structure of a \acrfull{cbir} system. Round rectangles indicate inputs or outputs of the system.}
+    \label{fig:back:cbir}
+\end{figure}
+The general structure of a \gls{cbir} system is depicted in \ref{fig:back:cbir};
+in its core, it consists of an off-line indexing stage and an on-line query stage, which include different steps such as generating a representation for both database images and queries, indexing, and scoring images~\cite{zhou2017recent}.
+
+% image representation
+In the off-line stage, the image database from which we want to retrieve elements is first transformed to represent semantic concepts present in images in a compact and uniform fashion (\emph{Image Representation}).
 Most of the existing approaches to \gls{cbir} are feature-based;
 starting from raw pixels, the content of an image is encoded in a compact numerical representation, commonly called \emph{feature vector}, on which we rely to assess some kind of similarity between images.
+Image descriptors are then indexed to enable fast and effective retrieval on large scale scenarios (\emph{Image Indexing}), and the output of this phase is an indexed database of feature vectors representing our initial collection.
+
+% query formulation
+In the on-line phase, the user first formulates a query to inject in the system its concept of the content to be retrieved.
 Different paradigms can be used to provide the query.
-The common one is the \emph{query-by-example} paradigm, in which the user provides an image similar to the ones to be retrieved.
-However, more complex paradigms are also possible.
-In this work, we will also explore the case in which the query comes from a different modality (e.g. a textual description), and in those cases we talk about \emph{cross-media} image retrieval.
+The simplest one is the \emph{query-by-example} paradigm, in which the user provides an image similar to the ones to be retrieved.
+However, more complex paradigms are also possible, such as query by tag, sketch, color map, etc.
+In this work, we will also explore \emph{cross-modal} image retrieval, i.e. the case in which the query comes from a modality different from images (e.g. a textual description).
+Once the query has been formulated, the system must map it in the feature space used to represent the images in the search collection (\emph{Query Representation}).
+This stage is usually strongly coupled with the Image Representation one.
+For the query-by-example paradigm, Image and Query Representation phases are identical and shared in both the on-line and off-line stages, since the image given as query can be transformed and represented the same way as a database image.
+% TODO [REF] section on cross-modal
+For other paradigms, this step may be arbitrarly complex depending on the query modality;
+we refer the interested reader to~\cite{zhou2017recent} for a more detailed discussion on the subject.
+%and we will be discussed later in \ref{subsec:back:cross-modal}.
+The query mapped in the representation space can be finally compared to images in the search collection by means of a scoring function, that produces a rank of images to be shown to the user as results of the retrieval process (\emph{Image Scoring}).
+For scoring large collections, the system leverages the pre-built database index to preform this operation efficiently.
+
 % TODO [CITES] add intention and semantic gaps examples
-\acrlong{cbir} presents two fundamental problematics, that is the \emph{intention gap} and the \emph{semantic gap}.
-The former refers to the difficulty for a user to precisely express the content to be retrieved given the query paradigm provided by the system; %
-the latter refers to the limitation of the employed content descriptors to represent high-level concepts.
+\acrlong{cbir} presents two intrinsic problematics in its structure, that are known in the literature as the \emph{intention gap} and the \emph{semantic gap}.
+
+With intention gap, we refer to the difficulty of a user to precisely express the content to be retrieved given the query paradigm provided by the system;
+the \emph{Query Formulation} and \emph{Query Representation} modules are responsible to minimize this gap.
+As an example of intention gap, consider a system adopting the query-by-example paradigm and an image containing a dog in a park as query;
+the system does not know whether the user wants to retrieval images containing a at least a dog, a dog of that particular breed, or other pictures of the same park.
+
+With semantic gap, we refer to the limitation of the employed content descriptors to represent high-level concepts.
+% TODO [CITE] high-level representations for retrieval (off-the-shelf, check survey)
+While descriptors of low-level features -- such as gradient histograms and color histograms -- suffer from this problem, recent work on image representations learnt with \gls{dl} methodologies drastically reduced this gap in retrieval systems~\cite{}.
+
+\subsection{Image Representations}
+%Image Representations
+%Transfer Learning
+%Deep Features (fc7 -> RMAC)
+
+\subsection{Cross-modal Image Retrieval}
+%Cross-modal Retrieval
+%Textual / visual / common space retrievals
 
 
-\subsection{Problem Setting}
+\subsection{Evaluation Metrics}
 The image retrieval problem is not so different from classical textual information retrieval problem, thus it borrows from it much of the terminology, formulations and evaluation metrics.
+% accuracy, computational cost, memory consumption
+The main aspects to be considered in the evaluation of a retrieval system are its accuracy and its computational \& memory consumption in both the off-line and on-line stages.
+While measuring computational and memory resources in this scenario is straightforward, researches dedicated multiple metrics to measure the accuracy of a retrieval system.
+In the following paragraphs, we will introduce the notation and some of the conventionally used evaluation metrics.
+
 Given a collection of images $\X$ and a query image $\q$, the goal is to retrieve the set of images $\X_q \subset \X$ relevant to $\q$.
 In the feature-based approach, an image is represented by its feature vector $\x$, and a similarity $s(\cdot)$ (or distance $d(\cdot)$) function is defined to compare two feature vectors.
 This function permits to assign a similarity score (or a distance) to each element of our search collection and to sort them based on their relevancy to the query.
-Since the top elements on the candidate list are the ones to be most plausible to be consumed by the user, many of the evaluation metrics are thought to evaluate the goodness of the initial part of the candidate list.
+Since the top elements on the candidate list are the ones to be most plausible to be consumed by the user, many of the evaluation metrics for measuring the accuracy of a retrieval system are thought to evaluate the goodness of the initial part of the results list.
 
-\subsection{Evaluation Metrics}
 Assume $\X$ %$= {\x_1, \ldots, \x_N}$
 is a collection of $N$ elements, $\q$ a query, $\Y^{\star}_{\q} \subset \X$ the subset of $\X$ relevant to $\q$, and $\Y_{\q}$ the retrieved candidate set to be evaluated.
 % = {\y_1, \ldots, \y_N} \subset \{0,1\}^N$ a set of $N$ indicator variables where $\y_i = 1$ if $\x_i$ is relevant for $\q$, 0 otherwise.
-
+% PR
 \paragraph{Precision and Recall}
 With \emph{precision}, we refer to the fraction of retrieved samples that are relevant to the query
 \begin{equation} \label{eq:back:precision}
@@ -917,33 +965,62 @@ We refer to the fraction of relevant samples actually retrieved as \emph{recall}
 \mathrm{Recall} = \frac{|\Y_{\q} \cap \Y^{\star}_{\q}|}{|\Y^{\star}_{\q}|} \,.
 \end{equation}
 
-A trade-off between precision and recall is often tuned in retrieval systems;
-the system may be tuned to retrieve only object similar to the query with high confidence achieving high precision, but may leave behind some relevant samples, thus obtaining a low recall.
+A trade-off between precision and recall is often tuned on deployment;
+the system may be tuned to retrieve only objects similar to the query with high confidence thus achieving high precision, but may leave behind some relevant samples and obtaining a low recall.
 Viceversa, a less stringent retrieval has a high recall, but more retrieved samples may not be relevant to the query, decreasing the precision of the system.
 
-\paragraph{Average Precision}
-The \emph{\gls{ap}} metric is commonly used to evaluate a retrieval system independently from the particular configuration of precision-recall.
+% mAP
+\paragraph{\acrlong{ap}}
+The \emph{\acrfull{ap}} metric is commonly used to evaluate a retrieval system independently from the particular configuration of precision-recall.
 Similarly to the \acrfull{auc} of ROC plots -- discussed in \ref{subsec:back:classif-eval} -- the \gls{ap} represent the area under the precision-recall curve and is computed as
 \begin{equation} \label{eq:back:ap}
-    \mathrm{AP} = \sum_{r \in (0,1)} p(r)\,,
+    \mathrm{AP} = \sum_r p(r)\,,
 \end{equation}
-where $r$ ...
+where $r$ is the set of possible recall values that can be achieved, e.g. varying the maximum number of elements to be retrieved or the threshold on the scores of the retrieved samples.
+When multiple queries are considered for evaluation, the \emph{\acrfull{map}} is usually reported, which is the mean of the \glspl{ap} obtained from each query.
 
-%CBIR (query-by-example)
+%nDCG
+\paragraph{\acrlong{dcg}}
+The \emph{\acrfull{dcg}}~\cite{jarvelin2002cumulated} is conventionally used when multiple level of relevancy are available for samples in the groundtruth.
+Its aim is to penalize highly relevant samples in the bottom part of the results;
+to do so, usually a logarithmic weighting scheme is adopted to assign a decreasing importance to samples in the lower part of the search results.
+The \gls{dcg} at the rank position $n$ is defined as
+\begin{equation} \label{eq:back:dcg}
+    \mathrm{DCG}@n = \sum_{i=1}^n \frac{2^{r_i} - 1}{\log_2(i + 1)} \,,
+\end{equation}
+where $r_i$ is a positive scalar representing the relevance of the $i$-th retrieved sample.
+% TODO add TDCG from "picture it" paper tex
+% NDCG is divided by a normalization factor to ensure the metric is in the $[0,1]$ range.
+
+% R@K
+\paragraph{\acrlong{r@k}}
+The \acrfull{r@k} is the recall metric when considering only the top-K results of the groundtruth as relevant.
+It is conventionally used to compare two rankings in absence of an explicit relevancy labelling of the groundtruth.
+Assuming $\Y^{\star}_{\q, K}$ the set of samples relevant to $\q$ truncated at the $K$-th element, and $\Y_{\q,K}$ the top-$K$ retrieved elements to be evaluated, the \gls{r@k} is defined as
+\begin{equation} \label{eq:back:r@k}
+    R@K = \frac{|\Y^{\star}_{\q, K} \cap \Y_{\q,K}|}{K} \,.
+\end{equation}
+
+%medR
+\paragraph{\acrlong{medR}}
+The \acrfull{medR} is ...
+% MRR
+\paragraph{\acrlong{mrr}}
+The \acrfull{mrr} is ...
+
+\subsection{Image Indexing}
+%\label{sec:back:indexing}
 %kNN schemes
-%Image Representations
-%Transfer Learning
-%Deep Features (fc7 -> RMAC)
 %Permutation-based representations
 %Deep Permutations
-%Cross-media Retrieval
-%Textual / visual / common space retrievals
+
 %Datasets & Evaluation Metrics
-%mAP, R@K, nDCG, medR, MRR
 
 \section{Datasets}
 \label{sec:back:datasets}
 In this section, we will list the dataset -- either publicly available or collected -- used directly or indirectly in the experiments presented in this work.
+
+\subsection{Classification Datasets}
 
 \paragraph{\acrfull{ilsvrc} 2012~~\cite{russakovsky2015imagenet}}
 % TODO check imagenet dataset paper
@@ -960,11 +1037,11 @@ Only the training and validation sets are publicly available.
 
 \paragraph{CNRPark+EXT~\cite{amato2016car,amato2017deep}}
 
-\paragraph{NIPS Adversarial Attacks and Defences Competition DEV set~\cite{kurakin2018adversarial}}
-
 \paragraph{Twitter Testing Dataset~\cite{you2015robust}}
 
 \paragraph{\acrfull{t4sa}~\cite{vadicamo2017cross}}
+
+\subsection{Retrieval Datasets}
 
 \paragraph{INRIA Holidays~\cite{jegou2008hamming}}
 
@@ -975,3 +1052,7 @@ Only the training and validation sets are publicly available.
 \paragraph{Flickr100k and Flickr1M ~\cite{philbin2007object}}
 
 \paragraph{\acrfull{coco}~\cite{lin2014microsoft}}
+
+\subsection{Others}
+
+\paragraph{NIPS Adversarial Attacks and Defences Competition DEV set~\cite{kurakin2018adversarial}}
