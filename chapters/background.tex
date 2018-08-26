@@ -29,14 +29,14 @@
 \def\L{\mathcal{L}} % loss function
 \def\a{\varphi} % activation function
 
+\def\Reg{\mathcal{R}} % region
+
 \def\({\left (} % left par
 \def\){\right )} % right par
 
 
 \chapter{Background}
 \label{ch:background}
-
-% TODO [GRAM] hyper-parameters or hyperparameters?
 
 % TODO add overfit, underfit to background?
 % TODO add train good practices? (train/val/test splits, epochs, etc.)
@@ -60,7 +60,7 @@ In \ref{sec:back:image-retrieval}, we describe the main aspects of \gls{cbir} ba
 % TODO add reference to similarities to mammalian brain (in addition to perceptron?)
 Inspired by nature, \acrlong{dl} models are often implemented as \glspl{dnn} -- a computational model comprised by multiple layers of processing units that mimics the structure and the interconnection of neurons in the mammalian brain~\cite{rosenblatt1958perceptron}.
 Recent years have witnessed a rapid rise in the use of \gls{dl} approaches to solve complex task, reaching even super-human performance in perceptiual~\cite{he2015delving}, control~\cite{mnih2015human}, and planning~\cite{silver2016mastering} activities. % TODO add reasoning?
-Interestingly, the representations learnt with \gls{dl} methodologies resemble the structures of signals in the neocortex build by our brain to implement intelligent behaviours, suggesting a strong parallelism between the two~\cite{cadieu2014deep,kubilius2016deep}. % TODO dire meglio
+Interestingly, the representations learnt with \gls{dl} methodologies resemble the structures of signals in the neocortex build by our brain to implement intelligent behaviours, suggesting a strong parallelism between the two domains~\cite{cadieu2014deep,kubilius2016deep}. % TODO dire meglio?
 
 \acrlongpl{dnn} are organized as a sequence (or more generally a graph) of parametric non-linear transformations, known as \emph{layers}, that acts like features extractors;
 starting from raw data, each layer searches for useful patterns in its input and provides higher-level representation of the data to the next layer.
@@ -68,7 +68,7 @@ starting from raw data, each layer searches for useful patterns in its input and
 Formally, given an input $\x$, we can express the output $\y$ of \gls{dnn} as
 %
 \begin{equation} \label{eq:back:deepnet}
-    \y & = f\(\x, \Theta\)
+    \y & = f\(\x, \Theta\) \,,
 %\begin{split}
 %    \y & = f\(\x, \Theta\) \\
 %       & = f_L\(\dots f_2\(f_1\(\x; \theta_1\); \theta_2\); \theta_L\) \,,
@@ -231,11 +231,11 @@ Thus, a max-pooling layer is often used to reduce the resolution of intermediate
 
 \paragraph{Features hierarchy in \glspl{cnn}}
 % TODO [CITE] successful CNNs in DL literature ?
-Convolutional layers are stacked to build deep \glspl{cnn}, that are the one of the core tools of Deep Learning for image perception and analysis \cite{}.
+Convolutional layers are stacked to build deep \glspl{cnn}, that are the one of the core tools of Deep Learning for image perception and analysis~\cite{krizhevsky2012imagenet,sermanet2013overfeat,simonyan2014very,he2015delving,he2016deep,xie2017aggregated}.
 Once trained, filters in a deep \gls{cnn} tend to organize in a hierarchy of detectors, where layers near the input detect the presence of simple features in the input data, while the following layers build up from them and detect more complex features.
 A successful example of the representative power of \glspl{cnn} is object recognition.
 % TODO [CITE] object hierarchical decomposition
-The visual aspect of objects in images follow a hierarchical organization: an object can be decomposed in parts, parts in patches, patches in textures, textures in edges or blobs, and finally in pixels \cite{}.
+The visual aspect of objects in images follow a hierarchical organization: an object can be decomposed in parts, parts in patches, patches in textures, textures in edges or blobs, and finally in pixels~\cite{}.
 \begin{figure}
     % TODO [KEEP?] is feat hier figure valuable?
     \centering
@@ -560,7 +560,7 @@ Finally, moments estimates are used to formulate the \gls{adam} update rule
 \end{equation}
 %
 where $\m^{(k)}_i$ and $\hat{\v}^{(k)}_i$ are the first and second moments estimates of the gradients corresponding to parameter $\theta_i$, and $\epsilon$ is a small values to prevent division by zero.
-Commonly used values for hyper-parameters are $\beta_1 = 0.9$, $\beta_2 = 0.999$, and $\epsilon = 10^{-8}$, as suggested by the authors.
+Commonly used values for hyperparameters are $\beta_1 = 0.9$, $\beta_2 = 0.999$, and $\epsilon = 10^{-8}$, as suggested by the authors.
 
 \section{Image Classification}
 \label{sec:back:image-classification}
@@ -591,8 +591,8 @@ In this case, an image $\x$ is mapped into its posterior probability $p_i = p(\y
 Thus, the classifier is a function $f: I \to \p$ which maps an image to the parameters $\p = (p_1, \ldots, p_L), \sum_{i=1}^L p_i = 1$ of a categorical distribution defined over the label space.
 Soft assignments present a broad range of advantages with respect to hard assignments, the most important one being differentiability, which enables and facilitates gradient-based learning of models for $f$.
 
-...
-%Evaluation Metrics
+% TODO expand image classification problem setting?
+
 \subsection{Evaluation}
 \label{subsec:back:classif-eval}
 
@@ -614,9 +614,9 @@ metrics can be computed considering each class as the positive one and then aggr
 \begin{tabularx}{\linewidth}{cr|M{1.3cm}|M{1.3cm}|>{\hskip 2cm}r@{\hskip 3pt}X}
 \multicolumn{4}{c}{}                                                                                                                                      & $\mathrm{TP}=$ & True Positives, i.e. correct hits           \\
 \multicolumn{2}{c}{}                                                  & \multicolumn{2}{c}{\bfseries Actual class}                                        & $\mathrm{TN}=$ & True Negatives, i.e. correct rejections     \\
-\multicolumn{2}{c}{}                                                  & \multicolumn{1}{c}{\it \small Positive} & \multicolumn{1}{c}{\it \small Negative} & $\mathrm{FP}=$ & False Positives, i.e. false alarms          \\ \cline{3-4}
-\parbox[t]{2mm}{\multirow{2}{*}{\rotatebox[origin=c]{90}{\bfseries Predicted}}} & {\it \small Positive} & $\mathrm{TP}$ & $\mathrm{FP}$                   & $\mathrm{FN}=$ & False Negatives, i.e. misses                \\ \cline{3-4}
-                                                                      & {\it \small Negative}           & $\mathrm{FN}$ & $\mathrm{TN}$                   &  $\mathrm{P}=$ & $\mathrm{TP}+\mathrm{FN}=$ Positive samples \\ \cline{3-4}
+\multicolumn{2}{c}{}                                                  & \multicolumn{1}{c}{\itshape \small Positive} & \multicolumn{1}{c}{\itshape \small Negative} & $\mathrm{FP}=$ & False Positives, i.e. false alarms          \\ \cline{3-4}
+\parbox[t]{2mm}{\multirow{2}{*}{\rotatebox[origin=c]{90}{\bfseries Predicted}}} & {\itshape \small Positive} & $\mathrm{TP}$ & $\mathrm{FP}$                   & $\mathrm{FN}=$ & False Negatives, i.e. misses                \\ \cline{3-4}
+                                                                      & {\itshape \small Negative}           & $\mathrm{FN}$ & $\mathrm{TN}$                   &  $\mathrm{P}=$ & $\mathrm{TP}+\mathrm{FN}=$ Positive samples \\ \cline{3-4}
 \multicolumn{4}{c}{}                                                                                                                                      &  $\mathrm{N}=$ & $\mathrm{TN}+\mathrm{FP}=$ Negative samples \\
 \end{tabularx}
 
@@ -705,11 +705,10 @@ On the \gls{roc} plot, this threshold setting corresponds to the point where the
 % TODO divide f in features and classifier, manually (?)
 Traditional approaches to image classification required to manually design the classifier $f(\cdot)$.
 % ESWA: The traditional approaches to the classification problem use ad-hoc functions to extract from an image specific features that are considered to be indicative of certain objects.
-In particular, hand-crafted features detectors and descriptors -- such as SIFT~\cite{}, SURF~\cite{}, ORB~\cite{}, MSER~\cite{}, KAZE~\cite{} to cite some -- were employed to extract information from the image considered indicative for the presence of certain objects.
+In particular, hand-crafted features detectors and descriptors -- such as SIFT~\cite{lowe2004distinctive}, SURF~\cite{bay2006surf}, ORB~\cite{rublee2011orb}, MSER~\cite{matas2004robust}, KAZE~\cite{alcantarilla2012kaze} to cite some -- were employed to extract information from the image considered indicative for the presence of certain objects.
 % TODO check SISAP paper for LF
 For example, the presence of features like hard corners and straight edges might indicate man-made objects in the image~\cite{}.
-% TODO [CITE] shallow classifiers, LF and aggregations and related, see ILSVRC12 leaderboard
-Shallow classifiers based on \gls{ml} methods -- such as logistic regressors~\cite{} or \glspl{svm}~\cite{} -- then relied on these extracted features and their aggregation (VLAD~\cite{}, Fisher Vectors~\cite{}) to determine which label to be assigned to the image.
+Shallow classifiers based on \gls{ml} methods -- such as logistic regressors~\cite{mensink2012metric} or \glspl{svm}~\cite{arandjelovic2012three} -- then relied on these extracted features and their aggregation (VLAD~\cite{jegou2010aggregating}, Fisher Vectors~\cite{perronnin2010improving}) to determine which label to be assigned to the image.
 
 % ESWA: it is hard to think of general, robust, reliable features, which map to specific object types; - it is a huge task to find the right combination; - of features for every type of object to classify; - it is difficult to design functions that are robust to translations, rotations and scaling of objects in the image
 % ESWA: All these problems make developing high accuracy object detectors and classifiers for a broad range of objects very hard.
@@ -725,22 +724,22 @@ Defining a good set of features to extract from images to solve this task is a c
 \paragraph{ImageNet Challenge and the Deep Learning era}
 
 \begin{table}
-    % TODO add methods description from real leaderboard
     \begin{tabularx}{\linewidth}{p{4.5cm}X>{\centering}c}
         \toprule
-        \textbf{Team} & \textbf{Method} & \textbf{Error} \\
+        \textbf{Team} & \textbf{Image Features} & \textbf{Error} \\
         \midrule
-        \emph{LEAR} \newline {\footnotesize LEAR INRIA Grenoble} \newline {\footnotesize TVPA Xerox Research Centre Europe} & (Mensink et al., 2012) & 34.5 \\ % -
+        \emph{LEAR}~\citep{mensink2012metric} \newline {\footnotesize LEAR INRIA Grenoble} \newline {\footnotesize TVPA Xerox Research Centre Europe} & PCA-reduced FV + dense SIFT & 34.5 \\ % -
         \midrule
-        \emph{UvA} \newline {\footnotesize University of Amsterdam} & (Sanchez and Perronnin, 2011; Scheirer et al., 2012) & 29.6 \\ % -
+        \emph{UvA}~\citep{sanchez2011high} % ,scheirer2012multi}
+        \newline {\footnotesize University of Amsterdam} & Compressed FV + SIFT & 29.6 \\ % -
         \midrule
-        \emph{XRCE} \newline {\footnotesize Xerox Research Centre Europe} \newline {\footnotesize LEAR INRIA} & (Perronnin et al., 2012) & 27.1 \\ % -
+        \emph{XRCE}~\citep{akata2014good} \newline {\footnotesize Xerox Research Centre Europe} \newline {\footnotesize LEAR INRIA} & FV / BOV + multi-scale dense SIFT  & 27.1 \\ % -
         \midrule
-        \emph{VGG} \newline {\footnotesize University of Oxford} & (Arandjelovic and Zisserman, 2012; Sanchez et al., 2012) & 27.0 \\ % 50.0
+        \emph{VGG}~\citep{arandjelovic2012three,sanchez2012modeling} \newline {\footnotesize University of Oxford} & SVM on FV + dense rootSIFT + Color statistics & 27.0 \\ % 50.0
         \midrule
-        \emph{ISI} \newline {\footnotesize University of Tokyo, JST PRESTO} & (Harada and Kuniyoshi, 2012) & 26.2 \\% 53.6
+        \emph{ISI}~\citep{harada2012graphical} \newline {\footnotesize University of Tokyo, JST PRESTO} & Gaphical Gaussian Vectors + dense SIFT & 26.2 \\% 53.6
         \midrule
-        \emph{SuperVision} \newline {\footnotesize University of Toronto} & (Krizhevsky et al., 2012) & \textbf{16.4} \\ % 34.2
+        \emph{SuperVision}~\citep{krizhevsky2012imagenet} \newline {\footnotesize University of Toronto} & Trained features (AlexNet \gls{cnn}) & \textbf{16.4} \\ % 34.2
         \bottomrule
     \end{tabularx}
     \caption{ILSVRC12 leaderboard reporting the accuracy (as top-5 error percentage) on the image classification task obtained by the participating teams. Results taken from~\cite{russakovsky2015imagenet}}
@@ -752,8 +751,7 @@ On the other hand, \acrlong{dl} approaches rely on large amount of labeled data 
 The main advantage of this kind of approach is its general applicability even to large-scale scenarios where thousands of different classes of images have to be recognized.
 Recent results in the \gls{ilsvrc} are a striking evidence of the success of \gls{dl} methods in image classification.
 \gls{ilsvrc} is an annual challenge in which competitors are asked to recognize generic objects in images and classify them accordingly choosing from a vast label space (in the order of 1,000 labels).
-% TODO [CITE] LF from leaderboard
-Before \gls{dl} methods were applied in this competition, leading solutions were based on combinations and aggregation of hand-made local features~\cite{}.
+Before \gls{dl} methods were applied in this competition, leading solutions were based on combinations and aggregation of hand-made local features~\cite{harada2012graphical,akata2014good,sanchez2011high,mensink2012metric}.
 Interestingly, in the edition of the challenge occurred in 2012, a \gls{dl} method based on \acrlongpl{cnn}~\cite{krizhevsky2012imagenet} outperformed non-\gls{dl} solutions by a large margin ($16.4 \%$ top-5 error vs $26.2 \%$ of the second place, see \ref{tab:ilsvrc12-results}), marking the beginning of the \gls{dl}-era
 % TODO rephrase...
 and the exponential growth of interest by research communities in the last six years.
@@ -838,7 +836,7 @@ On smaller datasets, such as CIFAR-10 and CIFAR-100, the authors experimented wi
 The extended generalization power of deeper representations lead this architectures to win in a number of challenging vision competitions, such as the \gls{ilsvrc} 2015 classification, detection and localization tasks, and the \acrshort{coco} 2015 detection and segmentation tasks.
 
 \paragraph{Beyond \glspl{resnet}}
-% TODO check beyond resnets
+% TODO check beyond resnets?
 Residual learning and \glspl{resnet} represent the last significant breakthrough in \gls{dnn} and feature learning.
 In the last years, many smaller improvements have been made by developing new ideas based on the ones already reviewed.
 \citet{huang2017densely} presented DenseNets, an evolution of \glspl{resnet} where skip-connections are used to connect every layer to every succeeding layer inside a block in a dense manner.
@@ -881,7 +879,7 @@ A small ensemble of SENet-154 -- a modified version of a ResNeXt-152 network~\ci
 In this section, we will review the key concepts about \acrlong{cbir} and some of the relevant work employing Deep Learning techniques in this field.
 
 %CBIR (query-by-example)
-We indicate as \acrfull{cbir} the task of retrieving from a (potentially large) collection of images the ones relevant to a user query by looking only to their unstructured content, i.e. without exploiting additional information associated with images such as textual annotations or structured metadata as traditional approach would.
+We indicate as \acrfull{cbir} the task of retrieving from a (potentially large) collection of images the ones relevant to a query by looking only to their unstructured content, i.e. without exploiting additional information associated with images such as textual annotations or structured metadata as traditional approach would.
 \gls{cbir} systems are then valuable in the case image metadata -- e.g. annotations, surrounding text in documents, descriptions -- is scarce, misleading, or totally absent, and traditional approaches would fail.
 In general, it provides an orthogonal access method to a large imagery corpus which is solely based on the visual content of images.
 
@@ -922,17 +920,69 @@ For scoring large collections, the system leverages the pre-built database index
 With intention gap, we refer to the difficulty of a user to precisely express the content to be retrieved given the query paradigm provided by the system;
 the \emph{Query Formulation} and \emph{Query Representation} modules are responsible to minimize this gap.
 As an example of intention gap, consider a system adopting the query-by-example paradigm and an image containing a dog in a park as query;
-the system does not know whether the user wants to retrieval images containing a at least a dog, a dog of that particular breed, or other pictures of the same park.
+the system does not know whether the user wants to retrieval images containing at least a dog, a dog of that particular breed, or other pictures of the same park.
 
 With semantic gap, we refer to the limitation of the employed content descriptors to represent high-level concepts.
 % TODO [CITE] high-level representations for retrieval (off-the-shelf, check survey)
 While descriptors of low-level features -- such as gradient histograms and color histograms -- suffer from this problem, recent work on image representations learnt with \gls{dl} methodologies drastically reduced this gap in retrieval systems~\cite{}.
+%We will review some of them in the following section.
 
 \subsection{Image Representations}
-%Image Representations
-%Transfer Learning
-%Deep Features (fc7 -> RMAC)
+In this section, we report a brief review of some of the most important works in creating effective and efficient image representations for image retrieval.
 
+The evolution of image representations developed with \gls{dl} strictly followed the one image classification undergone during the same years.
+This is mainly due to the fact that \acrlong{dl} techniques belong to the set of \emph{representation learning} methods, i.e. methods that internally learn and harness a high-level representation of the data to solve a given problem.
+In the same way \glspl{cnn} learnt good features for classification, image retrieval largely benefit from the ability of \gls{dl} methods to produce specialized representations.
+Image representations extracted from activations of deep neural network models are often called \emph{deep features} in the literature.
+
+\paragraph{Transfer Learning}
+%Transfer Learning
+The first approaches to obtain an image representation from \gls{dl}-based solutions leveraged a metodology called \emph{transfer learning}, in which representation are learnt exploiting a different yet similar task.
+The most common form of transfer learning is to exploit \glspl{cnn} trained on a different task, e.g. large-scale image classification, to obtain a feature extractor to be used in other tasks, such as image representation for image retrieval.
+Due to the huge span of object and variability of large-scale datasets such as ImageNet, representations learnt for classification include many of the desired properties of image representation for retrieval, such as robustness to noise, pose and illumination changes, intra-class variability, just to name a few.
+
+\paragraph{Deep Features from Fully Connected Layers}
+\citet{sharif2014cnn} evaluated the usage of an internal layer (i.e. \emph{fc7}) of OverFeat model pre-trained on ImageNet as image representations for a variety of visual task such as coarse- and fine-grained image classification, object and scene recognition, attribute detection, and image retrieval.
+The authors found that the off-the-shelf descriptors extracted from the deep network outperformed or provided a strong baseline on many of the evaluated task, casting a shadow on traditional approaches based on the aggregation of global or local hand-crafted features.
+%
+% From Tolias RMAC: In the case of image retrieval, fully connected layers are used as global descriptors followed by dimensionality reduction (\cite{babenko2014neural}).
+On the same line of work, \citet{babenko2014neural} tested several internal layers of a \gls{cnn} trained on \gls{ilsvrc} as image representations in retrieval benchmarks.
+They also experimented dimensionality reduction schemes -- such as \gls{pca} -- on deep features and demonstrated they implement a compact and very efficient solution to image retriveal.
+%
+% From Tolias RMAC: They are also employed as region descriptors to be compared to database descriptors (\cite{radenovic2015multiple}) or aggregated in a VLAD manner (\cite{gong2014multi}).
+Deep features have also been employed to build local descriptions of regions of an image.
+\citet{gong2014multi} extracted multiple feature vectors by feeding mutliple sub-regions of an image in a sliding window manner,  which are then aggregated with \gls{vlad} to obtain a compact descriptor.
+
+\paragraph{Deep Features from Convolutional Layers}
+
+% FROM Tolias: Recent works derive visual representations from the activations of the convolutional layers. This is achieved either by stacking activations (Girshick et al., 2014) or by performing spatial max-pooling (Azizpour et al., 2014, MAC!!) or sum-pooling (Babenko & Lempitsky, 2015) for each feature channel. According to Azizpour et al. (2014) such representation offers better generalization properties for test data that are far from the source (training) data. Noticeably, higher performance in particular object or scene retrieval is obtained by using convolutional layers rather than fully connected ones. The very recent work of Babenko & Lempitsky (2015) shows that sum-pooling performs better than max-pooling when the image representation is whitened. In addition to be a costly choice, we will show that this is not optimal in our context of object localization (see Section 8). Finally, Kalantidis et al. (2015) propose spatial and feature channel weighting that significantly improves performance. Their approach is complementary to what we propose for the filtering and the re-ranking stage.
+
+\citet{tolias2016rmac} proposed \gls{rmac} -- a very efficient extension of the \gls{mac} descriptor which aggregates local information of an image at mutliple scale for effective instance-level image retrieval.
+Due to its relevancy to this thesis, we will describe \gls{rmac} in more details in the next paragraph.
+
+\paragraph{\acrlong{rmac}}
+Let $\x \in \R^{H \times W \times K}$ the output of a convolutional layer of a pre-trained \gls{cnn} comprised by $K$ feature maps with $H \times W$ spatial resolution, and $\x_i$ the $i$-th feature map.
+Given a region $\Reg$ defined over the feature map spatial dimensions, a region descriptor $\f_\Reg$ is obtained by max-pooling along $\Reg$
+\begin{equation} \label{eq:back:rmac-region}
+    \f_\Reg = [\f_{\Reg,1}, \ldots, \f_{\Reg,K}] \qquad \f_{\Reg,i} = \max_{p \in \Reg} \x_i(p) \,,
+\end{equation}
+where $\x_i(p)$ indicates the activation at a particular spatial position $p$ of the feature map.
+Region descriptors are extracted using multiple overlapped squared regions at multiple scales, and region are chosen in order to have an overlap nearest to 40\% (see \ref{fig:back:rmac-regions}).
+All the region descriptors are $l_2$-normalized, PCA-whitened % FROM Tolias: (Jégou & Chum, 2012)
+, and $l2$-normalized again, and the final \gls{rmac} descriptor is obtained by summing together the post-processed region descriptors and $l2$-normalizing the result.
+The obtained descriptor accurately describe multiple local parts of the image at multiple scale and can be computed very efficiently;
+in fact, there is no need to crop, resize, and re-feed the image to obtain a multi-scale local description.
+Two descriptors are matched using the cosine similarity.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.6\linewidth]{img/rmac-regions}
+    \caption{Example of regions chosen to extract the \gls{rmac} image descriptor from a \gls{cnn} feature map. \figfrom{tolias2016rmac}}
+    \label{fig:back:rmac-regions}
+\end{figure}
+
+% From Gordo RMAC+: Here, we argue that one of the main reasons that prevented previous retrieval methods based on deep architectures to perform well is their lack of supervised learning for the specific task of instance-level image retrieval. In this work, we focus on the problem of learning representations that are well suited for the retrieval task.
+% RMAC+ \cite{gordo2017end}
 \subsection{Cross-modal Image Retrieval}
 %Cross-modal Retrieval
 %Textual / visual / common space retrievals
@@ -989,7 +1039,16 @@ The \gls{dcg} at the rank position $n$ is defined as
     \mathrm{DCG}@n = \sum_{i=1}^n \frac{2^{r_i} - 1}{\log_2(i + 1)} \,,
 \end{equation}
 where $r_i$ is a positive scalar representing the relevance of the $i$-th retrieved sample.
-% TODO add TDCG from "picture it" paper tex
+In the case rankings can have ties, the \gls{tdcg}~\cite{mcsherry2008computing} is used, defined as:
+%
+\begin{equation}
+\mathrm{TDCG}@n = \sum_{i=1}^{m}\left(\left(\frac{1}{n_i}\sum_{j=t_i+1}^{t_{i+1}}2^{rel_i}-1\right)\sum_{j=t_i+1}^{\min(t_{i+1},k)}\frac{1}{\log_2(i+1)}\right)
+\end{equation}
+%
+where $m$ is the number of group of ties in the ranking of the first $n$ results, $n_i$ indicates the number of tied result in the $i$-th group, $t_i$ indicates the starting position of each tied group.
+The $TDCG$ is derived from $DCG$ by observing that the average gain for a position in a group of tied results is the average of the gain of such tied results.
+The $TDCG$ is obviously equivalent to $DCG$ in the case there are no ties in the results.
+
 % NDCG is divided by a normalization factor to ensure the metric is in the $[0,1]$ range.
 
 % R@K
@@ -1002,11 +1061,13 @@ Assuming $\Y^{\star}_{\q, K}$ the set of samples relevant to $\q$ truncated at t
 \end{equation}
 
 %medR
-\paragraph{\acrlong{medR}}
-The \acrfull{medR} is ...
+\paragraph{\acrlong{medR} and \acrlong{mrr}}
+These metrics are particularly useful when evaluating rankings in which there is only one object in the database relevant to the query that need to be retrieved.
+Cross-modal retrieval with coupled datasets is an examples in which this condition applies: using as query one modality of a sample, a common approach is to evaluate how well the system is able to retrieve the same sample in the different modality.
+Given multiple queries, the \acrfull{medR} is the median of the positions of the relevant objects in the rankings, one per query,
 % MRR
-\paragraph{\acrlong{mrr}}
-The \acrfull{mrr} is ...
+while the \acrfull{mrr} is the mean of the reciprocals of the same quantities.
+
 
 \subsection{Image Indexing}
 %\label{sec:back:indexing}
@@ -1023,36 +1084,76 @@ In this section, we will list the dataset -- either publicly available or collec
 \subsection{Classification Datasets}
 
 \paragraph{\acrfull{ilsvrc} 2012~~\cite{russakovsky2015imagenet}}
-% TODO check imagenet dataset paper
-This dataset is composed by a large set of images of general objects collected for evaluating algorithms for large-scale visual object recognition.
-It is a subset of roughly 1.3 million images taken from the ImageNet database -- a big collection of images labelled and organized following the hierarchical categorization of WordNet.
+The \acrfull{ilsvrc} 2012 dataset is composed by a large set of images of general objects collected for evaluating algorithms for large-scale visual object recognition.
+It is a subset of roughly 1.3 million images taken from the larger ImageNet\footnote{\url{http://www.image-net.org}} database -- a big collection of images labelled and organized following the hierarchical categorization of WordNet.
 Images are assigned a single label chosen from the 1,000 classes selected for the competition, spanning general objects, animals, etc.
 Each class has roughly 1,000 images in the training set (the number oscillates between 700 and 1,300), and exactly 50 and 100 images respectively in the validation and test set, for a total of 1,281,167 images for the train set, 50,000 for the validation set, and 100,000 in the test set.
 Only the training and validation sets are publicly available.
 
-%ILSVRC (+Places)?,
-\paragraph{Places~\cite{zhou2014learning}}
+\paragraph{Places205~\cite{zhou2014learning}}
+The Places205 dataset is composed by roughly 2.5 million images collected from image search engines labelled with 205 semantic scene categories and attributes representing visual environments all over the world.
+It is a subset of the bigger Places dataset~\cite{zhou2016places}.
 
 \paragraph{PKLot~\cite{de2015pklot}}
+The PKLot dataset is an car parking occupancy detection dataset comprised by 12,417 images of 3 parking lots, named UFPR04, UFPR05, and PUC, took in different days and weather conditions.
+The images have been segmented in 695,899 images of parking spaces by cropping along the rotated rectangles delimiting each parking space and rotating back the cropped patches in vertical or horizontal position.
+Each segmented image is labelled with the vacancy status of the slot, which can be either occupied or vacant.
 
 \paragraph{CNRPark+EXT~\cite{amato2016car,amato2017deep}}
+The CNRPark+EXT dataset is a car parking occupancy detection dataset collected during this thesis from the parking lots of the campus of the National Research Council (CNR) in Pisa.
+It is comprised by roughly 150,000 images of parking spaces taken from 9 smart cameras with different view-points, in different days with different weather and light conditions, and includes occlusion and shadow situations that make the occupancy detection task challenging.
+More details about the CNRPark-EXT dataset will
+be given in \ref{ch:deep-parking}.
 
 \paragraph{Twitter Testing Dataset~\cite{you2015robust}}
+The Twitter Testing Dataset is a dataset for image sentiment analysis composed by 1269 images labelled with crowd-sourcing (Amazon Mechanical Turk) following a binary positive/negative sentiment polarity scheme.
+Each image has been annotated as positive or negative by five workers, and three different subsets have been created, respectively comprised by images where 5 workers agree on the sentiment of the image (5-agree, 882 images), where at least 4 workers agree (4-agree, 1,116 images), and where at least 3 workers agree (3-agree, whole set of images).
 
 \paragraph{\acrfull{t4sa}~\cite{vadicamo2017cross}}
+The \acrlong{t4sa} dataset is a large-scale weakly-labelled dataset for sentiment analysis collected during this thesis to evaluate the weakly-labelled cross-media training procedure for image classifiers presented in \ref{ch:weakly-labelled}.
+It is comprised by 904,395 tweets and their corresponding 1,473,394 images (each tweet has one or more images);
+tweets have been collected from the 5\% random stream of global tweets provided by the Twitter APIs keeping only tweets in english with at least five words and at least one image.
+Each tweet is associated with a three-way sentiment polarity (positive/neutral/negative sentiment) predicted by performing textual sentiment polarity prediction.
+More details are available in \ref{ch:weakly-labelled}.
 
 \subsection{Retrieval Datasets}
 
 \paragraph{INRIA Holidays~\cite{jegou2008hamming}}
 
+The INRIA Holidays image set is an image retrieval dataset comprised by 1491 high-resolution holidays photos containing various scenes types.
+The authors chose 500 queries and manually selected from the set the images relevant for each query.
+A frequently used variant of this dataset is the one augmented with \emph{MIRFlickr1M}, a distractor set of 1 million images collected by the Flickr service;
+we refer to this new dataset as \emph{Holidays-MIRFlickr1M}.
+
 \paragraph{Oxford Buildings~\cite{philbin2007object}}
+The Oxford Buildings dataset, also known as \emph{Oxford5k}, is an image retrieval dataset comprised by 5,062 images of various buildings present in Oxford.
+The set is composed by photos of 11 famous buildings plus distractor images collected from Flickr.
+For each building, five queries are specified with bounding boxes delimiting the building we are interested in retrieving, for a total of 55 query images.
+For each query, images of the search set are assegned with one of the following four labels:
+\begin{itemize}
+    \item \emph{ok} -- if the image contains a clear look of the building in the query;
+    \item \emph{good} -- if more than 25\% of the building is clearly visible;
+    \item \emph{junk} -- if less than 25\% of the building
+is visible, or there is a very high level of occlusion or dis-
+tortion;
+    \item \emph{absent} -- if the building is not present.
+\end{itemize}
+In this work, we will adopt the version of this dataset augmented with a distractor set of 100k images collected from Flickr, and we will refer to it as \emph{Oxford-Flickr100k}.
 
-\paragraph{Paris~\cite{philbin2008lost}}
-
-\paragraph{Flickr100k and Flickr1M ~\cite{philbin2007object}}
+% \paragraph{Paris~\cite{philbin2008lost}}
+% \paragraph{Flickr100k and Flickr1M ~\cite{philbin2007object}}
 
 \paragraph{\acrfull{coco}~\cite{lin2014microsoft}}
+
+The Microsoft \acrfull{coco} dataset is a collection of images  for large-scale object detection, segmentation, and captioning.
+it is comprised by 2,500,000 labeled object instances belonging to 91 common object categories in 328,000 images.
+Each image is associated with an instance-level pixel-wise segmentation of the object instances it depicts and five captions describing the whole images.
+This dataset is particularly adopted also in cross-modal retrieval due to its large scale and the presence of captions, and we will use it to compare to existing cross-modal retrieval approaches in \ref{ch:text-to-vis}.
 
 \subsection{Others}
 
 \paragraph{NIPS Adversarial Attacks and Defences Competition DEV set~\cite{kurakin2018adversarial}}
+The NIPS Adversarial Attacks and Defences Competition DEV set is comprised by 1,000 images that do not belong to the \gls{ilsvrc}'12 subsets but share the same label space, i.e. are labelled with one of the same 1,000 label used in \gls{ilsvrc}.
+This set has been released in the context of the NIPS Adversarial Attacks and Defences Competition on Kaggle to let participants work with pre-trained \gls{ilsvrc} classifiers using images not involved in their training process.
+In particular, the set is devoted to generate adversarial examples for image classifiers, i.e. maliciously manipulated images the lead a classifier to misbehave.
+More details are available in \ref{ch:detect-advesarial} in which we use this set of images to evaluate a detection scheme for adversarial attacks.

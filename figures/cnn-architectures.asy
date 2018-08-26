@@ -8,7 +8,7 @@ real wgap = .8;
 
 real n = 0;
 
-void layer(string lab="", int l) {
+void layer(string lab="", int l, bool residual=false) {
 
     // box start (BL) and end (TR)
     pair start = (n * (w + wgap), -l * (h + hgap));
@@ -26,28 +26,34 @@ void layer(string lab="", int l) {
     if (l > 0)
         fill(box(start, end), mediumgray);
 
+    if (residual) {
+        real central_x = w/2;
+        real gap_y = h + hgap;
+        real gap_x = w + wgap;
+        
+        pair aStart = (central_x, -hgap / 2 - .1);
+        pair aMid = aStart + (w/2 + 0.5*wgap, -hgap/2 - h/2);
+        pair aEnd = (central_x, -1.5*hgap - h + .1);
+
+        path res = aStart{right}
+                .. {E}(0.7 * (aMid.x - aStart.x) + aStart.x, aStart.y)
+                .. aMid
+                .. (0.7 * (aMid.x - aEnd.x) + aEnd.x, aEnd.y){W}
+                .. {left}aEnd;
+                   
+        draw(shift(start) * shift(0, gap_y) * res, arrow=Arrow(TeXHead));
+    }
+
     // if find(conv) colour .. etc
 }
 
-void net(string[] net, string name="", bool residual=false, int rstart=0, int revery=1, int rend=-1) {
+void net(string[] net, string name="", bool[] residual = new bool[]{}) {
     pair labelpos = (n * (w + wgap) + w / 2, hgap + h);
     name = "\textbf{" + name + "}";
     label(name, labelpos);
     for (int i = 0; i < net.length; ++i) {
-        layer(net[i], i);
-    }
-    
-    if (residual) {
-        real central_x = n * (w + wgap) + w/2;
-        real gap_y = h + hgap;
-        real gap_x = w + wgap;
-        
-        pair aStart = (central_x, -hgap / 2);
-        pair aMid = aStart + (w/2 + 0.9*wgap, -hgap/2 - h/2);
-        pair aEnd = (central_x, -1.5*hgap - h);
-        // TODO curvature
-        path res = aStart{right} .. {S+E}aMid{S+W} .. {left}aEnd;
-        draw(res, arrow=Arrow(TeXHead));
+        bool res = (residual.length > 0) ? residual[i] : false;
+        layer(net[i], i, res);
     }
     
     ++n;
@@ -123,7 +129,12 @@ string[] resnet34 = new string[] {
     "fc (1000)"
 };
 
+bool[] residual = array(resnet34.length, true);
+int[] notRes = new int[] {0,1,2,9,17,29,34,35,36};
+for (int i: notRes) { residual[i] = false; }
+
+
 net(alexnet, "AlexNet (2012)");
-net(overfeat, "OverFeat ()", residual=true);
-net(resnet34, "ResNet-34 ()");
+net(overfeat, "OverFeat ()");
+net(resnet34, "ResNet-34 ()", residual=residual);
 
