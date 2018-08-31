@@ -40,7 +40,7 @@
 
 % TODO add overfit, underfit to background?
 % TODO add train good practices? (train/val/test splits, epochs, etc.)
-% TODO add dropout to regularizations
+% TODO move dropout?
 
 In this chapter, we present the basic concepts about \gls{dl}, and we introduce the research fields on which its application has been investigated in this thesis, namely Image Classification and \gls{cbir}.
 % TODO add some more intro to the bg chapter?
@@ -230,7 +230,6 @@ Thus, a max-pooling layer is often used to reduce the resolution of intermediate
 % Instead, sum- and average-pooling are used to produce
 
 \paragraph{Features hierarchy in \glspl{cnn}}
-% TODO [CITE] successful CNNs in DL literature ?
 Convolutional layers are stacked to build deep \glspl{cnn}, that are the one of the core tools of Deep Learning for image perception and analysis~\cite{krizhevsky2012imagenet,sermanet2013overfeat,simonyan2014very,he2015delving,he2016deep,xie2017aggregated}.
 Once trained, filters in a deep \gls{cnn} tend to organize in a hierarchy of detectors, where layers near the input detect the presence of simple features in the input data, while the following layers build up from them and detect more complex features.
 A successful example of the representative power of \glspl{cnn} is object recognition.
@@ -387,8 +386,8 @@ Given a training set $\X = \{\(\x_i, \y^\star_i\),\; i=1,\dots,N\}$ comprised by
 A loss function is usually defined as one of more terms summed together.
 The main term $\L_d\(\X; \Theta\)$ is defined as the average of the individual loss values computed on each sample of the dataset $\L\(\y_i, \y^\star_i\)$ -- we denote it the \emph{data term}.
 A secondary optional term $\L_r(\Theta)$ is often used to regularize the network and depends only on the model parameters $\Theta$ -- we indicate this as \emph{regularization term}.
-Regularization consists of model constraints added to avoid other undesired properties during training.
-Regularization has gained importance in the \gls{dl} field due to the huge amount of parameters models are usually comprised of, thus increasing the risk of \emph{overfit} on the train data.
+Regularization consists of model constraints added to avoid other undesired properties during training such as \emph{overfitting} -- i.e. the tendency of a model to predict well known data while failing to make correct prediction for unseen data.
+Regularization has gained importance in the \gls{dl} field due to the huge amount of parameters models are usually comprised of, thus increasing the risk of overfit on the train data.
 The regularization term is usually multiplied by a hyperparameter $\alpha$ and then added to the loss function.
 A general formulation of the loss function is
 %
@@ -430,7 +429,7 @@ Classification models are often designed to output a $N$-dimensional vector $\z$
     \textrm{softmax}(\z)_i = \frac{e^{\z_i}}{\sum_{j=1}^N e^{\z_j}} \,.
 \end{equation}
 
-\paragraph{$\mathbf{L_p}$ weight decay}
+\paragraph{$\mathbf{L_p}$ Weight Decay}
 The most used regulatization terms in the \gls{dl} literature are the ones penalizing the parameters having large norm.
 This is usually implemented defining the regularization term $\L_r\(\Theta\)$ added to the loss to be minimized as the $p$-norm of the parameters.
 Practical definitions have been adopted for $p=2$ ($\mathbf{L_2}$ weight decay) and for $p=1$ ($\mathbf{L_1}$ weight decay).
@@ -561,6 +560,17 @@ Finally, moments estimates are used to formulate the \gls{adam} update rule
 %
 where $\m^{(k)}_i$ and $\hat{\v}^{(k)}_i$ are the first and second moments estimates of the gradients corresponding to parameter $\theta_i$, and $\epsilon$ is a small values to prevent division by zero.
 Commonly used values for hyperparameters are $\beta_1 = 0.9$, $\beta_2 = 0.999$, and $\epsilon = 10^{-8}$, as suggested by the authors.
+
+\paragraph{Dropout}
+Regularization is not limited to regularization loss terms only.
+\emph{Dropout}~\cite{hinton2012improving} is a common regularization technique for \glspl{dnn} which consists in deactivatating (drop) some neurons of an internal layer (by setting their activations to zero) during the training phase and thus enabling the back-propagation of the error only in the survived neurons.
+The choice of the neurons to deactivate is random: each neuron on which dropout is applied has a given probability $p$ to survive.
+The employment of this technique usually increases the number of training iterations needed to a model to converge, because only the subset of weights of the survived neuron are updated in an optimization step.
+However, training a random subset of neurons at each iteration reduces the co-adaptation of neurons, which tend to learn a more diversified and independent configurations of weights.
+This results in a increased ability of bigger models to exploit their capacity and limit overfit.
+At test time, all neurons are used, virtually exploiting and combining the predictions of many independently trained models.
+The activations of the layers trained with dropout are scaled by $p$ to approximate the combined prediction produced by the virtual ensemble of sub-networks.
+
 
 \section{Image Classification}
 \label{sec:back:image-classification}
@@ -770,8 +780,7 @@ This first part of the network is responsible to learn and extract good features
 The whole network -- both the feature extractor and the classifier -- has roughly 60 million parameters and 650,000 neurons, and it is trained end-to-end;
 it took initially two weeks on two GPUs to the authors to train the model with the 1.2 million images provided by the \gls{ilsvrc}'12 train set.
 More details about the architecture are reported in \ref{fig:back:alexnet}.
-% TODO [CITE] dropout, then probably move to regularization section
-Another key ingredient of the success of this architecture is the \emph{dropout}~\cite{} of fully-connected layers -- a very effective technique the authors employed to reduce overfitting.
+Another key ingredient of the success of this architecture is the application of \emph{dropout}~\cite{hinton2012improving} to fully-connected layers, which permitted to the authors to drastically reduce overfitting.
 AlexNet won the \gls{ilsvrc}'12 competition with roughly a 10\% gap in error from the second place competitor.
 This amazing results provided a springboard for the research community for a new way to to do image classification and more in general to learn high-quality features for images.
 In the following years, many other researchers developed \glspl{cnn} for image classification or similar vision tasks, reaching always smaller error rates on important challenges such \gls{ilsvrc}.
@@ -784,7 +793,9 @@ In the following years, many other researchers developed \glspl{cnn} for image c
     \label{fig:back:alexnet}
 \end{figure}
 
-\paragraph{ZFNet} Despite \glspl{cnn} being remarkably good in solving vision task, it is common to treat them as black boxes without having a clear understanding of its internals. % TODO rephase
+\paragraph{ZFNet} Despite \glspl{cnn} being remarkably good in solving vision task,
+trained feature detectors in deep models tend to be difficult comprehend and explain.
+%it is common to treat them as black boxes without having a clear understanding of its internals.
 To alleviate this problem, \citet{zeiler2014visualizing} proposed a visualization technique based on deconvolutions to shed light on the representations learned by intermediate convolutional layers.
 \ref{fig:back:filter-visualization} shows an example of the proposed approach applied on a trained model.
 The usage of these visualizations lead the authors to debug the AlexNet architecture and to propose a new one, informally called \emph{ZFNet} in the research community, which incorporates some modifications, namely the reduction of the size and stride of the filters of the first layer, that enables the model to learn a more balanced set of feature extractors.
@@ -914,7 +925,7 @@ we refer the interested reader to~\cite{zhou2017recent} for a more detailed disc
 The query mapped in the representation space can be finally compared to images in the search collection by means of a scoring function, that produces a rank of images to be shown to the user as results of the retrieval process (\emph{Image Scoring}).
 For scoring large collections, the system leverages the pre-built database index to preform this operation efficiently.
 
-% TODO [CITES] add intention and semantic gaps examples
+% TODO [CITES] intention and semantic gaps
 \acrlong{cbir} presents two intrinsic problematics in its structure, that are known in the literature as the \emph{intention gap} and the \emph{semantic gap}.
 
 With intention gap, we refer to the difficulty of a user to precisely express the content to be retrieved given the query paradigm provided by the system;
