@@ -715,14 +715,12 @@ On the \gls{roc} plot, this threshold setting corresponds to the point where the
 Traditional approaches to image classification required to manually design the classifier $f(\cdot)$.
 % ESWA: The traditional approaches to the classification problem use ad-hoc functions to extract from an image specific features that are considered to be indicative of certain objects.
 In particular, hand-crafted features detectors and descriptors -- such as SIFT~\cite{lowe2004distinctive}, SURF~\cite{bay2006surf}, ORB~\cite{rublee2011orb}, MSER~\cite{matas2004robust}, KAZE~\cite{alcantarilla2012kaze} to cite some -- were employed to extract information from the image considered indicative for the presence of certain objects.
-% TODO check SISAP paper for LF
 For example, the presence of features like hard corners and straight edges might indicate man-made objects in the image~\cite{piccinini2012real}.
 Shallow classifiers based on \gls{ml} methods -- such as logistic regressors~\cite{mensink2012metric} or \glspl{svm}~\cite{arandjelovic2012three} -- then relied on these extracted features and their aggregation (VLAD~\cite{jegou2010aggregating}, Fisher Vectors~\cite{perronnin2010improving}) to determine which label to be assigned to the image.
 
 % ESWA: it is hard to think of general, robust, reliable features, which map to specific object types; - it is a huge task to find the right combination; - of features for every type of object to classify; - it is difficult to design functions that are robust to translations, rotations and scaling of objects in the image
 % ESWA: All these problems make developing high accuracy object detectors and classifiers for a broad range of objects very hard.
-% TODO [CITE] VO/SLAM/SfM w/ LF
-However, manually engineered solutions are feasible for very specific problems -- such as image stitching~\cite{brown2007automatic} -- where the conditions are well known and modelled.
+However, manually engineered solutions are feasible for very specific problems -- such as image stitching~\cite{brown2007automatic} and 3d reconstruction~\cite{schonberger2016structure} -- where the conditions are well known and modelled.
 In general, thinking of features that are invariant to transformations, reliable for many types of objects, and robust to noise and other exogenous factors is often very difficult and time-consuming.
 % ESWA: it is often very complex to develop robust and reliable feature detectors and descriptors by hand.
 % TODO better definition of VSA
@@ -929,7 +927,7 @@ the system does not know whether the user wants to retrieval images containing a
 
 With semantic gap, we refer to the limitation of the employed content descriptors to represent high-level concepts.
 % TODO [CITE] high-level representations for retrieval (off-the-shelf, check survey)
-While descriptors of low-level features -- such as gradient histograms and color histograms -- suffer from this problem, recent work on image representations learnt with \gls{dl} methodologies drastically reduced this gap in retrieval systems~\cite{}.
+While descriptors of low-level features -- such as gradient histograms and color histograms -- suf% TODO check SISAP paper for LFfer from this problem, recent work on image representations learnt with \gls{dl} methodologies drastically reduced this gap in retrieval systems~\cite{}.
 %We will review some of them in the following section.
 
 \subsection{Image Representations}
@@ -990,9 +988,15 @@ Two descriptors are matched using the cosine similarity.
 \end{figure}
 
 \paragraph{Learning Representations for Retrieval}
+Representations obtained by transfer learning and their aggregation demonstrated the potential of features extracted by \glspl{cnn}.
+Succeeding work further improved the state of the art by learning directly for the task of instance image retrieval.
+% Babenko et al (2014): classif loss
+% (Gordo et al, 2016): pretrained models finetuned for retrieval?
+% (Radenovic et al, 2016): pretrained models finetuned for retrieval?
+% \cite{arandjelovic2016netvlad}: NetVLAD
 
-% From Gordo RMAC+: Here, we argue that one of the main reasons that prevented previous retrieval methods based on deep architectures to perform well is their lack of supervised learning for the specific task of instance-level image retrieval~\cite{radenovic2016cnn,gordo2017end}. In this work, we focus on the problem of learning representations that are well suited for the retrieval task.
 % FROM Gordo: A preliminary version of our work (Gordo et al, 2016), together with a concurrent work (Radenovic et al, 2016), confirmed that finetuning the pretrained models for retrieval can bring a significant improvement, but demonstrated that even more crucial are the combination of i) a good image representation and ii) a ranking loss – as opposed to the classification loss used by Babenko et al (2014).
+% From Gordo RMAC+: Here, we argue that one of the main reasons that prevented previous retrieval methods based on deep architectures to perform well is their lack of supervised learning for the specific task of instance-level image retrieval~\cite{radenovic2016cnn,gordo2017end}. In this work, we focus on the problem of learning representations that are well suited for the retrieval task.
 %The recent NetVLAD~\cite{arandjelovic2016netvlad} also highlights the importance of learning to rank.
 
 % RMAC+
