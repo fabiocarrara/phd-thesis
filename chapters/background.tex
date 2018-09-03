@@ -425,6 +425,18 @@ Classification models are often designed to output a $N$-dimensional vector $\z$
     \textrm{softmax}(\z)_i = \frac{e^{\z_i}}{\sum_{j=1}^N e^{\z_j}} \,.
 \end{equation}
 
+% TODO siamese loss
+\paragraph{Contrastive (or Siamese) Loss}
+The contrastive (or siamese) loss \cite{bromley1994signature,hadsell2006dimensionality} is employed for learning representations of data suited to be compared with a metric function, i.e. metric learning problems.
+The single data sample on which this loss is applied is comprised by a pair $(\x_1, \x_2)$ of similar (matching, $\y^\star = 1$) or dissimilar (non-matching, $\y^\star = 0$) items;
+We denote as $f(\x_1)$ and $f(\x_2)$ the representations of the data points comprising the pair computed by the neural network $f(\cdot)$.
+The loss is formulated to penalize
+the neural network that maps a data point $\x$ into an Euclidean vector space, and let
+
+% TODO triplet loss
+\paragraph{Triplet Loss}
+\cite{weinberger2009distance,schroff2015facenet}
+
 \paragraph{$\mathbf{L_p}$ Weight Decay}
 The most used regulatization terms in the \gls{dl} literature are the ones penalizing the parameters having large norm.
 This is usually implemented defining the regularization term $\L_r\(\Theta\)$ added to the loss to be minimized as the $p$-norm of the parameters.
@@ -824,7 +836,6 @@ The first network architecture leveraging Inception modules proposed by the auth
 % TODO add BatchNorm paper? together with DropOut \cite{ioffe2015batch}
 
 \paragraph{Residual Networks}
-
 Despite having more capacity, deeper models are more prone to optimization problems.
 Due to the inability to fully exploit the parameters of additional layers, the possibility to arbitrarily increase the capacity of the model to solve more complex problems is often limited, and after a certain number of layers the performance of the model start decreasing instead of remaining constant.
 \citet{he2016deep} strongly alleviated this problem by introducing \emph{residual learning} of deep models.
@@ -927,7 +938,7 @@ the system does not know whether the user wants to retrieval images containing a
 
 With semantic gap, we refer to the limitation of the employed content descriptors to represent high-level concepts.
 % TODO [CITE] high-level representations for retrieval (off-the-shelf, check survey)
-While descriptors of low-level features -- such as gradient histograms and color histograms -- suf% TODO check SISAP paper for LFfer from this problem, recent work on image representations learnt with \gls{dl} methodologies drastically reduced this gap in retrieval systems~\cite{}.
+While descriptors of low-level features -- such as gradient histograms and color histograms -- suffer from this problem, recent work on image representations learnt with \gls{dl} methodologies drastically reduced this gap in retrieval systems~\cite{}.
 %We will review some of them in the following section.
 
 \subsection{Image Representations}
@@ -946,11 +957,11 @@ Due to the huge span of object and variability of large-scale datasets such as I
 
 \paragraph{Deep Features from Fully Connected Layers}
 \citet{sharif2014cnn} evaluated the usage of an internal layer (i.e. \emph{fc7}) of OverFeat model pre-trained on ImageNet as image representations for a variety of visual task such as coarse- and fine-grained image classification, object and scene recognition, attribute detection, and image retrieval.
-The authors found that the off-the-shelf descriptors extracted from the deep network outperformed or provided a strong baseline on many of the evaluated task, casting a shadow on traditional approaches based on the aggregation of global or local hand-crafted features.
+The authors found that the off-the-shelf descriptors extracted from the deep network provided a strong baseline on many of the evaluated task using a unique global descriptor, casting a shadow on traditional approaches based on the aggregation of global or local hand-crafted features and expensive spatial verification stages.
 %
 % From Tolias RMAC: In the case of image retrieval, fully connected layers are used as global descriptors followed by dimensionality reduction (\cite{babenko2014neural}).
 On the same line of work, \citet{babenko2014neural} tested several internal layers of a \gls{cnn} trained on \gls{ilsvrc} as image representations in retrieval benchmarks.
-They also experimented dimensionality reduction schemes -- such as \gls{pca} -- on deep features and demonstrated they implement a compact and very efficient solution to image retriveal.
+They also experimented dimensionality reduction schemes -- such as \gls{pca} -- on deep features and demonstrated they implement a compact and very efficient solution to image retrieval.
 %
 % From Tolias RMAC: They are also employed as region descriptors to be compared to database descriptors (\cite{radenovic2015multiple}) or aggregated in a VLAD manner (\cite{gong2014multi}).
 Deep features have also been employed to build local descriptions of regions of an image.
@@ -989,17 +1000,17 @@ Two descriptors are matched using the cosine similarity.
 
 \paragraph{Learning Representations for Retrieval}
 Representations obtained by transfer learning and their aggregation demonstrated the potential of features extracted by \glspl{cnn}.
-Succeeding work further improved the state of the art by learning directly for the task of instance image retrieval.
-% Babenko et al (2014): classif loss
-% (Gordo et al, 2016): pretrained models finetuned for retrieval?
-% (Radenovic et al, 2016): pretrained models finetuned for retrieval?
-% \cite{arandjelovic2016netvlad}: NetVLAD
+However, some of the properties of the representations learnt in classification tasks -- such as robustness to intra-class variability -- are undesirable in some retrieval tasks, e.g instance-level image retrieval.
+Succeeding work further improved the state of the art by learning representations directly suited for the task of image retrieval.
+\citet{arandjelovic2016netvlad} proposed a differentiable generalization of the VLAD aggregation pipeline called NetVLAD which is eligible to be learned in a neural network framework.
+The authors added the NetVLAD module to the last convolutional layer of a pre-trained \gls{dcnn} and fine-tuned the whole pipeline defining a weakly supervised triplet ranking loss.
+Similarly, \citet{radenovic2016cnn} fine-tuned a pre-trained \gls{cnn} extracting MAC representations with a siamese loss.
+The matching and non-matching couples were chosen in an unsupervised way exploiting a large set of unlabelled landmark photos and an automatic 3D reconstruction system based on local features and geometric consistency.
+% TODO [FIGURE] RMAC+ figure from gordo2016deep ?
+Of particular interest is the work of \citet{gordo2016deep,gordo2017end}, in which a residual \gls{cnn} equipped with a R-MAC pipeline are fine-tuned with a triplet loss to generate a compact and effective global image descriptor.
+Moreover, the authors employed a \gls{rpn} -- a regression model that predicts regions of interest from an image -- to establish the regions aggregated by R-MAC instead of using overlapping grids.
+The obtained representations outperform methods based on local features and spatial verification on multiple datasets on both effectiveness and computational efficiency.
 
-% FROM Gordo: A preliminary version of our work (Gordo et al, 2016), together with a concurrent work (Radenovic et al, 2016), confirmed that finetuning the pretrained models for retrieval can bring a significant improvement, but demonstrated that even more crucial are the combination of i) a good image representation and ii) a ranking loss – as opposed to the classification loss used by Babenko et al (2014).
-% From Gordo RMAC+: Here, we argue that one of the main reasons that prevented previous retrieval methods based on deep architectures to perform well is their lack of supervised learning for the specific task of instance-level image retrieval~\cite{radenovic2016cnn,gordo2017end}. In this work, we focus on the problem of learning representations that are well suited for the retrieval task.
-%The recent NetVLAD~\cite{arandjelovic2016netvlad} also highlights the importance of learning to rank.
-
-% RMAC+
 \subsection{Cross-modal Image Retrieval}
 %Cross-modal Retrieval
 %Textual / visual / common space retrievals
