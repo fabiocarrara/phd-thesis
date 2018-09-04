@@ -424,18 +424,58 @@ Classification models are often designed to output a $N$-dimensional vector $\z$
 \begin{equation} \label{eq:back:softmax}
     \textrm{softmax}(\z)_i = \frac{e^{\z_i}}{\sum_{j=1}^N e^{\z_j}} \,.
 \end{equation}
+% TODO [FIGURE] siamese figs and subfigs
+\begin{figure}
+    \begin{subfigure}{.3\linewidth}
+        \includegraphics[width=\linewidth]{figures/learn-to-rank}
+        \caption{} % TODO check siamese paper for caption
+        \label{fig:back:ranking-loss}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{.3\linewidth}
+        \includegraphics[width=\linewidth]{figures/siamese-archit}
+        \caption{Siamese architecture with contrastive loss}
+        \label{fig:back:siamese}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{.3\linewidth}
+        \includegraphics[width=\linewidth]{figures/triplet-archit}
+        \caption{Siamese architecture with triplet loss}
+        \label{fig:back:triplet}
+    \end{subfigure}
+    \caption{Ranking loss and siamese architectures}
+    \label{fig:back:learn-to-rank}
+\end{figure}
 
-% TODO siamese loss
 \paragraph{Contrastive (or Siamese) Loss}
-The contrastive (or siamese) loss \cite{bromley1994signature,hadsell2006dimensionality} is employed for learning representations of data suited to be compared with a metric function, i.e. metric learning problems.
-The single data sample on which this loss is applied is comprised by a pair $(\x_1, \x_2)$ of similar (matching, $\y^\star = 1$) or dissimilar (non-matching, $\y^\star = 0$) items;
-We denote as $f(\x_1)$ and $f(\x_2)$ the representations of the data points comprising the pair computed by the neural network $f(\cdot)$.
-The loss is formulated to penalize
-the neural network that maps a data point $\x$ into an Euclidean vector space, and let
+The contrastive (or siamese) loss~\cite{bromley1994signature,hadsell2006dimensionality} is employed for learning representations of data suited to be compared with a metric function $d(\cdot, \cdot)$.
+% TODO [CITE] learning to rank
+Thus, it is particularly useful for \emph{learning to rank} problems, in which the objective is to learn representations that need to be matched efficiently for scoring large sets of items e.g. for retrieval and ranking purposes.
+The single data sample on which this loss is applied is comprised by a pair $(\x_1, \x_2)$ of similar (matching, $\y^\star = 1$) or dissimilar (mismatching, $\y^\star = 0$) items;
+We denote as $f(\x_1)$ and $f(\x_2)$ the representations of the data points forming the pair computed by a neural network $f(\cdot)$, and we indicate with $d(\cdot,\cdot)$ a distance function defined over a couple of real vectors, e.g. the squared Euclidean distance function.
+The constrastive loss is defined as
+\begin{equation} \label{eq:back:siamese}
+    \L(\x_1, \x_2, \y^\star) = \y^\star \cdot d(f(\x_1), f(\x_2)) + (1 - \y^\star) \cdot \max \( 0, m - d(f(\x_1), f(\x_2)) \) \,,
+\end{equation}
+where $m$ is a parameters called \emph{margin}.
+% The two terms respectively contribute to penalize matching and non-matching
+The first term is only active in the case of matching pairs ($\y^\star = 1$) and penalizes representations that are far apart and should instead be nearer, i.e. similar pairs having a high value of $d(f(\x_1), f(\x_2))$.
+On the other hand, the second term is only active when a mismatching pair is processed ($\y^\star = 0$) and penalizes representations that are too near to each other and should be taken further apart, i.e. dissimilar items having $d(f(\x_1), f(\x_2)) < m$.
+The margin parameter $m$ defines the minimum value of the distance we want mismatching pairs to be at.
+Back-propagating this loss through the parameters of the network $f(\cdot)$ permits us to steer the network to embed the data into a compact vector space -- thus suitable to efficiently compute distances $d(\cdot, \cdot)$ -- in which similar points lie near each other and dissimilar points are instead far apart (see \ref{fig:back:ranking-loss}).
+When using this loss during training, the computational graph that implement the function $f(\cdot)$ and compute the two representations for the input couple is often organized into two identical branches with shared weights, thus the term ``siamese''.
+A depiction of the siamese architecture is reported in \ref{fig:back:siamese}.
 
-% TODO triplet loss
 \paragraph{Triplet Loss}
-\cite{weinberger2009distance,schroff2015facenet}
+Similarly to the contrastive loss, the triplet loss~\cite{weinberger2009distance,schroff2015facenet} is a ranking loss in which the constraints on distances between items are defined by a triple $(\x_a, \x_p, \x_n)$, where $\x_a$ is an anchor data point, $\x_p$ is a point similar to $\x_a$ (positive), and $\x_n$ is a point dissimilar to $\x_a$ (negative).
+The goal of this loss function is to learn a representation for each element of the triplet $f(\x_a)$, $f(\x_p)$, and $f(\x_n)$ such that the embedded positive point $f(\x_p)$ is nearer to $f(\x_a)$ with respect to $f(\x_n)$ at least by a fixed margin $m$.
+This can be formalized as
+\begin{equation} \label{eq:back:triplet}
+    \L(\x_a, \x_p, \x_n) = \max \( 0, m - d(f(\x_a), f(\x_n)) + d(f(\x_a), f(\x_p)) \) \,,
+\end{equation}
+where $d(\cdot, \cdot)$ is the distance function used to compare learned representations, e.g. the squared Euclidean distance.
+The common triplet architecture is depicted in \ref{fig:back:triplet}.
+
 
 \paragraph{$\mathbf{L_p}$ Weight Decay}
 The most used regulatization terms in the \gls{dl} literature are the ones penalizing the parameters having large norm.
@@ -977,11 +1017,18 @@ Similarly, \citet{babenko2015aggregating} shown that a sum-pool aggregation of t
 \citet{tolias2016rmac} proposed \gls{rmac} -- a very efficient extension of the \gls{mac} descriptor which aggregates local information of an image at multiple scale for effective instance-level image retrieval.
 Due to its relevancy to this thesis, we will describe \gls{rmac} in more details in the next paragraph.
 
+\begin{figure}
+    \centering
+    \includegraphics[width=0.6\linewidth]{img/rmac-regions}
+    \caption{Example of regions chosen to extract the \gls{rmac} image descriptor from a \gls{cnn} feature map. \figfrom{tolias2016rmac}}
+    \label{fig:back:rmac-regions}
+\end{figure}
+
 \paragraph{\acrlong{rmac}}
 Let $\x \in \R^{H \times W \times K}$ the output of a convolutional layer of a pre-trained \gls{cnn} comprised by $K$ feature maps with $H \times W$ spatial resolution, and $\x_i$ the $i$-th feature map.
 Given a region $\Reg$ defined over the feature map spatial dimensions, a region descriptor $\f_\Reg$ is obtained by max-pooling along $\Reg$
 \begin{equation} \label{eq:back:rmac-region}
-    \f_\Reg = [\f_{\Reg,1}, \ldots, \f_{\Reg,K}] \qquad \f_{\Reg,i} = \max_{p \in \Reg} \x_i(p) \,,
+\f_\Reg = [\f_{\Reg,1}, \ldots, \f_{\Reg,K}] \qquad \f_{\Reg,i} = \max_{p \in \Reg} \x_i(p) \,,
 \end{equation}
 where $\x_i(p)$ indicates the activation at a particular spatial position $p$ of the feature map.
 Region descriptors are extracted using multiple overlapped squared regions at multiple scales, and region are chosen in order to have an overlap nearest to 40\% (see \ref{fig:back:rmac-regions}).
@@ -991,11 +1038,12 @@ The obtained descriptor accurately describe multiple local parts of the image at
 in fact, there is no need to crop, resize, and re-feed the image to obtain a multi-scale local description.
 Two descriptors are matched using the cosine similarity.
 
+% TODO [FIGURE] RMAC+ substitute figure from gordo2017end with RPN
 \begin{figure}
     \centering
-    \includegraphics[width=0.6\linewidth]{img/rmac-regions}
-    \caption{Example of regions chosen to extract the \gls{rmac} image descriptor from a \gls{cnn} feature map. \figfrom{tolias2016rmac}}
-    \label{fig:back:rmac-regions}
+    \includegraphics[width=\linewidth]{img/rmac-trained}
+    \caption{Training and deploy pipelines proposed by~\citet{gordo2016deep,gordo2017end} for learning image representations for retrieval \figfrom{gordo2016deep}}
+    \label{fig:back:rmac-trained}
 \end{figure}
 
 \paragraph{Learning Representations for Retrieval}
@@ -1006,10 +1054,10 @@ Succeeding work further improved the state of the art by learning representation
 The authors added the NetVLAD module to the last convolutional layer of a pre-trained \gls{dcnn} and fine-tuned the whole pipeline defining a weakly supervised triplet ranking loss.
 Similarly, \citet{radenovic2016cnn} fine-tuned a pre-trained \gls{cnn} extracting MAC representations with a siamese loss.
 The matching and non-matching couples were chosen in an unsupervised way exploiting a large set of unlabelled landmark photos and an automatic 3D reconstruction system based on local features and geometric consistency.
-% TODO [FIGURE] RMAC+ figure from gordo2016deep ?
 Of particular interest is the work of \citet{gordo2016deep,gordo2017end}, in which a residual \gls{cnn} equipped with a R-MAC pipeline are fine-tuned with a triplet loss to generate a compact and effective global image descriptor.
 Moreover, the authors employed a \gls{rpn} -- a regression model that predicts regions of interest from an image -- to establish the regions aggregated by R-MAC instead of using overlapping grids.
 The obtained representations outperform methods based on local features and spatial verification on multiple datasets on both effectiveness and computational efficiency.
+\ref{fig:back:rmac-trained} depicts the training and deploy pipelines proposed.
 
 \subsection{Cross-modal Image Retrieval}
 %Cross-modal Retrieval
