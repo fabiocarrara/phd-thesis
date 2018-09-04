@@ -978,7 +978,7 @@ the system does not know whether the user wants to retrieval images containing a
 
 With semantic gap, we refer to the limitation of the employed content descriptors to represent high-level concepts.
 % TODO [CITE] high-level representations for retrieval (off-the-shelf, check survey)
-While descriptors of low-level features -- such as gradient histograms and color histograms -- suffer from this problem, recent work on image representations learnt with \gls{dl} methodologies drastically reduced this gap in retrieval systems~\cite{}.
+While descriptors of low-level features -- such as gradient histograms and color histograms -- suffer from this problem, recent work on image representations learnt with \gls{dl} methodologies drastically reduced this gap in retrieval systems~\cite{donahue2014decaf}.
 %We will review some of them in the following section.
 
 \subsection{Image Representations}
@@ -1061,7 +1061,61 @@ The obtained representations outperform methods based on local features and spat
 
 \subsection{Cross-modal Image Retrieval}
 %Cross-modal Retrieval
+
+%FROM Picture it:
+% Deep Learning and Deep Convolutional Neural Networks (DCNNs) in particular, have recently shown impressive performance on a number of multimedia information retrieval tasks [27, 41, 17]. Deep Learning methods learn representations of data with multiple levels of abstraction. As a result, the activation of the deeper hidden layers has been used in the context of transfer learning and content-based image retrieval [9, 37] as high-level representations of the visual content. Somewhat similarly, distributional semantic models, such as those produced by Word2Vec [33], or GloVe [36], have been found useful in modeling semantic similarities among words by establishing a connection between word meaning and position in a vector space.
+Practical applications of \gls{cbir} often require the retrieval system to have more query formulation methods other than \emph{query-by-example}, the most common one being textual search.
+Similarly to \glspl{cnn} for visual content representation, \gls{ml} approaches applied to text -- such as Word2Vec~\cite{mikolov2013distributed} and GloVe~\cite{pennington2014glove} -- succeeded to model its semantics and represent it into vector spaces where words meaning are connected with their position in the space.
+%In order to perform cross-media retrieval, the two feature spaces (text and images in our case) should be made comparable, typically by learning how to properly map the different media.
+Having at hand semantic representations of data coming from different media, in cross-modal retrieval we need to map between them in order to be comparable.
+Defining a mapping function is often not trivial, and \gls{dl} approaches shine in learning those mappings leveraging large annotated multi-modal datasets, such as \gls{coco}.
+Once the data lie on the same semantic space, we can score and rank items of whichever modality following the same principles applied in the \emph{query-by-example} paradigm.
+% This problem has been attempted in different manners so far, which could be roughly grouped into three main variants, depending on whether the mapping is performed into a common latent space (Section 2.1), a textual space (Section 2.2), or a visual space (Section 2.3).
+The problem of mapping modalities has led to three main research paths that differ for the chosen destination space for the mapping, that is i) common space, ii) textual space, or iii) visual space approaches.
+In the following, we will review some of the recent works on cross-modal retrieval dividing them in this three categories, and we will refer without loss of generality to the case in which we are retrieving images starting from textual queries. %, but the same principles apply to other modalities.
+
 %Textual / visual / common space retrievals
+\paragraph{Common Space Approaches}
+In common space approaches, the goal is to build a common latent space in which both modalities are mapped into and compared.
+%The idea of comparing texts and images in a common latent space has been investigated by means of Cross-modal Factor Analysis and (Kernel) Canonical Correlation Analysis in [7, 15].
+% nothing here..
+%In a similar vein, Corr-AE was proposed for cross-modal retrieval, allowing the search to be performed in both directions, i.e., from text-to-image and vice versa [12]. The idea is to train two autoencoders, one for the image domain and another for the textual domain, imposing restrictions between the two.
+In \cite{ngiam2011multimodal,feng2014cross}, the authors propose to use autoencoders, i.e. neural network models that learn to encode its input by creating a low-dimensional code and by reconstructing its input starting from that code;
+a common space is created by imposing a correlation between the code of two autoencoders, one for the image domain and another for the textual domain.
+%Similarly, in \cite{kiros2014unifying} the authors propose an encoder-decoder architecture, in which the encoder part, formed by a LSTM (for textual input) and a CNN (for visual input), is trained to project both inputs into near points in a common multimodal space, and the decoder part generates new text from a point in this new space.
+\citet{kiros2014unifying} defined a multi-modal encoder-decoder architecture, in which text and images are encoded in a common space by two branches respectively implemented with an \gls{lstm} and a \gls{cnn};
+the encoders are trained to place coupled inputs in near points in the common space.
+%As will be seen, one of the architectures we are presenting in the following (S-Text2Vis, Section 3.2) bears resemblance to one of the architectures investigated in [12], the so-called Correspondence full-modal autoencoder (which is inspired by the multimodal deep learning method [34]). However, the two networks have a fundamental difference, since the Correspondence full-modal autoencoder takes examples from both media as the inputs. TODO move to chapter
+%
+%The DeViSE [13] method jointly trains a pretrained instance of the convolutional neural network of [27] (with its last layer replaced with a linear mapping into the final embedding space), and a textual embedding space pre-trained as a skip-gram model [33]. Even though DeViSE uses a final space which is of the same size of the textual space, the pre-trained word embeddings are only used as initial parameters and then they are adapted jointly with visual embeddings during the training. The training is made on image and label pairs, where the labels are not a full description of the scene, indicating only the presence of certain entities in the image.
+In \cite{frome2013devise}, the authors proposed a \gls{devise} model in which a pre-trained \gls{cnn} (AlexNet) and a pre-trained skip-gram textual embedding model (Word2Vec) are adapted to a common space and jointly fine-tuned on image and label pairs.
+
+Common space approaches allows to retrieve items in both modalities starting from a query in whichever modality, e.g. is it possible to retrieve images by text or texts by image.
+However, depending on the needs of the retrieval system, a particular modality may be the preferred way to represent your data in the search database, and a common space projection of all the database may not be viable.
+Consider for example an existing textual document search engine which would like to implement image search by keyword without building a separate image retrieval system.
+In this scenarios, mapping a query into an existing space may result in a suitable solution.
+In the next paragraphs, we will briefly review relevant works that exploit this strategy and leverage an existing textual or visual space to enable cross-media image retrieval.
+
+\paragraph{Search in Textual Space}
+%The BoWDNN method [1] trains a deep neural network to map images directly into a bag-of-words (BoW) space, where the cosine similarity between BoWs representations is used to generate the ranking.
+In \cite{bai2014bag}, a bag-of-words (BoW) space representing text is used as target space, and a deep neural network called BowDNN is proposed to map images into BoWs representations that are then compared with cosine similarity.
+% Somehow similarly, a dedicated area of related research is focused on generating captions describing the salient information of an image (see, e.g., [22, 11, 44]).
+Many other works focus on mapping images directly to a textual description, i.e. producing a caption of the image describing its salient content~\cite{vinyals2015show,karpathy2015deep,fang2015captions}.
+%The m-RNN method [31] trains a multimodal recurrent neural network to generate a caption description for a given image. The model consists of a recurrent sub-network (operating on text data) and a convolutional sub-network (operating on image data) which combine into a multimodal layer where the recurrent state interacts with the image representation.
+In \cite{mao2014deep}, a multi-modal recurrent neural network (m-RNN) is proposed to generate captions for a given image;
+an image representation is extracted by a convolutional sub-network and combined with each the hidden state of a recurrent network to predict the sequence of words comprising the caption.
+%In [30], authors propose m-CNN, a multimodal architecture in which convolutions are used on both the image and textual inputs to directly output a match score between them. Models like m-CNN, which do not explicitly learn a projection but a distance function on a latent projection, are not fit for retrieval on large collections. Given a query, such models need to perform a forward pass through the network for every image in the collection in order to compute the distances. This entails a much higher cost with respect to traditional metrics, such as the Euclidean distance or the cosine similarity. TODO move to chapter
+%The ConSE [35] method adopts a very simple approach, inspired by DeViSE, that uses the classification labels of the convolutional neural network of [27] to select and combine, by their classification probability, the set of textual embeddings related to the top assigned labels.
+Inspired by \gls{devise}, \citet{norouzi2013zero} proposed the ConSE method, in which the image is classified by a pre-trained AlexNet, and a combination of textual embeddings is produced leveraging the most probable labels and its degree of confidence assigned by the network.
+
+\paragraph{Search in Visual Space}
+% TODO [REF] cross-modal chapter
+Methods that maps a textual query in a visual space are less explored and thus object of our investigation in this thesis (see \ref{ch:...}).
+One of the most relevant and recent work in this subfield is Word2VisualVec \cite{dong2018predicting}, in which a deep \gls{mlp} is trained to predict visual features extracted from a pre-trained \gls{cnn} starting from a textual encoding obtained by a combination of Word2Vec representations.
+We argue that this kind of solution is suitable in the cases in which we need to access a large dataset of images for which visual features have already been extracted and indexed, and we want to exploit the same data structures to perform a textual search.
+Being the visual space independent from a particular language, multiple text-to-visual-code models can be trained and deployed to support textual search in multiple languages without the need to replicate data representations.
+
+%Our Text2Vis variants belong to this group where, to the best of our knowledge, the only other proposal up to now is a method dubbed Word2VisualVec [10], which was reported just very recently. There are some fundamental points where their method and ours differ, though. Word2VisualVec takes combinations of Word2Vec-like vectors as a starting point, thus reducing the dimensionality of the input space, whereas we directly take the bag-of-words vector encoding of the textual space as the input (S-Text2Vis), or learn the word embeddings (D-Text2Vis, Section 3.3) during the training process, as we did not observe any improvement in pre-training the textual part. Moreover, Word2VisualVec builds a deep regressor on top of the textual representation that are aggregations of word embeddings, which thus discard word order information. Contrarily, we observed that, when disregarding word order, yet a shallow regressor (S-Text2Vis) produces effective mappings of textual vectors into the visual space. We also observed that taking word order into account helps to improve results (D-Text2Vis and W&D-Text2Vis, Section 3.4). TODO move to chapter
 
 
 \subsection{Evaluation Metrics}
@@ -1144,8 +1198,8 @@ Given multiple queries, the \acrfull{medR} is the median of the positions of the
 % MRR
 while the \acrfull{mrr} is the mean of the reciprocals of the same quantities.
 
-
-\subsection{Image Indexing}
+% TODO move indexing in chapter
+%\subsection{Image Indexing}
 %\label{sec:back:indexing}
 %kNN schemes
 %Permutation-based representations
