@@ -43,6 +43,8 @@
 % TODO add overfit, underfit to background?
 % TODO add train good practices? (train/val/test splits, epochs, etc.)
 
+% TODO [+CITE] speech analysis \citep{yan2014age}, object recognition tasks \citep{ciresan2012multi}
+
 In this chapter, we present the basic concepts about \gls{dl}, and we introduce the research fields on which its application has been investigated in this thesis, namely Image Classification and \gls{cbir}.
 % TODO add some more intro to the bg chapter?
 The chapter is organized as follows.
@@ -822,7 +824,7 @@ Most importantly, huge amounts of data --- collected and labeled exploiting Web 
 % Krizhevsky et al., 2012
 We start our review of relevant work in image classification right from the method that won the \gls{ilsvrc}'12 challenge, that is the \gls{dcnn} proposed by~\citet{krizhevsky2012imagenet}, also knwon as \emph{AlexNet}.
 Inspired by previous work on handwritten digits recognition~\cite{lecun1989backpropagation}, the AlexNet model is composed by a deep convolutional neural network that maps directly RGB data to labels without relying on explicit feature engineering.
-It is comprised by 5 convolutional layers with \gls{relu} activation, the first three of them interleaved with overlapping max-pooling operations to reduce the resolution of intermediate feature maps.
+It is comprised by 5 convolutional layers with \gls{relu} activation, the first three of them interleaved with overlapping max-pooling operations to reduce the resolution of intermediate feature maps and \gls{lrn} that normalizes activations with respect to their spatial neighbors.
 This first part of the network is responsible to learn and extract good features, and it is followed by a classification sub-network consisted of three fully-connected layers with a final softmax transformation that maps the outputs to probabilities in the label space.
 The whole network --- both the feature extractor and the classifier --- has roughly 60 million parameters and 650,000 neurons, and it is trained end-to-end;
 it took initially two weeks on two GPUs to the authors to train the model with the 1.2 million images provided by the \gls{ilsvrc}'12 train set.
