@@ -51,12 +51,12 @@ The research presented in this chapter was published in~\cite{vadicamo2017cross}
 Recent years experienced a rapid and increasing adoption of social media as information exchange and communication platforms.
 On a daily basis, users generate and share a large quantity of multimedia content --- such as texts, images, and videos --- which conveys information about their opinions about a vast range of topics.
 The availability of such a source of data attracted the scientific community as well as the industries to large-scale sentimental analyses of the public opinion.
-Opinion mining and sentiment analysis~\cite{pang2008opinion} foster applications in multiple domains, such as market prediction~\cite{Mishne2006,Asur2010}, government intelligence~\cite{Abbasi2007}, political elections~\cite{Laver2003,OConnor2010}, and crisis management~\cite{avvenuti2016impromptu,cresci2015linguistically}, to name a few.
+Opinion mining and sentiment analysis~\cite{pang2008opinion} foster applications in multiple domains, such as market prediction~\cite{mishne2006predicting,asur2010predicting}, government intelligence~\cite{abbasi2007affect}, political elections~\cite{laver2003extracting,o2010tweets}, and crisis management~\cite{avvenuti2016impromptu,cresci2015linguistically}, to name a few.
 
-From its origin, sentiment analysis has mainly relied on textual contents, while only recently researchers have begun working on automatically detecting sentiments from visual and multimodal contents~\cite{Borth2013:Large-scale,Cao2016,Jou2015:VisualAffect,Siersdorfer2010,You2015:Robust,You2016:Cross-modality}.
+From its origin, sentiment analysis has mainly relied on textual contents, while only recently researchers have begun working on automatically detecting sentiments from visual and multimodal contents~\cite{Borth2013:Large-scale,Cao2016,Jou2015:VisualAffect,siersdorfer2010analyzing,you2015robust,you2016cross}.
 The visual sentiment analysis is receiving increasing attention also due the tendency for microblog users to post pictures and/or videos with short textual descriptions or no text at all.
 As the old saying goes ``\textit{A picture is worth a thousand words}", in fact from the earliest cave paintings to the most recent posts, sharing images is one of the most immediate and effective way to communicate.
-If, on one hand, people with different backgrounds can easily understand the main content of an image or video, on the other hand, emotions and sentiments that arise in the human viewer are highly subjective. Decades of research on image annotation and search have helped to mitigate the \textit{semantic gap} problem \cite{Datta2008,LiUricchio2016}. However, the subjectivity of sentiment and the \textit{affective gap}  between image features and the affective content of an image \cite{Siersdorfer2010},
+If, on one hand, people with different backgrounds can easily understand the main content of an image or video, on the other hand, emotions and sentiments that arise in the human viewer are highly subjective. Decades of research on image annotation and search have helped to mitigate the \textit{semantic gap} problem \cite{Datta2008,LiUricchio2016}. However, the subjectivity of sentiment and the \textit{affective gap}  between image features and the affective content of an image \cite{siersdorfer2010analyzing},
 make the visual sentiment analysis a very challenging task.
 This reflect also the difficulties in generating high-quality labeled images for training visual sentiment classifiers.
 %As other researchers have argued, emotions and sentiments are closely connected entities, but the former is a relatively brief affective state, onset by a stimuli \cite{}, while the latter usually is a longer-lived phenomena referred to a relatively permanent disposition or attitude toward a certain object (or situation) \cite{}.
@@ -71,8 +71,8 @@ However, differently from previous supervised approaches, we propose an end-to-e
 First, we use a tandem Long Short Term Memory Recurrent Neural Network-Support Vector Machine (LSTM-SVM) architecture to classify the sentiment polarity of the texts.
 Then, we exploit the images of the tweets, labeled according to the sentiment polarity of the associated text, to fine-tune a deep Convolutional Neural Network (CNN) architecture, by leveraging on transfer learning.
 Although the text of the tweets is often noisy or misleading with respect to the image content (\eg irrelevant comments), we show that our cross-media approach can be profitably used for learning visual sentiment classifiers in the wild.
-In fact, our results on a manually annotated benchmark for visual sentiment analysis %\cite{You2015:Robust}
-show that the prediction accuracy of our trained CNN models is better than, or in the worst cases, in line with, state-of-the-art classifiers trained on sentiment-related data sets. %~\cite{Borth2013:Large-scale,Campos2016,Islam2016,Siersdorfer2010,You2015:Robust,Yuan2013:Sentribute}.
+In fact, our results on a manually annotated benchmark for visual sentiment analysis %\cite{you2015robust}
+show that the prediction accuracy of our trained CNN models is better than, or in the worst cases, in line with, state-of-the-art classifiers trained on sentiment-related data sets. %~\cite{Borth2013:Large-scale,Campos2016,Islam2016,siersdorfer2010analyzing,you2015robust,yuan2013sentribute}.
 
 The main contributions of our work can be summarized as follows:
 \begin{itemize}
@@ -96,23 +96,23 @@ The main contributions of our work can be summarized as follows:
 % \section{Related Work}\label{sec:related work}
 For what concerns the detection of sentiment polarity in texts extracted from Twitter, first works considered simple linguistic features, such as word unigrams, word bigrams and parts-of-speech, using machine learning algorithms like Naive Bayes, Maximum Entropy and Support Vector Machines (SVM). Among the pioneers of these approaches are Go \etal \cite{go2009twitter} and Bermingham and Smeaton \cite{bermingham2010classifying}.
 In the last few years, deep neural networks contributed to considerable performance improvements with respect to other popular learning algorithms, such as SVM. In particular, Long Short Term Memory Networks (LSTM), which we employed for this
-work, and Convolutional Neural Networks (CNN) were tested on several shared tasks, such as the Semeval Sentiment analysis in Twitter \cite{NakovRRSS16}, which is
+work, and Convolutional Neural Networks (CNN) were tested on several shared tasks, such as the Semeval Sentiment analysis in Twitter \cite{nakov2016semeval}, which is
 considered by the Natural Language Processing community the most
 important benchmark for this task. The results obtained by the
 submitted systems, such as the ones by Deriu \etal
-\cite{deriu2016swisscheese} and Rouvier \etal \cite{RouvierF16}, have
+\cite{deriu2016swisscheese} and Rouvier \etal \cite{rouvier2016sensei}, have
 shown that the combination of these learning techniques with the
 adoption of word embeddings, a compact real-value vector word
 representation which takes into account word similarity
-\cite{MikolovSCCD13} \cite{pennington2014glove}, is able to set the
+\cite{mikolov2013distributed,pennington2014glove}, is able to set the
 state-of-the-art with minimal feature engineering,
 which makes such architectures more robust and flexible than previous ones. %with respect to the anaylized text domain.
 
 While there is a large literature on extracting emotional information from textual content, research on image-based sentiment analysis is still in its early stages.
-First approaches to infer affects from images were based on supervised or semi-supervised frameworks that map low-level features of images into human emotions \cite{Machajdik2010,Siersdorfer2010}. %Jia2012 %taglio ref
-% Siersdorfer \etal \cite{Siersdorfer2010} firstly applied and evaluated automatic classification of sentiment using a large-scale collection of photos (crawled from Flickr using the SentiWordNet \cite{Esuli2006:sentiwordnet} dictionary as query terms).
+First approaches to infer affects from images were based on supervised or semi-supervised frameworks that map low-level features of images into human emotions \cite{machajdik2010affective,siersdorfer2010analyzing}. %Jia2012 %taglio ref
+% Siersdorfer \etal \cite{siersdorfer2010analyzing} firstly applied and evaluated automatic classification of sentiment using a large-scale collection of photos (crawled from Flickr using the SentiWordNet \cite{Esuli2006:sentiwordnet} dictionary as query terms).
 % They used pixel-level color histogram and SIFT-based Bag-of-Word representations as visual features and trained a SVM to predict the sentiment of images.
-To overcome the \textit{affective gap} between low-level features and emotional content of an image, Borth \etal \cite{Borth2013:Large-scale}, Yuan \etal \cite{Yuan2013:Sentribute} and Jou \etal \cite{Jou2015:VisualAffect} employed visual entities or attributes to extract mid-level visual representations.
+To overcome the \textit{affective gap} between low-level features and emotional content of an image, Borth \etal \cite{Borth2013:Large-scale}, Yuan \etal \cite{yuan2013sentribute} and Jou \etal \cite{Jou2015:VisualAffect} employed visual entities or attributes to extract mid-level visual representations.
 The main contribution of \cite{Borth2013:Large-scale} and \cite{Jou2015:VisualAffect} was building a large scale visual sentiment ontology, called VSO and Multilingual VSO, respectively, which consist of thousands of semantic objects (Adjective Noun Pairs -- ANP) strongly linked to emotions. Using their ontologies they also proposed  a bank of detectors, namely \textit{SentiBank} and \textit{MVSO}, that can automatically extract these mid-level representations.
 %For example, Sentibank detects the responses of 1200 ANP concepts in an image, which means that it represents each image by a 1200-dimensional vectors of responses.
 For the sentiment prediction task, a classifier is learned on the top of
@@ -124,20 +124,20 @@ This means that the ANP's textual sentiments are not explicitly used for the sen
 The approaches used in \cite{Jou2015:VisualAffect,Li2017} relied on deep learning algorithms, which recently have significantly changed the research landscape in a broad set of domains, such as visual object recognition and image classification. %, and text classification.
 %In the last years, deep learning approaches \cite{LeCun2015} have dramatically improved the state-of-the-art in many domains, such as visual object recognition, image classification, speech recognitions and text classification.
 Following the success of deep learning, many other approaches based on deep neural networks have been proposed for visual sentiment prediction and image emotion classification
-\cite{Campos2017,Chen2014:DeepSentiBank,Islam2016,Rao2016,You2015:Robust}. %Xu2014, %%taglio
-Most of these have in common the use of CNNs trained, or fine-tuned, on sentiment-related and labeled data. In \cite{Campos2017,Chen2014:DeepSentiBank,Islam2016,Jou2015:VisualAffect}, %,Xu2014 %Sun2016 %VGGNet \cite{simonyan2014very}
-state-of-the-art CNN architectures (\eg AlexNet \cite{krizhevsky2012imagenet}, PlaceCNN \cite{zhou2014}, and GoogleNet \cite{Szegedy2015:GooleNet}) were exploited.
-In \cite{You2015:Robust}, You \etal proposed a custom CNN architecture specifically designed for visual sentiment prediction. Since their network was trained on weakly labeled images, they also proposed an approach, called PCNN, to reduce the impact of noisy training images. %instances by progressively select a subset of the training images.
-  %Sun \etal \cite{Sun2016} boosted the performance of CNNs by selecting affective local regions of the images which are likely containing objects and carrying massive emotions.
+\cite{Campos2017,Chen2014:DeepSentiBank,Islam2016,rao2016learning,you2015robust,xu2014visual}.
+Most of these have in common the use of CNNs trained, or fine-tuned, on sentiment-related and labeled data. In \cite{Campos2017,Chen2014:DeepSentiBank,Islam2016,Jou2015:VisualAffect}, %,xu2014visual %sun2016discovering %VGGNet \cite{simonyan2014very}
+state-of-the-art CNN architectures (\eg AlexNet \cite{krizhevsky2012imagenet}, PlaceCNN \cite{zhou2014learning}, and GoogleNet \cite{szegedy2015going}) were exploited.
+In \cite{you2015robust}, You \etal proposed a custom CNN architecture specifically designed for visual sentiment prediction. Since their network was trained on weakly labeled images, they also proposed an approach, called PCNN, to reduce the impact of noisy training images. %instances by progressively select a subset of the training images.
+  %Sun \etal \cite{sun2016discovering} boosted the performance of CNNs by selecting affective local regions of the images which are likely containing objects and carrying massive emotions.
 There are also several publications on analyzing sentiments using multi-modalities, such as text and image. For example, Cao \etal \cite{Cao2016} proposed
-%and \cite{Wang2014:Microblog}
-a late fusion is used to combine the predictions obtained from text and image, while You \etal \cite{You2016:Cross-modality} proposed a cross-modality consistent regression (CCR) scheme for joint textual and visual analysis.
+%and \cite{wang2014microblog}
+a late fusion is used to combine the predictions obtained from text and image, while You \etal \cite{you2016cross} proposed a cross-modality consistent regression (CCR) scheme for joint textual and visual analysis.
 Recently, multimodal learning approaches have been proposed for joint textual and visual understanding. Baecchi \etal \cite{baecchi2016multimodal} proposed a multimodal feature learning schema based on CBOW and denoising autoencoders to perform sentiment analysis. In \cite{mao2014deep}, the authors proposed a deep end-to-end architecture where each modality is encoded is an appropriate sub-network (an RNN for text and a CNN for images) and then fused in a multimodal layer. Similarly, Ma \etal \cite{ma2015multimodal} encodes both modalities with convolutional networks.
 
-%%eliminate citazioni ad altri paper come Beacchi2015, Cha2016 Sun2016,
+%%eliminate citazioni ad altri paper come Beacchi2015, Cha2016 sun2016discovering,
 
 Differently from all the approaches previously presented, in our work we are interested in (i) understanding human sentiments by exploiting a large-scale dataset of unlabeled images collected from social-media, (ii) training sentiment classifiers without any prior knowledge of the collected data.
-Although textual information accompanying social media images is often incomplete and noisy, it can be effectively exploited to enable unsupervised sentiment analysis. A first step in this direction was taken in \cite{Wang2015:Unsupervised} where an Unsupervised SEntiment Analysis (USEA) for social-media images,  based on nonnegative matrix factorization, was proposed. Our work differs from that of Wang \etal \cite{Wang2015:Unsupervised} in the way of exploiting the textual information and in the final classifier. In fact, we train a deep neural network that can be used to predict the sentiment of any {new} image \textit{without} using any textual information for those images, while USEA infers sentiments for images by \textit{jointly} considering visual and textual information. %Moreover, Wang \etal  did not test their approach on hand-labeled images or benchmarks for visual sentiment analysis for further comparisons.
+Although textual information accompanying social media images is often incomplete and noisy, it can be effectively exploited to enable unsupervised sentiment analysis. A first step in this direction was taken in \cite{wang2015unsupervised} where an Unsupervised SEntiment Analysis (USEA) for social-media images,  based on nonnegative matrix factorization, was proposed. Our work differs from that of Wang \etal \cite{wang2015unsupervised} in the way of exploiting the textual information and in the final classifier. In fact, we train a deep neural network that can be used to predict the sentiment of any {new} image \textit{without} using any textual information for those images, while USEA infers sentiments for images by \textit{jointly} considering visual and textual information. %Moreover, Wang \etal  did not test their approach on hand-labeled images or benchmarks for visual sentiment analysis for further comparisons.
 %-------------------------------------------------------------------------
 
 \section{Data Collection}
@@ -165,11 +165,11 @@ We publicly release {all the collected tweets} and the \TSA\, dataset.% as incen
 \label{sec:vsa:method}
 %\section{Text Analysis}\label{sec:text}
 %qui tagliati settegli tecnici o
-The text extracted from the collected tweets has been classified according to the sentiment polarity using an adapted version for the English language of the ItaliaNLP Sentiment Polarity Classifier~\cite{CiminoD16a}.
+The text extracted from the collected tweets has been classified according to the sentiment polarity using an adapted version for the English language of the ItaliaNLP Sentiment Polarity Classifier~\cite{cimino2016tandem}.
 This system was successfully employed in the SENTIment POLarity Classification task~\cite{barbieri2016overview}, which was organized within Evalita 2016, the 5th evaluation campaign of Natural Language Processing and Speech tools for Italian.
 This classifier is based on a tandem LSTM-SVM architecture.
 SVM classification algorithms use ``sparse" and ``discrete" features in document classification tasks, making really hard the detection of relationships in sentences, which is often the key factor in detecting the overall sentiment polarity in documents~\cite{tang2015document}.
-On the contrary, LSTM networks are a specialization of Recurrent Neural Networks (RNN) which are able to capture long-term dependencies in a sentence. This type of neural network was recently tested on Sentiment Analysis and proved to outperform previous systems \cite{NakovRRSS16}.
+On the contrary, LSTM networks are a specialization of Recurrent Neural Networks (RNN) which are able to capture long-term dependencies in a sentence. This type of neural network was recently tested on Sentiment Analysis and proved to outperform previous systems \cite{nakov2016semeval}.
 %, showing a 3-4 points improvements with respect to other commonly used learning algorithms.
 In this work, the tandem system uses LSTM to  learn  the  feature  space and to  capture temporal dependencies, while the SVMs are used for classification.
 SVMs combine the document embedding produced  by  the  LSTM  in conjunction with  a  wide  set of general-purpose features qualifying the lexical  and grammatical  structure  of  the text.
@@ -191,7 +191,7 @@ Our Sentiment Classifier was used to analyze the text of a large set of user-gen
 We modeled this task as a three-way image classification problem in which each image
 can be classified as either \textit{positive}, \textit{neutral}, or \textit{negative}. We exploited
 deep Convolutional Neural Networks (CNNs) as trainable classifiers due to their effectiveness
-in numerous vision tasks \cite{Amato2017:parking,Amato2016:JOCCH,krizhevsky2012imagenet,razavian2014cnn,simonyan2014very}. %girshick2014rich %%taglio
+in numerous vision tasks \cite{amato2017deep,Amato2016:JOCCH,krizhevsky2012imagenet,razavian2014cnn,simonyan2014very}. %girshick2014rich %%taglio
 Deep CNNs allow a machine to automatically learn representations of data with multiple levels of abstraction that can be used for detection or classification tasks.
 % dcnn as learnable classifier
 A deep CNN is a feed-forward neural network composed of a possibly large number of convolutional layers with learnable filter banks
@@ -205,12 +205,12 @@ the final outputs of the CNN are the confidences for each class the network has 
 % TODO spiegare transfer learning un minimo
 
 To build our visual classifier, we leveraged on transfer learning. We used  a balanced subset of our dataset {\TSA}
-to {fine-tune} known and successful deep CNNs architectures pretrained on generic datasets of images. Doing so, we are able to exploit additional knowledge already stored in the trained network while training for sentiment prediction. In particular, we used \textit{HybridNet}~\cite{zhou2014} and \textit{VGG-19}~\cite{simonyan2014very} models.
+to {fine-tune} known and successful deep CNNs architectures pretrained on generic datasets of images. Doing so, we are able to exploit additional knowledge already stored in the trained network while training for sentiment prediction. In particular, we used \textit{HybridNet}~\cite{zhou2014learning} and \textit{VGG-19}~\cite{simonyan2014very} models.
 % %_____________tagliati baseline technical details_____________
-% The architecture of \textit{HybridNet} %is the same of the \textit{BVLC Reference CaffeNet}~\cite{caffe2014}, which
-% mimics the original AlexNet \cite{krizhevsky2012imagenet} with minor variations as described in~\cite{zhou2014}. %\cite{caffe2014}.
-% It has $8$ weight layers: $5$ convolutional and $3$ fully-connected. The model {was} trained on $1,183$ categories ($205$ scene categories from Places205~\cite{zhou2014} and $978$ object categories from the train data of ImageNet~\cite{ImageNet}) with about $3.6$ million images.
-% The \textit{VGG-19} is an improved version of the model used by the VGG team of the University of Oxford in the ILSVRC-2014 competition, as described in \cite{simonyan2014very}. The model {was} trained on $1,000$ categories of ImageNet~\cite{ImageNet} with about $1.5$ million images. It contains $19$ weight layers ($16$ convolutional + $3$ fully-connected).
+% The architecture of \textit{HybridNet} %is the same of the \textit{BVLC Reference CaffeNet}~\cite{jia2014caffe}, which
+% mimics the original AlexNet \cite{krizhevsky2012imagenet} with minor variations as described in~\cite{zhou2014learning}. %\cite{jia2014caffe}.
+% It has $8$ weight layers: $5$ convolutional and $3$ fully-connected. The model {was} trained on $1,183$ categories ($205$ scene categories from Places205~\cite{zhou2014learning} and $978$ object categories from the train data of ImageNet~\cite{russakovsky2015imagenet}) with about $3.6$ million images.
+% The \textit{VGG-19} is an improved version of the model used by the VGG team of the University of Oxford in the ILSVRC-2014 competition, as described in \cite{simonyan2014very}. The model {was} trained on $1,000$ categories of ImageNet~\cite{russakovsky2015imagenet} with about $1.5$ million images. It contains $19$ weight layers ($16$ convolutional + $3$ fully-connected).
 % %________________________________________________________
 % Both the pre-trained models can be downloaded from the \textit{Caffe Mode Zoo} \footnote{\url{http://caffe.berkeleyvision.org/model_zoo.html}}.
 In Section~\ref{exp:visual}, we describe the fine-tuning process used for building our visual sentiment classifiers.
@@ -296,10 +296,10 @@ Each input word to the LSTM is represented by a low dimensional, continuous and 
 
 The document embedding produced by the LSTM is used in conjunction with other document  features by the SVM classifier.
 The other document features %used by the SVM
-focused on a wide set of features ranging across different levels of linguistic description. The features are organised into three main  categories: raw  and  lexical  text  features, morpho-syntactic features and lexicon features. With the exception  of the lexicon features, these features were already tested and described in \cite{CiminoD16a}. To extract the lexicon features we exploited three freely available resources: The Bing Liu Lexicon~\cite{hu2004mining}, which includes approximately 6,000 English words, the Multi-Perspective Question Answering Subjectivity Lexicon~\cite{wilson2005recognizing}, which consists of approximately 8,200 English words, and the SentiWordNet 3.0 Lexicon~\cite{baccianella2010sentiwordnet} that consists of more than 117,000 words. For each word in these lexicons the associated polarity is provided. In addition, we manually developed a lexicon of positive and negative emoticons, which are usually a strong indicator of tweet polarity. By exploiting the described resources, the following features were extracted: positive/negative emoticon distribution, sentiment polarity n-grams, sentiment polarity modifiers, the distribution of sentiment polarity, the most frequent sentiment polarity and changes of polarity in tweet sections. The last lexicon feature is calculated using the word embedding produced by Glove and it is obtained by computing separately the average of the word embeddings of the nouns, adjectives, and verbs of the tweet.
+focused on a wide set of features ranging across different levels of linguistic description. The features are organised into three main  categories: raw  and  lexical  text  features, morpho-syntactic features and lexicon features. With the exception  of the lexicon features, these features were already tested and described in \cite{cimino2016tandem}. To extract the lexicon features we exploited three freely available resources: The Bing Liu Lexicon~\cite{hu2004mining}, which includes approximately 6,000 English words, the Multi-Perspective Question Answering Subjectivity Lexicon~\cite{wilson2005recognizing}, which consists of approximately 8,200 English words, and the SentiWordNet 3.0 Lexicon~\cite{baccianella2010sentiwordnet} that consists of more than 117,000 words. For each word in these lexicons the associated polarity is provided. In addition, we manually developed a lexicon of positive and negative emoticons, which are usually a strong indicator of tweet polarity. By exploiting the described resources, the following features were extracted: positive/negative emoticon distribution, sentiment polarity n-grams, sentiment polarity modifiers, the distribution of sentiment polarity, the most frequent sentiment polarity and changes of polarity in tweet sections. The last lexicon feature is calculated using the word embedding produced by Glove and it is obtained by computing separately the average of the word embeddings of the nouns, adjectives, and verbs of the tweet.
 \paragraph{Image Analysis Settings}
 We used {\BTSA} training subset to fine-tune two different pretrained networks, namely:
-AlexNet pretrained on ILSVRC2012 \cite{ImageNet} + Places205 \cite{zhou2014} (also called HybridNet \cite{zhou2014}) and VGG-19 \cite{simonyan2014very} pretrained
+AlexNet pretrained on ILSVRC2012 \cite{russakovsky2015imagenet} + Places205 \cite{zhou2014learning} (also called HybridNet \cite{zhou2014learning}) and VGG-19 \cite{simonyan2014very} pretrained
 on ILSVRC2012 \footnote{Both the pre-trained models can be downloaded from the \textit{Caffe Mode Zoo} (\url{http://caffe.berkeleyvision.org/model_zoo.html})}.
 We replaced the last fully connected layer \textit{fc8} %originally having 1000 outputs
 with a new one having 3 outputs, and we experimented two % or N? to decide
@@ -315,8 +315,8 @@ we used a batch size of $128$,
 while for VGG-19 we used a batch size of $32$ and batch accumulation of $2$ to lower the
 GPU memory footprint.
 
-We assessed the performance of our models using our \BTSA\, test set and the so-called Twitter Testing Dataset presented in \cite{You2015:Robust}. The latter contains a total of $1,269$ images having a positive or negative sentiment that have been manually labeled by five Amazon Mechanical Turk (AMT) workers. The images are partitioned into three subsets, namely ``Five agree", ``At least four agree", and ``At least three agree", on the basis of the labeling results from the five AMT workers. The details of this dataset are reported in Table~\ref{TwitterTestingDataset}. %The Twitter Testing Dataset
-Twitter Testing Dataset was also used in \cite{Campos2017,Islam2016,Li2017,You2015:Robust}, allowing for a through comparison of our systems with the state-of-the-art. %Sun2016
+We assessed the performance of our models using our \BTSA\, test set and the so-called Twitter Testing Dataset presented in \cite{you2015robust}. The latter contains a total of $1,269$ images having a positive or negative sentiment that have been manually labeled by five Amazon Mechanical Turk (AMT) workers. The images are partitioned into three subsets, namely ``Five agree", ``At least four agree", and ``At least three agree", on the basis of the labeling results from the five AMT workers. The details of this dataset are reported in Table~\ref{TwitterTestingDataset}. %The Twitter Testing Dataset
+Twitter Testing Dataset was also used in \cite{Campos2017,Islam2016,Li2017,you2015robust}, allowing for a through comparison of our systems with the state-of-the-art. %sun2016discovering
 
 \begin{table}
 \centering
@@ -333,7 +333,7 @@ Negative           & 301              & 427                              & 500  
 Total              & 882              & 1,116                            & 1,269 \\
 \bottomrule
 \end{tabularx}
-\caption{Twitter Testing Dataset \cite{You2015:Robust}.} \label{TwitterTestingDataset}
+\caption{Twitter Testing Dataset \cite{you2015robust}.} \label{TwitterTestingDataset}
 \end{table}
 
 \subsection{Results}
@@ -350,8 +350,8 @@ obtained by the fine-tuned models in our \BTSA\, test set and in all the subsets
     \textsc{Model}              & \textsc{5 agree} & \textsc{$\geq 4$ agree} & \textsc{$\geq 3$ agree} & \\
     \midrule
     Random Classifier           & 0.500 & 0.500 & 0.500 & 0.333 \\
-    CNN~\cite{You2015:Robust}   & 0.722 & 0.686 & 0.667 & -     \\
-    PCNN~\cite{You2015:Robust}  & 0.747 & 0.714 & 0.687 & -     \\
+    CNN~\cite{you2015robust}   & 0.722 & 0.686 & 0.667 & -     \\
+    PCNN~\cite{you2015robust}  & 0.747 & 0.714 & 0.687 & -     \\
     \ourFtAlex\, FT-F           & 0.766 & 0.748 & 0.723 & 0.499 \\
     \ourFtAlex\, FT-A           & 0.741 & 0.709 & 0.686 & 0.491 \\
     \ourFtVGG\, FT-F            & 0.768 & 0.737 & 0.715 & 0.506 \\
@@ -360,17 +360,17 @@ obtained by the fine-tuned models in our \BTSA\, test set and in all the subsets
     \end{tabularx}
 	\caption{Prediction accuracy on the different test sets.} \label{tab:Twitter882}
 \end{table}
-As baseline references, we report the results obtained by a random classifier and by the CNN and PCNN models \cite{You2015:Robust}.
-The results show that the models trained with our cross-media approach effectively classify the images of Twitter Testing Dataset which were manually annotated. In particular, our best model ({\ourFtVGG} FT-A) correctly classifies $78.5\%$ of the \textit{five agree} testing images, outperforming similar models trained on high-quality sentiment-related hand-labeled data~\cite{You2015:Robust}.
+As baseline references, we report the results obtained by a random classifier and by the CNN and PCNN models \cite{you2015robust}.
+The results show that the models trained with our cross-media approach effectively classify the images of Twitter Testing Dataset which were manually annotated. In particular, our best model ({\ourFtVGG} FT-A) correctly classifies $78.5\%$ of the \textit{five agree} testing images, outperforming similar models trained on high-quality sentiment-related hand-labeled data~\cite{you2015robust}.
 Since the Twitter Testing Dataset only provides binary labels (positive/negative) as groundtruth, we obtained a binary classification from our three-way model taking the maximum confidence between the positive and the negative confidences.
 We also performed experiments using two-way fine-tuned nets trained only on positives and negatives images provided by our training set, but we observed that there is no significant difference in performance with respect to predictions derived from three-way models.
 % Moreover, despite the presence of noisy labels especially for negative training images, our best model obtain similar F1 scores for both the positive (0.83) and negative (0.72) classes, meaning that is not too much biased towards a particular class.
 
 Notice that the range of the accuracy values obtained on our \BTSA\, is lower because those experiments concern a three-way classification. Moreover, the groundtruth for the evaluation is not hand-labeled since it is derived from the analysis of the textual information collected ``in the wild", thus it contains noisy labels that inevitably lower the accuracy upper bound. %(see Figure \ref{fig:confusion-images}).
 Figure \ref{fig:confusion-images} reports the most confident classifications on this test set. From a qualitative point of view, in several cases the sentiment polarity of the images is better represented by the prediction of our model than the sentiment polarity inferred from the text associated to the images. Since the textual sentiment analysis was used to label both testing and training images, this, on one hand, explains the relatively lower accuracy obtained by our models on the {\BTSA} test set and, on the other hand, confirms that we used sufficiently large set of training data to allow the deep neural network to handle noisy labels.
-Moreover, we observed that the use of the \textit{neutral} class is particularly suitable for analyzing web images, which often depict simple objects or commercial products. For this reason we used a three-way model, unlike other state-of-the-art approaches which use a binary classification model~\cite{Campos2017,Islam2016,You2015:Robust}.
+Moreover, we observed that the use of the \textit{neutral} class is particularly suitable for analyzing web images, which often depict simple objects or commercial products. For this reason we used a three-way model, unlike other state-of-the-art approaches which use a binary classification model~\cite{Campos2017,Islam2016,you2015robust}.
 
-% Many papers on visual sentiment analysis also report the 5-fold cross-validation accuracy on the Twitter Testing Dataset \cite{Campos2016,Islam2016,Li2017,You2015:Robust}, in which the prediction of each fold is computed with a model fine-tuned on the other four folds. This measure tends to highlight how well a pretrained model adapts to a specific task or dataset. While we think that this measure is inappropriate for our cross-media approach, we also report it in Table \ref{tab:Twitter882_5fold} for comparison with other state-of-the-art methods.
+% Many papers on visual sentiment analysis also report the 5-fold cross-validation accuracy on the Twitter Testing Dataset \cite{Campos2016,Islam2016,Li2017,you2015robust}, in which the prediction of each fold is computed with a model fine-tuned on the other four folds. This measure tends to highlight how well a pretrained model adapts to a specific task or dataset. While we think that this measure is inappropriate for our cross-media approach, we also report it in Table \ref{tab:Twitter882_5fold} for comparison with other state-of-the-art methods.
 % As evidenced by the results, the 5-fold accuracy of models trained on generic (not sentiment-related) datasets, like AlexNet and VGG-19, are comparable to the ones of the same models that have been previously finetuned on a sentiment-related dataset.
 
 \begin{figure}
@@ -382,7 +382,7 @@ Moreover, we observed that the use of the \textit{neutral} class is particularly
 \label{fig:vsa:confusion-images}
 \end{figure}
 
-Many papers on visual sentiment analysis report the 5-fold cross-validation accuracy on the Twitter Testing Dataset~\cite{Campos2017,Islam2016,Li2017,You2015:Robust}, in which the prediction of each fold is computed with a model fine-tuned on the other four folds. In order to compare to those approaches, we also tested our models in this setting, and we reported the 5-fold accuracy obtained in Table \ref{tab:Twitter882_5fold}.
+Many papers on visual sentiment analysis report the 5-fold cross-validation accuracy on the Twitter Testing Dataset~\cite{Campos2017,Islam2016,Li2017,you2015robust}, in which the prediction of each fold is computed with a model fine-tuned on the other four folds. In order to compare to those approaches, we also tested our models in this setting, and we reported the 5-fold accuracy obtained in Table \ref{tab:Twitter882_5fold}.
 However, we think that this measure is inappropriate for our cross-media approach since it tends to highlight how well a pretrained model adapts to a specific task or dataset. In fact, as evidenced by the results, models trained on generic (not sentiment-related) datasets, like AlexNet and VGG-19, not necessarily perform worse than the same models previously finetuned on a sentiment-related dataset.
 % Possiamo vedere dalla Tabella bla un finetuning intermedio su dati sentimentali non necessariamente produce dei miglioramenti nella 5-fold accuracy.
 For example our best approach ({\ourFtVGG} FT-A), achieves a 5-fold accuracy of $0.896$ on the five agree subset, that corresponds only to an improvement of $1.5\%$ with respect to VGG-19 trained on a generic dataset.
@@ -393,7 +393,7 @@ Taken together, these results indicate that our cross-media learning approach is
 
 %Differently by other visual sentiment classifiers
 
-% In order to compare the performance of our model to other state-of-the-art methods, we also performed a 5-fold cross-validation on the testing subsets (as also done in \cite{Campos2016,Islam2016,Li2017,You2015:Robust}), in which we compute the prediction of each fold with a model fine-tuned again on the other four folds. Results for 5-fold cross-validation are reported in Table \ref{tab:Twitter882_5fold}.
+% In order to compare the performance of our model to other state-of-the-art methods, we also performed a 5-fold cross-validation on the testing subsets (as also done in \cite{Campos2016,Islam2016,Li2017,you2015robust}), in which we compute the prediction of each fold with a model fine-tuned again on the other four folds. Results for 5-fold cross-validation are reported in Table \ref{tab:Twitter882_5fold}.
 \begin{table}
 \small
 \newcolumntype{R}{>{\raggedleft\arraybackslash}X}
@@ -405,17 +405,17 @@ Taken together, these results indicate that our cross-media learning approach is
 \midrule
 \multicolumn{5}{l}{\textbf{Approaches without intermediate fine-tuning}} \\
 \midrule
-GCH~\cite{Siersdorfer2010}              {\footnotesize (from~\cite{You2015:Robust})} \tnote{$\ast$}  &   -   &   0.684   &   0.665   &   0.66    \\
-SentiBank~\cite{Borth2013:Large-scale}  {\footnotesize (from~\cite{You2015:Robust})} \tnote{$\circ$} &   -   &   0.709   &   0.675   &   0.662   \\
-LCH~\cite{Siersdorfer2010}              {\footnotesize (from~\cite{You2015:Robust})} \tnote{$\ast$}  &   -   &   0.710   &   0.671   &   0.664   \\
-GCH+ BoW~\cite{Siersdorfer2010}         {\footnotesize (from~\cite{You2015:Robust})} \tnote{$\ast$}  &   -   &   0.710   &   0.685   &   0.665   \\
-LCH+ BoW ~\cite{Siersdorfer2010}        {\footnotesize (from~\cite{You2015:Robust})} \tnote{$\ast$}  &   -   &   0.717   &   0.697   &   0.664   \\
-Sentribute~\cite{Yuan2013:Sentribute}   {\footnotesize (from~\cite{You2015:Robust})} \tnote{$\circ$} &   -   &   0.738   &   0.709   &   0.696   \\
+GCH~\cite{siersdorfer2010analyzing}              {\footnotesize (from~\cite{you2015robust})} \tnote{$\ast$}  &   -   &   0.684   &   0.665   &   0.66    \\
+SentiBank~\cite{Borth2013:Large-scale}  {\footnotesize (from~\cite{you2015robust})} \tnote{$\circ$} &   -   &   0.709   &   0.675   &   0.662   \\
+LCH~\cite{siersdorfer2010analyzing}              {\footnotesize (from~\cite{you2015robust})} \tnote{$\ast$}  &   -   &   0.710   &   0.671   &   0.664   \\
+GCH+ BoW~\cite{siersdorfer2010analyzing}         {\footnotesize (from~\cite{you2015robust})} \tnote{$\ast$}  &   -   &   0.710   &   0.685   &   0.665   \\
+LCH+ BoW ~\cite{siersdorfer2010analyzing}        {\footnotesize (from~\cite{you2015robust})} \tnote{$\ast$}  &   -   &   0.717   &   0.697   &   0.664   \\
+Sentribute~\cite{yuan2013sentribute}   {\footnotesize (from~\cite{you2015robust})} \tnote{$\circ$} &   -   &   0.738   &   0.709   &   0.696   \\
 
-CNN~\cite{You2015:Robust} \tnote{$\bullet$}   &   Flickr (VSO)    &   0.783   &   0.755   &   0.715   \\
+CNN~\cite{you2015robust} \tnote{$\bullet$}   &   Flickr (VSO)    &   0.783   &   0.755   &   0.715   \\
 AlexNet {\footnotesize (from~\cite{Campos2017})} \tnote{$\bullet$}   &  \gls{ilsvrc}12   &   0.817   &   0.782   &   0.739   \\
-PlaceCNN~\cite{zhou2014}                {\footnotesize (from~\cite{Campos2017})} \tnote{$\bullet$}   &   Places205    &   0.830   &   -   &   -   \\
-GoogleNet~\cite{Szegedy2015:GooleNet}   {\footnotesize (from~\cite{Islam2016})}  \tnote{$\bullet$}   &   \gls{ilsvrc}12   &   0.861   &   0.807   &   0.787   \\
+PlaceCNN~\cite{zhou2014learning}                {\footnotesize (from~\cite{Campos2017})} \tnote{$\bullet$}   &   Places205    &   0.830   &   -   &   -   \\
+GoogleNet~\cite{szegedy2015going}   {\footnotesize (from~\cite{Islam2016})}  \tnote{$\bullet$}   &   \gls{ilsvrc}12   &   0.861   &   0.807   &   0.787   \\
 HybridNet \tnote{$\bullet$}   &   \gls{ilsvrc}12 + Places205   &   0.867   &   0.814   &   0.781   \\
 VGG-19 \tnote{$\bullet$}   &   \gls{ilsvrc}12  &   0.881   &   0.835   &   0.800   \\
 
@@ -423,7 +423,7 @@ VGG-19 \tnote{$\bullet$}   &   \gls{ilsvrc}12  &   0.881   &   0.835   &   0.800
 \multicolumn{5}{l}{\textbf{Approaches using an intermediate fine-tuning}} \\
 \midrule
 
-PCNN~\cite{You2015:Robust} \tnote{$\bullet$}   &   Flickr (VSO) + \textit{ft} Flickr (VSO)  &   0.773   &   0.759   &   0.723   \\
+PCNN~\cite{you2015robust} \tnote{$\bullet$}   &   Flickr (VSO) + \textit{ft} Flickr (VSO)  &   0.773   &   0.759   &   0.723   \\
 DeepSentiBank~\cite{Chen2014:DeepSentiBank} {\footnotesize (from~\cite{Campos2017})} \tnote{$\circ$}\, \tnote{$\bullet$} &   \gls{ilsvrc}12 + \textit{ft} Flickr (VSO)  &   0.804   &   -   &   -   \\
 MVSO [EN]~\cite{Jou2015:VisualAffect}   {\footnotesize (from~\cite{Campos2017})} \tnote{$\circ$}\, \tnote{$\bullet$} & DeepSentiBank~\cite{Chen2014:DeepSentiBank} + \textit{ft} MVSO-EN \cite{Jou2015:VisualAffect}  &   0.839   &   -   &   -   \\
 \ourFtAlex\, FT-A (Ours) \tnote{$\bullet$}   &   (\gls{ilsvrc}12 + Places205) + \textit{ft} \BTSA    &   0.864   &   0.830   &   0.800   \\
