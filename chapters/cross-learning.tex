@@ -175,26 +175,31 @@ We publicly release all the collected tweets and the \gls{t4sa} dataset.
 The text extracted from the collected tweets has been classified according to the sentiment polarity using an adapted version for the English language of the ItaliaNLP Sentiment Polarity Classifier~\cite{cimino2016tandem}.
 This system was successfully employed in the SENTIment POLarity Classification task~\cite{barbieri2016overview}, which was organized within Evalita 2016, the 5th evaluation campaign of Natural Language Processing and Speech tools for Italian.
 This classifier is based on a tandem LSTM-SVM architecture.
-SVM classification algorithms use ``sparse" and ``discrete" features in document classification tasks, making really hard the detection of relationships in sentences, which is often the key factor in detecting the overall sentiment polarity in documents~\cite{tang2015document}.
-On the contrary, LSTM networks are a specialization of Recurrent Neural Networks (RNN) which are able to capture long-term dependencies in a sentence. This type of neural network was recently tested on Sentiment Analysis and proved to outperform previous systems \cite{nakov2016semeval}.
-%, showing a 3-4 points improvements with respect to other commonly used learning algorithms.
-In this work, the tandem system uses LSTM to  learn  the  feature  space and to  capture temporal dependencies, while the SVMs are used for classification.
-SVMs combine the document embedding produced  by  the  LSTM  in conjunction with  a  wide  set of general-purpose features qualifying the lexical  and grammatical  structure  of  the text.
+\gls{svm} classifiers usually rely on ``sparse" and ``discrete" features in document classification tasks, making difficult the detection of relationships in sentences, which is often the key factor in detecting the overall sentiment polarity in documents~\cite{tang2015document}.
+On the contrary, \glspl{lstm} was recently tested on Sentiment Analysis and proved to outperform previous systems \cite{nakov2016semeval} thanks to their ability to capture long-term dependencies sentences.
+In the tandem architecture, \glspl{lstm} learn the feature space and capture temporal dependencies between words, while \glspl{svm} are used for the final classification.
+\glspl{svm} combine the document embedding produced by the \gls{lstm} with a wide set of general-purpose features qualifying the lexical and grammatical structure of the text.
+In particular, the system employs a bidirectional \gls{lstm} architecture due to their ability to capture long-range dependencies analyzing the text in both directions~\cite{schuster1997bidirectional}.
 
-We  employed  a  bidirectional  LSTM (bi-LSTM) architecture since these kind of architecture allows to capture long-range dependencies from both directions
-of a document by constructing bidirectional links in the network \cite{schuster1997bidirectional}.
+The tandem system in trained in two steps.
+First, the \gls{lstm} network is trained for sentiment analysis classification on a three-way label space (\emph{positive}, \emph{neutral}, or \emph{negative}).
+Once the statistical model of the \gls{lstm} is fitted, for each document of the training set, a document vector (document embedding) is computed extracting the activation of the penultimate layer (the one before the classifier).
+The document embeddings, together with manually defined document features, are used to train a \gls{svm} classifier .
+Once the training phase of the \gls{svm} classifier is completed, the tandem architecture is considered trained.
+The same stages are involved in the classification phase: for each document, the \gls{lstm} is used to obtain an embedding vector which is used jointly with other document classification features (see Section \ref{exp:visual} for further details) by the \gls{svm} classifier which outputs the predicted class.
 
-In the training phase, the bi-LSTM network is trained considering the training documents and the corresponding gold labels. Once the statistical model of the bi-LSTM neural network is computed, for each document of the training set, a document vector (document embedding) is computed exploiting the weights that can be obtained from the penultimate network layer (the layer before the
-SoftMax classifier) by giving in input the considered document to the LSTM network. The document embeddings are used as features during the training phase of the SVM classifier in conjunction  with  a  set  of  widely  used  document  classification features. Once the training phase of the SVM classifier is completed the tandem architecture is considered trained. The  same stages are involved in the classification phase: for each document an embedding vector is obtained exploiting the  previously trained LSTM network. Finally the embedding is used jointly with other document classification features (see Section \ref{exp:visual} for further details) by the SVM classifier which outputs the predicted class.
+The textual sentiment classifier has been evaluated by means of a 10-fold cross validation over 6,293 tweets belonging to the dataset distributed for the SemEval-2013 Task on Sentiment Analysis in Twitter.
+Using the subset of approximately 60\% of the original dataset which was still available, the textual classifier reported an average $F_1$-score of $66.15$.
+This result is comparable to the state of the art considering that the winner of the competition, the NRC-Canada team \cite{mohammad2013nrc}, achieved an $F_1$-score of 69.02 using all the available training data.
 
-In order to evaluate the performance of our Sentiment Classifier, we performed a 10-fold cross validation over 6,293 tweets belonging to the dataset distributed for the SemEval-2013 Task on Sentiment Analysis in Twitter. We used a subset (approximately the 60\%) of the original dataset since at the time we downloaded the tweets through the scripts provided by the task organizers, just a subset of all the dataset was still available in Twitter. Our classifier reported an average F1-score of 66.15. This result is particularly good considering that the winner of the competition, the NRC-Canada team \cite{mohammad2013nrc}, achieved a F1-score of 69.02 using \emph{all} the available training data.
-%%
+We used the tandem \gls{lstm}-\gls{svm} model to analyze the text of the large set of user-generated tweets collected.
+After predicting the sentiment polarity of all the tweets, we selected the ones having the most confident textual sentiment predictions using a threshold, and we used these predictions to automatically assign sentiment labels to the corresponding images.
+The set of tweets and images retained after this step comprise our \gls{t4sa} dataset.
+% The aim was to automatically build a training set for learning a \emph{visual} classifier able to discover the sentiment polarity of a given image.
+%The text analysis have been used to build our dataset \gls{t4sa} by selecting tweets with the most confident textual sentiment predictions.
 
-Our Sentiment Classifier was used to analyze the text of a large set of user-generated multimedia contents (containing both text and images). We selected data with the most confident textual sentiment predictions and we used these predictions to automatically assign sentiment labels to the corresponding images. The aim was to automatically build a training set for learning a \emph{visual} classifier able to discover the sentiment polarity of a given image.
-%The text analysis have been used to build our dataset \gls{t4sa} by selecting tweets with the most confident textual sentiment predictions. The aim was  to automatically build a training set for learning a \emph{visual} classifier able to discover the sentiment polarity of a given image.
-%%-------------------------------------------------------------------------
-%\section{Image Analysis} % ISTI
-%In our framework, we are interested in discovering the sentiment polarity of a given image.
+% ---
+
 We modeled this task as a three-way image classification problem in which each image
 can be classified as either \emph{positive}, \emph{neutral}, or \emph{negative}. We exploited
 deep Convolutional Neural Networks (CNNs) as trainable classifiers due to their effectiveness
