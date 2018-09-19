@@ -20,9 +20,12 @@ This usually limits the amount of supervision that can be extracted from this ki
 
 In this chapter, we propose a novel weakly-supervised cross-media approach to train visual image classifiers in an autonomous way exploiting social media data.
 We rely on textual data --- which usually accompanies images in social media posts --- to provide a noisy supervision in the training phase of a visual only classifier.
-To exhibit the advantages of our approach, we employed it to tackle \emph{visual sentiment analysis} --- a problem in which the cost of data labeling is rather high --- using a large set of user-generated and unlabeled contents to train a \acrfull{dcnn}.
-We demonstrated via experimental evaluation that models trained with our approach are able to extensively exploit the noisy information contained in uncontrolled social media data to build a visual sentiment polarity classifier with no human supervision that outperforms state-of-the-art approaches in visual sentiment analysis.
-The data used in experiments --- collected from Twitter interrogating its Streaming API --- has been packed in a dataset and publicly released to foster new research on the field of visual sentiment analysis.
+To exhibit the advantages of our approach, we employed it to tackle \emph{\gls{vsa}} --- a problem in which the cost of data labeling is rather high --- using a large set of user-generated and unlabeled contents to train a \acrfull{dcnn}.
+We present an empirical study to analyze visual sentiments in the wild, starting from a large-scale dataset of \emph{unlabeled} user-generated content.
+To the best of our knowledge, this is the first work that proposes a cross-media approach to learn a classifier for predicting the sentiment polarity of a given image.
+We demonstrate via experimental evaluation on existing manually-labeled benchmarks that models trained with our approach are able to extensively exploit the noisy information contained in uncontrolled social media data to build a visual sentiment polarity classifier with no human supervision that outperforms state-of-the-art classifiers trained on sentiment-related labeled images.
+Overall, we collect and analyse more that 3 million tweets from which we build \emph{\acrfull{t4sa}} --- a dataset of about 1 million high-confidence tweets for which we provide the textual sentiment classification, and the corresponding 1.4M images.
+We make all the collected tweets, the \gls{t4sa} dataset, and trained models publicly available at \footnote{http://www.t4sa.it} to foster new research on the field of visual sentiment analysis.
 
 The chapter is structured as follows.
 In \ref{sec:vsa:introduction}, the problem of visual sentiment analysis is presented, together with a discussion about the challenges it poses and an overview of the current state of the art.
@@ -57,7 +60,7 @@ Understanding the content of a piece of visual information is an objective task,
 However, describing the emotions arisen in human observers is challenging due to the highly subjectivity involved.
 This discrepancy between the affective content of an image and its description --- known as the \emph{affective gap}~\cite{siersdorfer2010analyzing} --- poses considerable challenges to visual sentiment analysis.
 This difficulty is also reflected on the generation of labeled sets for training sentiment classifiers;
-several emotional judgements by multiple annotators are usually required to obtain a high-quality sentiment groundtruth for a single image, thus increasing the cost of dataset creation.
+several emotional judgements by multiple annotators are usually required to obtain a high-quality sentiment ground-truth for a single image, thus increasing the cost of dataset creation.
 
 While in general sentiment analyses can tailor a large range of emotions, the commonly adopted form of sentiment analysis is the determination of the sentiment polarity of a piece of information, i.e.\ an indicator of the emotional positiveness or negativeness conveyed.
 As the vast majority of attempts in the literature, our work is framed in this formulation;
@@ -77,27 +80,31 @@ The Semeval Sentiment analysis in Twitter \cite{nakov2016semeval} challenge is a
 % ---
 
 \paragraph{Visual Sentiment Analisys}
-While there is a large literature on extracting emotional information from textual content, research on image-based sentiment analysis is still in its early stages.
-First approaches to infer affects from images were based on supervised or semi-supervised frameworks that map low-level features of images into human emotions \cite{machajdik2010affective,siersdorfer2010analyzing,jia2012can}.
- \citet{siersdorfer2010analyzing} firstly applied and evaluated automatic classification of sentiment using a large-scale collection of photos crawled from Flickr using the SentiWordNet \cite{esuli2007sentiwordnet} dictionary as query terms. % NOELAB
-They used pixel-level color histogram and SIFT-based Bag-of-Word representations as visual features and trained a \gls{svm} to predict the sentiment of images. % NOELAB
-To overcome the \emph{affective gap} between low-level features and emotional content of an image, \citet{borth2013large}, \citet{yuan2013sentribute} and \citet{jou2015visual} employed visual entities or attributes to extract mid-level visual representations.
-The main contribution of~\cite{borth2013large} and~\cite{jou2015visual} was building a large scale visual sentiment ontology, called VSO and Multilingual VSO, respectively, which consist of thousands of semantic objects (Adjective Noun Pairs -- ANP) strongly linked to emotions.
-Using their ontologies, they also proposed  a bank of detectors, namely \emph{SentiBank} and \emph{MVSO}, that can automatically extract these mid-level representations.
+In comparison to textual-based sentiment analysis, inferring emotional information from visual content has been less explored by the research community.
+Seminal approaches \cite{machajdik2010affective,siersdorfer2010analyzing,jia2012can} relied on supervised or semi-supervised frameworks that map low-level features of images into human emotions.
+\citet{siersdorfer2010analyzing} firstly applied and evaluated automatic classification of sentiment using a large-scale collection of photos crawled from Flickr using the SentiWordNet \cite{esuli2007sentiwordnet} dictionary as query terms.
+They used pixel-level color histogram and \gls{sift}-based Bag-of-Word representations as visual features and trained a \gls{svm} to predict the sentiment of images.
+% To overcome the \emph{affective gap} between low-level features and emotional content of an image,  employed visual entities or attributes to extract mid-level visual representations.
+% The main contribution of~\cite{borth2013large} and~\cite{jou2015visual} was building a large scale visual sentiment ontology, called VSO and Multilingual VSO, respectively, which consist of thousands of semantic objects (Adjective Noun Pairs -- ANP) strongly linked to emotions.
+% Using their ontologies, they also proposed a bank of detectors, namely \emph{SentiBank} and \emph{MVSO}, that can automatically extract these mid-level representations.
+Subsequent works \cite{borth2013large,yuan2013sentribute,jou2015visual} proposed to employ large-scale sentiment ontologies --- like VSO~\cite{borth2013large} or MVSO~\cite{jou2015visual} --- comprised by emotion-related concepts identified by adjective-noun pairs.
 %For example, Sentibank detects the responses of 1200 ANP concepts in an image, which means that it represents each image by a 1200-dimensional vectors of responses.
-For the sentiment prediction task, a classifier is learned on the top of these mid-level representations that are used as image features.
-This means that the ANP's textual sentiments are not explicitly used for the sentiment prediction.
-Just recently, \citet{li2018image} investigated the fusion of the sentiment prediction obtained using \emph{ANP responses as image features} with the sentiment prediction obtained using the \emph{ANP's textual sentiment values}.
-\citet{chen2014deepsentibank} proposed an improved version of SentiBank, called \emph{DeepSentiBank} which exploit \acrfullpl{dcnn} to build a visual sentiment concept classification model.
-The approaches used in \cite{jou2015visual,li2018image} relied on deep learning algorithms, which recently have significantly changed the research landscape in a broad set of domains, such as visual object recognition and image classification. %, and text classification.
-%In the last years, deep learning approaches \cite{lecun2015deep} have dramatically improved the state-of-the-art in many domains, such as visual object recognition, image classification, speech recognitions and text classification.
-Following the success of deep learning, many other approaches based on deep neural networks have been proposed for visual sentiment prediction and image emotion classification \cite{campos2017pixels,chen2014deepsentibank,islam2016visual,rao2016learning,you2015robust,xu2014visual}.
+%For the sentiment prediction task, a classifier is learned on the top of these mid-level representations that are used as image features.
+Ontologies are used to build a feature extractor --- called \emph{SentiBank} --- which creates a mid-level visual representation based on the visual detection of this concepts, on which in turn the sentiment prediction relies.
+%\citet{chen2014deepsentibank} proposed an improved version of SentiBank, called \emph{DeepSentiBank} which exploit \acrfullpl{dcnn} to build a visual sentiment concept classification model.
+\citet{chen2014deepsentibank} extended this approach proposing \emph{DeepSentiBank}, in which the concept detection is carried out by deep convolutional models.
+%Following the success of deep learning, many other approaches based on deep neural networks have been proposed for visual sentiment prediction and image emotion classification \cite{campos2017pixels,chen2014deepsentibank,islam2016visual,rao2016learning,you2015robust,xu2014visual}.
+Many other approaches employed \glspl{dcnn} for visual sentiment prediction and image emotion classification~\cite{campos2017pixels,chen2014deepsentibank,islam2016visual,rao2016learning,you2015robust,xu2014visual}.
+% ---
 Most of these have in common the use of \glspl{cnn} trained or fine-tuned on sentiment-related and labeled data.
 In \cite{campos2017pixels,chen2014deepsentibank,islam2016visual,jou2015visual}, %,xu2014visual %sun2016discovering %VGGNet \cite{simonyan2014very}
 state-of-the-art \gls{cnn} architectures --- such as AlexNet~\cite{krizhevsky2012imagenet}, PlaceCNN~\cite{zhou2014learning}, and GoogleNet \cite{szegedy2015going} --- were exploited.
 \citet{you2015robust} proposed a custom \gls{cnn} architecture specifically designed for visual sentiment prediction.
 Since their network was trained on weakly labeled images, they also proposed an approach, called PCNN, to reduce the impact of noisy training images. %instances by progressively select a subset of the training images.
 \citet{sun2016discovering} boosted the performance of CNNs by selecting affective local regions of the images which are likely containing objects and carrying massive emotions. % NOELAB
+% This means that the ANP's textual sentiments are not explicitly used for the sentiment prediction.
+Just recently, \citet{li2018image} investigated the fusion of the sentiment prediction obtained using visual ontologies with the sentiment prediction obtained using the textual sentiment values of adjective-nuon pairs on which ontologies are built.
+
 
 \paragraph{Multi-modal Sentiment Analysis}
 There are also several publications on analyzing sentiments using multi-modalities, such as text and image.
@@ -116,64 +123,55 @@ In fact, we train a deep neural network that can be used to predict the sentimen
 
 %-------------------------------------------------------------------------
 
-In this paper, we focus on discovering the sentiment polarity (\emph{positive}, \emph{negative} or \emph{neutral}) of a given image.
-We follow the current trend of facing sentiment ``in the wild", that is, in all sort of varying conditions of the everyday world that we share with others (as opposed to testing situation in laboratories).
-For this scope, social networks, such as Twitter and Facebook, are particularly suitable as sources of data for our analysis, thanks to the huge variation of contents shared by their users.
+\section{Learning Visual Sentiment Classifiers}
 
-The vast majority of the existing visual sentiment classifiers have been trained on sentiment-related images, typically annotated using crowd-sourcing. %State-of-the-art approaches are based on deep learning model which need huge volume of training labeled data that is difficult to collect. In this work, we exploit deep learning models to build our visual sentiment classifiers.
+We focus our investigation on training a model to predict the sentiment polarity of a given image.
+We formulate this task as learning a three-way image classifier that can assign either \emph{positive}, \emph{negative} or \emph{neutral} label to an image.
 As other state-of-the-art approaches, we exploit deep learning models to build our visual sentiment classifiers.
-However, differently from previous supervised approaches, we propose an end-to-end pipeline to train the visual classifier starting from a large-scale dataset of unlabeled tweets (text and images). %we collected from Twitter.
-First, we use a tandem Long Short Term Memory Recurrent Neural Network-Support Vector Machine (LSTM-SVM) architecture to classify the sentiment polarity of the texts.
-Then, we exploit the images of the tweets, labeled according to the sentiment polarity of the associated text, to fine-tune a deep Convolutional Neural Network (CNN) architecture, by leveraging on transfer learning.
-Although the text of the tweets is often noisy or misleading with respect to the image content (\eg irrelevant comments), we show that our cross-media approach can be profitably used for learning visual sentiment classifiers in the wild.
-In fact, our results on a manually annotated benchmark for visual sentiment analysis %\cite{you2015robust}
-show that the prediction accuracy of our trained CNN models is better than, or in the worst cases, in line with, state-of-the-art classifiers trained on sentiment-related data sets. %~\cite{borth2013large,Campos2016,islam2016visual,siersdorfer2010analyzing,you2015robust,yuan2013sentribute}.
+However, differently from previous supervised approaches, we propose an end-to-end pipeline to train the visual classifier starting from a large-scale dataset of unlabeled tweets.
+As source of multi-modal information, we choose Twitter, from which we crawled tweets from the random stream of global tweets with a minimum set of restriction.
+We exploit the correspondence of text and images present in tweets to distill affective information from the textual modality to the visual one.
+In particular, we use a pre-trained textual predictor --- based on a tandem \gls{LSTM}-\gls{SVM} architecture --- to infer the sentiment polarity from the textual part of a tweet
+Then, we transfer this sentiment polarity to the images attached to the same tweet, obtaining a dataset of labeled images we can use as training set to fine-tune \glspl{dcnn} architectures for the task of visual sentiment polarity prediction.
+Although the text of the tweets is often noisy or misleading with respect to the image content (e.g.\ irrelevant comments), we show that our cross-media approach can be profitably used for learning visual sentiment classifiers in the wild.
+At test time, the trained \glspl{dcnn} can be used to infer the sentiment polarity of an image without the need of textual data.
 
-The main contributions of our work can be summarized as follows:
-\begin{itemize}
-  \item %We address the challenges of visual sentiment analysis in the wild,
-  We present an empirical study to analyze visual sentiments in the wild,
-  %using
-  starting from a large-scale dataset of \emph{unlabeled} user-generated content.
-  To the best of our knowledge, this is the first work that proposes %an ``unsupervised" and data-driven approch
-  a cross-media approach to learn a classifier for predicting the sentiment polarity of a given image.
-  In particular, we show that we are able to train visual sentiment classifiers that are comparable to, or better than, state-of-the-art classifiers trained on sentiment-related labeled images.
-  \item Overall, we collected and analysed more that 3 million tweets in order to construct the \emph{\acrfull{t4sa}} dataset.
-  \gls{t4sa} is composed of about 1 million high-confidence tweets for which we provide the textual sentiment classification, and the corresponding 1.4M images.
-  We make all the collected tweets as well as the \gls{t4sa} dataset publicly available to encourage further research \footnote{http://www.t4sa.it}.
-  %We construct \emph{\NomeTSA} (\TSA) dataset, composed of more than X million tweets for which we provide the textual sentiment classification and the corresponding XXM images. We make  the dataset publicly available to encourage further research\footnote{This is an Anonymised Link}.
-%   We construct {\NomeInitialDatset} (\NID) dataset, composed of {\color{blue}XXX} tweets for which we provide the textual sentiment classification and the corresponding {\color{blue}XXX (qui serve il numero di immagini prima del filtraggio di Felice)} images. We make  the dataset publicly available to encourage further research\footnote{This is an Anonymised Link}.}
-  \item We publicly release our trained visual sentiment classifiers, namely  \emph{\ourFtAlex}\, and \emph{\ourFtVGG}, %\footnote{http://www.t4sa.it},
-  and we conduct comparative studies and evaluations on benchmarks for visual sentiment analysis.
-\end{itemize}
+In the next sections, we will describe the data collection process, the pre-trained textual sentiment classifier which provides us with weak supervision, and the training process of visual models.
+%An overview of our approach is depicted in \ref{fig:vsa:overview}.
+% TODO [FIGURE] VSA overview
+%\begin{figure}
+%    \centering
+%    \includegraphics{}
+%    \caption{}
+%    \label{fig:vsa:overview}
+%\end{figure}
+
+% We follow the current trend of facing sentiment ``in the wild", that is, in all sort of varying conditions of the everyday world that we share with others (as opposed to testing situation in laboratories).
+% For this scope, social networks, such as Twitter and Facebook, are particularly suitable as sources of data for our analysis, thanks to the huge variation of contents shared by their users.
 
 %-------------------------------------------------------------------------
 
-\section{Data Collection}
+\subsection{Data Collection}
 \label{sec:vsa:dataset}
-Both the textual and the multimedia data used in this work have been collected from Twitter, by means of a streaming crawler. The data collection process took place from July to December 2016, lasting around 6 months in total. During this time span we exploited Twitter's Sample API\footnote{https://dev.twitter.com/streaming/reference/get/statuses/sample} to access a random 1\% sample of the stream of all globally produced tweets. All the tweets collected in this way have undergone a filtering step where we have applied a set of simple rules in order to retain only data that could be useful for our sentiment analysis task. Specifically, we discarded:
-\begin{enumerate}
-\item\label{filter:retweets} retweets;
-\item\label{filter:images} tweets not containing any static image (i.e., we also discarded tweets containing only videos and/or animated GIFs);
-\item\label{filter:english} tweets not written in the English language;
-\item\label{filter:length} tweets whose text was less than 5 words long.
-\end{enumerate}
-Rules~\ref{filter:retweets} and~\ref{filter:images} help increasing the quality of collected multimedia data.
-In detail, enforcing Rule~\ref{filter:retweets} avoids collecting large numbers of duplicated images, while Rule~\ref{filter:images} ensures that each collected tweet have at least a static image for the visual sentiment classification task. Rules~\ref{filter:english} and~\ref{filter:length} are instead aimed at guaranteeing that we have enough textual data for the textual sentiment classification task.
-
-The above set of rules filtered as much as 98.7\% of all the tweets collected from the Twitter stream. Anyway, the huge volume of tweets produced globally still allowed to collect a stream of more than 43 useful (i.e., not filtered out) tweets per minute, on average. At the end of the data collection process, the total number of tweets in our dataset
-is $\sim$ 3.4M, corresponding to $\sim$ 4M images. Then, we classified the sentiment polarity of the \emph{texts} (as described in Section \ref{sec:text}) and we selected the tweets having the most confident textual sentiment predictions to build our \emph{\acrfull{t4sa}} dataset. \gls{t4sa} contains %$2,140,711$
-%$\sim$ XXM tweets, corresponding to $\sim$  XXM images.
-little less than a million tweets, corresponding to $\sim$ 1.5M images.
-We publicly release {all the collected tweets} and the \gls{t4sa} dataset.% as incentive for future research and applications.
-%{\color{blue} TODO: cambiare il testo a seconda che si diano tutti i tweets o solo quelli annotati con high confidence}
-
+Both the textual and the multimedia data used in this work have been collected from Twitter, by means of a streaming crawler.
+The data collection process took place from July to December 2016, lasting around 6 months in total.
+During this time span, we exploited Twitter's Sample API\footnote{https://dev.twitter.com/streaming/reference/get/statuses/sample} to access a random 1\% sample of the stream of all globally produced tweets.
+All the tweets collected undergone a filtering step in order to retain only data that could be useful for our sentiment analysis task.
+Specifically, we discarded: i) retweets; ii) tweets not containing any static image (i.e.\ we also discarded tweets containing only videos and/or animated GIFs); iii) tweets not written in the English language; iv) tweets whose text was less than 5 words long.
+This ensures that we collect tweets with both images and text, and that there is enough textual data for the textual sentiment classification task.
+Discarding retweets avoids collecting large numbers of duplicated images.
+The above set of rules filtered as much as 98.7\% of all the tweets collected from the Twitter stream.
+Anyway, the huge volume of tweets produced globally still allowed to collect a stream of more than 43 useful tweets per minute, on average.
+At the end of the data collection process, the total number of tweets in our dataset is roughly 3.4M, corresponding to roughly 4M images.
+Then, we classified the sentiment polarity of the \emph{texts} as described in \ref{sec:vsa:text}, and we selected the tweets having the most confident textual sentiment predictions to build our \emph{\acrfull{t4sa}} dataset.
+\gls{t4sa} contains little less than a million tweets, corresponding to roughly 1.5M images.
+We publicly release all the collected tweets and the \gls{t4sa} dataset.
 
 %-------------------------------------------------------------------------
-\section{From Textual to Visual Sentiment Analysis}
+
+\subsection{Inferring Sentiment Polarity from Text}
 \label{sec:vsa:method}
-%\section{Text Analysis}\label{sec:text}
-%qui tagliati settegli tecnici o
+
 The text extracted from the collected tweets has been classified according to the sentiment polarity using an adapted version for the English language of the ItaliaNLP Sentiment Polarity Classifier~\cite{cimino2016tandem}.
 This system was successfully employed in the SENTIment POLarity Classification task~\cite{barbieri2016overview}, which was organized within Evalita 2016, the 5th evaluation campaign of Natural Language Processing and Speech tools for Italian.
 This classifier is based on a tandem LSTM-SVM architecture.
