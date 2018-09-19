@@ -965,15 +965,14 @@ In this work, we will also explore \emph{cross-modal} image retrieval, i.e.\  th
 Once the query has been formulated, the system must map it in the feature space used to represent the images in the search collection (\emph{Query Representation}).
 This stage is usually strongly coupled with the Image Representation one.
 For the query-by-example paradigm, Image and Query Representation phases are identical and shared in both the on-line and off-line stages, since the image given as query can be transformed and represented the same way as a database image.
-% TODO [REF] section on cross-modal
+% TODO? [REF] section on cross-modal
 For other paradigms, this step may be arbitrarly complex depending on the query modality;
 we refer the interested reader to~\cite{zhou2017recent} for a more detailed discussion on the subject.
 %and we will be discussed later in \ref{subsec:back:cross-modal}.
 The query mapped in the representation space can be finally compared to images in the search collection by means of a scoring function, that produces a rank of images to be shown to the user as results of the retrieval process (\emph{Image Scoring}).
 For scoring large collections, the system leverages the pre-built database index to preform this operation efficiently.
 
-% TODO [CITES] intention and semantic gaps?
-\acrlong{cbir} presents two intrinsic problematics in its structure, that are known in the literature as the \emph{intention gap} and the \emph{semantic gap}.
+\acrlong{cbir} presents two intrinsic problematics in its structure, that are known in the literature as the \emph{intention gap} and the \emph{semantic gap} \cite{datta2008image}.
 
 With intention gap, we refer to the difficulty of a user to precisely express the content to be retrieved given the query paradigm provided by the system;
 the \emph{Query Formulation} and \emph{Query Representation} modules are responsible to minimize this gap.
@@ -981,8 +980,7 @@ As an example of intention gap, consider a system adopting the query-by-example 
 the system does not know whether the user wants to retrieval images containing at least a dog, a dog of that particular breed, or other pictures of the same park.
 
 With semantic gap, we refer to the limitation of the employed content descriptors to represent high-level concepts.
-% TODO [CITE] high-level representations for retrieval (off-the-shelf, check survey)
-While descriptors of low-level features --- such as gradient histograms and color histograms --- suffer from this problem, recent work on image representations learnt with \gls{dl} methodologies drastically reduced this gap in retrieval systems~\cite{donahue2014decaf}.
+While descriptors of low-level features --- such as gradient histograms and color histograms --- suffer from this problem, recent work on image representations learnt with \gls{dl} methodologies drastically reduced this gap in retrieval systems~\cite{donahue2014decaf,sharif2014cnn}.
 %We will review some of them in the following section.
 
 \subsection{Image Representations}
@@ -1121,8 +1119,7 @@ an image representation is extracted by a convolutional sub-network and combined
 Inspired by \gls{devise}, \citet{norouzi2013zero} proposed the ConSE method, in which the image is classified by a pre-trained AlexNet, and a combination of textual embeddings is produced leveraging the most probable labels and its degree of confidence assigned by the network.
 
 \paragraph{Search in Visual Space}
-% TODO [REF] cross-modal chapter
-Methods that maps a textual query in a visual space are less explored and thus object of our investigation in this thesis (see \ref{ch:...}).
+Methods that maps a textual query in a visual space are less explored and thus object of our investigation in this thesis (see \ref{ch:text2vis}).
 One of the most relevant and recent work in this subfield is Word2VisualVec \cite{dong2018predicting}, in which a deep \gls{mlp} is trained to predict visual features extracted from a pre-trained \gls{cnn} starting from a textual encoding obtained by a combination of Word2Vec representations.
 We argue that this kind of solution is suitable in the cases in which we need to access a large dataset of images for which visual features have already been extracted and indexed, and we want to exploit the same data structures to perform a textual search.
 Being the visual space independent from a particular language, multiple text-to-visual-code models can be trained and deployed to support textual search in multiple languages without the need to replicate data representations.
