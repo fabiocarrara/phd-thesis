@@ -406,7 +406,7 @@ In the next paragraphs, we will provide the reader with some of the most used fo
 \paragraph{Mean Squared Error Loss}
 When dealing with regression problems, we want our predictions to be close to the one or more real-valued targets.
 For example, in an age estimation problem, we want our network to predict the exact age expressed as a real value, e.g.\ $46,5$.
-The mean squared error between predictions $\z$ and targets $\z^\star$ is a commonly used loss function to measure the goodness of regressions
+The \gls{mse} between predictions $\z$ and targets $\z^\star$ is a commonly used loss function to measure the goodness of regressions
 \begin{equation} \label{eq:back:mse}
     \L_\textrm{MSE}(\z, \z^\star) = \frac{1}{2} \( \z - \z^\star \)^2 \,.
 \end{equation}
@@ -780,7 +780,7 @@ However, manually engineered solutions are feasible for very specific problems -
 In general, thinking of features that are invariant to transformations, reliable for many types of objects, and robust to noise and other exogenous factors is often very difficult and time-consuming.
 % ESWA: it is often very complex to develop robust and reliable feature detectors and descriptors by hand.
 % TODO better definition of VSA
-As an example, consider the problem of visual sentiment analysis (further discussed in \ref{ch:cross-learning}), which, in a nutshell, consists in detecting the emotions conveyed by images.
+As an example, consider the problem of visual sentiment analysis (further discussed in \ref{ch:cross-media}), which, in a nutshell, consists in detecting the emotions conveyed by images.
 Manually defining a good set of features to extract from images to solve this task is a cumbersome process and usually leads to suboptimal solutions.
 
 \paragraph{ImageNet Challenge and the Deep Learning era}
@@ -1128,6 +1128,7 @@ Being the visual space independent from a particular language, multiple text-to-
 
 
 \subsection{Evaluation Metrics}
+\label{subsec:back:ir-metrics}
 The image retrieval problem is not so different from classical textual information retrieval problem, thus it borrows from it much of the terminology, formulations and evaluation metrics.
 % accuracy, computational cost, memory consumption
 The main aspects to be considered in the evaluation of a retrieval system are its accuracy and its computational \& memory consumption in both the off-line and on-line stages.
@@ -1242,18 +1243,18 @@ Each segmented image is labelled with the vacancy status of the slot, which can 
 The CNRPark+EXT dataset is a car parking occupancy detection dataset collected during this thesis from the parking lots of the campus of the National Research Council (CNR) in Pisa.
 It is comprised by roughly 150,000 images of parking spaces taken from 9 smart cameras with different view-points, in different days with different weather and light conditions, and includes occlusion and shadow situations that make the occupancy detection task challenging.
 More details about the CNRPark-EXT dataset will
-be given in \ref{ch:deep-parking}.
+be given in \ref{ch:miniaturization}.
 
 \paragraph{Twitter Testing Dataset~\cite{you2015robust}}
 The Twitter Testing Dataset is a dataset for image sentiment analysis composed by 1269 images labelled with crowd-sourcing (Amazon Mechanical Turk) following a binary positive/negative sentiment polarity scheme.
 Each image has been annotated as positive or negative by five workers, and three different subsets have been created, respectively comprised by images where 5 workers agree on the sentiment of the image (5-agree, 882 images), where at least 4 workers agree (4-agree, 1,116 images), and where at least 3 workers agree (3-agree, whole set of images).
 
 \paragraph{\acrfull{t4sa}~\cite{vadicamo2017cross}}
-The \acrlong{t4sa} dataset is a large-scale weakly-labelled dataset for sentiment analysis collected during this thesis to evaluate the weakly-labelled cross-media training procedure for image classifiers presented in \ref{ch:weakly-labelled}.
+The \acrlong{t4sa} dataset is a large-scale weakly-labelled dataset for sentiment analysis collected during this thesis to evaluate the weakly-labelled cross-media training procedure for image classifiers presented in \ref{ch:cross-media}.
 It is comprised by 904,395 tweets and their corresponding 1,473,394 images (each tweet has one or more images);
 tweets have been collected from the 5\% random stream of global tweets provided by the Twitter APIs keeping only tweets in english with at least five words and at least one image.
 Each tweet is associated with a three-way sentiment polarity (positive/neutral/negative sentiment) predicted by performing textual sentiment polarity prediction.
-More details are available in \ref{ch:weakly-labelled}.
+More details are available in \ref{ch:cross-media}.
 
 \subsection{Retrieval Datasets}
 
@@ -1287,7 +1288,7 @@ In this work, we will adopt the version of this dataset augmented with a distrac
 The Microsoft \acrfull{coco} dataset is a collection of images  for large-scale object detection, segmentation, and captioning.
 it is comprised by 2,500,000 labeled object instances belonging to 91 common object categories in 328,000 images.
 Each image is associated with an instance-level pixel-wise segmentation of the object instances it depicts and five captions describing the whole images.
-This dataset is particularly adopted also in cross-modal retrieval due to its large scale and the presence of captions, and we will use it to compare to existing cross-modal retrieval approaches in \ref{ch:text-to-vis}.
+This dataset is particularly adopted also in cross-modal retrieval due to its large scale and the presence of captions, and we will use it to compare to existing cross-modal retrieval approaches in \ref{ch:text2vis}.
 
 \subsection{Others}
 
@@ -1295,4 +1296,4 @@ This dataset is particularly adopted also in cross-modal retrieval due to its la
 The NIPS Adversarial Attacks and Defences Competition DEV set is comprised by 1,000 images that do not belong to the \gls{ilsvrc}'12 subsets but share the same label space, i.e.\ are labelled with one of the same 1,000 label used in \gls{ilsvrc}.
 This set has been released in the context of the NIPS Adversarial Attacks and Defences Competition on Kaggle to let participants work with pre-trained \gls{ilsvrc} classifiers using images not involved in their training process.
 In particular, the set is devoted to generate adversarial examples for image classifiers, i.e.\ maliciously manipulated images the lead a classifier to misbehave.
-More details are available in \ref{ch:detect-advesarial} in which we use this set of images to evaluate a detection scheme for adversarial attacks.
+More details are available in \ref{ch:adversarial} in which we use this set of images to evaluate a detection scheme for adversarial attacks.
