@@ -49,9 +49,9 @@ In addition, we contribute with a publicly available dataset of the parking lot 
 The chapter is organized as follows.
 In \ref{sec:mini:related-work}, we introduce the work related to parking lot occupancy detection, focusing on vision-based solutions more related to our proposal.
 In \ref{sec:mini:occupancy-detection}, we propose and describe the \gls{dcnn} model specifically designed to be executed on smart cameras which implements the parking slot classification pipeline.
-In ~\ref{sec:mini:dataset}, we presents the already available and newly collected datasets used to evaluate and compare our approach.
-Section~\ref{sec:mini:evaluation} presents the proposed experimental setup to compare the our approach to the state of the art and evaluate its robustenss to multiple aspects.
-Section~\ref{sec:mini:deployment} briefly describes the deployment of our solution in a real scenario and gives an overview of the overall system.
+In \ref{sec:mini:datasets}, we presents the already available and newly collected datasets used to evaluate and compare our approach.
+\ref{sec:mini:evaluation} presents the proposed experimental setup to compare the our approach to the state of the art and evaluate its robustenss to multiple aspects.
+\ref{sec:mini:deployment} briefly describes the deployment of our solution in a real scenario and gives an overview of the overall system.
 
 The research presented in this chapter was published in~\cite{amato2016car,amato2017deep}, and the provided resources --- e.g.\ datasets and trained models --- are available at \url{http://cnrpark.it}.
 
@@ -260,7 +260,7 @@ in fact, we let the \gls{cnn} to cope with these factors, resulting in a more ro
 % \def\arraystretch{1}
 \begin{tabularx}{\linewidth}{lRRR}
 \toprule
-\textsc{datasets}    & \textsc{vacant} & \textsc{occupied} & \textsc{total} \\
+\textsc{Dataset}    & \textsc{vacant} & \textsc{occupied} & \textsc{total} \\
 \midrule
 %                       &               &               &                \\
 %    CNRPark $A$       & 2549          & 3622          & 6171           \\
@@ -277,7 +277,7 @@ in fact, we let the \gls{cnn} to cope with these factors, resulting in a more ro
 \bottomrule
                        &               &               &                \\
 \toprule
-\textsc{subsets} & \textsc{vacant} & \textsc{occupied} & \textsc{total} \\ \midrule
+\textsc{Subset} & \textsc{vacant} & \textsc{occupied} & \textsc{total} \\ \midrule
     CNRParkOdd        & 2,201          & 3,970          & 6,171           \\
     CNRParkEven       & 1,980          & 4,433          & 6,413           \\ %hline
 \midrule

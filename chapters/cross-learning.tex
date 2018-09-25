@@ -353,7 +353,7 @@ We also performed experiments using two-way fine-tuned nets trained only on posi
 Notice that the range of the accuracy values obtained on our \BTSA{} is lower because those experiments concern a three-way classification.
 Moreover, the ground-truth for the evaluation is not hand-labeled since it is derived from the analysis of the textual information collected ``in the wild";
 thus it contains noisy labels that inevitably lower the accuracy upper bound. %(see Figure \ref{fig:confusion-images}).
-Figure \ref{fig:confusion-images} reports the most confident classifications on this test set.
+Figure \ref{fig:vsa:confusion-images} reports the most confident classifications on this test set.
 From a qualitative point of view, in several cases the sentiment polarity of the images is better represented by the prediction of our model than the sentiment polarity inferred from the text associated with the images.
 Since the textual sentiment analysis was used to label both testing and training images, this, on one hand, explains the relatively lower accuracy obtained by our models on the \BTSA{} test set and, on the other hand, confirms that we used sufficiently large set of training data to allow the deep neural network to handle noisy labels.
 Moreover, we observed that the use of the \emph{neutral} class is particularly suitable for analyzing web images, which often depict simple objects or commercial products.
