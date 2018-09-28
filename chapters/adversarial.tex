@@ -150,7 +150,7 @@ The adversarial perturbation $\eta$ is modeled as the solution of the following 
 \begin{split}
 \underset{\eta}{\text{minimize}}&\qquad ||\eta|| + C \cdot \L(\y,\y^A) \\
 \text{subject to} 				&\qquad L <= \x+\eta <= U, \\
-                                &\qquad \y = f(\x+\eta) \\,
+                                &\qquad \y = f(\x+\eta) \,,
 \end{split}
 \end{equation}
 where $L$ and $U$ are respectively lower and upper bound of pixel values, $f$ is the attacked classifier, $\L(\y,\y^A)$ is the cross-entropy loss computed between the output class probability distribution $\y$ and the target adversarial distribution $\y^A$ (which assigns probability $1$ to the adversarial label and $0$ to the remaining ones).
@@ -267,7 +267,8 @@ In \ref{tab:adv:knn}, we report $w_i$ assignments for famous variants of kNN cla
 \centering
 \begin{tabularx}{\linewidth}{CCC}
 \toprule
-kNN & Weighted kNN & $d$-Weighted kNN \\
+             & \textsc{Weighted kNN} & \textsc{Distance-Weighted kNN} \\
+\textsc{kNN} & \textsc{(W-kNN)} & \textsc{(DW-kNN)} \\
 \midrule
 $w_i = 1$ & $w_i = \dfrac{1}{i}$ & $w_i = \dfrac{1}{d(q, x_i)^2}$ \\ \bottomrule
 \end{tabularx}
