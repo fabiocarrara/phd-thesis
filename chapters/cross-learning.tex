@@ -83,7 +83,7 @@ The Semeval Sentiment analysis in Twitter \cite{nakov2016semeval} challenge is a
 In comparison to textual-based sentiment analysis, inferring emotional information from visual content has been less explored by the research community.
 Seminal approaches \cite{machajdik2010affective,siersdorfer2010analyzing,jia2012can} relied on supervised or semi-supervised frameworks that map low-level features of images into human emotions.
 \citet{siersdorfer2010analyzing} firstly applied and evaluated automatic classification of the sentiment using a large-scale collection of photos crawled from Flickr using the SentiWordNet \cite{esuli2007sentiwordnet} dictionary as query terms.
-They used a pixel-level color histogram and \gls{sift}-based Bag-of-Word representations as visual features and trained a \gls{svm} to predict the sentiment of images.
+They used a pixel-level color histogram and \gls{sift}-based \acrlong{bow} representations as visual features and trained a \gls{svm} to predict the sentiment of images.
 % To overcome the \emph{affective gap} between low-level features and the emotional content of an image,  employed visual entities or attributes to extract mid-level visual representations.
 % The main contribution of~\cite{borth2013large} and~\cite{jou2015visual} was building a large scale visual sentiment ontology, called VSO and Multilingual VSO, respectively, which consist of thousands of semantic objects (Adjective Noun Pairs -- ANP) strongly linked to emotions.
 % Using their ontologies, they also proposed a bank of detectors, namely \emph{SentiBank} and \emph{MVSO}, that can automatically extract these mid-level representations.
@@ -241,7 +241,7 @@ To do so, we performed the following steps: i) we labeled each image of \gls{t4s
 \toprule
                     & \multicolumn{2}{c}{\textsc{T4SA}} & \textsc{T4SA} {\footnotesize (no dup.)} & \textsc{B-T4SA} \\
                       \cmidrule(lr){2-3}                  \cmidrule(lr){4-4}      \cmidrule(lr){5-5}
-\textsc{Sentiment}  & \textsc{tweets} & \textsc{images} & \textsc{images}       & \textsc{images} \\
+\textsc{Sentiment}  & \textbf{tweets} & \textbf{images} & \textbf{images}       & \textbf{images} \\
 \midrule
 Positive            &  371,341        &   501,037       & 372,904               & 156,862 \\
 Neutral             &  629,566        &   757,895       & 444,287               & 156,862 \\
@@ -254,7 +254,7 @@ Sum                 &  904,395        & 1,473,394       & 974,053               
 \label{tab:vsa:t4sa}
 \end{table}
 
-Details on \gls{t4sa} and its subsets are summarized in Table \ref{tab:vsa:t4sa}.
+Details on \gls{t4sa} and its subsets are summarized in \ref{tab:vsa:t4sa}.
 Notice that the size of the balanced subset (i.e.\ {\BTSA}) is highly influenced by the low number of tweets classified as negative.
 Moreover, these negatives contain many artificial images --- such as screenshots and memes --- which made our analysis more challenging.
 In fact, we encountered difficulties in automatically collecting negative tweets that also contain natural images by using only a random sample of all globally produced tweets.
@@ -307,7 +307,7 @@ The details of this dataset are reported in \ref{tab:vsa:ttd}.
 \toprule
                    & \multicolumn{3}{c}{\textsc{Twitter Testing Dataset}} \\
                      \cmidrule(lr){2-4}
-\textsc{Sentiment} & \textsc{5 agree} & \textsc{$\geq 4$ agree} & \textsc{$\geq 3$ agree} \\
+\textsc{Sentiment} & \textbf{5 agree} & \textbf{$\mathbf{\geq 4}$ agree} & \textbf{$\mathbf{\geq 3}$ agree} \\
 \midrule
 Positive           & 581              & 689                              & 769   \\
 Negative           & 301              & 427                              & 500   \\
@@ -329,11 +329,11 @@ In \ref{tab:vsa:results}, we reported the accuracy obtained by the fine-tuned mo
                                 & \multicolumn{3}{c}{\textsc{Twitter Testing Dataset}} & \multicolumn{1}{c}{\textsc{B-T4SA TEST}} \\
                                 & \multicolumn{3}{c}{{\small (pos, neg)}}              & \multicolumn{1}{c}{{\small (pos, neu, neg)}} \\
                                   \cmidrule(lr){2-4}                                     \cmidrule(lr){5-5}
-    \textsc{Model}              & \textsc{5 agree} & \textsc{$\geq 4$ agree} & \textsc{$\geq 3$ agree} & \\
+    \textsc{Model}              & \textbf{5 agree} & \textbf{$\mathbf{\geq 4}$ agree} & \textbf{$\mathbf{\geq 3}$ agree} & \\
     \midrule
     Random Classifier           & 0.500 & 0.500 & 0.500 & 0.333 \\
-    CNN~\cite{you2015robust}   & 0.722 & 0.686 & 0.667 & -     \\
-    PCNN~\cite{you2015robust}  & 0.747 & 0.714 & 0.687 & -     \\
+    CNN~\cite{you2015robust}    & 0.722 & 0.686 & 0.667 & -     \\
+    PCNN~\cite{you2015robust}   & 0.747 & 0.714 & 0.687 & -     \\
     \ourFtAlex\, FT-F           & 0.766 & 0.748 & 0.723 & 0.499 \\
     \ourFtAlex\, FT-A           & 0.741 & 0.709 & 0.686 & 0.491 \\
     \ourFtVGG\, FT-F            & 0.768 & 0.737 & 0.715 & 0.506 \\
@@ -353,7 +353,7 @@ We also performed experiments using two-way fine-tuned nets trained only on posi
 Notice that the range of the accuracy values obtained on our \BTSA{} is lower because those experiments concern a three-way classification.
 Moreover, the ground-truth for the evaluation is not hand-labeled since it is derived from the analysis of the textual information collected ``in the wild";
 thus it contains noisy labels that inevitably lower the accuracy upper bound. %(see Figure \ref{fig:confusion-images}).
-Figure \ref{fig:vsa:confusion-images} reports the most confident classifications on this test set.
+\ref{fig:vsa:confusion-images} reports the most confident classifications on this test set.
 From a qualitative point of view, in several cases the sentiment polarity of the images is better represented by the prediction of our model than the sentiment polarity inferred from the text associated with the images.
 Since the textual sentiment analysis was used to label both testing and training images, this, on one hand, explains the relatively lower accuracy obtained by our models on the \BTSA{} test set and, on the other hand, confirms that we used sufficiently large set of training data to allow the deep neural network to handle noisy labels.
 Moreover, we observed that the use of the \emph{neutral} class is particularly suitable for analyzing web images, which often depict simple objects or commercial products.
@@ -387,40 +387,41 @@ Taken together, these results indicate that our cross-media learning approach is
 % In order to compare the performance of our model to other state-of-the-art methods, we also performed a 5-fold cross-validation on the testing subsets (as also done in \cite{Campos2016,islam2016visual,li2018image,you2015robust}), in which we compute the prediction of each fold with a model fine-tuned again on the other four folds. Results for 5-fold cross-validation are reported in Table \ref{tab:Twitter882_5fold}.
 \begin{table}
 \small
+\renewcommand{\tabcolsep}{2.7pt}
 \newcolumntype{R}{>{\raggedleft\arraybackslash}X}
 \begin{tabularx}{\linewidth}{llRRR}
 \toprule
                 &                           & \multicolumn{3}{c}{\textsc{Twitter Testing Dataset}} \\
                                               \cmidrule(lr){3-5}
-\textsc{Method} & \textsc{Training Datasets} & \textsc{5 agree} & \textsc{$\geq 4$ agree} & \textsc{$\geq 3$ agree} \\
+\textsc{Method} & \textsc{Training Datasets} & \textbf{5 agree} & \textbf{$\mathbf{\geq 4}$ agree} & \textbf{$\mathbf{\geq 3}$ agree} \\
 \midrule
 \multicolumn{5}{l}{\textbf{Approaches without intermediate fine-tuning}} \\
 \midrule
-GCH~\cite{siersdorfer2010analyzing}              {\footnotesize (from~\cite{you2015robust})} \tnote{$\ast$}  &   -   &   0.684   &   0.665   &   0.66    \\
-SentiBank~\cite{borth2013large}  {\footnotesize (from~\cite{you2015robust})} \tnote{$\circ$} &   -   &   0.709   &   0.675   &   0.662   \\
-LCH~\cite{siersdorfer2010analyzing}              {\footnotesize (from~\cite{you2015robust})} \tnote{$\ast$}  &   -   &   0.710   &   0.671   &   0.664   \\
-GCH+ BoW~\cite{siersdorfer2010analyzing}         {\footnotesize (from~\cite{you2015robust})} \tnote{$\ast$}  &   -   &   0.710   &   0.685   &   0.665   \\
-LCH+ BoW ~\cite{siersdorfer2010analyzing}        {\footnotesize (from~\cite{you2015robust})} \tnote{$\ast$}  &   -   &   0.717   &   0.697   &   0.664   \\
-Sentribute~\cite{yuan2013sentribute}   {\footnotesize (from~\cite{you2015robust})} \tnote{$\circ$} &   -   &   0.738   &   0.709   &   0.696   \\
+GCH~\cite{siersdorfer2010analyzing}              {\footnotesize (from~\cite{you2015robust})} $\ast$  &   -   &   0.684   &   0.665   &   0.66    \\
+SentiBank~\cite{borth2013large}  {\footnotesize (from~\cite{you2015robust})} $\circ$ &   -   &   0.709   &   0.675   &   0.662   \\
+LCH~\cite{siersdorfer2010analyzing}              {\footnotesize (from~\cite{you2015robust})} $\ast$  &   -   &   0.710   &   0.671   &   0.664   \\
+GCH+ \gls{bow}~\cite{siersdorfer2010analyzing}         {\footnotesize (from~\cite{you2015robust})} $\ast$  &   -   &   0.710   &   0.685   &   0.665   \\
+LCH+ \gls{bow} ~\cite{siersdorfer2010analyzing}        {\footnotesize (from~\cite{you2015robust})} $\ast$  &   -   &   0.717   &   0.697   &   0.664   \\
+Sentribute~\cite{yuan2013sentribute}   {\footnotesize (from~\cite{you2015robust})} $\circ$ &   -   &   0.738   &   0.709   &   0.696   \\
 
-CNN~\cite{you2015robust} \tnote{$\bullet$}   &   Flickr (VSO)    &   0.783   &   0.755   &   0.715   \\
-AlexNet {\footnotesize (from~\cite{campos2017pixels})} \tnote{$\bullet$}   &  \gls{ilsvrc}12   &   0.817   &   0.782   &   0.739   \\
-PlaceCNN~\cite{zhou2014learning}                {\footnotesize (from~\cite{campos2017pixels})} \tnote{$\bullet$}   &   Places205    &   0.830   &   -   &   -   \\
-GoogleNet~\cite{szegedy2015going}   {\footnotesize (from~\cite{islam2016visual})}  \tnote{$\bullet$}   &   \gls{ilsvrc}12   &   0.861   &   0.807   &   0.787   \\
-HybridNet \tnote{$\bullet$}   &   \gls{ilsvrc}12 + Places205   &   0.867   &   0.814   &   0.781   \\
-VGG-19 \tnote{$\bullet$}   &   \gls{ilsvrc}12  &   0.881   &   0.835   &   0.800   \\
+CNN~\cite{you2015robust} $\bullet$   &   Flickr (VSO)    &   0.783   &   0.755   &   0.715   \\
+AlexNet {\footnotesize (from~\cite{campos2017pixels})} $\bullet$   &  \gls{ilsvrc}12   &   0.817   &   0.782   &   0.739   \\
+PlaceCNN~\cite{zhou2014learning}                {\footnotesize (from~\cite{campos2017pixels})} $\bullet$   &   Places205    &   0.830   &   -   &   -   \\
+GoogleNet~\cite{szegedy2015going}   {\footnotesize (from~\cite{islam2016visual})}  $\bullet$   &   \gls{ilsvrc}12   &   0.861   &   0.807   &   0.787   \\
+HybridNet $\bullet$   &   \gls{ilsvrc}12 + Places205   &   0.867   &   0.814   &   0.781   \\
+VGG-19 $\bullet$   &   \gls{ilsvrc}12  &   0.881   &   0.835   &   0.800   \\
 
 \midrule
 \multicolumn{5}{l}{\textbf{Approaches using an intermediate fine-tuning}} \\
 \midrule
 
-PCNN~\cite{you2015robust} \tnote{$\bullet$}   &   Flickr (VSO) + \emph{ft} Flickr (VSO)  &   0.773   &   0.759   &   0.723   \\
-DeepSentiBank~\cite{chen2014deepsentibank} {\footnotesize (from~\cite{campos2017pixels})} \tnote{$\circ$}\, \tnote{$\bullet$} &   \gls{ilsvrc}12 + \emph{ft} Flickr (VSO)  &   0.804   &   -   &   -   \\
-MVSO [EN]~\cite{jou2015visual}   {\footnotesize (from~\cite{campos2017pixels})} \tnote{$\circ$}\, \tnote{$\bullet$} & DeepSentiBank~\cite{chen2014deepsentibank} + \emph{ft} MVSO-EN \cite{jou2015visual}  &   0.839   &   -   &   -   \\
-\ourFtAlex\, FT-A (Ours) \tnote{$\bullet$}   &   (\gls{ilsvrc}12 + Places205) + \emph{ft} \BTSA    &   0.864   &   0.830   &   0.800   \\
-\ourFtAlex\, FT-F (Ours) \tnote{$\bullet$}   &   (\gls{ilsvrc}12 + Places205) + \emph{ft} \BTSA   &   0.873   &   0.832   &   0.810   \\
-\ourFtVGG\, FT-F (Ours) \tnote{$\bullet$}   &   (\gls{ilsvrc}12 + Places205) + \emph{ft} \BTSA   &   0.889   &   0.857   &   0.815   \\
-\ourFtVGG\, FT-A (Ours) \tnote{$\bullet$}   &   (\gls{ilsvrc}12 + Places205) + \emph{ft} \BTSA &   \textbf{0.896   }&  \textbf{0.866}  &   \textbf{0.820}  \\
+PCNN~\cite{you2015robust} $\bullet$   &   Flickr (VSO) + \emph{ft} Flickr (VSO)  &   0.773   &   0.759   &   0.723   \\
+DeepSentiBank~\cite{chen2014deepsentibank} {\footnotesize (from~\cite{campos2017pixels})} $\circ$ $\bullet$ &   \gls{ilsvrc}12 + \emph{ft} Flickr (VSO)  &   0.804   &   -   &   -   \\
+MVSO [EN]~\cite{jou2015visual}   {\footnotesize (from~\cite{campos2017pixels})} $\circ$ $\bullet$ & DeepSentiBank~\cite{chen2014deepsentibank} + \emph{ft} MVSO-EN \cite{jou2015visual}  &   0.839   &   -   &   -   \\
+\ourFtAlex\, FT-A (Ours) $\bullet$   &   (\gls{ilsvrc}12 + Places205) + \emph{ft} \BTSA    &   0.864   &   0.830   &   0.800   \\
+\ourFtAlex\, FT-F (Ours) $\bullet$   &   (\gls{ilsvrc}12 + Places205) + \emph{ft} \BTSA   &   0.873   &   0.832   &   0.810   \\
+\ourFtVGG\, FT-F (Ours) $\bullet$   &   (\gls{ilsvrc}12 + Places205) + \emph{ft} \BTSA   &   0.889   &   0.857   &   0.815   \\
+\ourFtVGG\, FT-A (Ours) $\bullet$   &   (\gls{ilsvrc}12 + Places205) + \emph{ft} \BTSA &   \textbf{0.896   }&  \textbf{0.866}  &   \textbf{0.820}  \\
 
 \midrule
 \end{tabularx}

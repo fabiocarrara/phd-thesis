@@ -3,38 +3,38 @@
 \graphicspath{{img/back/}}
 
 % Often used notations
-\def\x{\mathbf{x}} % input vector
-\def\X{\mathbf{X}} % input dataset
+\renewcommand{\x}{\mathbf{x}} % input vector
+\renewcommand{\X}{\mathbf{X}} % input dataset
 
-\def\y{\mathbf{y}} % target/output vector
-\def\Y{\mathbf{Y}} % target/output dataset
+\renewcommand{\y}{\mathbf{y}} % target/output vector
+\renewcommand{\Y}{\mathbf{Y}} % target/output dataset
 
-\def\w{\mathbf{w}} % weight vector
-\def\W{\mathbf{W}} % weight matrix
-\def\b{\mathbf{b}} % bias vector
+\renewcommand{\w}{\mathbf{w}} % weight vector
+\renewcommand{\W}{\mathbf{W}} % weight matrix
+\renewcommand{\b}{\mathbf{b}} % bias vector
 
-\def\z{\mathbf{z}} % aux variable (logits)
-\def\h{\mathbf{h}} % hidden state
-\def\o{\mathbf{o}} % output variable
-\def\p{\mathbf{p}} % vector of probabilities
-\def\m{\mathbf{m}} % 1st grad momentum
-\def\v{\mathbf{v}} % 2nd grad momentum
-\def\q{\mathbf{q}} % query vector
+\renewcommand{\z}{\mathbf{z}} % aux variable (logits)
+\renewcommand{\h}{\mathbf{h}} % hidden state
+\renewcommand{\o}{\mathbf{o}} % output variable
+\renewcommand{\p}{\mathbf{p}} % vector of probabilities
+\renewcommand{\m}{\mathbf{m}} % 1st grad momentum
+\renewcommand{\v}{\mathbf{v}} % 2nd grad momentum
+\renewcommand{\q}{\mathbf{q}} % query vector
 
-\def\i{\mathbf{i}} % lstm input gate
-\def\f{\mathbf{f}} % lstm forget gate
-\def\o{\mathbf{o}} % lstm output gate
-\def\u{\mathbf{u}} % lstm update gate
-\def\c{\mathbf{c}} % lstm cell state
+\renewcommand{\i}{\mathbf{i}} % lstm input gate
+\renewcommand{\f}{\mathbf{f}} % lstm forget gate
+% \renewcommand{\o}{\mathbf{o}} % lstm output gate
+\renewcommand{\u}{\mathbf{u}} % lstm update gate
+\renewcommand{\c}{\mathbf{c}} % lstm cell state
 
-\def\R{\mathbb{R}} % real numbers
-\def\L{\mathcal{L}} % loss function
-\def\a{\varphi} % activation function
+\renewcommand{\R}{\mathbb{R}} % real numbers
+\renewcommand{\L}{\mathcal{L}} % loss function
+\renewcommand{\a}{\varphi} % activation function
 
-\def\Reg{\mathcal{R}} % region
+\renewcommand{\Reg}{\mathcal{R}} % region
 
-\def\({\left (} % left par
-\def\){\right )} % right par
+\renewcommand{\(}{\left (} % left par
+\renewcommand{\)}{\right )} % right par
 
 
 \chapter{Background}
@@ -393,7 +393,7 @@ A general formulation of the loss function is
 %
 \begin{equation} \label{eq:back:loss}
 \begin{aligned}
-    \L\(\X; \Theta\) &= \overbrace{\L_d\(\X; \Theta\)}^{\textrm{data term}}&+\, \alpha &\overbrace{\L_r\(\Theta\)}^{\textrm{regularization term}}\\
+    \L\(\X; \Theta\) &= \overbrace{\L_d\(\X; \Theta\)}^{\text{data term}}&+\, \alpha &\overbrace{\L_r\(\Theta\)}^{\text{regularization term}}\\
                      &= \frac{1}{N} \sum_{i=1}^N \L\(\y_i, \y^\star_i\)&+\alpha & \,\quad \L_r\(\Theta\) \\
                      &= \frac{1}{N} \sum_{i=1}^N \L\(f\(\x_i; \Theta\), \y^\star_i\)&+\alpha & \,\quad\L_r\(\Theta\) \,.
 \end{aligned}
@@ -408,7 +408,7 @@ When dealing with regression problems, we want our predictions to be close to th
 For example, in an age estimation problem, we want our network to predict the exact age expressed as a real value, e.g.\ $46,5$.
 The \gls{mse} between predictions $\z$ and targets $\z^\star$ is a commonly used loss function to measure the goodness of regressions
 \begin{equation} \label{eq:back:mse}
-    \L_\textrm{MSE}(\z, \z^\star) = \frac{1}{2} \( \z - \z^\star \)^2 \,.
+    \L_\text{MSE}(\z, \z^\star) = \frac{1}{2} \( \z - \z^\star \)^2 \,.
 \end{equation}
 %
 The scale factor $\frac{1}{2}$ is usually introduced to simplify the gradient computation when using this loss function (more details on this in \ref{subsec:back:optim}).
@@ -420,13 +420,13 @@ Let $\z$ and $\z^\star$ the probability masses of two $N$-way categorical distri
 the cross-entropy loss between the predicted distribution $\z$ and the target one $\z^\star$ is defined as
 %
 \begin{equation} \label{eq:back:cross-entropy}
-    \L_\textrm{CE}(\z, \z^\star) = - \sum_{i=1}^N \z^\star_i \log \z_i \,.
+    \L_\text{CE}(\z, \z^\star) = - \sum_{i=1}^N \z^\star_i \log \z_i \,.
 \end{equation}
 %
 Classification models are often designed to output a $N$-dimensional vector $\z$ that is mapped to a categorical distribution via the \emph{softmax} function
 %
 \begin{equation} \label{eq:back:softmax}
-    \textrm{softmax}(\z)_i = \frac{e^{\z_i}}{\sum_{j=1}^N e^{\z_j}} \,.
+    \text{softmax}(\z)_i = \frac{e^{\z_i}}{\sum_{j=1}^N e^{\z_j}} \,.
 \end{equation}
 % TODO [FIGURE] siamese figs and subfigs
 \begin{figure}
@@ -677,12 +677,12 @@ metrics can be computed considering each class as the positive one and then aggr
 \renewcommand{\arraystretch}{1.5}
 
 \begin{tabularx}{\linewidth}{cr|M{1.3cm}|M{1.3cm}|>{\hskip 2cm}r@{\hskip 3pt}X}
-\multicolumn{4}{c}{}                                                                                                                                      & $\mathrm{TP}=$ & True Positives, i.e.\ correct hits           \\
-\multicolumn{2}{c}{}                                                  & \multicolumn{2}{c}{\bfseries Actual class}                                        & $\mathrm{TN}=$ & True Negatives, i.e.\ correct rejections     \\
-\multicolumn{2}{c}{}                                                  & \multicolumn{1}{c}{\itshape \small Positive} & \multicolumn{1}{c}{\itshape \small Negative} & $\mathrm{FP}=$ & False Positives, i.e.\ false alarms          \\ \cline{3-4}
-\parbox[t]{2mm}{\multirow{2}{*}{\rotatebox[origin=c]{90}{\bfseries Predicted}}} & {\itshape \small Positive} & $\mathrm{TP}$ & $\mathrm{FP}$                   & $\mathrm{FN}=$ & False Negatives, i.e.\ misses                \\ \cline{3-4}
-                                                                      & {\itshape \small Negative}           & $\mathrm{FN}$ & $\mathrm{TN}$                   &  $\mathrm{P}=$ & $\mathrm{TP}+\mathrm{FN}=$ Positive samples \\ \cline{3-4}
-\multicolumn{4}{c}{}                                                                                                                                      &  $\mathrm{N}=$ & $\mathrm{TN}+\mathrm{FP}=$ Negative samples \\
+\multicolumn{4}{c}{}                                                                                                                                      & TP $=$ & True Positives, i.e.\ correct hits           \\
+\multicolumn{2}{c}{}                                                  & \multicolumn{2}{c}{\bfseries Actual class}                                        & TN $=$ & True Negatives, i.e.\ correct rejections     \\
+\multicolumn{2}{c}{}                                                  & \multicolumn{1}{c}{\itshape \small Positive} & \multicolumn{1}{c}{\itshape \small Negative} & FP $=$ & False Positives, i.e.\ false alarms          \\ \cline{3-4}
+\parbox[t]{2mm}{\multirow{2}{*}{\rotatebox[origin=c]{90}{\bfseries Predicted}}} & {\itshape \small Positive} & TP    & FP                                 & FN $=$ & False Negatives, i.e.\ misses                \\ \cline{3-4}
+                                                                      & {\itshape \small Negative}           & FN    & TN                                 &  P $=$ & TP $+$ FN $=$ Positive samples \\ \cline{3-4}
+\multicolumn{4}{c}{}                                                                                                                                      &  N $=$ & TN $+$ FP $=$ Negative samples \\
 \end{tabularx}
 
 \caption{Confusion matrix for a binary classification problem and the related terminology}
@@ -692,12 +692,12 @@ metrics can be computed considering each class as the positive one and then aggr
 % Accuracy
 \paragraph{Accuracy} The accuracy of a classification is defined for the binary case as
 \begin{equation} \label{eq:back:accuracy-binary}
-    \mathrm{Acc.} = \frac{\mathrm{TP} + \mathrm{TN}}{\mathrm{P} + \mathrm{N}} = \frac{\mathrm{TP} + \mathrm{TN}}{\mathrm{TP} + \mathrm{FN} + \mathrm{TN} + \mathrm{FP}} \,,
+    \text{Accuracy} = \frac{\text{TP} + \text{TN}}{\text{P} + \text{N}} = \frac{\text{TP} + \text{TN}}{\text{TP} + \text{FN} + \text{TN} + \text{FP}} \,,
 \end{equation}
 that is the fraction of correctly classified samples.
 For the general case with more than two classes, the accuracy is given by the sum of the elements on the diagonal of the confusion matrix --- which contains the counts for correct predictions --- and the total number of classified samples
 \begin{equation} \label{eq:back:accuracy}
-    \mathrm{Acc.} = \frac{\sum_{i=1}^L c_{ii}}{|Y|} \,.
+    \text{Accuracy} = \frac{\sum_{i=1}^L c_{ii}}{|Y|} \,.
 \end{equation}
 
 % Top-K Accuracy
@@ -715,12 +715,12 @@ In this scenarios, other ratios derived from the classification matrix are used 
 \paragraph{\acrshort{tpr} and \acrshort{tnr}}
 The \emph{\gls{tpr}} is the ratio between correctly predicted positive samples and the number of actual positive samples
 \begin{equation} \label{eq:back:tpr}
-    \mathrm{TPR} = \frac{\mathrm{TP}}{\mathrm{P}} = \frac{\mathrm{TP}}{\mathrm{TP} + \mathrm{FN}} \,.
+    \text{TPR} = \frac{\text{TP}}{\text{P}} = \frac{\text{TP}}{\text{TP} + \text{FN}} \,.
 \end{equation}
 It is also known as \emph{Recall} of the positive class, as it indicates the fraction of positive samples correctly accepted as positive.
 Similarly, the \gls{tnr} represent the same concept applied to the negative class, and it is defined as
 \begin{equation} \label{eq:back:tnr}
-    \mathrm{TNR} = \frac{\mathrm{TN}}{\mathrm{N}} = \frac{\mathrm{TN}}{\mathrm{TN} + \mathrm{FP}} \,.
+    \text{TNR} = \frac{\text{TN}}{\text{N}} = \frac{\text{TN}}{\text{TN} + \text{FP}} \,.
 \end{equation}
 
 % FNR FPR
@@ -728,11 +728,11 @@ Similarly, the \gls{tnr} represent the same concept applied to the negative clas
 While \gls{tpr} and \gls{tnr} measure how well a classifier perform on both classes, the \gls{fnr} and \gls{fpr} are complementary measures that indicate instead the faction of classification errors.
 Specifically, the \gls{fnr} is defined as the fraction of positive examples wrongly classified as negatives, and it is complementary to the \gls{tpr}
 \begin{equation} \label{eq:back:fnr}
-    \mathrm{FNR} = \frac{\mathrm{FN}}{\mathrm{P}} = \frac{\mathrm{FN}}{\mathrm{TP} + \mathrm{FN}} = 1 - \mathrm{TPR}\,.
+    \text{FNR} = \frac{\text{FN}}{\text{P}} = \frac{\text{FN}}{\text{TP} + \text{FN}} = 1 - \text{TPR}\,.
 \end{equation}
 Similarly, the \gls{fpr} measures the fraction of errors on the negative class
 \begin{equation} \label{eq:back:fpr}
-    \mathrm{FPR} = \frac{\mathrm{FP}}{\mathrm{N}} = \frac{\mathrm{FP}}{\mathrm{TN} + \mathrm{FP}} = 1 - \mathrm{TNR}\,.
+    \text{FPR} = \frac{\text{FP}}{\text{N}} = \frac{\text{FP}}{\text{TN} + \text{FP}} = 1 - \text{TNR}\,.
 \end{equation}
 
 \paragraph{\acrshort{roc} and \acrshort{auc}}
@@ -758,10 +758,10 @@ the higher the \gls{roc} curve, the closer the \gls{auc} is to $1$ (see \ref{fig
 Another useful threshold-independent metric which is commonly used to compare classifiers is the \gls{eer} accuracy.
 This is the accuracy obtained by choosing the threshold yielding an equal error rate on both positive and negative classes, i.e.
 \begin{equation} \label{eq:back:eer-accuracy}
-    \mathrm{EER\ Acc.} = \mathrm{Acc}(T) \quad | \quad \mathrm{FPR}(T) = \mathrm{FNR}(T) \,,
+    \text{EER\ Accuracy} = \text{Acc}(T) \quad | \quad \text{FPR}(T) = \text{FNR}(T) \,,
 \end{equation}
-where $\mathrm{Acc}(T)$, $\mathrm{FPR}(T)$, and $\mathrm{FNR}(T)$ indicates respectively the accuracy, the \gls{fpr}, and the \gls{fnr} obtained using $T$ as threshold.
-On the \gls{roc} plot, this threshold setting corresponds to the point where the classifier curve intersect the second diagonal of the unit square, i.e.\ the $\mathrm{TPR} = 1 - \mathrm{FPR}$ line, which is equivalent to $\mathrm{FPR} = \mathrm{FNR}$ by substituting \ref{eq:back:fnr} in \ref{eq:back:eer-accuracy}.
+where $\text{Acc}(T)$, $\text{FPR}(T)$, and $\text{FNR}(T)$ indicates respectively the accuracy, the \gls{fpr}, and the \gls{fnr} obtained using $T$ as threshold.
+On the \gls{roc} plot, this threshold setting corresponds to the point where the classifier curve intersect the second diagonal of the unit square, i.e.\ the $\text{TPR} = 1 - \text{FPR}$ line, which is equivalent to $\text{FPR} = \text{FNR}$ by substituting \ref{eq:back:fnr} in \ref{eq:back:eer-accuracy}.
 
 \subsection{Relevant works}
 \label{subsec:back:classif-relwork}
@@ -1103,8 +1103,8 @@ In this scenarios, mapping a query into an existing space may result in a suitab
 In the next paragraphs, we will briefly review relevant works that exploit this strategy and leverage an existing textual or visual space to enable cross-media image retrieval.
 
 \paragraph{Search in Textual Space}
-%The BoWDNN method [1] trains a deep neural network to map images directly into a bag-of-words (BoW) space, where the cosine similarity between BoWs representations is used to generate the ranking.
-In \cite{bai2014bag}, a bag-of-words (BoW) space representing text is used as target space, and a deep neural network called BowDNN is proposed to map images into BoWs representations that are then compared with cosine similarity.
+%The BoWDNN method [1] trains a deep neural network to map images directly into a \acrfull{bow} space, where the cosine similarity between BoWs representations is used to generate the ranking.
+In \cite{bai2014bag}, a \acrfull{bow} space representing text is used as target space, and a deep neural network called BowDNN is proposed to map images into \glspl{bow}s representations that are then compared with cosine similarity.
 % Somehow similarly, a dedicated area of related research is focused on generating captions describing the salient information of an image (see, e.g., [22, 11, 44]).
 Many other works focus on mapping images directly to a textual description, i.e.\ producing a caption of the image describing its salient content~\cite{vinyals2015show,karpathy2015deep,fang2015captions}.
 %The m-RNN method [31] trains a multimodal recurrent neural network to generate a caption description for a given image.
@@ -1124,7 +1124,7 @@ One of the most relevant and recent work in this subfield is Word2VisualVec \cit
 We argue that this kind of solution is suitable in the cases in which we need to access a large dataset of images for which visual features have already been extracted and indexed, and we want to exploit the same data structures to perform a textual search.
 Being the visual space independent from a particular language, multiple text-to-visual-code models can be trained and deployed to support textual search in multiple languages without the need to replicate data representations.
 
-%Our Text2Vis variants belong to this group where, to the best of our knowledge, the only other proposal up to now is a method dubbed Word2VisualVec [10], which was reported just very recently. There are some fundamental points where their method and ours differ, though. Word2VisualVec takes combinations of Word2Vec-like vectors as a starting point, thus reducing the dimensionality of the input space, whereas we directly take the bag-of-words vector encoding of the textual space as the input (S-Text2Vis), or learn the word embeddings (D-Text2Vis, Section 3.3) during the training process, as we did not observe any improvement in pre-training the textual part. Moreover, Word2VisualVec builds a deep regressor on top of the textual representation that are aggregations of word embeddings, which thus discard word order information. Contrarily, we observed that, when disregarding word order, yet a shallow regressor (S-Text2Vis) produces effective mappings of textual vectors into the visual space. We also observed that taking word order into account helps to improve results (D-Text2Vis and W&D-Text2Vis, Section 3.4). TODO move to chapter
+%Our Text2Vis variants belong to this group where, to the best of our knowledge, the only other proposal up to now is a method dubbed Word2VisualVec [10], which was reported just very recently. There are some fundamental points where their method and ours differ, though. Word2VisualVec takes combinations of Word2Vec-like vectors as a starting point, thus reducing the dimensionality of the input space, whereas we directly take the \acrlong{bow} vector encoding of the textual space as the input (S-Text2Vis), or learn the word embeddings (D-Text2Vis, Section 3.3) during the training process, as we did not observe any improvement in pre-training the textual part. Moreover, Word2VisualVec builds a deep regressor on top of the textual representation that are aggregations of word embeddings, which thus discard word order information. Contrarily, we observed that, when disregarding word order, yet a shallow regressor (S-Text2Vis) produces effective mappings of textual vectors into the visual space. We also observed that taking word order into account helps to improve results (D-Text2Vis and W&D-Text2Vis, Section 3.4). TODO move to chapter
 
 
 \subsection{Evaluation Metrics}
@@ -1147,12 +1147,12 @@ is a collection of $N$ elements, $\q$ a query, $\Y^{\star}_{\q} \subset \X$ the 
 \paragraph{Precision and Recall}
 With \emph{precision}, we refer to the fraction of retrieved samples that are relevant to the query
 \begin{equation} \label{eq:back:precision}
-\mathrm{Precision} = \frac{|\Y_{\q} \cap \Y^{\star}_{\q}|}{|\Y_{\q}|} \,,
+\text{Precision} = \frac{|\Y_{\q} \cap \Y^{\star}_{\q}|}{|\Y_{\q}|} \,,
 \end{equation}
 where $|\cdot|$ indicates the cardinality of a set.
 We refer to the fraction of relevant samples actually retrieved as \emph{recall}
 \begin{equation} \label{eq:back:recall}
-\mathrm{Recall} = \frac{|\Y_{\q} \cap \Y^{\star}_{\q}|}{|\Y^{\star}_{\q}|} \,.
+\text{Recall} = \frac{|\Y_{\q} \cap \Y^{\star}_{\q}|}{|\Y^{\star}_{\q}|} \,.
 \end{equation}
 
 A trade-off between precision and recall is often tuned on deployment;
@@ -1164,7 +1164,7 @@ Viceversa, a less stringent retrieval has a high recall, but more retrieved samp
 The \emph{\acrfull{ap}} metric is commonly used to evaluate a retrieval system independently from the particular configuration of precision-recall.
 Similarly to the \acrfull{auc} of ROC plots --- discussed in \ref{subsec:back:classif-eval} --- the \gls{ap} represent the area under the precision-recall curve and is computed as
 \begin{equation} \label{eq:back:ap}
-    \mathrm{AP} = \sum_r p(r)\,,
+    \text{AP} = \sum_r p(r)\,,
 \end{equation}
 where $r$ is the set of possible recall values that can be achieved, e.g.\ varying the maximum number of elements to be retrieved or the threshold on the scores of the retrieved samples.
 When multiple queries are considered for evaluation, the \emph{\acrfull{map}} is usually reported, which is the mean of the \glspl{ap} obtained from each query.
@@ -1176,13 +1176,13 @@ Its aim is to penalize highly relevant samples in the bottom part of the results
 to do so, usually a logarithmic weighting scheme is adopted to assign a decreasing importance to samples in the lower part of the search results.
 The \gls{dcg} at the rank position $n$ is defined as
 \begin{equation} \label{eq:back:dcg}
-    \mathrm{DCG}@n = \sum_{i=1}^n \frac{2^{r_i} - 1}{\log_2(i + 1)} \,,
+    \text{DCG}@n = \sum_{i=1}^n \frac{2^{r_i} - 1}{\log_2(i + 1)} \,,
 \end{equation}
 where $r_i$ is a positive scalar representing the relevance of the $i$-th retrieved sample.
 In the case rankings can have ties, the \gls{tdcg}~\cite{mcsherry2008computing} is used, defined as:
 %
 \begin{equation}
-\mathrm{TDCG}@n = \sum_{i=1}^{m}\left(\left(\frac{1}{n_i}\sum_{j=t_i+1}^{t_{i+1}}2^{rel_i}-1\right)\sum_{j=t_i+1}^{\min(t_{i+1},k)}\frac{1}{\log_2(i+1)}\right)
+\text{TDCG}@n = \sum_{i=1}^{m}\left(\left(\frac{1}{n_i}\sum_{j=t_i+1}^{t_{i+1}}2^{rel_i}-1\right)\sum_{j=t_i+1}^{\min(t_{i+1},k)}\frac{1}{\log_2(i+1)}\right)
 \end{equation}
 %
 where $m$ is the number of group of ties in the ranking of the first $n$ results, $n_i$ indicates the number of tied result in the $i$-th group, $t_i$ indicates the starting position of each tied group.

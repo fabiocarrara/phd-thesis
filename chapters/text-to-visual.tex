@@ -23,12 +23,12 @@
 %We choose to implement the actual search process as a similarity search in a visual feature space, by learning to translate a textual query into a visual representation.
 %Searching in the visual feature space has the advantage that any update to the translation model does not require to reprocess the (typically huge) image collection on which the search is performed.
 %We propose various neural network models of increasing complexity that learn to generate, from a short descriptive text, a high level visual representation in a visual feature space such as the pool5 layer of the \resnet{} or the fc6-fc7 layers of an AlexNet trained on ILSVRC12 and Places databases.
-%The \ttv{} models we explore include (i) a relatively simple regressor network relying on a bag-of-words representation for the textual descriptors, (ii) a deep recurrent network that is sensible to word order, and (iii) a wide and deep model that combines a stacked LSTM deep network with a wide regressor network.
+%The \ttv{} models we explore include (i) a relatively simple regressor network relying on a \acrlong{bow} representation for the textual descriptors, (ii) a deep recurrent network that is sensible to word order, and (iii) a wide and deep model that combines a stacked LSTM deep network with a wide regressor network.
 %We compare the models we propose with other search strategies, also including textual search methods that exploit state-of-the-art caption generation models to index the image collection.
 
 Using a textual query to retrieve images is a very common cross-media search task, as text is the most efficient media to describe the kind of image the user is searching for.
 Each media has its own representation space, which is modeled on a collection of representative content for that media.
-For example, text can be represented by means of a simple bag-of-words feature space, with the feature space being defined by a dictionary of observed words; or by means of more complex distributional semantic models, such as those based on neural networks, e.g.\ Word2Vec \cite{mikolov2013distributed}.
+For example, text can be represented by means of a simple \acrlong{bow} feature space, with the feature space being defined by a dictionary of observed words; or by means of more complex distributional semantic models, such as those based on neural networks, e.g.\ Word2Vec \cite{mikolov2013distributed}.
 Similarly, a visual space can be modeled by identifying a set of relevant visual features in a collection on images, e.g.\ as those extracted by the deeper layers of \acrfullpl{cnn} \cite{krizhevsky2012imagenet}.
 %\todo{Espandere sul visual space?}
 
@@ -368,7 +368,7 @@ For the parameter $\lambda$ determining the impact of the $L_2$ regularization, 
 % \label{fig:t2v:modaltrends}
 % \end{figure}
 
-For \sparsettv{}, we tested two different vectorial representations of text: \sparsettv{}\textsc{-U} uses a simple bag-of-words vectors that marks with a value of one the positions that are relative to words that appear in the textual description and leave to zero all the others; \sparsettv{}\textsc{-N} adds a little bit of information on the text structure by considering also N-grams for a selection of part-of-speech patterns\footnote{We considered the part-of-speech patterns: `NOUN-VERB', `NOUN-VERB-VERB', `ADJ-NOUN', `VERB-PRT', `VERB-VERB', `NUM-NOUN', and `NOUN-NOUN'.}.
+For \sparsettv{}, we tested two different vectorial representations of text: \sparsettv{}\textsc{-U} uses a simple \acrlong{bow} vectors that marks with a value of one the positions that are relative to words that appear in the textual description and leave to zero all the others; \sparsettv{}\textsc{-N} adds a little bit of information on the text structure by considering also N-grams for a selection of part-of-speech patterns\footnote{We considered the part-of-speech patterns: `NOUN-VERB', `NOUN-VERB-VERB', `ADJ-NOUN', `VERB-PRT', `VERB-VERB', `NUM-NOUN', and `NOUN-NOUN'.}.
 %\sparsettv{}$-N$ is a first approach at modeling text structure into the input vectorial representation, which differentiates the task of search from detailed/complex textual description we aim at from the traditional keyword search.
 The resulting vocabulary size $|V|$ is $10,358$ for \sparsettv{}\textsc{-U} after removing terms appearing in less than 5 captions.
 For \sparsettv{}\textsc{-N} we considered the $23,968$ uni-grams and N-grams appearing at least in 10 captions.
@@ -412,7 +412,7 @@ We define as \emph{VisSim} the direct similarity method that computes the Euclid
 We also compare with \visreg{}, the text-to-image sparse regressor described in \ref{subsec:t2v:vis-reg}.
 
 We use the caption generation methods presented in \cite{karpathy2015deep} (dubbed \emph{NeuralTalk}) and \cite{vinyals2015show} (dubbed \emph{Show\&Tell}) to implement cross-media search methods based on textual search.
-Given a caption generation method, we generate captions for all the 20K images in the test collection, and then we implement the search process as a text similarity search process based on two retrieval models: one that used the same $ROUGE_L$ metric that is used for the evaluation (dubbed \emph{CapRouge}), and one that uses a more classic ranking by $L_2$ norm of the vectors resulting from text indexing based on bag-of-words or characters 3- and 4-grams (respectively dubbed \emph{CapBow} and \emph{CapGrams}).
+Given a caption generation method, we generate captions for all the 20K images in the test collection, and then we implement the search process as a text similarity search process based on two retrieval models: one that used the same $\text{ROUGE}_L$ metric that is used for the evaluation (dubbed \emph{CapRouge}), and one that uses a more classic ranking by $L_2$ norm of the vectors resulting from text indexing based on \acrlong{bow} or characters 3- and 4-grams (respectively dubbed \emph{CapBow} and \emph{CapGrams}).
 We used two \emph{Show\&Tell} models, one trained for one million iterations (\emph{Show\&Tell-1M}), and another for two million iterations (\emph{Show\&Tell-2M}).
 It is important to stress that the \emph{CapRouge} method is to be considered as a very strong but unrealistic baseline, added for the sake of a richer comparison, and not a viable retrieval method, for two reasons.
 First, it uses the same metric of the evaluation, so it improperly overfits on it.
@@ -481,7 +481,7 @@ The first and second rows of results, despite including the specific query image
 \newcolumntype{e}{D{.}{.}{3}}
 \begin{tabularx}{\linewidth}{ldddde@{\hfill}dddde}
 \toprule
- & \multicolumn{5}{c}{1K samples} & \multicolumn{5}{c}{5K samples} \\
+ & \multicolumn{5}{c}{\sc 1K samples} & \multicolumn{5}{c}{\sc 5K samples} \\
  \cmidrule(lr){2-6} \cmidrule(lr){7-11}
  & \multicolumn{1}{R}{\textbf{R@1}} & \multicolumn{1}{R}{\textbf{R@5}} & \multicolumn{1}{R}{\textbf{R@10}} & \multicolumn{1}{R}{\textbf{medR}} & \multicolumn{1}{R}{\textbf{DCG}} & \multicolumn{1}{R}{\textbf{R@1}} & \multicolumn{1}{R}{\textbf{R@5}} & \multicolumn{1}{R}{\textbf{R@10}} & \multicolumn{1}{R}{\textbf{medR}} & \multicolumn{1}{R}{\textbf{DCG}} \\
 \midrule
@@ -508,9 +508,9 @@ The rank-centered metrics \gls{r@k} and \gle{medR} present a higher dependency o
 \newcolumntype{R}{>{\raggedleft\arraybackslash}X}
 \begin{tabularx}{\linewidth}{lRRRRRRR}
   \toprule
-  & \multicolumn{3}{c}{Textual search space}        & \multicolumn{3}{c}{Visual search space}                                       &           \\
+  & \multicolumn{3}{c}{\sc Textual search space}        & \multicolumn{3}{c}{\sc Visual search space}                                       &           \\
     \cmidrule(lr){2-4}                   \cmidrule(lr){5-7}
-  Method               & \multicolumn{1}{c}{CapRouge}       & \multicolumn{1}{c}{CapBoW}         & \multicolumn{1}{c}{CapGram}        & \multicolumn{1}{c}{pool5}     & \multicolumn{1}{c}{fc6}            & \multicolumn{1}{c}{fc7}            & \multicolumn{1}{c}{\# params}          \\
+  Method               & \multicolumn{1}{c}{\bf CapRouge}       & \multicolumn{1}{c}{\bf CapBoW}         & \multicolumn{1}{c}{\bf CapGram}        & \multicolumn{1}{c}{\bf pool5}     & \multicolumn{1}{c}{\bf fc6}            & \multicolumn{1}{c}{\bf fc7}            & \multicolumn{1}{c}{\bf \# params}          \\
   \midrule
   \emph{RRank}         & 1.524          & 1.524          & 1.524          & 1.524         & 1.524          & 1.524          & -         \\
   \midrule
