@@ -129,7 +129,7 @@ The dimensionality of the input $n$ and of the output $m$ are referred to as res
 \begin{figure}
     \centering
     \includegraphics[width=0.8\linewidth]{figures/neuron}
-    \caption{Parallelism between a real neuron and the artificial one used in \glspl{mlp}}
+    \caption{Parallelism between a real neuron and the artificial one used in \glspl{mlp}.}
     \label{fig:back:neuron}
 \end{figure}
 
@@ -164,7 +164,7 @@ where $\(\W_i, \b_i \)$ are the parameters of the $i$-th fully-connected layer i
     % TODO [FIG] example of crosscorr on image
     \centering
     \includegraphics[width=0.5\linewidth]{figures/cross-correlation2d}
-    \caption{Example of cross-correlation between 2D signals}
+    \caption{Example of cross-correlation between 2D signals.}
     \label{fig:back:2d-cross-corr}
 \end{figure}
 
@@ -200,7 +200,7 @@ A depiction of 2D cross-correlation is reported in~\ref{fig:back:2d-cross-corr}.
 \begin{figure}
     \centering
     \includegraphics[width=\linewidth]{figures/convolution}
-    \caption{Depiction of 2D cross-correlation on volumes implemented in convolutional layers}
+    \caption{Depiction of 2D cross-correlation on volumes implemented in convolutional layers.}
     \label{fig:back:convolution}
 \end{figure}
 
@@ -250,7 +250,7 @@ The visual aspect of objects in images follow a hierarchical organization: an ob
     \caption{
     Visualization of the feature hierarchy learned by convolutional layers in a \gls{dl}-model trained on faces.
     Low-level features (edges and blobs, on the left) are detected and then combined to recognize parts (eyes, nose, mouth, in the middle) and finally faces (on the right).
-    \figfrom{lee2011unsupervised}
+    \figfrom{lee2011unsupervised}.
     }
     \label{fig:back:filter-hier}
 \end{figure}
@@ -306,7 +306,7 @@ The concatenation of the internal states of both past-to-future and future-to-pa
 \begin{figure}
     \centering
     \includegraphics[width=.9\linewidth]{figures/bidir-rnn}
-    \caption{Unrolled version of a Bidirectional \gls{rnn} for a sequence of length 5}
+    \caption{Unrolled version of a Bidirectional \gls{rnn} for a sequence of length 5.}
     \label{fig:back:bidir-rnn}
 \end{figure}
 
@@ -372,7 +372,7 @@ A depiction of the \gls{lstm} cell is aslo available in \ref{fig:back:lstm}.
 \begin{figure}
     \centering
     \includegraphics[width=\linewidth]{figures/lstm}
-    \caption{Example of \gls{lstm} cell}
+    \caption{Example of \gls{lstm} cell.}
     \label{fig:back:lstm}
 \end{figure}
 
@@ -428,33 +428,41 @@ Classification models are often designed to output a $N$-dimensional vector $\z$
 \begin{equation} \label{eq:back:softmax}
     \text{softmax}(\z)_i = \frac{e^{\z_i}}{\sum_{j=1}^N e^{\z_j}} \,.
 \end{equation}
-% TODO [FIGURE] siamese figs and subfigs
+
 \begin{figure}
-    \begin{subfigure}{.3\linewidth}
-        \includegraphics[width=\linewidth]{figures/learn-to-rank}
-        \caption{} % TODO check siamese paper for caption
-        \label{fig:back:ranking-loss}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}{.3\linewidth}
-        \includegraphics[width=\linewidth]{figures/siamese-archit}
-        \caption{Siamese architecture with contrastive loss}
-        \label{fig:back:siamese}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}{.3\linewidth}
-        \includegraphics[width=\linewidth]{figures/triplet-archit}
-        \caption{Siamese architecture with triplet loss}
-        \label{fig:back:triplet}
-    \end{subfigure}
-    \caption{Ranking loss and siamese architectures}
+    \newcolumntype{C}{>{\centering\arraybackslash}X}
+    \begin{tabularx}{\linewidth}{C@{\hskip 3em}C}
+        \multirow{2}{*}[4em]{
+            \begin{subfigure}{\linewidth}
+                \centering
+                \includegraphics[width=.85\linewidth,trim={0 2em 0 0},clip]{figures/learn-to-rank}
+                \caption{A ranking loss tends to pull similar elements (black dots) near to an anchor $\x_a$ (i.e. the query point) and push dissimilar ones (gray dots) away from it.
+                The parameter $m$ defines the minimum margin under which two elements are considered similar.}
+                \label{fig:back:ranking-loss}
+            \end{subfigure}
+        } &
+        \begin{subfigure}{\linewidth}
+            \centering
+            \includegraphics[width=.7\linewidth]{figures/siamese-archit}
+            \caption{Siamese architecture with contrastive loss.\\[2ex]}
+            \label{fig:back:siamese}
+        \end{subfigure}
+        \\
+        & \begin{subfigure}{\linewidth}
+            \centering
+            \includegraphics[width=.7\linewidth]{figures/triplet-archit}
+            \caption{Siamese architecture with triplet loss.}
+            \label{fig:back:triplet}
+        \end{subfigure}
+    \end{tabularx}
+    \vspace{1em}
+    \caption{Ranking loss and siamese architectures.}
     \label{fig:back:learn-to-rank}
 \end{figure}
 
 \paragraph{Contrastive (or Siamese) Loss}
 The contrastive (or siamese) loss~\cite{bromley1994signature,hadsell2006dimensionality} is employed for learning representations of data suited to be compared with a metric function $d(\cdot, \cdot)$.
-% TODO [CITE] learning to rank
-Thus, it is particularly useful for \emph{learning to rank} problems, in which the objective is to learn representations that need to be matched efficiently for scoring large sets of items e.g.\ for retrieval and ranking purposes.
+Thus, it is particularly useful for \emph{learning to rank} problems~\cite{burges2005learning,cao2007learning}, in which the objective is to learn representations that need to be matched efficiently for scoring large sets of items e.g.\ for retrieval and ranking purposes.
 The single data sample on which this loss is applied is comprised by a pair $(\x_1, \x_2)$ of similar (matching, $\y^\star = 1$) or dissimilar (mismatching, $\y^\star = 0$) items;
 We denote as $f(\x_1)$ and $f(\x_2)$ the representations of the data points forming the pair computed by a neural network $f(\cdot)$, and we indicate with $d(\cdot,\cdot)$ a distance function defined over a couple of real vectors, e.g.\ the squared Euclidean distance function.
 The constrastive loss is defined as
@@ -520,7 +528,7 @@ This procedure is called \emph{gradient descent} optimization, and in the \gls{m
 \begin{figure}
     \centering
     \includegraphics[width=\linewidth]{figures/gradient-descent}
-    \caption{Example of gradient descent optimization on a loss surface $\L(\X)$ defined over a 2D parameter space $(\w_1, \w_2)$ with two different starting points}
+    \caption{Example of gradient descent optimization on a loss surface $\L(\X)$ defined over a 2D parameter space $(\w_1, \w_2)$ with two different starting points.}
     \label{fig:back:gradient-descent}
 \end{figure}
 A depiction of this algorithm for a 2D toy example is reported in \ref{fig:back:gradient-descent}.
@@ -685,7 +693,7 @@ metrics can be computed considering each class as the positive one and then aggr
 \multicolumn{4}{c}{}                                                                                                                                      &  N $=$ & TN $+$ FP $=$ Negative samples \\
 \end{tabularx}
 
-\caption{Confusion matrix for a binary classification problem and the related terminology}
+\caption{Confusion matrix for a binary classification problem and the related terminology.}
 \label{tab:back:confusion}
 \end{table}
 
@@ -750,9 +758,7 @@ the higher the \gls{roc} curve, the closer the \gls{auc} is to $1$ (see \ref{fig
 \begin{figure}
     \centering
     \includegraphics[width=\linewidth]{figures/roc-example}
-    \caption{Example of \acrfull{roc} curves for two binary classifiers, and the relation between their corresponding \acrfullpl{auc}. }
-    \label{fig:back:roc}
-\end{figure}
+    \caption{Example of \acrfull{roc} curves for two binary classifiers, and the relation between their corresponding \acrfullpl{auc}.}
 
 \paragraph{\acrshort{eer} Accuracy}
 Another useful threshold-independent metric which is commonly used to compare classifiers is the \gls{eer} accuracy.
@@ -804,7 +810,7 @@ Manually defining a good set of features to extract from images to solve this ta
         \emph{SuperVision}~\citep{krizhevsky2012imagenet} \newline {\footnotesize University of Toronto} & Trained features (AlexNet \gls{cnn}) & \textbf{16.4} \\ % 34.2
         \bottomrule
     \end{tabularx}
-    \caption{ILSVRC12 leaderboard reporting the accuracy (as top-5 error percentage) on the image classification task obtained by the participating teams. Results taken from~\cite{russakovsky2015imagenet}}
+    \caption{ILSVRC12 leaderboard reporting the accuracy (as top-5 error percentage) on the image classification task obtained by the participating teams. Results taken from~\cite{russakovsky2015imagenet}.}
     \label{tab:ilsvrc12-results}
 \end{table}
 
@@ -828,7 +834,7 @@ It is comprised by 5 convolutional layers with \gls{relu} activation, the first 
 This first part of the network is responsible to learn and extract good features, and it is followed by a classification sub-network consisted of three fully-connected layers with a final softmax transformation that maps the outputs to probabilities in the label space.
 The whole network --- both the feature extractor and the classifier --- has roughly 60 million parameters and 650,000 neurons, and it is trained end-to-end;
 it took initially two weeks on two GPUs to the authors to train the model with the 1.2 million images provided by the \gls{ilsvrc}'12 train set.
-More details about the architecture are reported in \ref{fig:back:alexnet}.
+More details about the architecture are reported in \ref{fig:back:cnn-architectures}.
 Another key ingredient of the success of this architecture is the application of \emph{dropout}~\cite{hinton2012improving} to fully-connected layers, which permitted to the authors to drastically reduce overfitting.
 AlexNet won the \gls{ilsvrc}'12 competition with roughly a 10\% gap in error from the second place competitor.
 This amazing results provided a springboard for the research community for a new way to to do image classification and more in general to learn high-quality features for images.
@@ -837,9 +843,9 @@ In the following years, many other researchers developed \glspl{cnn} for image c
 \begin{figure}
     \centering
     % TODO alexnet figure
-    \includegraphics[width=\linewidth]{figures/alexnet}
-    \caption{Architecture of the AlexNet \gls{cnn}.}
-    \label{fig:back:alexnet}
+    \includegraphics[width=\linewidth]{figures/cnn-architectures}
+    \caption{Architecture of successful \glspl{cnn}.}
+    \label{fig:back:cnn-architectures}
 \end{figure}
 
 \paragraph{ZFNet} Despite \glspl{cnn} being remarkably good in solving vision task,
@@ -1022,7 +1028,7 @@ Due to its relevancy to this thesis, we will describe \gls{rmac} in more details
 \begin{figure}
     \centering
     \includegraphics[width=0.6\linewidth]{rmac-regions}
-    \caption{Example of regions chosen to extract the \gls{rmac} image descriptor from a \gls{cnn} feature map. \figfrom{tolias2016rmac}}
+    \caption{Example of regions chosen to extract the \gls{rmac} image descriptor from a \gls{cnn} feature map. \figfrom{tolias2016rmac}.}
     \label{fig:back:rmac-regions}
 \end{figure}
 
@@ -1044,7 +1050,7 @@ Two descriptors are matched using the cosine similarity.
 \begin{figure}
     \centering
     \includegraphics[width=\linewidth]{rmac-trained}
-    \caption{Training and deploy pipelines proposed by~\citet{gordo2016deep,gordo2017end} for learning image representations for retrieval \figfrom{gordo2016deep}}
+    \caption{Training and deploy pipelines proposed by~\citet{gordo2016deep,gordo2017end} for learning image representations for retrieval. \figfrom{gordo2016deep}.}
     \label{fig:back:rmac-trained}
 \end{figure}
 
