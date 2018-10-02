@@ -92,7 +92,7 @@ A relevant work in a similar --- yet different --- task is \cite{chen2014vehicle
 
 \begin{figure}
 	% TODO [FIGURE] alex e malex a confronto
-\includegraphics[width=\linewidth]{net-archit}
+\includegraphics[width=\linewidth]{figures/m-alexnet}
 % 	\newcolumntype{Y}{>{\centering\arraybackslash}X}
 % 	\begin{tabularx}{\textwidth}{|Y|Y|Y|Y|Y|Y|}
 % 		% \begin{tabular}{|c|c|c|c|c|c|}
@@ -105,10 +105,10 @@ A relevant work in a similar --- yet different --- task is \cite{chen2014vehicle
 % 		mAlexNet     & pool 3x3+2     & pool 3x3+2     & pool 3x3+2     & ReLU         & soft-max     \\
 % 		             & LRN, ReLU      & LRN, ReLU      & ReLU           &              &              \\ \hline
 % 	\end{tabularx}
-\caption{CNN Architecture: for convolutional layers \emph{conv1-3}, parameters are specified as ``$size/stride~num$''.
-For max-pooling, parameters are specified as ``$size/stride$''.
-For fully connected layers we report their dimensionality.
-The last fully connected layer is followed by a 2-way softmax classifier.}
+\caption{\emph{mAlexNet} architecture. Parameters of convolutions and max-pooling operations are specified as ``$size \times size/stride (\# conv filters)$''.
+For fully connected layers, we report their dimensionality.
+Trainable layers are depicted in darker color.
+}
 \label{fig:mini:cnns}
 \end{figure}
 
