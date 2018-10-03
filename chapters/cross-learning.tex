@@ -33,12 +33,12 @@ In \ref{sec:vsa:introduction}, the problem of visual sentiment analysis is prese
 In \ref{subsec:vsa:method}, our weakly-supervised cross-media learning approach is described in detail, and \ref{sec:vsa:experiments} reports its experimental evaluation and comparison with state-of-the-art approaches to visual sentiment analysis.
 \ref{sec:vsa:conclusion} summarizes the main findings and concludes the chapter.
 
-The research presented in this chapter was published in~\cite{vadicamo2017cross}, and the provided resources --- e.g.\ datasets and trained models --- are available at \url{http://t4sa.it}.
+The research presented in this chapter was published in~\cite{vadicamo2017cross}, and the provided resources --- e.g., datasets and trained models --- are available at \url{http://t4sa.it}.
 
 
 %%% ABSTRACT
 % Much progress has been made in the field of sentiment analysis in the past years. Researchers relied on textual data for this task, while only recently they have started investigating approaches to predict sentiments from multimedia content.
-%With the increasing amount of data shared on social media, there is also a rapidly growing interest in approaches that work ``in the wild'', i.e. that are able to deal with uncontrolled conditions.
+%With the increasing amount of data shared on social media, there is also a rapidly growing interest in approaches that work ``in the wild'', i.e., that are able to deal with uncontrolled conditions.
 %In this work, we faced the challenge of training a visual sentiment classifier starting from a large set of user-generated and unlabeled contents.
 %In particular, we collected more than 3 million tweets containing both text and images, and we leveraged on the sentiment polarity of the textual contents to train a visual sentiment classifier.
 %To the best of our knowledge, this is the first time that a cross-media learning approach is proposed and tested in this context.
@@ -56,13 +56,13 @@ Opinion mining and sentiment analysis~\cite{pang2008opinion} foster applications
 Thanks to the multi-modality of modern social platforms, current trends show that visual media are increasingly chosen due to their immediate and effective communication, and less and less text is written by users.
 Therefore, researchers shifted their attention from a pure textual-based sentiment analysis presented in seminal work to a multi-modal analysis which includes also visual information conveyed by images and videos~\cite{borth2013large,cao2016cross,jou2015visual,siersdorfer2010analyzing,you2015robust,you2016cross}.
 In particular, we identify as \emph{visual sentiment analysis} the task of extracting subjective information --- such as emotions and opinions --- solely from visual data.
-Understanding the content of a piece of visual information is an objective task, and much progress has been made in the computer vision research community to accurately describe visual contents, i.e.\ reducing the semantic gap between image representations and content~\cite{li2016socializing}.
+Understanding the content of a piece of visual information is an objective task, and much progress has been made in the computer vision research community to accurately describe visual contents, i.e., reducing the semantic gap between image representations and content~\cite{li2016socializing}.
 However, describing the emotions arisen in human observers is challenging due to the high subjectivity involved.
 This discrepancy between the affective content of an image and its description --- known as the \emph{affective gap}~\cite{siersdorfer2010analyzing} --- poses considerable challenges to visual sentiment analysis.
 This difficulty is also reflected in the generation of labeled sets for training sentiment classifiers;
 several emotional judgments by multiple annotators are usually required to obtain a high-quality sentiment ground-truth for a single image, thus increasing the cost of dataset creation.
 
-While in general sentiment analyses can tailor a large range of emotions, the commonly adopted form of sentiment analysis is the determination of the sentiment polarity of a piece of information, i.e.\ an indicator of the emotional positiveness or negativeness conveyed.
+While in general sentiment analyses can tailor a large range of emotions, the commonly adopted form of sentiment analysis is the determination of the sentiment polarity of a piece of information, i.e., an indicator of the emotional positiveness or negativeness conveyed.
 This formulation is often sufficient for most sentiment analysis applications while simplifying the problem to be solved.
 As the vast majority of attempts in the literature, we adopt the same formulation in our work;
 thus, our goal is to predict the sentiment polarity of a given image.
@@ -133,7 +133,7 @@ As source of multi-modal information, we choose Twitter, from which we crawled t
 We exploit the correspondence of text and images present in tweets to distill affective information from the textual modality to the visual one.
 In particular, we use a pre-trained textual predictor --- based on a tandem \gls{LSTM}-\gls{SVM} architecture --- to infer the sentiment polarity from the textual part of a tweet
 Then, we transfer this sentiment polarity to the images attached to the same tweet, obtaining a dataset of labeled images we can use as training set to fine-tune \glspl{dcnn} architectures for the task of visual sentiment polarity prediction.
-Although the text of the tweets is often noisy or misleading with respect to the image content (e.g.\ irrelevant comments), we show that our cross-media approach can be profitably used for learning visual sentiment classifiers in the wild.
+Although the text of the tweets is often noisy or misleading with respect to the image content (e.g., irrelevant comments), we show that our cross-media approach can be profitably used for learning visual sentiment classifiers in the wild.
 At test time, the trained \glspl{dcnn} can be used to infer the sentiment polarity of an image without the need of textual data.
 
 In the next sections, we will describe the data collection process, the pre-trained textual sentiment classifier which provides us with weak supervision, and the training process of visual models.
@@ -142,7 +142,7 @@ In the next sections, we will describe the data collection process, the pre-trai
 %\begin{figure}
 %    \centering
 %    \includegraphics{}
-%    \caption{}
+%    \caption{.}
 %    \label{fig:vsa:overview}
 %\end{figure}
 
@@ -157,7 +157,7 @@ Both the textual and the multimedia data used in this work have been collected f
 The data collection process took place from July to December 2016, lasting around 6 months in total.
 During this time span, we exploited Twitter's Sample API\footnote{https://dev.twitter.com/streaming/reference/get/statuses/sample} to access a random 1\% sample of the stream of all globally produced tweets.
 All the tweets collected undergone a filtering step in order to retain only data that could be useful for our sentiment analysis task.
-Specifically, we discarded: i) retweets; ii) tweets not containing any static image (i.e.\ we also discarded tweets containing only videos and/or animated GIFs); iii) tweets not written in the English language; iv) tweets whose text was less than 5 words long.
+Specifically, we discarded: i) retweets; ii) tweets not containing any static image (i.e., we also discarded tweets containing only videos and/or animated GIFs); iii) tweets not written in the English language; iv) tweets whose text was less than 5 words long.
 This ensures that we collect tweets with both images and text, and that there is enough textual data for the textual sentiment classification task.
 Discarding retweets avoids collecting large numbers of duplicated images.
 The above set of rules filtered as much as 98.7\% of all the tweets collected from the Twitter stream.
@@ -201,7 +201,7 @@ The set of tweets and images retained after this step comprise our \gls{t4sa} da
 % ---
 
 We modeled this task as a three-way image classification problem in which each image can be classified as either \emph{positive}, \emph{neutral}, or \emph{negative}.
-To build our visual classifier, we leveraged on transfer learning, i.e.\ we fine-tune known and successful deep CNNs architectures pre-trained on generic datasets of images.
+To build our visual classifier, we leveraged on transfer learning, i.e., we fine-tune known and successful deep CNNs architectures pre-trained on generic datasets of images.
 Doing so, we are able to exploit additional knowledge already stored in the trained network while training for sentiment prediction.
 Thus, we initialize the weights of layers with the ones of the pre-trained networks, except for the last layer that produces the sentiment classification, which is randomly initialized.
 We used a balanced subset of our dataset \gls{t4sa} to perform fine-tuning.
@@ -255,7 +255,7 @@ Sum                 &  904,395        & 1,473,394       & 974,053               
 \end{table}
 
 Details on \gls{t4sa} and its subsets are summarized in \ref{tab:vsa:t4sa}.
-Notice that the size of the balanced subset (i.e.\ {\BTSA}) is highly influenced by the low number of tweets classified as negative.
+Notice that the size of the balanced subset (i.e., {\BTSA}) is highly influenced by the low number of tweets classified as negative.
 Moreover, these negatives contain many artificial images --- such as screenshots and memes --- which made our analysis more challenging.
 In fact, we encountered difficulties in automatically collecting negative tweets that also contain natural images by using only a random sample of all globally produced tweets.
 However, in order to avoid possible biases in our analyses, we deliberately avoided to use any keyword during the data collection process.
@@ -340,7 +340,7 @@ In \ref{tab:vsa:results}, we reported the accuracy obtained by the fine-tuned mo
     \ourFtVGG\, FT-A            & \textbf{0.785} & \textbf{0.755} & \textbf{0.725} & \textbf{0.513} \\
     \bottomrule
     \end{tabularx}
-	\caption{Prediction accuracy on the different test sets}
+	\caption{Prediction accuracy on the different test sets.}
     \label{tab:vsa:results}
 \end{table}
 As baseline references, we report the results obtained by the random classifier and by the CNN and PCNN models \cite{you2015robust}.
@@ -376,7 +376,7 @@ In order to compare to those approaches, we also tested our models in this setti
 However, we think that this measure is inappropriate for our cross-media approach since it tends to highlight how well a pre-trained model adapts to a specific task or dataset.
 In fact, as evidenced by the results, models trained on generic (not sentiment-related) datasets, like AlexNet and VGG-19, not necessarily perform worse than the same models previously fine-tuned on a sentiment-related dataset.
 For example our best approach ({\ourFtVGG} FT-A), achieves a 5-fold accuracy of $0.896$ on the five agree subset, that corresponds only to an improvement of $1.5\%$ with respect to VGG-19 trained on a generic dataset.
-Moreover, our technique is based on a cross-media approach, i.e.\ it relies on labels not coming from a visual inspection of the images.
+Moreover, our technique is based on a cross-media approach, i.e., it relies on labels not coming from a visual inspection of the images.
 Thus, we think that a fine-tuning of our models on manually labeled images is inappropriate for our goal.
 In any case, also in this test setting, our models outperform other state-of-the-art visual classifiers, such as PCNN, DeepSentiBank and MVSO, which were trained on high-quality sentiment-related dataset.
 

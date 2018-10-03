@@ -10,7 +10,7 @@
 \label{ch:miniaturization}
 
 One of the most important limitations of \glspl{dcnn} is that they often rely on computationally expensive deep models, which are slow for many applications including image classification.
-Due to this limitation, methods based on efficient hand-crafted local features --- such as \acrshort{surf}, \acrshort{orb}, \acrshort{lbp}, etc.\ --- are predominantly adopted in vision systems where a computational power of a full-featured server is not available, e.g.\ mobile phones or embedded devices.
+Due to this limitation, methods based on efficient hand-crafted local features --- such as \acrshort{surf}, \acrshort{orb}, \acrshort{lbp}, etc.\ --- are predominantly adopted in vision systems where a computational power of a full-featured server is not available, e.g., mobile phones or embedded devices.
 
 In this chapter, we will explore the adoption and the miniaturization of \glspl{dcnn} for efficient image classification.
 We focus our investigation on reducing and evaluating deep models for embedded vision systems, i.e.\ smart cameras.
@@ -34,7 +34,7 @@ The motivation for the choice of this specific problem is manyfold.
 	% decentralize for flexibility and bw cost
 	\item In centralized solutions, ``dumb'' cameras send their video feeds to a server which process them;
 	a decentralized solution instead brings a reduction of the communication overhead and the elimination of the computing bottleneck, thus increasing even further the scalability of the solution;
-	moreover, an intelligent infrastructure provides flexibility in its application, e.g.\ the same cameras could be used for perimeter surveillance during night hours.
+	moreover, an intelligent infrastructure provides flexibility in its application, e.g., the same cameras could be used for perimeter surveillance during night hours.
 
 \end{itemize}
 
@@ -53,7 +53,7 @@ In \ref{sec:mini:datasets}, we presents the already available and newly collecte
 \ref{sec:mini:evaluation} presents the proposed experimental setup to compare the our approach to the state of the art and evaluate its robustenss to multiple aspects.
 \ref{sec:mini:deployment} briefly describes the deployment of our solution in a real scenario and gives an overview of the overall system.
 
-The research presented in this chapter was published in~\cite{amato2016car,amato2017deep}, and the provided resources --- e.g.\ datasets and trained models --- are available at \url{http://cnrpark.it}.
+The research presented in this chapter was published in~\cite{amato2016car,amato2017deep}, and the provided resources --- e.g., datasets and trained models --- are available at \url{http://cnrpark.it}.
 
 \section{Visual Occupancy Detection and Related Work}
 \label{sec:mini:related-work}
@@ -142,7 +142,7 @@ Moreover, considering that a forward pass of AlexNet on the Raspberry Pi model B
 We argue that the problem of visual occupancy detection --- despite the presence of high variability factors such as changing light conditions, viewpoints, and occlusion patterns --- is less complex with respect to the \gls{ilsvrc}'12 classification task AlexNet was designed for.
 We define a reduced \gls{dcnn} architecture --- named \emph{miniAlexNet} or simply \emph{mAlexNet} --- to implement a simplified classifier, and we compare its performance and computational cost with respect to the original AlexNet.
 The architecture of \emph{mAlexNet} follows the AlexNet one.
-We keep the dimensionality of the input unaltered, i.e.\ a $224 \times 224$ RGB image, that in our scenario will contain the visual appearence of a single parking slot.
+We keep the dimensionality of the input unaltered, i.e., a $224 \times 224$ RGB image, that in our scenario will contain the visual appearence of a single parking slot.
 In case of differently-sized images, they are resized to match the input dimensionality.
 We reduced the number of convolutional layers from five to three, the first two followed by max-pooling, \gls{lrn}, and \gls{relu} activations, while in the third one, the \gls{lrn} is omitted.
 The number of fully-connected layers is reduced to two, including the one producing the final prediction.
@@ -172,26 +172,26 @@ Every patch is manually labelled either as `vacant` or `occupied`.
 \centering
 \begin{subfigure}[b]{0.49\columnwidth}
 	\includegraphics[width=\columnwidth]{camera-a-overview}
-	\caption{Overview of CNRPark CAM A}
+	\caption{Overview of CNRPark CAM A.}
 	\label{fig:mini:cam-a}
 \end{subfigure} %
 \begin{subfigure}[b]{0.49\columnwidth}
 	\includegraphics[width=\columnwidth]{camera-b-overview}
-	\caption{Overview of CNRPark CAM B}
+	\caption{Overview of CNRPark CAM B.}
 	\label{fig:mini:cam-b}
 \end{subfigure}
 
 \begin{subfigure}[b]{0.49\columnwidth}
 	\includegraphics[width=\columnwidth]{overview-cam1}
-	\caption{Overview of CNRPark-EXT CAM 1}
+	\caption{Overview of CNRPark-EXT CAM 1.}
 	\label{fig:mini:cam-1}
 \end{subfigure} %
 \begin{subfigure}[b]{0.49\columnwidth}
 	\includegraphics[width=\columnwidth]{overview-cam8}
-	\caption{Overview of CNRPark-EXT CAM 8}
+	\caption{Overview of CNRPark-EXT CAM 8.}
 	\label{fig:mini:cam-8}
 \end{subfigure}
-\caption{Segmentation masks for parking slot images in the preliminary \emph{CNRPark} dataset (top) and in the extended \emph{CNRPark-EXT} dataset (bottom, only for camera 1 and 8)}
+\caption{Segmentation masks for parking slot images in the preliminary \emph{CNRPark} dataset (top) and in the extended \emph{CNRPark-EXT} dataset (bottom, only for camera 1 and 8).}
 \label{fig:mini:cam-overview}
 \end{figure}
 
@@ -222,7 +222,7 @@ Every patch is manually labelled either as `vacant` or `occupied`.
 \includegraphics[width=\columnwidth]{13empty}%
 \end{subfigure}
 \caption{Example of segmented parking slots images under different light conditions and occlusion patterns.
-The first and second rows show four slots respectively in `occupied` and `vacant` state}
+The first and second rows show four slots respectively in `occupied` and `vacant` state.}
 \label{fig:mini:slots}
 \end{figure}
 
@@ -231,7 +231,7 @@ In order to measure the generalization power of the proposed approach to unseen 
 The preliminary version of this dataset --- which we refer to as CNRPark --- contains roughly $12,000$ images of slots of a part of the parking lot which were collected from 2 Rasperry Pi cameras (denoted as camera $A$ and $B$) with different perspectives and angles of view in different days of July 2015 (see \ref{fig:mini:cam-a,fig:mini:cam-b}).
 Images of individual parking slots are extracted using manually-placed squared masks from the full camera frame.
 Slot masks are placed to minimize the part of adjacent slots contained in the image, often limiting the area usable for classification to just a part of the entire slot.
-Moreover, in many slots, occlusions by adjacent cars and obstacles (e.g.\ trees, lampposts) are inevitable due to the skewed field of view of the cameras;
+Moreover, in many slots, occlusions by adjacent cars and obstacles (e.g., trees, lampposts) are inevitable due to the skewed field of view of the cameras;
 this also involves that slots images have different sizes depending on the distance of the slot from the capturing camera.
 Thus, our dataset poses additional challenges to occupancy detection methods that can be commonly found in real scenarios.
 We split the dataset in two non-overlapping sets named \emph{CNRParkOdd} and \emph{CNRParkEven} respectively containing slot images having odd or even slot id.
@@ -244,7 +244,7 @@ Images were collected in multiple days spanning multiple seasons of the year, an
 To extract the images of individual slots, we followed the same strategy of CNRPark.
 The extended version of the dataset --- dubbed \emph{CNRPark-EXT} -- is composed of 4,287 camera frames acquired in 23 different days, from which we obtained 144,965 manually labeled images of individual parking slots.
 The added value of our dataset stands in the fact that it captures a variety of occlusion and shadow patterns, and light and weather conditions (see \ref{fig:mini:slots}) that cover more real-case scenarios with respect to existing datasets.
-Slot images are grouped by camera ID, by time of capture, and by three weather conditions --- i.e.\ \emph{Sunny}, \emph{Overcast}, and \emph{Rainy}.
+Slot images are grouped by camera ID, by time of capture, and by three weather conditions --- i.e., \emph{Sunny}, \emph{Overcast}, and \emph{Rainy}.
 We also provide splits for training, validation, and test sets;
 we ensured that images captured in a particular day do not span more than one set.
 
@@ -339,7 +339,7 @@ Our investigation focused on getting insight on three main aspects of the propos
 \item How much the proposed solution for visual occupancy detection is robust to weather and viewpoint changes?
 \end{enumerate}
 
-To answer these question, we extensively evaluated our approach using the two datasets described in \ref{sec:mini:datasets}, i.e.\ PKLot and CNRPark-EXT.
+To answer these question, we extensively evaluated our approach using the two datasets described in \ref{sec:mini:datasets}, i.e., PKLot and CNRPark-EXT.
 We performed experiments by splitting the datasets into several subsets that we will described in the following subsections.
 Details about data splits are summarized in \ref{tab:mini:datasets}.
 The usage of multiple methods on multiple datasets also permits us to compare the quality of our newly collected dataset for learning to detect occupancy detection robustly in real scenarios.
@@ -375,7 +375,7 @@ In the test phase, images are resized to $224\times224$ resolution and no flippi
 All the mAlexNet models are trained with \gls{sgd} with momentum for 18 epochs, with a learning rate of $0.01$ halved every 6 epochs, a batch size of $64$, a momentum of $0.9$, and a weight decay of $5e^{-4}$;
 due to the low model complexity, no dropout regularization is used.
 To avoid overfit on the test set, we validate our models at each training epoch by evaluating it on a validation set.
-As validation sets, we used the training splits of the PKLot cameras --- e.g.\ when testing on PUC test subset, we use PUC training subset as validation set.
+As validation sets, we used the training splits of the PKLot cameras --- e.g., when testing on PUC test subset, we use PUC training subset as validation set.
 We choose as final model for a particular dataset the one which performs best on the validation test.
 
 \paragraph{Training and implementation details for \glspl{svm}}
@@ -383,7 +383,7 @@ To train the \glspl{svm}, we employ the procedure and the hyper-parameters as de
 We extract LBP-type features with a radius of 1 and 8 neighbors.
 LPQ features are extracted using window size of 3x3.
 The $C$ and $\gamma$ parameters of \glspl{svm} are chosen with grid search and a 5-fold cross-validation on the training set.
-We choose the parameters $(C,\gamma)$ obtaining the best 5-fold accuracy, i.e.\ the best accuracy obtained classifying each fold of the dataset with the model trained on the other folds.
+We choose the parameters $(C,\gamma)$ obtaining the best 5-fold accuracy, i.e., the best accuracy obtained classifying each fold of the dataset with the model trained on the other folds.
 The final SVM is then trained on the entire training set using the chosen parameters, and evaluated on the test set.
 We followed the same strategy used in \cite{de2015pklot} to obtain a probabilistic score from the output of the \gls{svm}, which evaluates the posterior probability fitting a sigmoid function with two parameters \cite{platt1999probabilistic}.
 
@@ -403,7 +403,7 @@ We followed the same strategy used in \cite{de2015pklot} to obtain a probabilist
         SVM + LPQgd      & $256$                     & histograms of LPQ (gaussian derivative initialization) \cite{rahtu2012local} \\
         \bottomrule
      \end{tabularx}
-     \caption{Summary of state-of-the-art methods compared against our approach for parking slot occupancy detection}
+     \caption{Summary of state-of-the-art methods compared against our approach for parking slot occupancy detection.}
      \label{tab:mini:methods}
 \end{table}
 
@@ -446,7 +446,7 @@ We followed the same strategy used in \cite{de2015pklot} to obtain a probabilist
 %	\bottomrule
 %	\end{tabularx}
 
-	\caption{Comparison of \emph{mAlexNet} against state-of-the-art approaches presented by \citet{de2015pklot}}
+	\caption{Comparison of \emph{mAlexNet} against state-of-the-art approaches presented by \citet{de2015pklot}.}
 	\label{tab:mini:net-vs-svms}
 \end{table}
 
@@ -509,7 +509,7 @@ In this section, we describe the experiments and results we performed to compare
 To measure the generalization performance, we train both models on a dataset, and we evaluate the trained models on a different one, in which images are coming from a different parking lot and have different camera height and pose.
 We perform multiple experiments using different sets of images to also measure the generalization power obtained by datasets with different degree of variability.
 As training sets, we separately employed \emph{CNRPark}, \emph{CNRPark} plus cameras \emph{C1} and \emph{C8} of \emph{CNRPark-EXT}, \emph{CNRPark-EXT}, and \emph{PKLot}.
-Validation is performed on the corresponding validation sets, while evaluation metrics --- i.e.\ percentage error and \gls{auc} --- are reported for CNRPark-EXT and PKLot test sets.
+Validation is performed on the corresponding validation sets, while evaluation metrics --- i.e., percentage error and \gls{auc} --- are reported for CNRPark-EXT and PKLot test sets.
 The set composed by \emph{CNRPark} plus cameras \emph{C1} and \emph{C8} of \emph{CNRPark-EXT} is chosen to built a balanced set of different viewpoints.
 While \emph{CNRPark-EXT} is comprised by 9 different cameras, most of them share the same frontal view-point of the parking lot.
 Thus, we selected \emph{C1} and \emph{C8} --- which have the most dissimilar views of the parking lot --- and we combined them with CNRPark, which is composed by other two different view-points (see \ref{fig:mini:cam-overview}).
@@ -578,7 +578,7 @@ We can notice that our reduced architecture does not suffer from a performance d
 in fact, the percentage errors of both models differ at most of $1\%$ in all experiments where training and test subsets are taken from the same dataset.
 When training and test is performed on different datasets, \emph{AlexNet} reaches higher accuracy values.
 It is clear that the reduced architecture limits the degree of generalization the model can reach;
-when using a viewpoint-balanced training set (i.e.\ \emph{CNRPark} and \emph{Train on CNRPark+EXT TRAIN C1,C8}), \emph{AlexNet} is able to reach a percentage error on \emph{PKLot} of $3.49\%$, while our method perform worse still obtaining less than 10\% error.
+when using a viewpoint-balanced training set (i.e., \emph{CNRPark} and \emph{Train on CNRPark+EXT TRAIN C1,C8}), \emph{AlexNet} is able to reach a percentage error on \emph{PKLot} of $3.49\%$, while our method perform worse still obtaining less than 10\% error.
 
 In the best case, there is practically no difference between the two methods, while in the worst case, we measured a difference of $\sim 9\%$ with respect to \emph{mAlexNet}.
 Obviously, a bigger model offers a greater generalization performance at the cost of more resources needed:
@@ -621,7 +621,7 @@ CNRPark-EXT C1 &    - & 5.15 & 6.89 & 4.00 & 4.09 & 4.39 & 8.57 & 5.39 & 9.04 & 
 CNRPark-EXT C8 & 7.61 & 5.49 & 6.34 & 2.47 & 2.07 & 2.32 & 6.47 &    - & 5.35 &  4.51 \\
 \bottomrule
 \end{tabularx}
-\caption{Results of inter-camera experiments in terms of accuracy obtained when training \emph{mAlexNet} on camera 1 and on camera 8}
+\caption{Results of inter-camera experiments in terms of accuracy obtained when training \emph{mAlexNet} on camera 1 and on camera 8.}
 \label{tab:mini:inter-camera}
 % ALTERNATIVE FIG:
 % \begin{figure}
@@ -642,7 +642,7 @@ CNRPark-EXT OVERCAST & 8.37 &    -  & 5.32 & 20.51 \\
 CNRPark-EXT RAINY    & 6.47 & 1.73  &    - &  9.42 \\
 \bottomrule
 \end{tabularx}
-\caption{Results of inter-weather experiments in terms of accuracy obtained when training on a sunny, overcast, or rainy weather}
+\caption{Results of inter-weather experiments in terms of accuracy obtained when training on a sunny, overcast, or rainy weather.}
 \label{tab:mini:inter-weather}
 % ALTERNATIVE FIG:
 % \begin{figure}[t]
@@ -674,21 +674,21 @@ in fact, we notice that these are similar between images in the \emph{PKLot} dat
 	\centering
     \begin{subfigure}{0.48\columnwidth}
 		\includegraphics[width=\columnwidth]{camera_inside}
-        \caption{Inside of a camera box}
+        \caption{Inside of a camera box.}
 	\end{subfigure} %
     \begin{subfigure}{0.48\columnwidth}
 		\includegraphics[width=\columnwidth]{camera_box}
-        \caption{The complete camera box}
+        \caption{The complete camera box.}
 	\end{subfigure}
 
-	\caption{Each Raspberry Pi is mounted inside a outdoor camera box (Figure $A$ on the left) and it is mounted on top of the roof of the building, attached to a steel pole (Figure $B$ on the right)}
+	\caption{Each Raspberry Pi is mounted inside a outdoor camera box (Figure $A$ on the left) and it is mounted on top of the roof of the building, attached to a steel pole (Figure $B$ on the right).}
 	\label{fig:mini:camera-box}
 \end{figure}
 
 \begin{figure}
 	\centering
 		\includegraphics[width=\columnwidth,trim={0 0 0 3.5ex},clip]{detection-example}
-        \caption{Example of classification of a portion of the parking lot}
+        \caption{Example of classification of a portion of the parking lot.}
 	\label{fig:mini:detection-example}
 \end{figure}
 
@@ -731,7 +731,7 @@ We proposed and evaluated a reduced \acrlong{cnn} architecture for image classif
 In the scope of visual parking lot occupancy detection, we defined \emph{mAlexNet}, a reduced version of the famous \emph{AlexNet} classifier, which is obtained by pruning layers and reducing the number of parameters of the original architecture.
 Experiments on public datasets shown that our proposed architecture outperforms state-of-the-art approaches for visual parking lot occupancy detection based on shallow models and hand-crafted features while requiring a computational budget suitable for embedded devices.
 Specifically, our architecture exhibits very high accuracies even in presence of challenging light conditions variation, shadows, and partial occlusions.
-Moreover, multi-dataset experiments shown that the architectural reduction does not introduce a performance degradation in real scenarios, and it produces only a slight acceptable degradation of the generalization capability, i.e.\ the ability of classifying images coming from different parking lots with different imaging conditions.
+Moreover, multi-dataset experiments shown that the architectural reduction does not introduce a performance degradation in real scenarios, and it produces only a slight acceptable degradation of the generalization capability, i.e., the ability of classifying images coming from different parking lots with different imaging conditions.
 
 We tested our approach on a real scenario in the parking lot of the campus of the CNR Area in Pisa.
 We deployed a decentralized system comprised by 9 smart cameras which monitors multiple slots and perform the occupancy detection for each slot on board.

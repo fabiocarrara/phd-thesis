@@ -28,28 +28,28 @@
 
 Using a textual query to retrieve images is a very common cross-media search task, as text is the most efficient media to describe the kind of image the user is searching for.
 Each media has its own representation space, which is modeled on a collection of representative content for that media.
-For example, text can be represented by means of a simple \acrlong{bow} feature space, with the feature space being defined by a dictionary of observed words; or by means of more complex distributional semantic models, such as those based on neural networks, e.g.\ Word2Vec \cite{mikolov2013distributed}.
-Similarly, a visual space can be modeled by identifying a set of relevant visual features in a collection on images, e.g.\ as those extracted by the deeper layers of \acrfullpl{cnn} \cite{krizhevsky2012imagenet}.
+For example, text can be represented by means of a simple \acrlong{bow} feature space, with the feature space being defined by a dictionary of observed words; or by means of more complex distributional semantic models, such as those based on neural networks, e.g., Word2Vec \cite{mikolov2013distributed}.
+Similarly, a visual space can be modeled by identifying a set of relevant visual features in a collection on images, e.g., as those extracted by the deeper layers of \acrfullpl{cnn} \cite{krizhevsky2012imagenet}.
 %\todo{Espandere sul visual space?}
 
 In cross-media retrieval, the actual retrieval process can be implemented in a number of ways, depending on how the two feature spaces are joined.
-The cross-media search space can be i) a textual feature space, i.e.\ a space whose definition is determined exclusively by observing textual content, ii)
-a visual feature space, i.e.\ a space whose definition is determined exclusively by observing visual content,
+The cross-media search space can be i) a textual feature space, i.e.,  a space whose definition is determined exclusively by observing textual content, ii)
+a visual feature space, i.e.,  a space whose definition is determined exclusively by observing visual content,
 or iii) a common latent space in which textual and visual features are projected into.
 
 Using textual features is the most common solution. %, specially at the Web scale.
-Each image is associated with a set of textual features extracted from its context of use --- e.g.\ the text surrounding the image in the Web page, description fields in metadata --- and eventually enriched by means of classifiers that assign textual labels related to the presence of certain relevant entities or abstract properties in the image.
+Each image is associated with a set of textual features extracted from its context of use --- e.g., the text surrounding the image in the Web page, description fields in metadata --- and eventually enriched by means of classifiers that assign textual labels related to the presence of certain relevant entities or abstract properties in the image.
 The textual search space model can exploit the actual visual content of the image only when classifiers for the concepts of interest are available, thus requiring a relevant number of classifiers.
 This also requires to reprocess the entire image collection whenever a new classifier is made available.
 
-Searching in a common latent space requires learning two projections, i.e.\ from text-to-latent and from image-to-latent.
+Searching in a common latent space requires learning two projections, i.e.,  from text-to-latent and from image-to-latent.
 The main advantage of searching in a common latent space lies on the freedom the system has to jointly model reciprocal relations between the two media, while other strategies can only learn the relations from the source media to the target media, but not vice versa.
 However, as in the textual space, projecting into a common latent space also requires to reprocess all the images whenever the textual model is updated, since the latent space where images are projected into is also influenced by the textual model part.
 It also requires managing and storing the additional latent representations that are used only for the cross-media search.
 
 A last, less explored, possibility is to use a visual space to convert any textual query into a visual representation.
 A key advantage of this model is that the representation of images remains unaltered regardless of the projection model being developed.
-This means that any improvement in the projection model --- e.g.\ in the underlying language model --- has immediate effects on the image retrieval process without requiring to reprocess the (typically huge) whole image collection and to rebuild the similarity search data structures required for efficient retrieval.
+This means that any improvement in the projection model --- e.g., in the underlying language model --- has immediate effects on the image retrieval process without requiring to reprocess the (typically huge) whole image collection and to rebuild the similarity search data structures required for efficient retrieval.
 Another advantage is that --- since the visual space is language-independent --- multiple models, e.g., for multiple languages or specialized on different domains, can be used independently on the same collection of images, without requiring multiple instances of representations for the images and multiple instances of similarity search data structures.
 
 In this chapter, we explore the use of a visual space for cross-media retrieval.
@@ -90,7 +90,7 @@ We observed a strong tendency to overfit (\ref{fig:t2v:visreg:loss}), thus degra
 \begin{figure}
 \begin{subfigure}{0.37\textwidth}
 \includegraphics[width=\linewidth]{visreg-arch}
-\caption{Architecture of a simple regressor model with one hidden layer of size $1,024$}
+\caption{Architecture of a simple regressor model with one hidden layer of size $1,024$.}
 \label{fig:t2v:visreg:arch}
 \end{subfigure}
 \hfill
@@ -135,7 +135,7 @@ The linguistic loss works at higher level of abstraction than the visual one, ac
 \caption{The training and validation loss (on y-axis) in function of the training iteration (on x-axis).}
 \label{fig:t2v:s-t2v:loss}
 \end{subfigure}
-\caption{Our proposed \sparsettv{} model}
+\caption{Our proposed \sparsettv{} model.}
 \label{fig:t2v:s-t2v}
 \end{figure}
 
@@ -153,7 +153,7 @@ The feed-forward computation is described by the following equations:
 %
 \noindent where $\t$ represents the sparse one-hot encoding for the textual descriptor given as input to the net, $\z$ is the hidden representation, $\v'$ and $\t'$ are the visual and textual predictions, respectively, obtained from the hidden representation $\z$, $\Theta=\{W_i,b_i\}, i \in \{1,2,3\}$ are the model parameters to be learned. %, and $ReLU$ is the activation function, defined by $ReLU(x)=\max\{0,x\}$.
 
-Both predictions $\v'$ and $\t'$ are then compared with the expected outputs, i.e.\ the visual embedding representation $\v$, and a textual descriptor $\t'$ that is either $\t$ or semantically equivalent to $\t$ (we expand on this below).
+Both predictions $\v'$ and $\t'$ are then compared with the expected outputs, i.e.,  the visual embedding representation $\v$, and a textual descriptor $\t'$ that is either $\t$ or semantically equivalent to $\t$ (we expand on this below).
 We used the \acrfull{mse} as the loss function both for the visual loss and the textual loss, denoted by $\L_v$ and $\L_t$, respectively.
 %
 %\begin{equation}
@@ -170,7 +170,7 @@ where $\alhpa$ is a parameter controlling the relative contribution of the losse
 We also add an $L_2$ regularization term parametrized by $\lambda$ to further counter overfitting.
 Note that the net is fed with a triplet $\left \langle \v, \t, \t' \right \rangle$ at each iteration.
 When $\t'=\t$ the text-to-text branch is an \emph{autoencoder}.
-It is also possible to have $\t \neq \t'$, with the two pieces of text being semantically equivalent --- e.g.\ $\t = $``\texttt{a woman cutting a pizza with a knife}'', $\t'=$``\texttt{a woman holds a knife to cut pizza}'').
+It is also possible to have $\t \neq \t'$, with the two pieces of text being semantically equivalent --- e.g., $\t = $``\texttt{a woman cutting a pizza with a knife}'', $\t'=$``\texttt{a woman holds a knife to cut pizza}'').
 %In the latter case the text-to-text branch might be reminiscent of the \emph{SkipGram} and \emph{CBOW} architectures.
 The text-to-image branch is, in any case, a regressor.
 Notwithstanding, since our final goal is to project the textual descriptor into the visual space, the text-to-text branch might be though as an additional constraint (of linguistic nature)
@@ -178,7 +178,7 @@ Notwithstanding, since our final goal is to project the textual descriptor into 
 to the visual reconstruction (and, more specifically, to its internal encoding).% which responds to constrains of linguistic nature.
 
 The main strength of \sparsettv{} regards its simplicity, specially in the use of the most simple representation for the input (the sparse encoding); yet it produces effective results (as discussed bellow).
-That being said, the model presents some flaws too, i.e.\
+That being said, the model presents some flaws too, i.e.,
 (i) the sparse encoding results in a high dimensionality, thus constraining the net to optimize a large number of parameters, and
 (ii) the model is agnostic to word order, thus losing relevant information from text, e.g.: ``\texttt{a white cat and a black dog}'' vs ``\texttt{a black cat and a white dog}''.
 
@@ -188,17 +188,18 @@ That being said, the model presents some flaws too, i.e.\
 
 The second model we propose, dubbed \densettv{}, is meant to overcome the limitations of \sparsettv{}.
 
-In order to reduce the amount of parameters of the net, we resort to dense representations (i.e.\ word embeddings) for the terms in the description.
+In order to reduce the amount of parameters of the net, we resort to dense representations (i.e.,  word embeddings) for the terms in the description.
 Besides the mere reduction in the number of dimensions, the main reason that motivates operating in a dense embedding space concerns with the gain in generalization.
-Words with similar meanings end up being represented by similar vectors (in the sense of the inner product), which allows the model to better generalize, i.e.\ the patterns discovered become descriptive for an embedding region (and to the greater or lesser extent to words with nearby embeddings) rather than descriptive for a single word.
+Words with similar meanings end up being represented by similar vectors (in the sense of the inner product), which allows the model to better generalize, i.e.,  the patterns discovered become descriptive for an embedding region (and to the greater or lesser extent to words with nearby embeddings) rather than descriptive for a single word.
 
 In order to make the model become sensible to word order, we adopt an \acrfull{lstm}~\cite{hochreiter1997long} architecture, a special kind of recurrent neural network which is particularly robust to learn from sequential data (such as textual data).
-Concretely, we train an \gls{lstm} on the task of language modeling (that is, the task of predicting the most likely following term given the sequence of preceding terms -- see e.g.\ ~\cite{sundermeyer2012lstm}) with backpropagation through time~\cite{werbos1990backpropagation}.
+Concretely, we train an \gls{lstm} on the task of language modeling (that is, the task of predicting the most likely following term given the sequence of preceding terms -- see e.g., ~\cite{sundermeyer2012lstm}) with backpropagation through time~\cite{werbos1990backpropagation}.
 We constrain the internal memory state of the last memory cell to be a good representation to predict the visual embedding (\ref{fig:t2v:d-t2v-arch}).
 
 \begin{figure}
 \includegraphics[width=\linewidth]{d-t2v-arch}
-\caption{Architecture of \densettv{}.} \label{fig:t2v:d-t2v-arch}
+\caption{Architecture of \densettv{}.}
+\label{fig:t2v:d-t2v-arch}
 \end{figure}
 
 The computation is described by the following equations:
@@ -222,7 +223,7 @@ The sequence of term vectors predictions $\t'_i$ and the visual prediction $\v'$
 For the visual loss $\L_v$ we use the \gls{mse} as before.
 Each predicted term $\t'_i$ is a $|V|$-dimensional vector that could be though as a probability distribution over the term indexes, where $V$ is the vocabulary.
 
-Analogously, each term $w$ can be codified as a \emph{one-hot} vector, i.e.\ a $|V|$-dimensional vector with all zero values except the dedicated dimension indexing $\t_i$, which is set to one.
+Analogously, each term $w$ can be codified as a \emph{one-hot} vector, i.e.,  a $|V|$-dimensional vector with all zero values except the dedicated dimension indexing $\t_i$, which is set to one.
 Note that a one-hot encoding could be interpreted as a probability distribution as well.
 (When not confusing, we use $\t_i$ both to refer to the term symbol and to its one-hot encoding.)
 The error between both distributions is compared via the cross-entropy loss $\L_{CE}$.
@@ -265,7 +266,8 @@ This model emerged from the belief, discussed in \cite{cheng2016wide}, that the 
 
 \begin{figure}
 \includegraphics[width=\linewidth]{wd-t2v-arch}
-\caption{Architecture of \widedeepttv{}.} \label{fig:t2v:widendeep}
+\caption{Architecture of \widedeepttv{}.}
+\label{fig:t2v:widendeep}
 \end{figure}
 
 The fundamental difference with respect to \cite{cheng2016wide} is that we use a recurrent neural network as the deep part (instead of a feed-forward network) since \glspl{lstm} are particularly fit to learn from sequential data such as our textual descriptions.
@@ -300,7 +302,7 @@ In this section, we describe the set of experiments we have carried out in order
 
 We used the \emph{Microsoft \acrfull{coco}} dataset\footnote{Publicly available at \url{http://mscoco.org/}}~\cite{lin2014microsoft}).
 \gls{coco} was originally proposed for image recognition, segmentation, and caption generation.
-Although other datasets for image retrieval exist (e.g.\ the one proposed by \citet{hua2013clickage}), they are more oriented to keyword-based queries.
+Although other datasets for image retrieval exist (e.g., the one proposed by \citet{hua2013clickage}), they are more oriented to keyword-based queries.
 We believe \gls{coco} to be more fit to the scenario we want to explore, since the captions associated to the images are expressed in natural language, thus semantically richer than a short list of keywords composing a query.
 
 \gls{coco} contains $82,783$ training images (\emph{Train2014}), $40,504$ validation images (\emph{Val2014}), and about 40K and 80K test images corresponding to two different competitions~\cite{chen2015microsoft} (\emph{Test2014} and \emph{Test2015}).
@@ -338,7 +340,7 @@ We set the maximum number of iterations to $300,000$ in \sparsettv{}, and to $50
 The training set is shuffled each time a complete pass over all images is performed.
 
 The word embedding matrix for \densettv{} and \widedeepttv{} has been initialized at random according to an uniform distribution ranging from $-1.0$ to $1.0$.
-In preliminary experiments, we investigated on the use of pre-trained word embeddings, i.e.\ representing the textual description as the average of the embeddings of the words composing the description (see~\cite{dong2018predicting}), but we have not observed any improvement.
+In preliminary experiments, we investigated on the use of pre-trained word embeddings, i.e.,  representing the textual description as the average of the embeddings of the words composing the description (see~\cite{dong2018predicting}), but we have not observed any improvement.
 Pre-training the word embeddings is an additional cost, and the fitness of the embeddings for the task depends on the type of documents they are learned from.
 For example, an 11\% improvement in \gls{map} is reported in \cite{cappallo2015image2emoji} from learning embeddings from Flickr tags compared to learning them from Wikipedia pages.
 
@@ -376,7 +378,7 @@ We set the number of nodes of the hidden layer to $1,024$ which was experimental
 we omit those experiments for the sake of conciseness.
 
 In order to efficiently train the \gls{lstm} part in \densettv{} and \widedeepttv{}, we make use of \emph{padding} and \emph{bucketing}.
-That is, to avoid constructing as many computational graphs as different caption lengths there are in the dataset, we fix a number of buckets (i.e.\ sequences of fixed length -- we considered $\{15, 20, 40\}$ in our experiments) and apply padding to the captions (i.e.\ repeatedly adding the `PAD' token at the beginning of the tokens sequence, and the special `EOS' token announcing the end of the sequence) to fit in the corresponding bucket (the smallest one that could allocate the caption).
+That is, to avoid constructing as many computational graphs as different caption lengths there are in the dataset, we fix a number of buckets (i.e.,  sequences of fixed length -- we considered $\{15, 20, 40\}$ in our experiments) and apply padding to the captions (i.e.,  repeatedly adding the `PAD' token at the beginning of the tokens sequence, and the special `EOS' token announcing the end of the sequence) to fit in the corresponding bucket (the smallest one that could allocate the caption).
 
 For \densettv{} and \widedeepttv{}, we have also considered stacking \gls{lstm} cells as a mean to give the model a greater expressive power.
 We denote those variations by the suffix `-$\langle n\rangle$' where $n$ indicates the height of the stack.
@@ -425,7 +427,7 @@ We have reimplemented \wordvisual{} by following \cite{dong2018predicting}.
 We have pre-trained a 500-dimensional word embeddings space on the user tags associated to 100M images in the YFCC100M dataset \cite{thomee2016yfcc100m} using the skip-gram model in Word2Vec~\cite{mikolov2013distributed}.
 We have experimented with two variants: \emph{short} (\wordvisual{}-S), which trains a feed-forward network with two hidden layers of $[1000, 2000]$; and \emph{long} (\wordvisual{}-L), which considers three hidden layers of $[1000, 2000, 3000]$.
 We have only experimented with the variant that adopts the same \gls{mse} loss function as our model\footnote{They reported slightly better results with the Marginal Ranking Loss (MRL), a cost function that takes two visual vectors for each example, one considered relevant, and another irrelevant, to the textual description. However, relevance judgments to generate the training triplets relied on the user-click logs available in their dataset.}. %In spite of the user-click logs we preferred not to involve the $ROUGE_L$ measure as a relevance estimator, as it is a fundamental part of the evaluation criterion. We believe the MRL could bring similar improvements to our method, an hypothesis we led to future research.}.
-In order to carry out a fair comparison, we have implemented the exact same retrieval for \wordvisual{} as our method (i.e.\ euclidean distance after PCA and whitening -- see \ref{sec:t2v:method}) instead of the originally proposed \emph{cosine similarity}.
+In order to carry out a fair comparison, we have implemented the exact same retrieval for \wordvisual{} as our method (i.e.,  euclidean distance after PCA and whitening -- see \ref{sec:t2v:method}) instead of the originally proposed \emph{cosine similarity}.
 The reason for doing so is that we have observed a consistent improvement of about 3\% in our experiments, and verified similar improvements to be achieved in the case of \wordvisual{} as well;
 concretely, \wordvisual{} improved its \gls{dcg} average by 0.073 (with a standard deviation of $\pm4.8e^{-3}$) due to the use of this retrieval method in place of the cosine similarity.
 
@@ -441,18 +443,18 @@ We measure the retrieval effectiveness of the various methods we compare by mean
 %
 %where $rel_i$ quantifies the \emph{relevance} of the retrieved element at rank position $i$ with respect to the query, and $p$ is the rank at which the metric is computed;
 Specifically, we computed $\mathrm{DCG}@25$ in our experiments, as was done in related research~\cite{hua2013clickage,dong2018predicting}.
-Given that some of the compared methods (e.g.\ text-based search) can produce rankings with ties, we actually use the \gls{tdcg}~\cite{mcsherry2008computing}.
+Given that some of the compared methods (e.g., text-based search) can produce rankings with ties, we actually use the \gls{tdcg}~\cite{mcsherry2008computing}.
 Details about the definitions of \gls{dcg} and \gls{tdcg} can be found in \ref{subsec:back:ir-metrics}.
 
 Because the relevance values for \gls{dcg} are not provided in \gls{coco}, we estimate them by using the $\text{ROUGE}_L$~\cite{lin2004rouge} metric, a measure often used for the evaluation of the results of text summarization algorithms and one of the evaluation measures for the \gls{coco} caption generation competition\footnote{\url{https://github.com/tylin/coco-caption}}~\cite{chen2015microsoft}.
-This is a metric based on finding the Longest Common Subsequence (LCS) between the two strings being compared\footnote{LCS is a way to find a common exact sequence of words that is similar to matching word n-grams but less stringent (i.e.\ inside the LCS sequence other words may appear).} and then measuring a weighted harmonic mean ($F_\beta$, with $\beta=1.2$) of the coverage ratios of the subsequence with the two strings.
+This is a metric based on finding the Longest Common Subsequence (LCS) between the two strings being compared\footnote{LCS is a way to find a common exact sequence of words that is similar to matching word n-grams but less stringent (i.e.,  inside the LCS sequence other words may appear).} and then measuring a weighted harmonic mean ($F_\beta$, with $\beta=1.2$) of the coverage ratios of the subsequence with the two strings.
 Using a $\beta$ value greater than one ($\beta=1.2$ is the default value in the \gls{coco} evaluation software) gives a little more importance to producing a good coverage of the gold standard caption.
 We compute $r_i = \text{ROUGE}_L ( \t, C_i ) $, where $\t$ is the query caption, and $C_i$ are the 5 captions associated to the retrieved image at rank $i$.
 This caption-to-caption relevance model is thus aimed at measuring how much the concepts expressed in the query appear as relevant parts of the retrieved images.
 
 As a final note on the evaluation, it is noteworthy that many related methods so far \cite{mao2014deep,ma2015multimodal,klein2014fisher,karpathy2015deep,donahue2015long,kiros2015skip,wang2016learning} have been tested in \gls{coco} as well.
 In doing so, however, they have followed a different experimental protocol, involving one random split of 1K test items (not standard across the experiments) and relying on rank-based metrics, namely, \emph{recall at K} (noted by $R@K$ -- the proportion of queries whose expected image was found among the top-$K$ retrieved items) and $medR$ (the median of the rank distribution).
-Despite the fact that this protocol has become almost a standard practice in the literature, we argue it might fail to reflect the scenario we are concerned with here, i.e.\ the fact that the ``prototypical'' image one has in mind might be better described through a short textual description of it than through a specific sample image accommodating the textual description (and, unavoidably, much other irrelevant information).
+Despite the fact that this protocol has become almost a standard practice in the literature, we argue it might fail to reflect the scenario we are concerned with here, i.e.,  the fact that the ``prototypical'' image one has in mind might be better described through a short textual description of it than through a specific sample image accommodating the textual description (and, unavoidably, much other irrelevant information).
 Therefore, the rank of the \emph{specific} test image might not necessarily be a good estimator of the system's ability to generalize well in text-to-image retrieval task.
 That is, although it is clear that a well-performing system will deliver competitive rank-based metrics, it is also true that an overfitted system will rank a test image well whenever a very similar example is seen in the training phase.
 Contrarily, a text-centered metric (as the \gls{dcg} with $\text{ROUGE}_L$) is not liable to be likewise cheated.
@@ -462,7 +464,7 @@ Moreover, rank-based metrics are strongly biased towards the test set size (wher
 To show this issue, \ref{tab:t2v:splits1k}, reports the variation of R@1, R@5, R@10, \gls{medR} and \gls{dcg} at the variation of the test set size from 1K to 5K images.
 \gls{dcg} is the only measures whose value remain stable, while the other measures have a significant drop.
 All other things being equal, we present additional results we have obtained by following this protocol for the sake of comparability (see below);
-we also report the \acrfull{mrr}, i.e.\ the average of the inverse ranks) as a possibly more reliable rank-centered metric.
+we also report the \acrfull{mrr}, i.e.,  the average of the inverse ranks) as a possibly more reliable rank-centered metric.
 
 \begin{figure}
  \includegraphics[width=\textwidth]{rank_examples}
@@ -564,10 +566,10 @@ The best \emph{CapRouge} result is in line with the average \ttv{} results, yet 
 The best \ttv{} result (\widedeepttv{}-2 on \emph{pool5}) shows a relative improvement of 3.7\% over the best \emph{CapRouge} result, and of 15.3\% of the best \emph{CapGram} result.
 
 When comparing the \ttv{} results among themselves it is not obvious whether the use of sparse features leads to better or worse results than the use of dense features.
-For example, the dense-based models (i.e.\ the \densettv{} variants) improve over the sparse-based models (i.e.\ the \sparsettv{} variants) only when resorting to stacking \gls{lstm} cells.
+For example, the dense-based models (i.e.,  the \densettv{} variants) improve over the sparse-based models (i.e.,  the \sparsettv{} variants) only when resorting to stacking \gls{lstm} cells.
 In strict terms of effectiveness (as measured by \gls{dcg}), this blurs any conclusive remark on the preference of either sparse or dense representations.
 %For example, in the fc6 visual layer, the dense-based models (i.e., the \densettv{} variants) seem to consistently outperform the sparse-based models (i.e., the \sparsettv{} variants), whereas this behavior is not reproduced in the fc7.
-Notwithstanding, this seemingly contradictory result serves to reinforce another interesting insight, i.e.\ the fact that, despite being unclear which representation mechanism is preferable, the wide \& deep architecture effectively takes advantage of the combination, consistently producing better results.
+Notwithstanding, this seemingly contradictory result serves to reinforce another interesting insight, i.e.,  the fact that, despite being unclear which representation mechanism is preferable, the wide \& deep architecture effectively takes advantage of the combination, consistently producing better results.
 
 %Another conclusion supported by the experiments is that stacking various LSTM cells helps to improve the modeling capability of the networks.
 
@@ -690,7 +692,7 @@ Our results also indicate that our methods produce better results than those obt
 The better results that visual-space based methods have produced over textual-space based ones are not the only argument in favor of the former.
 We deem that a stronger argument in favor of visual-space methods is the fact the any improvement to the projection method does not require to reprocess the entire image collection, affecting it only the query processing pipeline.
 A web scale image collection can thus immediately benefit from a model update without requiring any processing.
-Moreover, a single image similarity search data structure can serve multiple cross-media search models, e.g.\ built for different languages or specialized on different domains.
+Moreover, a single image similarity search data structure can serve multiple cross-media search models, e.g., built for different languages or specialized on different domains.
 
 We have compared against \wordvisual{}, a recently proposed method that, like ours, uses the visual space as the search space.
 In our experimental setup, we improved the performance obtained by the original \wordvisual{}$_{cos}$ by switching from cosine similarity to euclidean similarity that uses \gls{pca} and whitening, following the state of the art in similarity search literature.
@@ -702,6 +704,6 @@ Our \widedeepttv{} model improved over \wordvisual{} by a statistical significan
 One interesting aspect that proved to be effective in our experiments is the use of a different $\t'$ as a constraint for the hidden representation.
 When $\t$ and $\t'$ are different, though semantically similar, the autoencoder branch becomes semantically constrained.
 We have investigated this idea in the \sparsettv{}, and we believe the same principle could also bring similar benefits for the \densettv{} and \widedeepttv{} models.
-We thus plan to investigate the effects of such ``semantic-autoencoding'' principle by adopting a  \emph{Seq2Seg}~\cite{cho2014learning} architecture, i.e.\ by constraining the final memory state from an encoding \gls{lstm} after processing the input $\t$ to be a good representation to generate a different, but semantically similar, $\t'$ with a decoder \gls{lstm}.
+We thus plan to investigate the effects of such ``semantic-autoencoding'' principle by adopting a  \emph{Seq2Seg}~\cite{cho2014learning} architecture, i.e.,  by constraining the final memory state from an encoding \gls{lstm} after processing the input $\t$ to be a good representation to generate a different, but semantically similar, $\t'$ with a decoder \gls{lstm}.
 We believe such an intermediate state to be able to produce better projections to the visual features.
 
