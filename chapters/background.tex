@@ -50,23 +50,23 @@ In this chapter, we present the basic concepts about \gls{dl}, and we introduce 
 The chapter is organized as follows.
 In \ref{sec:back:deep-learning}, we provide the reader with a quick introduction to \acrlong{dl}, focusing on deep neural networks for image and text processing and gradient-based optimization.
 In \ref{sec:back:image-classification}, an introduction to image classification using \acrfullpl{cnn} is presented together with a review of successful approaches in this field.
-In \ref{sec:back:image-retrieval}, we describe the main aspects of \gls{cbir} based on image representations extracted from deep neural networks, and we discuss some state-of-the-art methodologies to build effecive description of images and to efficiently index them in large-scale scenarios.
+In \ref{sec:back:image-retrieval}, we describe the main aspects of \gls{cbir} based on image representations extracted from deep neural networks, and we discuss some state-of-the-art methodologies to build effective descriptions of images and to efficiently index them in large-scale scenarios.
 \ref{sec:back:datasets} summarizes the public datasets used in the experiments presented in this thesis.
 
 
 \section{Deep Learning}
 \label{sec:back:deep-learning}
 
-\acrfull{dl} defines a subfield of Artificial Intelligence, specifically of \gls{ml}, in which a \emph{hierarchy of data representations} (or \emph{features}) is learnt from data for solving a particular task~\cite{bengio2007scaling,goodfellow2016deep}.
+\acrfull{dl} defines a subfield of Artificial Intelligence, specifically of \gls{ml}, in which a \emph{hierarchy of data representations} (or \emph{features}) is learned from data for solving a particular task~\cite{bengio2007scaling,goodfellow2016deep}.
 % TODO add representation learning?, what is and cites
 %For historical reasons, \gls{dl} models are also referred to as \emph{\glspl{dnn}} due to the resemblance of layers and their organization to the way neurons are interconnected and organized in the mammalian brain~\cite{}.
 % TODO add reference to similarities to mammalian brain (in addition to perceptron?)
 Inspired by nature, \acrlong{dl} models are often implemented as \glspl{dnn} --- a computational model comprised by multiple layers of processing units that mimics the structure and the interconnection of neurons in the mammalian brain~\cite{rosenblatt1958perceptron}.
-Recent years have witnessed a rapid rise in the use of \gls{dl} approaches to solve complex task, reaching even super-human performance in perceptiual~\cite{he2015delving}, control~\cite{mnih2015human}, and planning~\cite{silver2016mastering} activities. % TODO add reasoning?
-Interestingly, the representations learnt with \gls{dl} methodologies resemble the structures of signals in the neocortex build by our brain to implement intelligent behaviours, suggesting a strong parallelism between the two domains~\cite{cadieu2014deep,kubilius2016deep}. % TODO dire meglio?
+Recent years have witnessed a rapid rise in the use of \gls{dl} approaches to solve complex tasks, reaching even super-human performance in perceptual~\cite{he2015delving}, control~\cite{mnih2015human}, and planning~\cite{silver2016mastering} activities. % TODO add reasoning?
+Interestingly, the representations learned with \gls{dl} methodologies resemble the structures of signals in the neocortex build by our brain to implement intelligent behaviors, suggesting strong parallelism between the two domains~\cite{cadieu2014deep,kubilius2016deep}. % TODO dire meglio?
 
-\acrlongpl{dnn} are organized as a sequence (or more generally a graph) of parametric non-linear transformations, known as \emph{layers}, that acts like features extractors;
-starting from raw data, each layer searches for useful patterns in its input and provides higher-level representation of the data to the next layer.
+\acrlongpl{dnn} are organized as a sequence (or more generally a graph) of non-linear parametric transformations, known as \emph{layers}, that acts like features extractors;
+starting from raw data, each layer searches for useful patterns in its input and provides a higher-level representation of the data to the next layer.
 
 Formally, given an input $\x$, we can express the output $\y$ of \gls{dnn} as
 %
@@ -80,7 +80,7 @@ Formally, given an input $\x$, we can express the output $\y$ of \gls{dnn} as
 %
 where $f(\cdot)$ is an arbitrary composition of parametric transformations (layers), and $\Theta$ indicates the set of all the parameters, also known as \emph{weights} of the \gls{dnn}.
 
-Given a training set of input-target couples $\X = \{ (\x_i, \y_i^\star),\; i = 1, \dots, N \}$, the quality of a particular setting of parameters is quantitatively defined by a \emph{loss function} $\L\(\X; \Theta\)$ that measures how much the model predictions $\y$ differ from the targets $\y^\star$ provided by $\X$.
+Given a training set of input-target couples $\X = \{ (\x_i, \y_i^\star),\; i = 1, \dots, N \}$, the quality of a particular configuration of parameters is quantitatively defined by a \emph{loss function} $\L\(\X; \Theta\)$ that measures how much the model predictions $\y$ differ from the targets $\y^\star$ provided by $\X$.
 The particular formulation of $\L$ is task-dependent and further discussed in \ref{subsec:back:loss}.
 In the end, the learning problem reduces to the optimization problem
 %
@@ -88,10 +88,10 @@ In the end, the learning problem reduces to the optimization problem
     \Theta^\star = \argmin_\Theta \L\(\X; \Theta\) \,,
 \end{equation}
 %
-in which we search the best parameter setting $\Theta^\star$ that minimizes the loss function $\L\(\X; \Theta\)$.
+in which we search the best parameter configuration $\Theta^\star$ that minimizes the loss function $\L\(\X; \Theta\)$.
 
 The specific layers used and their interconnections define the \gls{dnn}'s \emph{architecture} (or \emph{computation graph}).
-\Glspl{dnn} can be roughly categorized into \glspl{ffnn}, in which information flows from input to output in a non-recursive cascade of computations, and \glspl{rnn}, which present a feedback loop in their computation graph.
+We can roughly categorize \glspl{dnn} into \glspl{ffnn}, in which information flows from input to output in a non-recursive cascade of computations, and \glspl{rnn}, which present a feedback loop in their computation graph.
 In the following sections, we will review some practical and successful formulations of \glspl{dnn},
 %that are useful when dealing with image data
 and we will provide the reader with the basics of gradient-based optimization of \ref{eq:back:optim}.
@@ -114,8 +114,8 @@ Thus, when computing of the whole chain from inputs to outputs, called the \emph
 \end{figure}
 
 The \gls{mlp} is the simplest form of artificial neural network in the \Acrlong{dl} field.
-A \gls{mlp} is comprised by a cascade of \emph{inner product} (or \emph{fully connected}) layers, which are the basic building block for \glspl{dnn}.
-A inner product layer performs a linear projection of the input followed by a usually non-linear element-wise activation function.
+An \gls{mlp} is comprised by a cascade of \emph{inner-product} (or \emph{fully-connected}) layers, which are the basic building block for \glspl{dnn}.
+An inner-product layer performs a linear projection of the input followed by a usually non-linear element-wise activation function.
 Formally, given an input comprised by $n$ features $\x \in \R^n$, the output  $\y \in \R^m$ of the layer is obtained as
 %
 \begin{equation} \label{eq:back:fully-connected}
@@ -124,7 +124,7 @@ Formally, given an input comprised by $n$ features $\x \in \R^n$, the output  $\
 %
 where $\W \in \R^{n \times m}$ and $\b \in \R^m$ are learnable parameters of a linear projection to a $m$-dimensional space.
 Commonly used activation functions $\a: \R \to \R$ are the \gls{relu}, the sigmoid $\sigma\(\cdot\)$, and $\tanh\(\cdot\)$ functions (depicted in~\ref{fig:back:activations}).
-The dimensionality of the input $n$ and of the output $m$ are referred to as respectively the number of \emph{input features} and \emph{output features}.
+The dimensionality of the input $n$ and the output $m$ are referred to as respectively the number of \emph{input features} and \emph{output features}.
 
 \begin{figure}
     \centering
@@ -170,12 +170,12 @@ where $\(\W_i, \b_i \)$ are the parameters of the $i$-th fully-connected layer i
 
 A \gls{cnn} is a feed-forward artificial neural network composed by at least one \emph{convolutional} layer.
 This kind of layer computes the cross-correlation between the input and a set of learnable filters.
-Since there is a strong similarity between the convolution and the cross-correlation operations, this layer is often attributed with the adjective ``convolutional'' in the \gls{dl} literature;
+Since there is a substantial similarity between the convolution and the cross-correlation operations, this layer is often attributed with the adjective ``convolutional'' in the \gls{dl} literature;
 thus we will adopt the same terminology throughout this thesis.
 
 \paragraph{Cross-correlation}
 The \emph{cross-correlation} (also called \emph{sliding inner product}) is typically used in signal processing to search for matches between two signals.
-Intuitively, a small signal called \emph{filter} containing the prototype we want to match is slided on a bigger input signal, and for each position, the inner product between the intersection of the two signals measures the quality of the match.
+Intuitively, a small signal called \emph{filter} containing the prototype we want to match is slid on a bigger input signal, and for each position, the inner product between the intersection of the two signals measures the quality of the match.
 We will provide the reader with the formulation of the two-dimensional version of the cross-correlation due to its massive adoption in image-related fields that are of interest for this work.
 
 Given a two-dimensional input matrix $\x \in \R^{H \times W}$ and a two-dimensional filter $\w \in \R^{K_1 \times K_2}$, %with $K \ll \min(H,W)$,
@@ -194,7 +194,7 @@ Depending on the presence of padding $P$ added to each side of the input and the
     W' &= \left \lfloor \frac{W + 2 \times P - K_2}{S} \right \rfloor + 1 \,.
 \end{split}
 \end{equation}
-Inputs and outputs of convolutional layers are also called \emph{feature maps}, since high values in the two-dimensional map are usually interpreted as the presence of a feature a particular filter has learnt to identify.
+Inputs and outputs of convolutional layers are also called \emph{feature maps} since high values in the two-dimensional map are usually interpreted as the presence of a feature a particular filter has learned to identify.
 A depiction of 2D cross-correlation is reported in~\ref{fig:back:2d-cross-corr}.
 
 \begin{figure}
@@ -208,7 +208,7 @@ A depiction of 2D cross-correlation is reported in~\ref{fig:back:2d-cross-corr}.
 \ref{eq:back:cross-correlation} defines the cross-correlation operation for inputs and outputs having both a single feature map.
 Images instead are represented as 3-D tensors having $C$ channels (e.g., $C=3$ for RGB data, $C=1$ for grayscale) and two spatial dimensions $H$ and $W$;
 thus, the definition of the 2D cross-correlation is extended to 3D tensors letting the filters span the depth of the input tensor.
-In such way, filters are still applied over the two spatial dimensions $H$ and $W$, but each output value depends on all the input feature maps in a particular spatial position.
+In such a way, filters are still applied over the two spatial dimensions $H$ and $W$, but each output value depends on all the input feature maps in a particular spatial position.
 Formally, given an input tensor $\x \in \R^{H \times W \times C}$ and a filter $\w \in \R^{K_1 \times K_2 \times C}$ the cross-correlation $\y \in \R^{H' \times W'}$ between $\x$ and $\w$ is defined as
 %
 \begin{equation}\label{eq:back:channel-cross-correlation}
@@ -226,18 +226,18 @@ while fully-connected layers have a dedicated weight for each couple of input an
 \paragraph{Pooling Layers}
 Pooling layers are often used in \glspl{cnn} to reduce the amount of data to be processed in the next layers.
 As the name suggests, this kind of layers pools data in groups and aggregates them using a non-parametric aggregation function, such as maximum or average.
-The groups are defined as fixed-size windows that are slided along one or more dimensions of the data in the same way the cross-correlation operator is applied.
+The groups are defined as fixed-size windows that are slid along one or more dimensions of the data in the same way the cross-correlation operator is applied.
 In the two-dimensional case, input and output sizes follow \ref{eq:back:conv-size}.
-The application of convolutional layers having small strides usually produce redundant local information in their output.
+The application of convolutional layers having small strides usually produces redundant local information in their output.
 Thus, a max-pooling layer is often used to reduce the resolution of intermediate feature maps.
 % Instead, sum- and average-pooling are used to produce
 
 \paragraph{Features hierarchy in \glspl{cnn}}
-Convolutional layers are stacked to build deep \glspl{cnn}, that are the one of the core tools of Deep Learning for image perception and analysis~\cite{krizhevsky2012imagenet,sermanet2013overfeat,simonyan2014very,he2015delving,he2016deep,xie2017aggregated}.
+Convolutional layers are stacked to build deep \glspl{cnn}, that are one of the core tools of Deep Learning for image perception and analysis~\cite{krizhevsky2012imagenet,sermanet2013overfeat,simonyan2014very,he2015delving,he2016deep,xie2017aggregated}.
 Once trained, filters in a deep \gls{cnn} tend to organize in a hierarchy of detectors, where layers near the input detect the presence of simple features in the input data, while the following layers build up from them and detect more complex features.
 A successful example of the representative power of \glspl{cnn} is object recognition.
 % TODO [CITE] object hierarchical decomposition
-The visual aspect of objects in images follow a hierarchical organization: an object can be decomposed in parts, parts in patches, patches in textures, textures in edges or blobs, and finally in pixels~\cite{}.
+The visual aspect of objects in images follows a hierarchical organization: an object can be decomposed in parts, parts in patches, patches in textures, textures in edges or blobs, and finally in pixels~\cite{}.
 \begin{figure}
     % TODO [KEEP?] is feat hier figure valuable?
     \centering
@@ -260,7 +260,7 @@ The visual aspect of objects in images follow a hierarchical organization: an ob
 \subsection{Recurrent Neural Networks}
 \label{subsec:back:rnn}
 
-A \acrfull{rnn} is a stateful artificial neural network with feedback connections in which the output depends not only on the input, but also on the current state of the network~\cite{goodfellow2016deep,rumelhart1986learning}.
+A \acrfull{rnn} is a stateful artificial neural network with feedback connections in which the output depends not only on the input but also on the current state of the network~\cite{goodfellow2016deep,rumelhart1986learning}.
 The state of the network acts as a memory which is updated at each input, allowing information to persist between inputs.
 This architecture is naturally able to process sequences of inputs;
 the elements of a sequence can be fed to the network one by one, updating the internal state of the network to compactly represent the sequence processed so far regardless of its length.
@@ -273,7 +273,7 @@ the elements of a sequence can be fed to the network one by one, updating the in
     \label{fig:back:rnn}
 \end{figure}
 
-Given a sequence of inputs of length $T$ $\x_t \in \R^n, t = 1 \dots T$, and an initial state $\h_0 \in \R^m$, a \gls{rnn} can be described as a parametric function mapping the input and the state at a certain timestep to the next hidden state
+Given a sequence of inputs of length $T$ $\x_t \in \R^n, t = 1 \dots T$, and an initial state $\h_0 \in \R^m$, a \gls{rnn} can be described as a parametric function mapping the input and the state at a particular timestep to the next hidden state
 %
 \begin{equation}\label{eq:back:rnn}
     \h_t = f\(\x_t, \h_{t-1}; \W\) \,,
@@ -292,9 +292,10 @@ During learning, the \gls{rnn} is unrolled in time to the length of the input se
 Depending on the task we want to model, we could be interested in the last hidden state $\h_T$ compactly represent the whole sequence, or we could use a combination of all hidden states $\h_i, i=1 \dots T$ to get access to the evolution of the information processed through time.
 
 \paragraph{Bidirectional \glspl{rnn}}
-In many tasks --- such as sequence classification and segmentation --- also the future context of the sequence is informative. However, \ref{eq:back:rnn} defines a \gls{rnn} encoding only past information, i.e.,   $\h_t$ depends only on information at time step $t' < t$.
+In many tasks --- such as sequence classification and segmentation --- the future context of the sequence is also informative.
+However, \ref{eq:back:rnn} defines a \gls{rnn} encoding only past information, i.e.,   $\h_t$ depends only on information at time step $t' < t$.
 To overcome this limitation, \emph{bidirectional} \glspl{rnn} have been proposed~\cite{schuster1997bidirectional}.
-Bidirectional architectures adds a separate recurrent cell which process the sequence in reverse order (from future to past)
+Bidirectional architectures add a separate recurrent cell which processes the sequence in reverse order (from future to past)
 %
 \begin{equation}
     \h'_t = f'\(\x_t, \h'_{t+1}; \W'\) \,,
@@ -312,8 +313,8 @@ The concatenation of the internal states of both past-to-future and future-to-pa
 
 \subsubsection{Long Short-Term Memory}
 
-\Gls{lstm}~\cite{hochreiter1997long} is a type of \gls{rnn} with a special formulation of the recurrent cell that has proved its effectiveness in several sequence-modeling tasks~\cite{graves2013speech,sutskever2014sequence,donahue2015long,vinyals2015show}.
-This particular formulation is aimed at solving some major drawbacks of vanilla \glspl{rnn}, most importantly the inability to encode long-term dependencies in long sequences due to gradient instability problems, namely the problem of vanishing or exploding gradients ~\cite{pascanu2013difficulty}.
+\Gls{lstm}~\cite{hochreiter1997long} is a type of \gls{rnn} with a particular formulation of the recurrent cell that has proved its effectiveness in several sequence-modeling tasks~\cite{graves2013speech,sutskever2014sequence,donahue2015long,vinyals2015show}.
+This specific formulation is aimed at solving some significant drawbacks of vanilla \glspl{rnn}, most importantly the inability to encode long-term dependencies in long sequences due to gradient instability problems, namely the problem of vanishing or exploding gradients ~\cite{pascanu2013difficulty}.
 \Gls{lstm} cells are comprised by four learnable gating functions that better control the evolution of the internal state of the cell when dealing with long sequences, and mitigating problems occurring in vanilla RNNs, such as vanishing gradients~\cite{bayer2015learning}.
 
 Let $\x_t \in \R^n$ an element of a sequence, and $\h_{t-1} \in \R^m$ the current hidden state.
@@ -321,7 +322,7 @@ The \emph{forget} gate $\f_t$ decides which information is to be discarded at th
 \begin{equation*}
     \f_t = \sigma\(\w_f [\h_{t-1} | \x_t] + \b_f\) \,.
 \end{equation*}
-The input gate $\i_t$ encodes the information that need to be inserted in the internal state of the cell $\c_t$, and it is implemented following the same rationale of the previous gate
+The input gate $\i_t$ encodes the information that needs to be inserted in the internal state of the cell $\c_t$, and it is implemented following the same rationale of the previous gate
 \begin{equation*}
     \i_t = \sigma\(\w_i [\h_{t-1} | \x_t] + \b_i\) \,.
 \end{equation*}
@@ -344,7 +345,7 @@ and finally, the output state $\h_t$ is computed as
     \h_t = \o_t * \tanh\(\c_t\) \,.
 \end{equation*}
 %
-With an abuse of notation, the complete \gls{lstm} formulation can be compactly written as follows:
+With abuse of notation, the complete \gls{lstm} formulation can be compactly written as follows:
 
 %\begin{align}\label{eq:back:lstm}
     % \begin{pmatrix} \i_t\\ \f_t \\ \o_t \\ \u_t \end{pmatrix}
@@ -367,7 +368,7 @@ With an abuse of notation, the complete \gls{lstm} formulation can be compactly 
 %
 where $\W \in \R^{(n+m) \times 4p}$ summarizes all the parameters of all the fully-connected layers forming the gates.
 % TODO: [FIG] lstm?
-A depiction of the \gls{lstm} cell is aslo available in \ref{fig:back:lstm}.
+A depiction of the \gls{lstm} cell is also available in \ref{fig:back:lstm}.
 
 \begin{figure}
     \centering
@@ -379,15 +380,15 @@ A depiction of the \gls{lstm} cell is aslo available in \ref{fig:back:lstm}.
 \subsection{Loss Functions}
 \label{subsec:back:loss}
 
-Loss functions are a key component of \gls{ml} methods.
+Loss functions are a vital component of \gls{ml} methods.
 Its role is to quantitatively assign a value of goodness to a model in reference to the particular task we want to solve.
 
-Given a training set $\X = \{\(\x_i, \y^\star_i\),\; i=1,\dots,N\}$ comprised by $N$ couples of inputs and desired outputs, the quality of a particular setting of parameters $\Theta$ is quantitatively defined by a \emph{loss function} $\L\(\X; \Theta\)$ that measures how much predictions and targets differ.
-A loss function is usually defined as one of more terms summed together.
+Given a training set $\X = \{\(\x_i, \y^\star_i\),\; i=1,\dots,N\}$ comprised by $N$ couples of inputs and desired outputs, the quality of a particular configuration of parameters $\Theta$ is quantitatively defined by a \emph{loss function} $\L\(\X; \Theta\)$ that measures how much predictions and targets differ.
+A loss function is usually defined as one or more terms summed together.
 The main term $\L_d\(\X; \Theta\)$ is defined as the average of the individual loss values computed on each sample of the dataset $\L\(\y_i, \y^\star_i\)$ --- we denote it the \emph{data term}.
-A secondary optional term $\L_r(\Theta)$ is often used to regularize the network and depends only on the model parameters $\Theta$ --- we indicate this as \emph{regularization term}.
-Regularization consists of model constraints added to avoid other undesired properties during training such as \emph{overfitting} --- i.e., the tendency of a model to predict well known data while failing to make correct prediction for unseen data.
-Regularization has gained importance in the \gls{dl} field due to the huge amount of parameters models are usually comprised of, thus increasing the risk of overfit on the train data.
+An optional secondary term $\L_r(\Theta)$ is often used to regularize the network and depends only on the model parameters $\Theta$ --- we indicate this as \emph{regularization term}.
+Regularization consists of model constraints added to avoid other undesired properties during training such as \emph{overfitting} --- i.e., the tendency of a model to predict well-known data while failing to make correct predictions for unseen data.
+Regularization has gained importance in the \gls{dl} field due to the huge amount of parameters models are usually comprised of, thus increasing the risk of overfitting on the train data.
 The regularization term is usually multiplied by a hyperparameter $\alpha$ and then added to the loss function.
 A general formulation of the loss function is
 %
@@ -462,7 +463,7 @@ Classification models are often designed to output a $N$-dimensional vector $\z$
 
 \paragraph{Contrastive (or Siamese) Loss}
 The contrastive (or siamese) loss~\cite{bromley1994signature,hadsell2006dimensionality} is employed for learning representations of data suited to be compared with a metric function $d(\cdot, \cdot)$.
-Thus, it is particularly useful for \emph{learning to rank} problems~\cite{burges2005learning,cao2007learning}, in which the objective is to learn representations that need to be matched efficiently for scoring large sets of items e.g., for retrieval and ranking purposes.
+Thus, it is particularly useful for \emph{learning to rank} problems~\cite{burges2005learning,cao2007learning}, in which the objective is to learn representations that need to be matched efficiently for scoring large sets of items, e.g., for retrieval and ranking purposes.
 The single data sample on which this loss is applied is comprised by a pair $(\x_1, \x_2)$ of similar (matching, $\y^\star = 1$) or dissimilar (mismatching, $\y^\star = 0$) items;
 We denote as $f(\x_1)$ and $f(\x_2)$ the representations of the data points forming the pair computed by a neural network $f(\cdot)$, and we indicate with $d(\cdot,\cdot)$ a distance function defined over a couple of real vectors, e.g., the squared Euclidean distance function.
 The constrastive loss is defined as
@@ -473,9 +474,9 @@ where $m$ is a parameters called \emph{margin}.
 % The two terms respectively contribute to penalize matching and non-matching
 The first term is only active in the case of matching pairs ($\y^\star = 1$) and penalizes representations that are far apart and should instead be nearer, i.e., similar pairs having a high value of $d(f(\x_1), f(\x_2))$.
 On the other hand, the second term is only active when a mismatching pair is processed ($\y^\star = 0$) and penalizes representations that are too near to each other and should be taken further apart, i.e., dissimilar items having $d(f(\x_1), f(\x_2)) < m$.
-The margin parameter $m$ defines the minimum value of the distance we want mismatching pairs to be at.
-Back-propagating this loss through the parameters of the network $f(\cdot)$ permits us to steer the network to embed the data into a compact vector space --- thus suitable to efficiently compute distances $d(\cdot, \cdot)$ --- in which similar points lie near each other and dissimilar points are instead far apart (see \ref{fig:back:ranking-loss}).
-When using this loss during training, the computational graph that implement the function $f(\cdot)$ and compute the two representations for the input couple is often organized into two identical branches with shared weights, thus the term ``siamese''.
+The margin parameter $m$ defines the minimum value of the distance at which we want mismatching pairs to be.
+Back-propagating this loss through the parameters of the network $f(\cdot)$ permits us to steer the network to embed the data into a compact vector space --- thus suitable to efficiently compute distances $d(\cdot, \cdot)$ --- in which similar points lie near each other, and dissimilar points are instead far apart (see \ref{fig:back:ranking-loss}).
+When using this loss during training, the computational graph that implements the function $f(\cdot)$ and computes the two representations for the input couple is often organized into two identical branches with shared weights, thus the term ``siamese''.
 A depiction of the siamese architecture is reported in \ref{fig:back:siamese}.
 
 \paragraph{Triplet Loss}
@@ -490,7 +491,7 @@ The common triplet architecture is depicted in \ref{fig:back:triplet}.
 
 
 \paragraph{$\mathbf{L_p}$ Weight Decay}
-The most used regulatization terms in the \gls{dl} literature are the ones penalizing the parameters having large norm.
+The most used regularization terms in the \gls{dl} literature are the ones penalizing the parameters having a large norm.
 This is usually implemented defining the regularization term $\L_r\(\Theta\)$ added to the loss to be minimized as the $p$-norm of the parameters.
 Practical definitions have been adopted for $p=2$ ($\mathbf{L_2}$ weight decay) and for $p=1$ ($\mathbf{L_1}$ weight decay).
 The former produces a more uniform utilization of all the available parameters, penalizing under-utilized and over-utilized weights~\cite{ng2004feature}, and is defined as
@@ -511,12 +512,12 @@ The latter instead tends to produce a more sparse weight configuration, i.e., wi
 As already stated, solutions of \ref{eq:back:optim} are the parameter configurations $\Theta$ that minimizes the loss function $\L$ defined over a given training set $\X$.
 Unfortunately, in very rare cases closed-form solutions of \ref{eq:back:optim} are available for practical formulations of \gls{dl} models $f(\cdot)$ due to the non-linear non-convex nature of deep models.
 In the past years, there was reluctance in the \gls{ml} field to work with non-convex models due to the lack of theoretical guarantees on their convergence.
-Nevertheless, recent developments shown that non-convex model --- albeit having less guarantees --- have higher capacity and representational power and thus have a better overall performance~\cite{bengio2007scaling}.
+Nevertheless, recent developments showed that non-convex model --- albeit having fewer guarantees --- have higher capacity and representational power and thus have a better overall performance~\cite{bengio2007scaling}.
 The most common approach to find suboptimal (but valuable) solutions to \ref{eq:back:optim} is using iterative gradient-based optimization.
 
 \paragraph{Gradient Descent}
 In gradient-based optimization, given a training set $\X$ and a parameter configuration $\Theta$, we search for a new solution following the direction of the gradient of the loss function $\nabla\L\(\X, \Theta\)$ with respect to the parameters $\Theta$.
-The direction given by $\nabla\L\(\X, \Theta\)$ is the one of maximum steepness of the loss surface in the parameter space, that is, the one that maximize the loss change locally.
+The direction given by $\nabla\L\(\X, \Theta\)$ is the one of maximum steepness of the loss surface in the parameter space, that is, the one that maximizes the loss change locally.
 A new parameter configuration $\Theta^\star$ is chosen \emph{descending} the loss surface along the direction of maximum steepness with a step size of $\lambda$, that is
 %
 \begin{equation} \label{eq:back:gradient-descent}
@@ -533,14 +534,14 @@ This procedure is called \emph{gradient descent} optimization, and in the \gls{m
 \end{figure}
 A depiction of this algorithm for a 2D toy example is reported in \ref{fig:back:gradient-descent}.
 Bigger learning rates correspond to bigger steps along the loss surface that usually improve the convergence rate and avoid local minima at the cost of a higher risk of oscillating around minimum points.
-Small learning rates, instead, bring a lower convergence rate but are able to better exploit the local topology of the loss function, reaching a locally better solution.
+Small learning rates, instead, bring a lower convergence rate but can better exploit the local topology of the loss function, reaching a locally better solution.
 
 \paragraph{Back-propagation}
-As formalized in \ref{eq:back:deepnet}, \glspl{dnn} are comprised by many composition of non-linear functions $f_i$ each having its own set of parameters $\theta_i$.
+As formalized in \ref{eq:back:deepnet}, \glspl{dnn} are comprised of a composition of non-linear functions $f_i$ each having its own set of parameters $\theta_i$.
 Thus, to perform gradient descent on \gls{dl} models, we need to compute gradients $\nabla\L\(\X, \theta_i\)$ for each $\theta_i \in \Theta$.
 This is efficiently done by \emph{back-propagation}~\cite{rumelhart1986learning,lecun1988theoretical}.
 
-In back-propagation, we start computing the gradient of the loss function from the last layer (the one that produce the final predictions), and we propagate the error backwards to previous layers using the chain-rule for computing derivatives of compound functions.
+In back-propagation, we start computing the gradient of the loss function from the last layer (the one that produces the final predictions), and we propagate the error backward to previous layers using the chain-rule for computing derivatives of compound functions.
 For simplicity, we report the formulation of back-propagation for a \acrfull{ffnn}, but this mechanism is general and applies to all differentiable architectures.
 Let $f(\x;\Theta)$ a \gls{ffnn} composed by $L$ layers with parameters $\Theta = \{\theta_1, \dots, \theta_L\}$ defined in \ref{eq:back:deepnet}, and let $\o_i$ the output of the $i$-th layer
 \begin{equation}
@@ -558,15 +559,15 @@ The gradient $\frac{\partial \L}{\partial \theta_i}$ of the loss function $\L$ w
 \end{equation}
 %
 where the partial derivatives $\frac{\partial \o_{i+1}}{\partial \o_i}$ and $\frac{\partial \o_i}{\partial \theta_i}$ are well defined and depend on the implementation of the $i$-th layer $f_i$.
-The formulations of the loss function $\L$ and intermediate layers $f_i$ are chosen to be differentiable to ensure that also the entire model --- being a composition of differentiable functions --- is in turn differentiable, and that back-propagation can be applied to efficiently compute gradients.
+The formulations of the loss function $\L$ and intermediate layers $f_i$ are chosen to be differentiable to ensure that also the entire model --- being a composition of differentiable functions --- is, in turn, differentiable, and that back-propagation can be applied to efficiently compute gradients.
 
 
 \paragraph{Stochastic Gradient Descent}
 In our presentation of gradient-based optimization so far, the computation of the loss function $\L\(\X; \Theta\)$ and its gradient depend on the whole dataset $\X$.
-This may be limiting for \gls{dl} applications where very large training sets are needed to train models, thus increasing the computational cost needed to compute the exact value of $\L\(\X; \Theta\)$.
+This may be limiting for \gls{dl} applications where huge training sets are needed to train models, thus increasing the computational cost required to compute the exact value of $\L\(\X; \Theta\)$.
 To overcome this problem, \gls{sgd} and in particular mini-batch \gls{sgd}~\cite{rumelhart1986learning} have been proposed to compute an estimate the loss function and its gradients at a lower computational cost.
 
-In mini-batch \gls{sgd}, we use a small random sample of the entire training set $ \tilde{\X} = \{ (\tilde{\x_i}, \tilde{\y_i}), i = 1 \dots B \} \subset \X$ (called \emph{batch} or \emph{mini-batch}) to compute an estimate of loss function
+In mini-batch \gls{sgd}, we use a small random sample of the entire training set $\tilde{\X} = \{ (\tilde{\x_i}, \tilde{\y_i}), i = 1 \dots B \} \subset \X$ (called \emph{batch} or \emph{mini-batch}) to compute an estimate of loss function
 \begin{equation} \label{eq:back:minibatch-sgd}
 \tilde{\L} \(\X; \Theta\) = \L (\tilde{\X}; \Theta) = \frac{1}{B} \sum_{i=1}^B \L(f(\tilde{\x_i}; \Theta), \tilde{\y_i}) \,,
 \end{equation}
@@ -619,19 +620,19 @@ Finally, moments estimates are used to formulate the \gls{adam} update rule
 \theta^{(k+1)}_i &= \theta^{(k)}_i - \frac{\lambda}{\sqrt{\hat{\v}^{(k)}_i} + \epsilon} \m^{(k)}_i \qquad \forall \theta_i \in \Theta \,,
 \end{equation}
 %
-where $\m^{(k)}_i$ and $\hat{\v}^{(k)}_i$ are the first and second moments estimates of the gradients corresponding to parameter $\theta_i$, and $\epsilon$ is a small values to prevent division by zero.
+where $\m^{(k)}_i$ and $\hat{\v}^{(k)}_i$ are the first and second moments estimates of the gradients corresponding to parameter $\theta_i$, and $\epsilon$ is a small value to prevent division by zero.
 Commonly used values for hyperparameters are $\beta_1 = 0.9$, $\beta_2 = 0.999$, and $\epsilon = 10^{-8}$, as suggested by the authors.
 
 
 % TODO move dropout?
 \paragraph{Dropout}
 Regularization is not limited to regularization loss terms only.
-\emph{Dropout}~\cite{hinton2012improving} is a common regularization technique for \glspl{dnn} which consists in deactivatating (drop) some neurons of an internal layer (by setting their activations to zero) during the training phase and thus enabling the back-propagation of the error only in the survived neurons.
+\emph{Dropout}~\cite{hinton2012improving} is a common regularization technique for \glspl{dnn} which consists in deactivatiting (drop) some neurons of an internal layer (by setting their activations to zero) during the training phase and thus enabling the back-propagation of the error only in the survived neurons.
 The choice of the neurons to deactivate is random: each neuron on which dropout is applied has a given probability $p$ to survive.
 The employment of this technique usually increases the number of training iterations needed to a model to converge, because only the subset of weights of the survived neuron are updated in an optimization step.
-However, training a random subset of neurons at each iteration reduces the co-adaptation of neurons, which tend to learn a more diversified and independent configurations of weights.
-This results in a increased ability of bigger models to exploit their capacity and limit overfit.
-At test time, all neurons are used, virtually exploiting and combining the predictions of many independently trained models.
+However, training a random subset of neurons at each iteration reduces the co-adaptation of neurons, which tend to learn more diversified and independent configurations of weights.
+This results in an increased ability of bigger models to exploit their capacity and limit overfit.
+At test time, all neurons are used, virtually utilizing and combining the predictions of many independently trained models.
 The activations of the layers trained with dropout are scaled by $p$ to approximate the combined prediction produced by the virtual ensemble of sub-networks.
 
 
@@ -641,13 +642,10 @@ The activations of the layers trained with dropout are scaled by $p$ to approxim
 % TODO intro to img classification, examples and applications
 % Examples (simple classif., sentiment analysis, etc.)
 % Classifying images is super cool bla bla
-In this section, we formally define the problem of image classification, and we analyze and review recent solutions based on \acrlong{dl} --- in particular Deep \acrlongpl{cnn} --- proposed in the literature.
-
-% TODO sentence dropped here at random
-In the case of image classification, the data on which classifiers must rely on is raw pixel data, usually organized in a tensor with shape $(H, W, C)$, respectively representing the height, the width, and the number of channels of the image.
+In this section, we formally define the problem of image classification, and we analyze and review recent solutions based on \acrlong{dl} --- in particular, Deep \acrlongpl{cnn} --- proposed in the literature.
 
 Many real-world problems in image understanding, such as object and face recognition, anomaly detection, and ..., can be formalized as classification problems.
-For this reason, classification methods for images have received an increasing attention in the last decade.
+For this reason, classification methods for images have received increasing attention in the last decade.
 
 \subsection{Problem Setting}
 \label{subsec:back:classification}
@@ -664,6 +662,9 @@ In this case, an image $\x$ is mapped into its posterior probability $p_i = p(\y
 Thus, the classifier is a function $f: I \to \p$ which maps an image to the parameters $\p = (p_1, \ldots, p_L), \sum_{i=1}^L p_i = 1$ of a categorical distribution defined over the label space.
 Soft assignments present a broad range of advantages with respect to hard assignments, the most important one being differentiability, which enables and facilitates gradient-based learning of models for $f$.
 
+% TODO sentence dropped here at random
+In the case of image classification, the data on which classifiers must rely on is raw pixel data, usually organized in a tensor with shape $(H, W, C)$, respectively representing the height, the width, and the number of channels of the image.
+
 % TODO expand image classification problem setting?
 
 \subsection{Evaluation}
@@ -673,7 +674,7 @@ In this section, we will report the most commonly used evaluation metrics to mea
 Assume $\Y = (y_1, \ldots, y_n)$ is a set of predictions and $\tilde{\Y} = (\tilde{y}_1, \ldots, \tilde{y}_n)$ the set of the ground-truth labels for a single-label $L$-way classification problem, with $y_i, \tilde{y}_i \in \{1, \ldots, L\}$. % for $i \in \{1, \ldots, N\}$.
 
 \paragraph{Confusion Matrix}
-One of the fundamental tools for evaluating a set of label assignments is the \emph{confusion matrix} $C = \{c_{ij}\}$, which compactly reports the co-occurence of predicted and ground-truth labels.
+One of the fundamental tools for evaluating a set of label assignments is the \emph{confusion matrix} $C = \{c_{ij}\}$, which compactly reports the co-occurrence of predicted and ground-truth labels.
 The element $c_{ij}$ of the matrix indicates the number of times the model predicted the class $i$ for a sample belonging to class $j$.
 We report in \ref{tab:back:confusion} the confusion matrix for the binary case ($L=2$) together with the terminology used to refer to particular values in the matrix.
 For the binary case, many useful metrics can be computed from the confusion matrix, and we will introduce some of them in the next paragraphs.
@@ -698,7 +699,7 @@ metrics can be computed considering each class as the positive one and then aggr
 \end{table}
 
 % Accuracy
-\paragraph{Accuracy} The accuracy of a classification is defined for the binary case as
+\paragraph{Accuracy} The classification accuracy is defined for the binary case as
 \begin{equation} \label{eq:back:accuracy-binary}
     \text{Accuracy} = \frac{\text{TP} + \text{TN}}{\text{P} + \text{N}} = \frac{\text{TP} + \text{TN}}{\text{TP} + \text{FN} + \text{TN} + \text{FP}} \,,
 \end{equation}
@@ -710,7 +711,7 @@ For the general case with more than two classes, the accuracy is given by the su
 
 % Top-K Accuracy
 \paragraph{Top-$K$ Accuracy}
-A common variant of the accuracy often used for probabilistic classifiers when many classes are considered, is the \emph{Top-$K$ Accuracy}.
+A common variant of the accuracy, often used for probabilistic classifiers when many classes are considered, is the \emph{Top-$K$ Accuracy}.
 Given the $L$ probabilities (or scores) assigned to a sample by a probabilistic classifier, we consider the prediction correct if the ground-truth class appears in the first $K$ highest scored classes.
 The metric then is computed as the fraction of correct predictions.
 
@@ -733,7 +734,7 @@ Similarly, the \gls{tnr} represent the same concept applied to the negative clas
 
 % FNR FPR
 \paragraph{\acrshort{fnr} and \acrshort{fpr}}
-While \gls{tpr} and \gls{tnr} measure how well a classifier perform on both classes, the \gls{fnr} and \gls{fpr} are complementary measures that indicate instead the faction of classification errors.
+While \gls{tpr} and \gls{tnr} measure how well a classifier performs on both classes, the \gls{fnr} and \gls{fpr} are complementary measures that indicate the faction of classification errors instead.
 Specifically, the \gls{fnr} is defined as the fraction of positive examples wrongly classified as negatives, and it is complementary to the \gls{tpr}
 \begin{equation} \label{eq:back:fnr}
     \text{FNR} = \frac{\text{FN}}{\text{P}} = \frac{\text{FN}}{\text{TP} + \text{FN}} = 1 - \text{TPR}\,.
@@ -749,9 +750,9 @@ A common way to do so is to use an acceptance threshold, and depending on the ch
 A useful tool to evaluate the performance of the classifier in relation to the threshold is the \gls{roc} plot~\cite{fawcett2006introduction}.
 Each point on a \gls{roc} plot represents the performance of the classifier for a given threshold $T$, and has as coordinates the \gls{fpr}$(T)$ (on the x-axis) and the \gls{tpr}$(T)$ (on y-axis) obtained by using $T$.
 An optimal classifier lies on the top-left point $(0,1)$, while a random-chance classifier lies on the $TPR = FPR$ line.
-A \gls{roc} curve for a given classifier is comprised by all the points obtained by varying the threshold.
-The curve starts from $(0,0)$ --- that correspond to having the most stringent threshold, thus a trivial rejector classifier --- and ends in $(1,1)$ --- corresponding to the most permissive threshold that results in a trivial acceptor.
-\Gls{roc} curves enables a visual comparison of classifiers, since curves lying closer to the optimal $(0,1)$ point are considered better classifiers independently from the particular threshold chosen.
+A \gls{roc} curve for a given classifier is comprised of all the points obtained by varying the threshold.
+The curve starts from $(0,0)$ --- that corresponds to having the most stringent threshold, thus a trivial rejector classifier --- and ends in $(1,1)$ --- corresponding to the most permissive threshold that results in a trivial acceptor.
+\Gls{roc} curves enable a visual comparison of classifiers since curves lying closer to the optimal $(0,1)$ point are considered better classifiers independently from the particular threshold chosen.
 To quantitatively compare classifiers on the \gls{roc} plane, the \gls{auc} is often computed as a unique threshold-independent metric;
 the higher the \gls{roc} curve, the closer the \gls{auc} is to $1$ (see \ref{fig:back:roc}).
 
@@ -768,15 +769,15 @@ This is the accuracy obtained by choosing the threshold yielding an equal error 
 \begin{equation} \label{eq:back:eer-accuracy}
     \text{EER\ Accuracy} = \text{Acc}(T) \quad | \quad \text{FPR}(T) = \text{FNR}(T) \,,
 \end{equation}
-where $\text{Acc}(T)$, $\text{FPR}(T)$, and $\text{FNR}(T)$ indicates respectively the accuracy, the \gls{fpr}, and the \gls{fnr} obtained using $T$ as threshold.
-On the \gls{roc} plot, this threshold setting corresponds to the point where the classifier curve intersect the second diagonal of the unit square, i.e., the $\text{TPR} = 1 - \text{FPR}$ line, which is equivalent to $\text{FPR} = \text{FNR}$ by substituting \ref{eq:back:fnr} in \ref{eq:back:eer-accuracy}.
+where $\text{Acc}(T)$, $\text{FPR}(T)$, and $\text{FNR}(T)$ respectively indicate the accuracy, the \gls{fpr}, and the \gls{fnr} obtained using $T$ as threshold.
+On the \gls{roc} plot, this threshold setting corresponds to the point where the classifier curve intersects the second diagonal of the unit square, i.e., the $\text{TPR} = 1 - \text{FPR}$ line, which is equivalent to $\text{FPR} = \text{FNR}$ by substituting \ref{eq:back:fnr} in \ref{eq:back:eer-accuracy}.
 
 \subsection{Relevant works}
 \label{subsec:back:classif-relwork}
 
 \paragraph{Before \acrlong{dl}}
 % TODO divide f in features and classifier, manually (?)
-Traditional approaches to image classification required to manually design the classifier $f(\cdot)$.
+Traditional approaches to image classification required to design the classifier $f(\cdot)$ manually.
 % ESWA: The traditional approaches to the classification problem use ad-hoc functions to extract from an image specific features that are considered to be indicative of certain objects.
 In particular, hand-crafted features detectors and descriptors --- such as \acrshort{sift}~\cite{lowe2004distinctive}, \acrshort{surf}~\cite{bay2006surf}, \acrshort{orb}~\cite{rublee2011orb}, \acrshort{mser}~\cite{matas2004robust}, KAZE~\cite{alcantarilla2012kaze} to cite some --- were employed to extract information from the image considered indicative for the presence of certain objects.
 For example, the presence of features like hard corners and straight edges might indicate man-made objects in the image~\cite{piccinini2012real}.
@@ -784,11 +785,11 @@ Shallow classifiers based on \gls{ml} methods --- such as logistic regressors~\c
 
 % ESWA: it is hard to think of general, robust, reliable features, which map to specific object types; - it is a huge task to find the right combination; - of features for every type of object to classify; - it is difficult to design functions that are robust to translations, rotations and scaling of objects in the image
 % ESWA: All these problems make developing high accuracy object detectors and classifiers for a broad range of objects very hard.
-However, manually engineered solutions are feasible for very specific problems --- such as image stitching~\cite{brown2007automatic} and 3d reconstruction~\cite{schonberger2016structure} --- where the conditions are well known and modelled.
+However, manually engineered solutions are feasible for very specific problems --- such as image stitching~\cite{brown2007automatic} and 3d reconstruction~\cite{schonberger2016structure} --- where the conditions are well known and modeled.
 In general, thinking of features that are invariant to transformations, reliable for many types of objects, and robust to noise and other exogenous factors is often very difficult and time-consuming.
 % ESWA: it is often very complex to develop robust and reliable feature detectors and descriptors by hand.
 % TODO better definition of VSA
-As an example, consider the problem of visual sentiment analysis (further discussed in \ref{ch:cross-media}), which, in a nutshell, consists in detecting the emotions conveyed by images.
+As an example, consider the problem of visual sentiment analysis (further discussed in \ref{ch:cross-media}), which, in a nutshell, consists of detecting the emotions conveyed by images.
 Manually defining a good set of features to extract from images to solve this task is a cumbersome process and usually leads to suboptimal solutions.
 
 \paragraph{ImageNet Challenge and the Deep Learning era}
@@ -817,27 +818,27 @@ Manually defining a good set of features to extract from images to solve this ta
 \end{table}
 
 % ESWA: The Deep Learning approach, on the other hand, exploits a large number of ground-truth labeled data to discover which features and combinations of features are most discriminative for each class of objects to be recognized, and builds a combined feature extraction and classification model.
-On the other hand, \acrlong{dl} approaches rely on large amount of labeled data to automatically discover which features and combination of them are important for the task.
+On the other hand, \acrlong{dl} approaches rely on a large amount of labeled data to automatically discover which features and combination of them are relevant for the task.
 The main advantage of this kind of approach is its general applicability even to large-scale scenarios where thousands of different classes of images have to be recognized.
-Recent results in the \gls{ilsvrc} are a striking evidence of the success of \gls{dl} methods in image classification.
+Recent results in the \gls{ilsvrc} are striking evidence of the success of \gls{dl} methods in image classification.
 \gls{ilsvrc} is an annual challenge in which competitors are asked to recognize generic objects in images and classify them accordingly choosing from a vast label space (in the order of 1,000 labels).
 Before \gls{dl} methods were applied in this competition, leading solutions were based on combinations and aggregation of hand-made local features~\cite{harada2012graphical,akata2014good,sanchez2011high,mensink2012metric}.
-Interestingly, in the edition of the challenge occurred in 2012, a \gls{dl} method based on \acrlongpl{cnn}~\cite{krizhevsky2012imagenet} outperformed non-\gls{dl} solutions by a large margin ($16.4 \%$ top-5 error vs $26.2 \%$ of the second place, see \ref{tab:ilsvrc12-results}), marking the beginning of the \gls{dl}-era in the computer vision field.
+Interestingly, in the edition of the challenge occurred in 2012, a \gls{dl} method based on \acrlongpl{cnn}~\cite{krizhevsky2012imagenet} outperformed non-\gls{dl} solutions by a large margin ($16.4 \%$ top-5 error vs.\ $26.2 \%$ of the second place, see \ref{tab:ilsvrc12-results}), marking the beginning of the \gls{dl}-era in the computer vision field.
 Since then, we experienced an exponential growth of interest by research communities in \gls{dl} technologies.
 While the theories and concepts behind \gls{dl} approaches --- such as artificial neural networks and \acrlong{ml} --- were already studied and formalized in the past~\cite{rosenblatt1958perceptron,rumelhart1985learning,lecun1989backpropagation,widrow199030}, in the last years, the combination of different factors has allowed \acrlong{dl} to flourish.
-Most importantly, huge amounts of data --- collected and labeled exploiting Web technologies and crowd-sourcing --- provided the supervision needed by very deep models having millions of parameters to properly train, and modern hardware and accelerators --- such as \glspl{gpu} --- provided the computing power needed to speed up training and evaluation procedures.
+Most importantly, vast amounts of data --- collected and labeled exploiting Web technologies and crowd-sourcing --- provided the supervision needed by very deep models having millions of parameters to properly train, and modern hardware and accelerators --- such as \glspl{gpu} --- provided the computing power needed to speed up training and evaluation procedures.
 
 %ILSVRC winners (Hybrid, VGG, Inception, Residual, ResNeXT, SENets?)
 \paragraph{AlexNet}
 % Krizhevsky et al., 2012
-We start our review of relevant work in image classification right from the method that won the \gls{ilsvrc}'12 challenge, that is the \gls{dcnn} proposed by~\citet{krizhevsky2012imagenet}, also knwon as \emph{AlexNet}.
-Inspired by previous work on handwritten digits recognition~\cite{lecun1989backpropagation}, the AlexNet model is composed by a deep convolutional neural network that maps directly RGB data to labels without relying on explicit feature engineering.
-It is comprised by 5 convolutional layers with \gls{relu} activation, the first three of them interleaved with overlapping max-pooling operations to reduce the resolution of intermediate feature maps and \gls{lrn} that normalizes activations with respect to their spatial neighbors.
-This first part of the network is responsible to learn and extract good features, and it is followed by a classification sub-network consisted of three fully-connected layers with a final softmax transformation that maps the outputs to probabilities in the label space.
+We start our review of relevant work in image classification right from the method that won the \gls{ilsvrc}'12 challenge, that is the \gls{dcnn} proposed by~\citet{krizhevsky2012imagenet}, also known as \emph{AlexNet}.
+Inspired by previous work on handwritten digits recognition~\cite{lecun1989backpropagation}, the AlexNet model is composed of a deep convolutional neural network that maps directly RGB data to labels without relying on explicit feature engineering.
+It is comprised of 5 convolutional layers with \gls{relu} activation, the first three of them interleaved with overlapping max-pooling operations to reduce the resolution of intermediate feature maps and \gls{lrn} that normalizes activations with respect to their spatial neighbors.
+This first part of the network is responsible for learning and extracting good features, and it is followed by a classification sub-network consisted of three fully-connected layers with a final softmax transformation that maps the outputs to probabilities in the label space.
 The whole network --- both the feature extractor and the classifier --- has roughly 60 million parameters and 650,000 neurons, and it is trained end-to-end;
 it took initially two weeks on two GPUs to the authors to train the model with the 1.2 million images provided by the \gls{ilsvrc}'12 train set.
 More details about the architecture are reported in \ref{fig:back:cnn-architectures}.
-Another key ingredient of the success of this architecture is the application of \emph{dropout}~\cite{hinton2012improving} to fully-connected layers, which permitted to the authors to drastically reduce overfitting.
+Another key ingredient of the success of this architecture is the application of \emph{dropout}~\cite{hinton2012improving} to fully-connected layers, which permitted the authors to drastically reduce overfitting.
 AlexNet won the \gls{ilsvrc}'12 competition with roughly a 10\% gap in error from the second place competitor.
 This amazing results provided a springboard for the research community for a new way to to do image classification and more in general to learn high-quality features for images.
 In the following years, many other researchers developed \glspl{cnn} for image classification or similar vision tasks, reaching always smaller error rates on important challenges such \gls{ilsvrc}.
@@ -851,11 +852,11 @@ In the following years, many other researchers developed \glspl{cnn} for image c
 \end{figure}
 
 \paragraph{ZFNet} Despite \glspl{cnn} being remarkably good in solving vision task,
-trained feature detectors in deep models tend to be difficult comprehend and explain.
+trained feature detectors in deep models tend to be difficult to comprehend and explain.
 %it is common to treat them as black boxes without having a clear understanding of its internals.
 To alleviate this problem, \citet{zeiler2014visualizing} proposed a visualization technique based on deconvolutions to shed light on the representations learned by intermediate convolutional layers.
-\ref{fig:back:filter-visualization} shows an example of the proposed approach applied on a trained model.
-The usage of these visualizations lead the authors to debug the AlexNet architecture and to propose a new one, informally called \emph{ZFNet} in the research community, which incorporates some modifications, namely the reduction of the size and stride of the filters of the first layer, that enables the model to learn a more balanced set of feature extractors.
+\ref{fig:back:filter-visualization} shows an example of the proposed approach applied to a trained model.
+The usage of these visualizations lead the authors to debug the AlexNet architecture and to suggest a new one, informally called \emph{ZFNet} in the research community, which incorporates some modifications, namely the reduction of the size and stride of the filters of the first layer, that enables the model to learn a more balanced set of feature extractors.
 This improved architectures won the \gls{ilsvrc}'13 classification task with a $11.7 \%$ top-5 error.
 
 \begin{figure}
@@ -866,22 +867,22 @@ This improved architectures won the \gls{ilsvrc}'13 classification task with a $
     \label{fig:back:filter-visualization}
 \end{figure}
 
-\paragraph{OverFeat} \citet{sermanet2013overfeat} proposed \emph{OverFeat}, a modification of the AlexNet architecture optimized also for object localization and detection in images, where the model is asked to predict also the bounding boxes of the object of interest.
-The authors proposed two different architectures: a \emph{fast} model having the same architecture of AlexNet with different parameters, i.e., a smaller stride in the first convolutional layers and non-overlapping max-pool operations, and a \emph{accurate} model counting an additional convolution layer, a higher number of output features and smaller strides.
+\paragraph{OverFeat} \citet{sermanet2013overfeat} proposed \emph{OverFeat}, a modification of the AlexNet architecture optimized for object localization and detection in images, where the model is asked to predict also the bounding boxes of the object of interest.
+The authors proposed two different architectures: a \emph{fast} model having the same architecture of AlexNet with different parameters, i.e., a smaller stride in the first convolutional layers and non-overlapping max-pool operations, and an \emph{accurate} model counting an additional convolution layer, a higher number of output features and smaller strides.
 
 \paragraph{VGG Net} % Simonyan & Zisserman, 2014
 \citet{simonyan2014very} of the \gls{vgg} of Oxford University studied the effects of the depth of convolutional networks for large-scale image classification.
 Employing small 3$\times$3 kernels for convolutions allowed them to stack more layers while keeping roughly the same amount of parameters.
-They proposed deeper architectures comprised by up to 19 learnable layers and demonstrated that the increased depth of \glspl{cnn} is beneficial for the classification accuracy.
-Their best-performing network composed by 19 layers achieved the second place in the \gls{ilsvrc}'14 classification task with $7.3 \%$ a top-5 error.
+They proposed deeper architectures comprised of up to 19 learnable layers and demonstrated that the increased depth of \glspl{cnn} is beneficial for the classification accuracy.
+Their best-performing network composed of 19 layers achieved the second place in the \gls{ilsvrc}'14 classification task with $7.3 \%$ a top-5 error.
 In this work, we will refer to the best-performing architectures, namely the 16-layer and 19-layer ones, respectively as \gls{vgg}-16 and \gls{vgg}-19.
 
 % Girshick et al., 2014
 \paragraph{Inception}
-While increasing the depth of networks continued to increase the performance, the major drawbacks of deeper models were the larger model size --- that makes the network more prone to overfitting --- and an increased computational budget.
+While increasing the depth of networks continued to improve the performance, the major drawbacks of deeper models were the larger model size --- that makes the network more prone to overfitting --- and an increased computational budget.
 \citet{szegedy2015going} proposed to improve the efficiency of the network employing a novel architectural block called \emph{Inception module}.
 To better utilize the capacity of the model, this module extracts multiple-scale features by applying different-sized convolutions ``in parallel'' to the input feature maps and concatenating them.
-Moreover, 1x1 convolutions and max-pooling operations are used as a way to reduce --- both in terms of number of feature maps and spatial resolution --- the inputs of costly operations, such as the bigger 5x5 convolutions.
+Moreover, 1x1 convolutions and max-pooling operations are used as a way to reduce --- both in terms of the number of feature maps and spatial resolution --- the inputs of costly operations, such as the bigger 5x5 convolutions.
 The usage of this module permitted to increase both the width and the depth of networks without adding a substantial computational overhead.
 The first network architecture leveraging Inception modules proposed by the authors, called GoogLeNet, is composed by 19 learnable layers, but it has 12 times fewer parameters with respect to AlexNet while being significantly more accurate, as demonstrated by its first place in the \gls{ilsvrc}'14 classification leaderboard.
 
@@ -889,10 +890,10 @@ The first network architecture leveraging Inception modules proposed by the auth
 
 \paragraph{Residual Networks}
 Despite having more capacity, deeper models are more prone to optimization problems.
-Due to the inability to fully exploit the parameters of additional layers, the possibility to arbitrarily increase the capacity of the model to solve more complex problems is often limited, and after a certain number of layers the performance of the model start decreasing instead of remaining constant.
+Due to the inability to fully exploit the parameters of additional layers, the possibility to arbitrarily increase the capacity of the model to solve more complex problems is often limited, and after a certain number of layers, the performance of the model start decreasing instead of remaining constant.
 \citet{he2016deep} strongly alleviated this problem by introducing \emph{residual learning} of deep models.
-Instead of modelling directly the mapping $g$ between input $\x$ and output $\y = g(\x, \w)$ performed by a layer, the authors proposed to model and learn the residual mapping between input and output, i.e., $\y = \x + g(\x, \w)$.
-In this settings, it is easier for a layer to model the identity transformation simply pushing its weights $\w$ toward zero.
+Instead of modeling directly the mapping $g$ between input $\x$ and output $\y = g(\x, \w)$ performed by a layer, the authors proposed to model and learn the residual mapping between input and output, i.e., $\y = \x + g(\x, \w)$.
+In this settings, it is easier for a layer to model the identity transformation merely pushing its weights $\w$ toward zero.
 Thus, additional layers may not introduce unstable transformations that limit the exploitation of the capacity of the network.
 Residual learning can be easily implemented in \gls{dcnn} by adding skip-connections in its computational graph;
 this kind of architectures are called \glspl{resnet}.
@@ -900,7 +901,7 @@ The authors proposed multiple \glspl{resnet} with an increasing number of layers
 Due to its increased depth, the number of filters of convolution layers can be reduced, requiring a low computational budget.
 \gls{resnet}-152 --- their best-performing 152-layer model --- won the \gls{ilsvrc}'15 classification task with a top-5 error of $3.57 \%$, while having a computation cost of roughly 11 billion FLOPs (still lower than the 19 billion FLOPs of \gls{vgg}-19).
 On smaller datasets, such as CIFAR-10 and CIFAR-100, the authors experimented with up to 1,000-layers networks when overfitting occurred.
-The extended generalization power of deeper representations lead this architectures to win in a number of challenging vision competitions, such as the \gls{ilsvrc} 2015 classification, detection and localization tasks, and the \acrshort{coco} 2015 detection and segmentation tasks.
+The extended generalization power of deeper representations lead these architectures to win in many challenging vision competitions, such as the \gls{ilsvrc} 2015 classification, detection and localization tasks, and the \acrshort{coco} 2015 detection and segmentation tasks.
 
 \paragraph{Beyond \glspl{resnet}}
 Residual learning and \glspl{resnet} represent the last significant breakthrough in \gls{dnn} and feature learning.
@@ -910,9 +911,9 @@ In~\cite{szegedy2017inception}, the authors revisited the Inception module addin
 Similarly, \citet{xie2017aggregated} improved the residual blocks of \glspl{ResNet} by splitting convolutional layers into smaller convolutions applied in parallel, in a similar way the Inception module did;
 the obtained architecture, dubbed ResNeXt, reduces the computational load while keeping the same representative power.
 
-At the time of writing, one of the most recent work improving \glspl{dcnn} for image classification and recognition is \glspl{senet}~\cite{hu2017squeeze}.
+At the time of writing, one of the most recent works improving \glspl{dcnn} for image classification and recognition is \glspl{senet}~\cite{hu2017squeeze}.
 A new architectural block --- called Squeeze-and-Excitation (SE) block --- has been proposed to better model the inter-dependencies between features map in convolutional layers.
-In a nutshell, a SE block is designed as a gating function that weights and recalibrates each input feature map;
+In a nutshell, an SE block is designed as a gating function that weights and recalibrates each input feature map;
 a \emph{squeeze} operation aggregates feature maps in the spatial dimensions, and the following \emph{excitation} operation relies on this information to produce the weights for recalibration via a per-channel sigmoid function;
 feature maps are then multiplied by this set of weights to obtain the recalibrated output.
 With a minimal additional computation cost, this block can be applied to convolutions or set of convolutions in \glspl{cnn} to improve their generalization power.
@@ -961,8 +962,8 @@ in its core, it consists of an off-line indexing stage and an on-line query stag
 % image representation
 In the off-line stage, the image database from which we want to retrieve elements is first transformed to represent semantic concepts present in images in a compact and uniform fashion (\emph{Image Representation}).
 Most of the existing approaches to \gls{cbir} are feature-based;
-starting from raw pixels, the content of an image is encoded in a compact numerical representation, commonly called \emph{feature vector}, on which we rely to assess some kind of similarity between images.
-Image descriptors are then indexed to enable fast and effective retrieval on large scale scenarios (\emph{Image Indexing}), and the output of this phase is an indexed database of feature vectors representing our initial collection.
+starting from raw pixels, the content of an image is encoded in a compact numerical representation, commonly called \emph{feature vector}, on which we rely to assess similarity between images.
+Image descriptors are then indexed to enable fast and effective retrieval on large-scale scenarios (\emph{Image Indexing}), and the output of this phase is an indexed database of feature vectors representing our initial collection.
 
 % query formulation
 In the on-line phase, the user first formulates a query to inject in the system its concept of the content to be retrieved.
@@ -974,21 +975,21 @@ Once the query has been formulated, the system must map it in the feature space 
 This stage is usually strongly coupled with the Image Representation one.
 For the query-by-example paradigm, Image and Query Representation phases are identical and shared in both the on-line and off-line stages, since the image given as query can be transformed and represented the same way as a database image.
 % TODO? [REF] section on cross-modal
-For other paradigms, this step may be arbitrarly complex depending on the query modality;
+For other paradigms, this step may be arbitrarily complex depending on the query modality;
 we refer the interested reader to~\cite{zhou2017recent} for a more detailed discussion on the subject.
 %and we will be discussed later in \ref{subsec:back:cross-modal}.
-The query mapped in the representation space can be finally compared to images in the search collection by means of a scoring function, that produces a rank of images to be shown to the user as results of the retrieval process (\emph{Image Scoring}).
-For scoring large collections, the system leverages the pre-built database index to preform this operation efficiently.
+The query mapped in the representation space can be finally compared to images in the search collection through a scoring function, that produces a rank of images to be shown to the user as results of the retrieval process (\emph{Image Scoring}).
+For scoring large collections, the system leverages the pre-built database index to perform this operation efficiently.
 
-\acrlong{cbir} presents two intrinsic problematics in its structure, that are known in the literature as the \emph{intention gap} and the \emph{semantic gap} \cite{datta2008image}.
+\acrlong{cbir} presents two intrinsic problematics in its structure, known in the literature as the \emph{intention gap} and the \emph{semantic gap} \cite{datta2008image}.
 
 With intention gap, we refer to the difficulty of a user to precisely express the content to be retrieved given the query paradigm provided by the system;
-the \emph{Query Formulation} and \emph{Query Representation} modules are responsible to minimize this gap.
-As an example of intention gap, consider a system adopting the query-by-example paradigm and an image containing a dog in a park as query;
+the \emph{Query Formulation} and \emph{Query Representation} modules are responsible for minimizing this gap.
+As an example of intention gap, consider a system adopting the query-by-example paradigm and an image containing a dog in a park as the query;
 the system does not know whether the user wants to retrieval images containing at least a dog, a dog of that particular breed, or other pictures of the same park.
 
 With semantic gap, we refer to the limitation of the employed content descriptors to represent high-level concepts.
-While descriptors of low-level features --- such as gradient histograms and color histograms --- suffer from this problem, recent work on image representations learnt with \gls{dl} methodologies drastically reduced this gap in retrieval systems~\cite{donahue2014decaf,sharif2014cnn}.
+While descriptors of low-level features --- such as gradient histograms and color histograms --- suffer from this problem, recent work on image representations learned with \gls{dl} methodologies drastically reduced this gap in retrieval systems~\cite{donahue2014decaf,sharif2014cnn}.
 %We will review some of them in the following section.
 
 \subsection{Image Representations}
@@ -996,17 +997,17 @@ In this section, we report a brief review of some of the most important works in
 
 The evolution of image representations developed with \gls{dl} strictly followed the one image classification undergone during the same years.
 This is mainly due to the fact that \acrlong{dl} techniques belong to the set of \emph{representation learning} methods, i.e., methods that internally learn and harness a high-level representation of the data to solve a given problem.
-In the same way \glspl{cnn} learnt good features for classification, image retrieval largely benefit from the ability of \gls{dl} methods to produce specialized representations.
+In the same way \glspl{cnn} learned good features for classification, image retrieval largely benefit from the ability of \gls{dl} methods to produce specialized representations.
 Image representations extracted from activations of deep neural network models are often called \emph{deep features} in the literature.
 
 \paragraph{Transfer Learning}
 %Transfer Learning
-The first approaches to obtain an image representation from \gls{dl}-based solutions leveraged a metodology called \emph{transfer learning}, in which representation are learnt exploiting a different yet similar task.
+The first approaches to obtain an image representation from \gls{dl}-based solutions leveraged a methodology called \emph{transfer learning}, in which representations are learned exploiting a different yet similar task.
 The most common form of transfer learning is to exploit \glspl{cnn} trained on a different task, e.g., large-scale image classification, to obtain a feature extractor to be used in other tasks, such as image representation for image retrieval.
-Due to the huge span of object and variability of large-scale datasets such as ImageNet, representations learnt for classification include many of the desired properties of image representation for retrieval, such as robustness to noise, pose and illumination changes, intra-class variability, just to name a few.
+Due to the vast span of object and variability of large-scale datasets such as ImageNet, representations learned for classification include many of the desired properties of image representation for retrieval, such as robustness to noise, pose and illumination changes, intra-class variability, to name a few.
 
 \paragraph{Deep Features from Fully Connected Layers}
-\citet{sharif2014cnn} evaluated the usage of an internal layer (i.e., \emph{fc7}) of OverFeat model pre-trained on ImageNet as image representations for a variety of visual task such as coarse- and fine-grained image classification, object and scene recognition, attribute detection, and image retrieval.
+\citet{sharif2014cnn} evaluated the usage of an internal layer (i.e., \emph{fc7}) of OverFeat model pre-trained on ImageNet as image representations for a variety of visual tasks such as coarse- and fine-grained image classification, object and scene recognition, attribute detection, and image retrieval.
 The authors found that the off-the-shelf descriptors extracted from the deep network provided a strong baseline on many of the evaluated task using a unique global descriptor, casting a shadow on traditional approaches based on the aggregation of global or local hand-crafted features and expensive spatial verification stages.
 %
 % From Tolias RMAC: In the case of image retrieval, fully connected layers are used as global descriptors followed by dimensionality reduction (\cite{babenko2014neural}).
@@ -1015,17 +1016,17 @@ They also experimented dimensionality reduction schemes --- such as \gls{pca} --
 %
 % From Tolias RMAC: They are also employed as region descriptors to be compared to database descriptors (\cite{radenovic2015multiple}) or aggregated in a VLAD manner (\cite{gong2014multi}).
 Deep features have also been employed to build local descriptions of regions of an image.
-\citet{gong2014multi} extracted multiple feature vectors by feeding mutliple sub-regions of an image in a sliding window manner,  which are then aggregated with \gls{vlad} to obtain a compact descriptor.
+\citet{gong2014multi} extracted multiple feature vectors by feeding multiple sub-regions of an image in a sliding window manner,  which are then aggregated with \gls{vlad} to obtain a compact descriptor.
 
 \paragraph{Deep Features from Convolutional Layers}
 Albeit features extracted from fully connected layers are good candidates for global image representations%
 %that outperformed hand-crafted features
 , in more recent work, the attention has been shifted to features extracted from the activations of convolutional layers of \glspl{dcnn}.
-In fact, feature maps extracted from convolutional layers can be seen as a set of spatially local descriptors, each representing a small part of the image~\cite{liu2015treasure}.
+Feature maps extracted from convolutional layers can be seen as a set of spatially local descriptors, each representing a small part of the image~\cite{liu2015treasure}.
 In the context of particular object (or instance) retrieval, performing spatial max-pooling~\cite{azizpour2015generic,razavian2016visual} of feature maps of the last convolutional layer yields a representation (also known as \gls{mac}) that led to better retrieval performance on multiple datasets.
 Similarly, \citet{babenko2015aggregating} shown that a sum-pool aggregation of the same features increases the performance on whitened data, while \citet{kalantidis2016cross} proposed a non-parametric channel and spatial weighting of feature maps before the pooling operation that boosted the overall performance.
-\citet{tolias2016rmac} proposed \gls{rmac} --- a very efficient extension of the \gls{mac} descriptor which aggregates local information of an image at multiple scale for effective instance-level image retrieval.
-Due to its relevancy to this thesis, we will describe \gls{rmac} in more details in the next paragraph.
+\citet{tolias2016rmac} proposed \gls{rmac} --- a very efficient extension of the \gls{mac} descriptor which aggregates local information of an image at multiple scales for effective instance-level image retrieval.
+Due to its relevance to this thesis, we will describe \gls{rmac} in more details in the next paragraph.
 
 \begin{figure}
     \centering
@@ -1035,16 +1036,16 @@ Due to its relevancy to this thesis, we will describe \gls{rmac} in more details
 \end{figure}
 
 \paragraph{\acrlong{rmac}}
-Let $\x \in \R^{H \times W \times K}$ the output of a convolutional layer of a pre-trained \gls{cnn} comprised by $K$ feature maps with $H \times W$ spatial resolution, and $\x_i$ the $i$-th feature map.
+Let $\x \in \R^{H \times W \times K}$ the output of a convolutional layer of a pre-trained \gls{cnn} comprised of $K$ feature maps with $H \times W$ spatial resolution, and $\x_i$ the $i$-th feature map.
 Given a region $\Reg$ defined over the feature map spatial dimensions, a region descriptor $\f_\Reg$ is obtained by max-pooling along $\Reg$
 \begin{equation} \label{eq:back:rmac-region}
 \f_\Reg = [\f_{\Reg,1}, \ldots, \f_{\Reg,K}] \qquad \f_{\Reg,i} = \max_{p \in \Reg} \x_i(p) \,,
 \end{equation}
 where $\x_i(p)$ indicates the activation at a particular spatial position $p$ of the feature map.
-Region descriptors are extracted using multiple overlapped squared regions at multiple scales, and region are chosen in order to have an overlap nearest to 40\% (see \ref{fig:back:rmac-regions}).
+Region descriptors are extracted using multiple overlapped squared regions at multiple scales, and regions are chosen to have an overlap nearest to 40\% (see \ref{fig:back:rmac-regions}).
 All the region descriptors are $l_2$-normalized, PCA-whitened% FROM Tolias: (Jégou & Chum, 2012)
 , and $l2$-normalized again, and the final \gls{rmac} descriptor is obtained by summing together the post-processed region descriptors and $l2$-normalizing the result.
-The obtained descriptor accurately describe multiple local parts of the image at multiple scale and can be computed very efficiently;
+The obtained descriptor accurately describe multiple local parts of the image at multiple scales and can be computed very efficiently;
 in fact, there is no need to crop, resize, and re-feed the image to obtain a multi-scale local description.
 Two descriptors are matched using the cosine similarity.
 
@@ -1058,13 +1059,13 @@ Two descriptors are matched using the cosine similarity.
 
 \paragraph{Learning Representations for Retrieval}
 Representations obtained by transfer learning and their aggregation demonstrated the potential of features extracted by \glspl{cnn}.
-However, some of the properties of the representations learnt in classification tasks --- such as robustness to intra-class variability --- are undesirable in some retrieval tasks, e.g., instance-level image retrieval.
+However, some of the properties of the representations learned in classification tasks --- such as robustness to intra-class variability --- are undesirable in some retrieval tasks, e.g., instance-level image retrieval.
 Succeeding work further improved the state of the art by learning representations directly suited for the task of image retrieval.
 \citet{arandjelovic2016netvlad} proposed a differentiable generalization of the VLAD aggregation pipeline called NetVLAD which is eligible to be learned in a neural network framework.
 The authors added the NetVLAD module to the last convolutional layer of a pre-trained \gls{dcnn} and fine-tuned the whole pipeline defining a weakly supervised triplet ranking loss.
 Similarly, \citet{radenovic2016cnn} fine-tuned a pre-trained \gls{cnn} extracting MAC representations with a siamese loss.
 The matching and non-matching couples were chosen in an unsupervised way exploiting a large set of unlabelled landmark photos and an automatic 3D reconstruction system based on local features and geometric consistency.
-Of particular interest is the work of \citet{gordo2016deep,gordo2017end}, in which a residual \gls{cnn} equipped with a R-MAC pipeline are fine-tuned with a triplet loss to generate a compact and effective global image descriptor.
+Of particular interest is the work of \citet{gordo2016deep,gordo2017end}, in which a residual \gls{cnn} equipped with an R-MAC pipeline are fine-tuned with a triplet loss to generate a compact and effective global image descriptor.
 Moreover, the authors employed a \gls{rpn} --- a regression model that predicts regions of interest from an image --- to establish the regions aggregated by R-MAC instead of using overlapping grids.
 The obtained representations outperform methods based on local features and spatial verification on multiple datasets on both effectiveness and computational efficiency.
 \ref{fig:back:rmac-trained} depicts the training and deploy pipelines proposed.
@@ -1082,7 +1083,7 @@ Defining a mapping function is often not trivial, and \gls{dl} approaches shine 
 Once the data lie on the same semantic space, we can score and rank items of whichever modality following the same principles applied in the \emph{query-by-example} paradigm.
 % This problem has been attempted in different manners so far, which could be roughly grouped into three main variants, depending on whether the mapping is performed into a common latent space (Section 2.1), a textual space (Section 2.2), or a visual space (Section 2.3).
 The problem of mapping modalities has led to three main research paths that differ for the chosen destination space for the mapping, that is i) common space, ii) textual space, or iii) visual space approaches.
-In the following, we will review some of the recent works on cross-modal retrieval dividing them in this three categories, and we will refer without loss of generality to the case in which we are retrieving images starting from textual queries. %, but the same principles apply to other modalities.
+In the following, we will review some of the recent works on cross-modal retrieval dividing them into these three categories, and we will refer without loss of generality to the case in which we are retrieving images starting from textual queries. %, but the same principles apply to other modalities.
 
 %Textual / visual / common space retrievals
 \paragraph{Common Space Approaches}
@@ -1104,7 +1105,7 @@ the encoders are trained to place coupled inputs in near points in the common sp
 % The training is made on image and label pairs, where the labels are not a full description of the scene, indicating only the presence of certain entities in the image.
 In \cite{frome2013devise}, the authors proposed a \gls{devise} model in which a pre-trained \gls{cnn} (AlexNet) and a pre-trained skip-gram textual embedding model (Word2Vec) are adapted to a common space and jointly fine-tuned on image and label pairs.
 
-Common space approaches allows to retrieve items in both modalities starting from a query in whichever modality, e.g., is it possible to retrieve images by text or texts by image.
+Common space approaches allow to retrieve items in both modalities starting from a query in whichever modality, e.g., is it possible to retrieve images by text or texts by image.
 However, depending on the needs of the retrieval system, a particular modality may be the preferred way to represent your data in the search database, and a common space projection of all the database may not be viable.
 Consider for example an existing textual document search engine which would like to implement image search by keyword without building a separate image retrieval system.
 In this scenarios, mapping a query into an existing space may result in a suitable solution.
@@ -1112,7 +1113,7 @@ In the next paragraphs, we will briefly review relevant works that exploit this 
 
 \paragraph{Search in Textual Space}
 %The BoWDNN method [1] trains a deep neural network to map images directly into a \acrfull{bow} space, where the cosine similarity between BoWs representations is used to generate the ranking.
-In \cite{bai2014bag}, a \acrfull{bow} space representing text is used as target space, and a deep neural network called BowDNN is proposed to map images into \glspl{bow}s representations that are then compared with cosine similarity.
+In \cite{bai2014bag}, a \acrfull{bow} space representing text is used as target space, and a deep neural network called BowDNN is proposed to map images into \gls{bow} representations that are then compared with cosine similarity.
 % Somehow similarly, a dedicated area of related research is focused on generating captions describing the salient information of an image (see, e.g., [22, 11, 44]).
 Many other works focus on mapping images directly to a textual description, i.e., producing a caption of the image describing its salient content~\cite{vinyals2015show,karpathy2015deep,fang2015captions}.
 %The m-RNN method [31] trains a multimodal recurrent neural network to generate a caption description for a given image.
@@ -1130,10 +1131,7 @@ Inspired by \gls{devise}, \citet{norouzi2013zero} proposed the ConSE method, in 
 Methods that maps a textual query in a visual space are less explored and thus object of our investigation in this thesis (see \ref{ch:text2vis}).
 One of the most relevant and recent work in this subfield is Word2VisualVec \cite{dong2018predicting}, in which a deep \gls{mlp} is trained to predict visual features extracted from a pre-trained \gls{cnn} starting from a textual encoding obtained by a combination of Word2Vec representations.
 We argue that this kind of solution is suitable in the cases in which we need to access a large dataset of images for which visual features have already been extracted and indexed, and we want to exploit the same data structures to perform a textual search.
-Being the visual space independent from a particular language, multiple text-to-visual-code models can be trained and deployed to support textual search in multiple languages without the need to replicate data representations.
-
-%Our Text2Vis variants belong to this group where, to the best of our knowledge, the only other proposal up to now is a method dubbed Word2VisualVec [10], which was reported just very recently. There are some fundamental points where their method and ours differ, though. Word2VisualVec takes combinations of Word2Vec-like vectors as a starting point, thus reducing the dimensionality of the input space, whereas we directly take the \acrlong{bow} vector encoding of the textual space as the input (S-Text2Vis), or learn the word embeddings (D-Text2Vis, Section 3.3) during the training process, as we did not observe any improvement in pre-training the textual part. Moreover, Word2VisualVec builds a deep regressor on top of the textual representation that are aggregations of word embeddings, which thus discard word order information. Contrarily, we observed that, when disregarding word order, yet a shallow regressor (S-Text2Vis) produces effective mappings of textual vectors into the visual space. We also observed that taking word order into account helps to improve results (D-Text2Vis and W&D-Text2Vis, Section 3.4). TODO move to chapter
-
+Being the visual space independent from a particular language, multiple text-to-visual-code models can be trained and deployed to support textual search in various languages without the need to replicate data representations.
 
 \subsection{Evaluation Metrics}
 \label{subsec:back:ir-metrics}
@@ -1243,23 +1241,23 @@ The Places205 dataset is composed by roughly 2.5 million images collected from i
 It is a subset of the bigger Places dataset~\cite{zhou2016places}.
 
 \paragraph{PKLot~\cite{de2015pklot}}
-The PKLot dataset is an car parking occupancy detection dataset comprised by 12,417 images of 3 parking lots, named UFPR04, UFPR05, and PUC, took in different days and weather conditions.
+The PKLot dataset is an car parking occupancy detection dataset comprised of 12,417 images of 3 parking lots, named UFPR04, UFPR05, and PUC, took in different days and weather conditions.
 The images have been segmented in 695,899 images of parking spaces by cropping along the rotated rectangles delimiting each parking space and rotating back the cropped patches in vertical or horizontal position.
 Each segmented image is labelled with the vacancy status of the slot, which can be either occupied or vacant.
 
 \paragraph{CNRPark+EXT~\cite{amato2016car,amato2017deep}}
 The CNRPark+EXT dataset is a car parking occupancy detection dataset collected during this thesis from the parking lots of the campus of the National Research Council (CNR) in Pisa.
-It is comprised by roughly 150,000 images of parking spaces taken from 9 smart cameras with different view-points, in different days with different weather and light conditions, and includes occlusion and shadow situations that make the occupancy detection task challenging.
+It is comprised of roughly 150,000 images of parking spaces taken from 9 smart cameras with different view-points, in different days with different weather and light conditions, and includes occlusion and shadow situations that make the occupancy detection task challenging.
 More details about the CNRPark-EXT dataset will
 be given in \ref{ch:miniaturization}.
 
 \paragraph{Twitter Testing Dataset~\cite{you2015robust}}
 The Twitter Testing Dataset is a dataset for image sentiment analysis composed by 1269 images labelled with crowd-sourcing (Amazon Mechanical Turk) following a binary positive/negative sentiment polarity scheme.
-Each image has been annotated as positive or negative by five workers, and three different subsets have been created, respectively comprised by images where 5 workers agree on the sentiment of the image (5-agree, 882 images), where at least 4 workers agree (4-agree, 1,116 images), and where at least 3 workers agree (3-agree, whole set of images).
+Each image has been annotated as positive or negative by five workers, and three different subsets have been created, respectively comprised of images where 5 workers agree on the sentiment of the image (5-agree, 882 images), where at least 4 workers agree (4-agree, 1,116 images), and where at least 3 workers agree (3-agree, whole set of images).
 
 \paragraph{\acrfull{t4sa}~\cite{vadicamo2017cross}}
 The \acrlong{t4sa} dataset is a large-scale weakly-labelled dataset for sentiment analysis collected during this thesis to evaluate the weakly-labelled cross-media training procedure for image classifiers presented in \ref{ch:cross-media}.
-It is comprised by 904,395 tweets and their corresponding 1,473,394 images (each tweet has one or more images);
+It is comprised of 904,395 tweets and their corresponding 1,473,394 images (each tweet has one or more images);
 tweets have been collected from the 5\% random stream of global tweets provided by the Twitter APIs keeping only tweets in english with at least five words and at least one image.
 Each tweet is associated with a three-way sentiment polarity (positive/neutral/negative sentiment) predicted by performing textual sentiment polarity prediction.
 More details are available in \ref{ch:cross-media}.
@@ -1268,13 +1266,13 @@ More details are available in \ref{ch:cross-media}.
 
 \paragraph{INRIA Holidays~\cite{jegou2008hamming}}
 
-The INRIA Holidays image set is an image retrieval dataset comprised by 1491 high-resolution holidays photos containing various scenes types.
+The INRIA Holidays image set is an image retrieval dataset comprised of 1491 high-resolution holidays photos containing various scenes types.
 The authors chose 500 queries and manually selected from the set the images relevant for each query.
 A frequently used variant of this dataset is the one augmented with \emph{MIRFlickr1M}, a distractor set of 1 million images collected by the Flickr service;
 we refer to this new dataset as \emph{Holidays-MIRFlickr1M}.
 
 \paragraph{Oxford Buildings~\cite{philbin2007object}}
-The Oxford Buildings dataset, also known as \emph{Oxford5k}, is an image retrieval dataset comprised by 5,062 images of various buildings present in Oxford.
+The Oxford Buildings dataset, also known as \emph{Oxford5k}, is an image retrieval dataset comprised of 5,062 images of various buildings present in Oxford.
 The set is composed by photos of 11 famous buildings plus distractor images collected from Flickr.
 For each building, five queries are specified with bounding boxes delimiting the building we are interested in retrieving, for a total of 55 query images.
 For each query, images of the search set are assegned with one of the following four labels:
@@ -1294,14 +1292,14 @@ In this work, we will adopt the version of this dataset augmented with a distrac
 \paragraph{\acrfull{coco}~\cite{lin2014microsoft}}
 
 The Microsoft \acrfull{coco} dataset is a collection of images  for large-scale object detection, segmentation, and captioning.
-it is comprised by 2,500,000 labeled object instances belonging to 91 common object categories in 328,000 images.
+it is comprised of 2,500,000 labeled object instances belonging to 91 common object categories in 328,000 images.
 Each image is associated with an instance-level pixel-wise segmentation of the object instances it depicts and five captions describing the whole images.
 This dataset is particularly adopted also in cross-modal retrieval due to its large scale and the presence of captions, and we will use it to compare to existing cross-modal retrieval approaches in \ref{ch:text2vis}.
 
 \subsection{Others}
 
 \paragraph{NIPS Adversarial Attacks and Defences Competition DEV set~\cite{kurakin2018adversarial}}
-The NIPS Adversarial Attacks and Defences Competition DEV set is comprised by 1,000 images that do not belong to the \gls{ilsvrc}'12 subsets but share the same label space, i.e., are labelled with one of the same 1,000 label used in \gls{ilsvrc}.
+The NIPS Adversarial Attacks and Defences Competition DEV set is comprised of 1,000 images that do not belong to the \gls{ilsvrc}'12 subsets but share the same label space, i.e., are labelled with one of the same 1,000 label used in \gls{ilsvrc}.
 This set has been released in the context of the NIPS Adversarial Attacks and Defences Competition on Kaggle to let participants work with pre-trained \gls{ilsvrc} classifiers using images not involved in their training process.
 In particular, the set is devoted to generate adversarial examples for image classifiers, i.e., maliciously manipulated images the lead a classifier to misbehave.
 More details are available in \ref{ch:adversarial} in which we use this set of images to evaluate a detection scheme for adversarial attacks.
