@@ -361,7 +361,7 @@ We computed the kNN score for each image in the \emph{\gls{fgsm} Adversarial}, \
 
 In \ref{tab:adv:eer}, we report the detection accuracy of our proposed approach for different settings. % considering the {pool-5} hidden layer.
 The accuracy of the binary `trustful' / `spurious' classification is evaluated in the \acrfull{eer} setting, that is when we choose a threshold yielding equal false positive and false negative rates.
-% \todo{REV\#1: The features extracted have a rather high dimension. Are there potentially problems (e.g. curse of dimensionality) with KNN? Is that the reason why the PCA-based version performs better?}
+% REV\#1: The features extracted have a rather high dimension. Are there potentially problems (e.g. curse of dimensionality) with KNN? Is that the reason why the PCA-based version performs better?
 The best results were obtained processing the activations of the \emph{pool5} layer using \gls{pca} and Whitening, delivering an aggregated accuracy of roughly 85\% regardless of the adversarial generation method.
 The three scoring approaches considered revealed similar performance with DW-kNN and W-kNN being more effective in detecting L-BFGS and \gls{fgsm}, respectively.
 
@@ -662,7 +662,6 @@ We also showed that the probability density function of our authenticity confide
 %We showed that lower-level activations (such as \emph{pool5} with global average pooling) increase the detection performance with respect to the higher-level ones.
 Moreover, some examples are suggesting that hard adversarial examples are the ones for which actual and target classes are similar or have similar visual patterns. %there are same visual patterns in both classes.
 
-% \todo{Rivedere conclusioni alla luce dei nuovi esperimenti su InceptionV3}
 We also tested our method on the InceptionV3 \gls{dnn}, generating adversarial images from the NIPS 2017 Adversarial Attacks and Defenses Kaggle Competitions.
 Using this dataset, we performed a thorough analysis of the detectability of adversarial exampels when varying the internal layer extracted from the \gls{dnn}.
 Best results were obtained using layer \emph{\textbf{mixed\_6d}} with an overall EER Accuracy of $80\%$, confirming the effectiveness of our approach and its general applicability to deep neural network classifiers.
