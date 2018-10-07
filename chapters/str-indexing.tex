@@ -148,7 +148,7 @@ $ n_i \in \mathbb{N}$                          & Number of elements in the $i$-t
 
 %\subsection{Deep Features}
 %\label{sec:deepfeatures}
-% TODO? check if useful in background chapter
+% XXX check if useful in background chapter
 % Recently, a new class of image descriptor, built upon Convolutional Neural Networks, have been used as an effective alternative to descriptors built using local features such as SIFT, ORB, BRIEF, etc.
 % CNNs have attracted an enormous interest within the Computer Vision community because of the state-of-the-art results achieved in challenging image classification tasks such as the ImageNet Large Scale Visual Recognition Challenge (\url{http://www.image-net.org}).
 % In computer vision, CNNs have been used to perform several tasks, including image classification, as well as image retrieval \cite{donahue2013decaf,babenko2014neural} and object detection \cite{girshick2014rich}, to cite some.
@@ -500,7 +500,7 @@ For instance, if $\v = [0.1, -0.3, -0.4, 0, 0.2]$, the \gls{crelu} applied on $\
 If using the deep permutations approach, the corresponding inverted permutation is $\Pi^{-1}_{\v^+} = [4, 5, 6, 7, 3, 8, 2, 1, 9, 10]$ (ties take random positions) and thus $f_\text{DP}(\v^+) = [6, 5, 4, 3, 7, 2, 8, 9, 1, 0]$.
 For completeness, we report the example also for the case of a spasifying factor $k=4$, for which we have $\Pi^{-1}_{\v^+,4} = [4, 5, 5, 5, 3, 5, 2, 1, 5, 5]$ and $f_{\text{DP},\, k}(\v^+) = [1, 0, 0, 0, 2, 0, 3, 4, 0, 0]$.
 %For completeness we report the example for the case of  deep permutations approach the inverted permutation is  .
-If we apply the \gls{sq} technique to the same vector $\v^+$, with the values of $\gamma = 5$ and $s=10$, we obtain $f_{\text{DP}, \, k}(\v^+) = [0, 0, 0, 0, 2, 0, 3, 4, 0, 0]$. % TODO check: should be f_SQ?
+If we apply the \gls{sq} technique to the same vector $\v^+$, with the values of $\gamma = 5$ and $s=10$, we obtain $f_{\text{SQ}, \, k}(\v^+) = [0, 0, 0, 0, 2, 0, 3, 4, 0, 0]$.
 
 Notice that in general, the \gls{crelu} operation is lossy since the dot product between vectors is not preserved, i.e., $\v_1 \cdot \v_2 \leq \v_1^+ \cdot \v_2^+$.
 However, this transformation allows us to apply the deep permutation approach without completely neglecting the negative activations of the \gls{rmac} features.
@@ -512,13 +512,16 @@ However, this transformation allows us to apply the deep permutation approach wi
 The aim of this section is to assess the performance of the proposed solution in a content-based retrieval task both in terms of effectiveness and efficiency.
 To this end, we are able to evaluate the approximation introduced with respect to the exact similarity search algorithm against the impact of this approximation with respect to the user perception of the retrieval task.
 %\subsection{Experimental Settings}
-% \todo{Questo copia-incolla va cambaito}
 %For assessing the proposed technique in a pure similarity search task, we used the CNN Features extracted as discussed in \ref{sec:deepfeatures} from the \emph{Yahoo Flickr Creative Commons 100 Million dataset (YFCC100M)} \cite{thomee2016yfcc100m}.
 %The assessment of the proposed algorithm of a multimedia information retrieval task was performed using
+
 We extracted the \gls{rmac} features from the images of two different benchmarks: \emph{INRIA Holidays} and \emph{Oxford Buildings}.
-% TODO riferire background
-% INRIA Holidays \cite{jegou08} is a standard benchmark for image retrieval consisting in a collection of 1,491 images representing a large variety of scene type (natural, man-made, water, etc). The authors of INRIA Holidays selected 500 queries and manually identified a list of qualified results for each of them. In the literature, this benchmark is extended with the distractor dataset MIRFlickr including 1M images called MIRFlickr1M (\url{http://press.liacs.nl/mirflickr/}).
-% Oxford Buildings \cite{Philbin07} is composed of 5,062 images of 11 Oxford landmarks downloaded from Flickr. A manually labeled groundtruth is available for five queries for each landmark, for a total of 55 queries. As for \emph{INRIA Holidays}, we merged the dataset with the distraction dataset Flickr100k including 100k images \footnote{\url{http://www.robots.ox.ac.uk/~vgg/data/oxbuildings/}}.
+INRIA Holidays~\cite{jegou2008hamming} is a standard benchmark for image retrieval consisting in a collection of 1,491 images representing a large variety of scene type (natural, man-made, water, etc).
+The authors of INRIA Holidays selected 500 queries and manually identified a list of qualified results for each of them.
+In the literature, this benchmark is extended with the distractor dataset MIRFlickr including 1M images called MIRFlickr1M\footnote{\url{http://press.liacs.nl/mirflickr/}}.
+Oxford Buildings~\cite{philbin2007object} is composed of 5,062 images of 11 Oxford landmarks downloaded from Flickr.
+A manually labeled groundtruth is available for five queries for each landmark, for a total of 55 queries.
+As for INRIA Holidays, we merged the dataset with the distraction dataset Flickr100k including 100k images \footnote{\url{http://www.robots.ox.ac.uk/~vgg/data/oxbuildings/}}.
 
 We compared the performance of our approach with state-of-the-art approximate nearest neighbor algorithms based on \gls{pq} FAISS \cite{johnson2017billion}, which we presented in \ref{sec:str:related-work}.
 In the implementation of FAISS, the number of Voronoi cells $N$ controls the number and length of the postings lists, while the number of \gls{pq} sub-quantizer $M$ controls the amount of memory occupied by a sample, also known as code size $C$.
