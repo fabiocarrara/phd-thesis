@@ -33,6 +33,7 @@ A parallel strategy recenly studied is to defend from adversarial attacks by dis
 % - our contribution
 
 \begin{figure}
+% TODO [FIGURE] rifare BW
 \centering
 \includegraphics[width=\linewidth]{overview}
 \caption{Overview of our detection approach. The input image is classified by the CNN, but we consider the classification valid only if the kNN score of the predicted class based on deep features (\emph{pool5}) is above a certain threshold.}
@@ -144,7 +145,7 @@ Despite many detection strategies have been proposed, yet results are far from s
 In this subsection we provide a brief description of the two approaches %, namely \emph{box constrained L-BFGS} and \emph{Fast Gradient Sign},
 we used in our work to generate adversarial images.
 \paragraph{Box-constrained L-BFGS~\cite{tabacof2016exploring,szegedy2013intriguing}}
-Given an input image $\x$ and a \gls{dnn} classifier $\y = f(\x)$, an adversarial example is generated finding the smallest distortion $\eta$ such that $\x' = \x + \eta$ is misclassified by the target model, that is $f(\x+\eta) \neq \y$.
+Given an input image $\x$ and a \gls{dnn} classifier $\y = f(\x)$, an adversarial example is generated finding the smallest distortion $\eta$ such that $\x_\text{adv} = \x + \eta$ is misclassified by the target model, that is $f(\x+\eta) \neq \y$.
 The adversarial perturbation $\eta$ is modeled as the solution of the following optimization problem:
 \begin{equation} \label{eq:adv:box-optim}
 \begin{split}
@@ -165,10 +166,20 @@ In the \acrfull{fgsm}, the adversarial perturbation is proportional to the sign 
 Mathematically speaking, let $\Theta$ the parameters of the model, $\x$ its input, $\y$ the targets (desired output) associated with $\x$, and $\L\( \x, \y, \Theta \)$ the loss function used to train the neural network.
 The cost function can be linearized around the current value of $\Theta$, obtaining an optimal max-norm constrained perturbation
 \begin{equation} \label{eq:adv:fgsm}
-\eta = \epsilon \cdot sign \( \nabla_{\x} \L\( \x, \y, \Theta \) \) \\.
+\eta = \varepsilon \cdot sign \( \nabla_{\x} \L\( \x, \y, \Theta \) \) \\.
 \end{equation}
 Note that the gradient can be computed easier using back-propagation.
-The adversarial input is given by $\x' = \x + \eta$.
+The adversarial input is given by $\x_\text{adv} = \x + \eta$.
+
+\paragraph{Iterative-\gls{fgsm}~\cite{kurakin2016adversarial}}
+% follow gradient, make a step, clip, iterate
+\citet{kurakin2016adversarial} improved the effectiveness of the \gls{fgsm} algorithm by proposing a basic iterative variation often called Iterative-\gls{fgsm} (I-\gls{fgsm}) or Basic Iterative Method (BIM).
+Starting from the natural image $\x$, the iterative method applies multiple steps of \gls{fgsm} with a distortion $\varepsilon_i <= \varepsilon$.
+The attack performs
+\begin{equation} \label{eq:adv:i-fgsm}
+\x_\text{adv}^0 = \x, \quad \x_{adv}^{i+1} = \text{clip}(\x_{adv}^{i} + \varepsilon_i \nabla\L(\x_{adv}^{i})) \,,
+\end{equation}
+where $\text{clip}(\cdot)$ ensures the image obtained at each step is in the valid range.
 %Practically, an adversarial can be created by training an input image with these steps (notice that during the back-propagation pass the weights are freezed and not updated):
 %\begin{itemize}
 %\item Propagate the input $x$ forward to the output layer as in standard back-propagation.
@@ -192,9 +203,9 @@ In this preliminary work, we focus on the \emph{zero-knowledge} scenario and pla
 %We extended that work taking into consideration different intermediate layers form which extract deep features to perform the detection.
 %This led to the analysis of the robustness of the detection when varying different combinations of type of adversarial attacks and deep features, uncovering interesting aspects about the depth-wise transformation of the information represented in the network.
 
-\section{Background}
-\label{sec:adv:background}
-% TODO reuse in background
+% \section{Background}
+% \label{sec:adv:background}
+% XXX reuse in background
 
 %A \gls{dnn} has a multi-layered architecture where the activations of neurons of each layer can be seen as a representation of the \gls{dnn}'s raw input . The representation in each layer is obtained as a learned transformation of previous layer representation. The final layer encodes the information needed to solve a specific tasks on which the \gls{dnn} was trained, as for instance the set of classes that the \gls{dnn} is supposed to recognize.
 %
@@ -208,8 +219,8 @@ In this preliminary work, we focus on the \emph{zero-knowledge} scenario and pla
 %The relevance of the internal representation learned by the neural network during training have been proved by many recent works \cite{Bengio2013,lecun2015deep,amato2016yfcc100m,donahue2014decaf%,girshick2014rich}.
 %In particular, the activation produced by an image within the intermediate layers of a deep convolutional neural network can be used as a high-level descriptor of the image visual content \cite{sermanet2013overfeat,chandrasekhar2015practical,razavian2014cnn,amato2016yfcc100m, amato2016visual}.
 
-In this work, we employed the image representations extracted using OverFeat~\cite{sermanet2013overfeat}, a well-known and successful deep convolutional network architecture that have been studied for the analysis of adversarial attacks to convolutional neural networks \cite{tabacof2016exploring}, and for which implementations of adversarial generation algorithms are publicly available (see \ref{sec:adv:experiments}).
-Specifically, we used the Fast OverFeat network pre-trained on ImageNet\footnote{Code and weights for OverFeat are publicly available at \url{https://github.com/sermanet/OverFeat}}, and we selected the activations of the \emph{pool5} layer as deep features for images.
+%In this work, we employed the image representations extracted using OverFeat~\cite{sermanet2013overfeat}, a well-known and successful deep convolutional network architecture that have been studied for the analysis of adversarial attacks to convolutional neural networks \cite{tabacof2016exploring}, and for which implementations of adversarial generation algorithms are publicly available (see \ref{sec:adv:experiments}).
+%Specifically, we used the Fast OverFeat network pre-trained on ImageNet\footnote{Code and weights for OverFeat are publicly available at \url{https://github.com/sermanet/OverFeat}}, and we selected the activations of the \emph{pool5} layer as deep features for images.
 
 \section{Detecting adversarial examples}
 \label{sec:adv:detection}
@@ -295,9 +306,8 @@ Please note that we do not rely on additional models or data other than the fool
 An overview of our complete pipeline is depicted in \ref{fig:adv:overview}.
 %only rely on training data and we use the very same fooled neural network for extracting the deep features.
 
-% TODO reorganize
-As better detailed in next section, we used the OverFeat fast network \cite{sermanet2013overfeat} pre-trained on ImageNet \gls{ilsvrc}'12 as \gls{dnn}. % considering \emph{pool5} as deep features.
-We performed tests using kNN classifiers defined on the \emph{pool5}, \emph{fc6}, and \emph{fc7} deep features.
+% As better detailed in next section, we used the OverFeat fast network \cite{sermanet2013overfeat} pre-trained on ImageNet \gls{ilsvrc}'12 as \gls{dnn}. % considering \emph{pool5} as deep features.
+% We performed tests using kNN classifiers defined on the \emph{pool5}, \emph{fc6}, and \emph{fc7} deep features.
 
 %To decide whether an image being classified by OverFeat is an adversarial example or not, we used a kNN classifier choosing the \gls{ilsvrc}'12 training set as search set and the euclidean distance between deep features as the distance function $d(\cdot,\cdot)$.
 %Our intuition is that the activations of intermediate layers of adversarial examples are distinguishable with high probability from the ones of the images belonging to the class the network is tricked to predict.
@@ -315,9 +325,9 @@ We search for similar images on the very same data that have been used for train
 Thus, the kNN methods rely on the very same information the neural network have seen during training.
 
 We performed experiments with two \gls{dnn} architectures.
-First, we applied our approach to \emph{OverFeat-Fast} \gls{dnn}~\cite{sermanet2013overfeat} (\ref{subsec:adv:overfeat}), using a subset of the \gls{ilsvrc}'12 validation images to generate adversarial examples.
-Second, we aligned with the configuration proposed in the context of the NIPS 2017 Adversarial Defenses Kaggle Competition~\cite{kurakin2018adversarial} (\ref{subsec:adv:inception}).
-Therefore, we tested our method on the network used as baseline in the competition (\emph{InceptionV3}), and we used the DEV image set provided through Kaggle for the generation of adversarial examples.
+First, we applied our approach to \emph{OverFeat-Fast} \gls{dnn}~\cite{sermanet2013overfeat} --- a well-known and successful deep convolutional network architecture that have been studied for the analysis of adversarial attacks to \glspl{cnn}~\cite{tabacof2016exploring} --- using a subset of the \gls{ilsvrc}'12 validation images to generate adversarial examples (\ref{subsec:adv:overfeat}).
+Second, we aligned with the configuration proposed in the context of the NIPS 2017 Adversarial Defenses Kaggle Competition~\cite{kurakin2018adversarial}.
+Therefore, we tested our method on the network used as baseline in the competition (\emph{InceptionV3}), and we used the DEV image set provided through Kaggle for the generation of adversarial examples (\ref{subsec:adv:inception}).
 
 % Generated adversarials and other resources have been made public available\footnote{\url{http://deepfeatures.org/adversarials/}}.
 
@@ -477,7 +487,7 @@ In those difficult cases, intermediate representations of the target class are r
 \begin{subtable}{\linewidth}
 \begin{tabularx}{\linewidth}{lcllcc}
 \toprule
-\textsc{Algorithm}&                            $\x'$ &                       \textsc{Actual} & \textsc{Predicted} & \textsc{1-NN} & $s$  \\
+\textsc{Algorithm}&                            $\x_\text{adv}$ &                       \textsc{Actual} & \textsc{Predicted} & \textsc{1-NN} & $s$  \\
 \midrule
 L-BFGS   & \img{n02837789_ILSVRC2012_val_00004709_adversarial.png} & \pb{bikini, two-piece}                & pomegranate    & \parbox[c][\imgside]{\imgside}{\includegraphics[width=\imgside,trim={0 1cm 0 3.5cm},clip]{examples/n07768694_863.JPEG}}   & 0.01 \\ \midrule
 FGSM     & \img{n02892767_ILSVRC2012_val_00004599_adversarial.png} & \pb{brassiere, bra, bandeau}          & Chihuahua	    & \img{n02085620_10227.JPEG} & 0.01 \\ \midrule
@@ -491,7 +501,7 @@ L-BFGS   & \img{n02749479_ILSVRC2012_val_00039278_adversarial.png} & \pb{assault
 \begin{subtable}{\linewidth}
 \begin{tabularx}{\linewidth}{lclXcc}
 \toprule
-\textsc{Algorithm}&                            $\x'$ &                       \textsc{Actual} & \textsc{Predicted} & \textsc{1-NN} & $s$  \\
+\textsc{Algorithm}&                            $\x_\text{adv}$ &                       \textsc{Actual} & \textsc{Predicted} & \textsc{1-NN} & $s$  \\
 \midrule
 FGSM     & \img{n03017168_ILSVRC2012_val_00041177_adversarial.png} & \pb{chime, bell, gong}      & barometer                                  &  \img{n02794156_12351.JPEG}  & 0.13 \\ \midrule
 %L-BFGS   & \img{n02110806_ILSVRC2012_val_00025245_adversarial.png} & basenji                     & \pb{Arctic fox, white fox, Alopex lagopus} &  \img{n02120079_34796.JPEG}  & 0.13 \\ \midrule
@@ -506,7 +516,7 @@ FGSM     & \img{n03594945_ILSVRC2012_val_00041895_adversarial.png} & jeep, landr
 
 \caption{Examples of detections of adversarial images obtained by our best approach (\emph{pool5}+PCA+DW-kNN).
 From left to right, columns respectively report: the adversarial generation algorithm, the generated adversarial image, its original class, the class predicted by the \gls{dnn}, the nearest neighbor image (in terms of L2 distance between average-pooled \emph{pool5} activations) belonging to the predicted class, and the DW-kNN score $s$ for the predicted class.
-A low score indicates that the adversarial is correctly detected (\subref{tab:adv:good-examples}) while a high score means that our approach is wrongly confident about the prediction of the CNN (\subref{tab:adv:bad-examples}).
+A low score indicates that the adversarial is correctly detected (a) while a high score means that our approach is wrongly confident about the prediction of the CNN (b).
 The results show that high scoring adversarial examples often share some common visual aspects and semantic with the predicted (adversarial) class, resulting in a more challenging detection.
 }
 \label{tab:adv:examples}
@@ -546,15 +556,14 @@ We followed the same methodology as in \ref{subsec:adv:overfeat}: we set apart f
 %\SetLabelAlign{parright}{\parbox[t]{\labelwidth}{\bfseries \itshape \raggedleft#1}}
 \begin{description}%[leftmargin=!,labelwidth=2.5cm, align=parright]
   \item[noop] the image is unchanged (authentic);
-  \item[random\_noise] the image is perturbed adding random gaussian noise in the interval $[-16, +16]$;
-  \item[fgsm] the image is perturbed with FGSM (see \ref{sec:adv:algos}) with $\epsilon = 16$ choosing a random target class;
-  % TODO add I-FGSM from workshop paper
-  \item[i-fgsm] the image is perturbed with 20 iterations of FGSM algorithm with $\epsilon = 1$; the target class is randomly chosen and kept fixed for all the iterations; the total perturbation is clipped to be in the interval $[-16, +16]$.
+  \item[RandomNoise] the image is perturbed adding random gaussian noise in the interval $[-16, +16]$;
+  \item[\gls{fgsm}] the image is perturbed with \gls{fgsm} (see \ref{sec:adv:algos}) with $\varepsilon = 16$ choosing a random target class;
+  \item[I-\gls{fgsm}] the image is perturbed with 20 iterations of I-\gls{fgsm} algorithm with $\varepsilon = 1$; the target class is randomly chosen and kept fixed for all the iterations; the total perturbation is clipped to be in the interval $[-16, +16]$.
 \end{description}
 
-Since \textbf{\emph{random\_noise}} images are not meant to directly attack the classifier, we considered them authentic images. % together with the untouched images (\textbf{\emph{noop}}).
-As in \ref{subsec:adv:overfeat}, we removed failed adversarial images produced by \textbf{\emph{fgsm}} or \textbf{\emph{i-fgsm}}, i.e., adversarial perturbed images for which the prediction of the network has not changed.
-We also left out images produced by \textbf{\emph{random\_noise}} that are misclassified by the network, in order not to tamper the analysis of our adversarial detection approach with errors committed naturally by the classifier.
+Since \textbf{RandomNoise} images are not meant to directly attack the classifier, we considered them authentic images. % together with the untouched images (\textbf{\emph{noop}}).
+As in \ref{subsec:adv:overfeat}, we removed failed adversarial images produced by \textbf{\gls{fgsm}} or \textbf{I-\gls{fgsm}}, i.e., adversarial perturbed images for which the prediction of the network has not changed.
+We also left out images produced by \textbf{RandomNoise} that are misclassified by the network, in order not to tamper the analysis of our adversarial detection approach with errors committed naturally by the classifier.
 From this procedure, we obtained a test set comprising correctly classified authentic images and successfully generated adversarial images.
 
 %For each image, we computed a score with our method for each proposed kNN scoring schemes (see \ref{sec:adv:detection}).
@@ -592,7 +601,7 @@ mixed\_7c        & \textbf{74.0} &          52.0 &          61.5 & \textbf{78.5}
 \bottomrule
 \end{tabularx}
 \caption{\Gls{eer} detection accuracies for each (scoring scheme, layer) combination.
-The accuracies are computed putting together each subset (\textbf{\emph{fgsm}} or \textbf{\emph{i-fgsm}}) with the set authentic images.
+The accuracies are computed putting together each subset (\textbf{\gls{fgsm}} or \textbf{I-\gls{fgsm}}) with the set authentic images.
 The \textbf{Aggr.} column reports a weighted mean of the accuracies on all subsets.
 The \textbf{Errors} column report the recover accuracy fo natural (non-adversarial) errors committed by the network.}
 \label{tab:adv:i3-eer}
@@ -605,17 +614,17 @@ This behavior suggests that current adversarial crafting algorithms do not steer
 Thus, we are able to find a good compromise between representativeness and robustness to adversarial manipulation.
 
 In \ref{fig:adv:i3-distr}, we report the true positive (correctly classified authentic images predicted as non-adversarial) and true negatives (adversarial images and authentic errors detected by our method) rates distributions as a function of the discriminant threshold applied on the score (positive means non-adversarial).
-Although lower-level features seem not to affect the detection of less perturbed images (i.e., \gls{fgsm}), we noticed that they play a fundamental role to detect strong adversarial such as \textbf{\emph{i-fgsm}} (\ref{fig:adv:i3-distr} on the left).
-This is reasonable given that the stronger attack we analyzed, i.e., \textbf{\emph{i-fgsm}}, tends to affect multiple layers in the last stage of the network, thus being better detected using more internal lower-level activations, while FGSM can be easily detected using higher-level layers.
+Although lower-level features seem not to affect the detection of less perturbed images (i.e., \gls{fgsm}), we noticed that they play a fundamental role to detect strong adversarial such as \textbf{I-\gls{fgsm}} (\ref{fig:adv:i3-distr} on the left).
+This is reasonable given that the stronger attack we analyzed, i.e., \textbf{I-\gls{fgsm}}, tends to affect multiple layers in the last stage of the network, thus being better detected using more internal lower-level activations, while FGSM can be easily detected using higher-level layers.
 
 Weighted scoring schemes (W-kNN and DW-kNN) seem to outperform the naive kNN scheme, specially when combined with low level features (see \ref{fig:adv:i3-eer}).
 Overall, the best performance is obtained using the \textbf{\emph{mixed\_6d}} layer and the DW-kNN scheme, reaching a mean EER accuracy of 79.2\%.
-Moreover, our method is able to recover around 80\% of natural errors committed by the network. This rate is considerably higher than the ones presented in \ref{tab:adv:eer} due to the presence of \textbf{\emph{random\_noise}} images, that produced lots of easily recoverable misclassifications.
+Moreover, our method is able to recover around 80\% of natural errors committed by the network. This rate is considerably higher than the ones presented in \ref{tab:adv:eer} due to the presence of \textbf{RandomNoise} images, that produced lots of easily recoverable misclassifications.
 
 
 \begin{figure}
 \centering%
-%
+% TODO [FIGURE] rigenerare BW
 \begin{subfigure}[t]{0.5\linewidth}%
 \centering
 \textbf{mixed\_6d}\\
@@ -636,10 +645,11 @@ DW-kNN scoring scheme was selected for both.}
 \end{figure}
 
 \begin{figure}
+% TODO [FIGURE] rigenerare BW
 \centering
-{\includegraphics[width=\columnwidth]{incepv3_eer-acc}}
-\caption{ The Equal Error Rate accuracy obtained on the NIPS DEV set using different intermediate activations of the InceptionV3 as deep features.
-Note that the effectiveness of the detection gets better when using deeper representations, and rapidly decreases when we reach the fooled layers at the end of the network.}
+\includegraphics[width=\columnwidth]{incepv3_eer-acc}
+\caption{The \acrlong{eer} accuracy obtained on the NIPS DEV set using different intermediate activations of the \emph{InceptionV3} as deep features.
+Note that the effectiveness of the detection increases when using deeper representations and rapidly decreases when we reach the fooled layers at the end of the network.}
 \label{fig:adv:i3-eer}
 \end{figure}
 
@@ -657,14 +667,14 @@ In the experiments, we considered various kNN score functions and hidden layers.
 %The results show that we were able to filter out roughly $85\%$ of adversarial images when looking to lower level activations (such as \emph{pool5}).
 %Specifically, results shown that adversarials generated with L-BFGS are particularly difficult to detect.
 
-When attacking the OverFeat model, the proposed approach allows to filter about $80\%$ of adversarial examples retaining more than $90\%$ of the correctly classified authentic images (see \ref{fig:adv:tptn-distribs}).
+When attacking the OverFeat model, the proposed approach allows to filter about 80\% of adversarial examples retaining more than 90\% of the correctly classified authentic images (see \ref{fig:adv:tptn-distribs}).
 We also showed that the probability density function of our authenticity confidence obtained over adversarial examples significantly differs from the one obtained for authentic images.
 %We showed that lower-level activations (such as \emph{pool5} with global average pooling) increase the detection performance with respect to the higher-level ones.
 Moreover, some examples are suggesting that hard adversarial examples are the ones for which actual and target classes are similar or have similar visual patterns. %there are same visual patterns in both classes.
 
 We also tested our method on the InceptionV3 \gls{dnn}, generating adversarial images from the NIPS 2017 Adversarial Attacks and Defenses Kaggle Competitions.
 Using this dataset, we performed a thorough analysis of the detectability of adversarial exampels when varying the internal layer extracted from the \gls{dnn}.
-Best results were obtained using layer \emph{\textbf{mixed\_6d}} with an overall EER Accuracy of $80\%$, confirming the effectiveness of our approach and its general applicability to deep neural network classifiers.
+Best results were obtained using layer \emph{\textbf{mixed\_6d}} with an overall EER Accuracy of 80\%, confirming the effectiveness of our approach and its general applicability to deep neural network classifiers.
 Future work may test the detection scheme under a more stringent threat model, in which the attacker is aware of the detection scheme used.
 The comparison of multiple layers for the detection performed in this study suggested that current adversarial crafting algorithms do not steer all the internal semantic representations inside the network, but focus on the last layers.
 Given these considerations, possible future work may also improve the presented detection scheme by relying on multiple intermediate layers, thus increasing the difficulty for a generation algorithm to craft adversarial images able to control multiple activations at once.
