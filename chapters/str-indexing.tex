@@ -227,8 +227,24 @@ Using this representation, the search engine indexes the text by using inverted 
 
 \begin{figure}
 \centering
-% TODO [FIGURE] remake
-\includegraphics[trim=0mm 5mm 0mm 0mm,clip, width=1\textwidth]{PostingList.pdf}
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+\begin{tabularx}{\linewidth}{lC}
+    \toprule
+    \multicolumn{1}{c}{\textsc{Query}} & \textsc{Posting Lists} \\
+    \cmidrule(lr){1-1}                   \cmidrule(lr){2-2}
+    $\begin{aligned} f(q) &= [1,0,0,0,2]\\ \text{STR}_f(q) &= ``\tau_1\,\tau_5\,\tau_5" \end{aligned}$ & \multirow{6}{*}{\includegraphics[width=\linewidth]{figures/str-posting-lists}} \\[6ex]
+    \multicolumn{1}{c}{\textsc{Data Objects}} & \\
+    \cmidrule(lr){1-1}
+    $\begin{aligned} f(o_1) &= [1,2,0,0,3]\\ \text{STR}_f(o_1) &= ``\tau_1\,\tau_2\,\tau_2\,\tau_5\,\tau_5\,\tau_5" \end{aligned}$ & \\
+    \cmidrule(lr){1-1}
+    $\begin{aligned} f(o_2) &= [0,0,2,3,1]\\ \text{STR}_f(o_2) &= ``\tau_3\,\tau_3\,\tau_4\,\tau_4\,\tau_4\,\tau_5" \end{aligned}$ & \\
+    \cmidrule(lr){1-1}
+    $\begin{aligned} f(o_3) &= [3,0,1,1,0]\\ \text{STR}_f(o_3) &= ``\tau_1\,\tau_1\,\tau_1\,\tau_3\,\tau_4\,\tau_5" \end{aligned}$ & \\[2.5ex]
+    %\cmidrule(lr){1-1}
+    \multicolumn{1}{c}{\dots} & \\[1.5ex]
+    \bottomrule
+\end{tabularx}
+
 \caption{Example of the \gls{str} encodings for a query object $q$ and three data objects $o_1, o_2, o_3$.
 The \glspl{str} are indexed using posting lists.
 The posting lists accessed at query time are the only ones associated to the codewords comparing in the surrogate text representation of the query.
@@ -303,7 +319,7 @@ $,
 where $\e=[1,\dots, 1]$ is the constant vector.
 Therefore,
 \begin{equation}
-\text{STR}_{f_{perms}}(o)=\bigcup_{i=1}^n\,\bigcup_{j=1}^{n-\Pi^{-1}_{o}(i)} \tau_i.
+\text{STR}_{f_\text{perms}}(o)=\bigcup_{i=1}^n\,\bigcup_{j=1}^{n-\Pi^{-1}_{o}(i)} \tau_i.
 \end{equation}
 
 The rational behind this approach is that if two objects are very close one to the other, they will sort the set of pivots in a very similar way, and thus the corresponding permutations/text representations will be close as well.
