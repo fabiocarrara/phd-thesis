@@ -285,7 +285,7 @@ The basic idea of permutation-based indexing techniques is to represent feature 
 Traditionally, the permutation representations are built using the identifiers of a set of reference objects as permutants.
 This approach is more general than the one we adopt in this article, as it admits as objects not only vectors but more generally metric objects for which there exists a distance function providing a measure of the closeness of two data objects.
 
-Formally, given a domain $\D$, a distance $d:\D\times \D\to \R+$, and a fixed set  $\{p_1\ldots p_n\}\subset\D$ of \emph{reference objects} (or \emph{pivots}), we define a permutation-based representation $\Pi_{o}$ (briefly \emph{permutation}) of an object $o\in \mathcal{D}$ as the sequence of pivots identifiers sorted in ascending order by their distance from $o$ \cite{mtap12,amato2014some}.
+Formally, given a domain $\D$, a distance $d:\D\times \D\to \R+$, and a fixed set  $\{p_1\ldots p_n\}\subset\D$ of \emph{reference objects} (or \emph{pivots}), we define a permutation-based representation $\Pi_{o}$ (briefly \emph{permutation}) of an object $o\in \mathcal{D}$ as the sequence of pivots identifiers sorted in ascending order by their distance from $o$ \cite{amato2014mi,amato2014some}.
 In other words, the permutation-based representation $\Pi_{o}=$ $[\Pi_{o}(1), \ldots , \Pi_{o}(n)]$ lists the pivot identifiers $\{1, 2, \ldots, n\}$ in an order such that $\forall\, i,j \in \{1,\ldots, n\}$
 \begin{equation}
 \begin{matrix}

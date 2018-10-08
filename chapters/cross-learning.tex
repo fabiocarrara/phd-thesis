@@ -271,7 +271,7 @@ For training, we applied a dropout factor of $0.45$ to both input gates and to t
 A cross-entropy loss is employed and optimized by means of the \emph{rmsprop} optimizer \cite{tieleman2012lecture}.
 % We used the Keras \cite{libkeras} deep learning framework to develop the \gls{lstm} network.
 
-Each input word to the \gls{lstm} is represented by a low dimensional, continuous and real-valued vector, also known as word embedding~\cite{MikolovSCCD13}, and all the word vectors are stacked in a word embedding matrix.
+Each input word to the \gls{lstm} is represented by a low dimensional, continuous and real-valued vector, also known as word embedding~\cite{mikolov2013distributed}, and all the word vectors are stacked in a word embedding matrix.
 For this work, we used GloVe~\cite{pennington2014glove} pre-trained vectors. % since these are computed considering the word context information.
 GloVe website~\footnotetext{http://nlp.stanford.edu/projects/glove/} provides freely available pre-trained vectors computed from a 2B English tweets corpus.
 

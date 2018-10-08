@@ -65,6 +65,7 @@ We report experimental results in \ref{sec:t2v:experiments}, comparing with othe
 %---------------------------------------------------------------------
 
 \section{Cross-media Image Retrieval}
+\label{sec:t2v:related}
 %Cross-modal Retrieval
 
 %FROM Picture it:
@@ -262,7 +263,7 @@ Besides the mere reduction in the number of dimensions, the main reason that mot
 Words with similar meanings end up being represented by similar vectors (in the sense of the inner product), which allows the model to better generalize, i.e.,  the patterns discovered become descriptive for an embedding region (and to the greater or lesser extent to words with nearby embeddings) rather than descriptive for a single word.
 
 In order to make the model become sensible to word order, we adopt an \acrfull{lstm}~\cite{hochreiter1997long} architecture, a special kind of recurrent neural network which is particularly robust to learn from sequential data (such as textual data).
-Concretely, we train an \gls{lstm} on the task of language modeling (that is, the task of predicting the most likely following term given the sequence of preceding terms -- see e.g., ~\cite{sundermeyer2012lstm}) with backpropagation through time~\cite{werbos1990backpropagation}.
+Concretely, we train an \gls{lstm} on the task of language modeling (that is, the task of predicting the most likely following term given the sequence of preceding terms --- see e.g., ~\cite{sundermeyer2012lstm}) with backpropagation through time~\cite{werbos1990backpropagation}.
 We constrain the internal memory state of the last memory cell to be a good representation to predict the visual embedding (\ref{fig:t2v:d-t2v-arch}).
 
 \begin{figure}
@@ -477,12 +478,12 @@ A Tensorflow implementation of all our methods, and of all the compared methods 
 We compare the performance of the various \ttv{} models against a selection of methods that perform search either in the visual space or in the textual space.
 We define as the trivial lower bound baseline the method that produces a random ranking of the images in the collection (dubbed \emph{RRank}).
 
-We define as \emph{VisSim} the direct similarity method that computes the Euclidean distances using the original \emph{pool5} (from the \resnet{}~\cite{he2015deep}), and \emph{fc6} or \emph{fc7} features (from the AlexNet~\cite{zhou2014learning}) for the image that is associated to the query caption in \gls{coco}.
+We define as \emph{VisSim} the direct similarity method that computes the Euclidean distances using the original \emph{pool5} (from the \resnet{}~\cite{he2016deep}), and \emph{fc6} or \emph{fc7} features (from the AlexNet~\cite{zhou2014learning}) for the image that is associated to the query caption in \gls{coco}.
 \emph{VisSim} models the scenario in which the user submits the query using an image that is representative of the original textual description.
 \emph{VisSim} is thus not a real cross-media search model, but it allows us to measure how a search-by-representative-image process compares with the real cross-media search approaches.
 We also compare with \visreg{}, the text-to-image sparse regressor described in \ref{subsec:t2v:vis-reg}.
 
-We use the caption generation methods presented in \cite{karpathy2015deep} (dubbed \emph{NeuralTalk}) and \cite{vinyals2015show} (dubbed \emph{Show\&Tell}) to implement cross-media search methods based on textual search.
+We use the caption generation methods presented in~\cite{karpathy2015deep} (dubbed \emph{NeuralTalk}) and~\cite{vinyals2015show} (dubbed \emph{Show\&Tell}) to implement cross-media search methods based on textual search.
 Given a caption generation method, we generate captions for all the 20K images in the test collection, and then we implement the search process as a text similarity search process based on two retrieval models: one that used the same $\text{ROUGE}_L$ metric that is used for the evaluation (dubbed \emph{CapRouge}), and one that uses a more classic ranking by $L_2$ norm of the vectors resulting from text indexing based on \acrlong{bow} or characters 3- and 4-grams (respectively dubbed \emph{CapBow} and \emph{CapGrams}).
 We used two \emph{Show\&Tell} models, one trained for one million iterations (\emph{Show\&Tell-1M}), and another for two million iterations (\emph{Show\&Tell-2M}).
 It is important to stress that the \emph{CapRouge} method is to be considered as a very strong but unrealistic baseline, added for the sake of a richer comparison, and not a viable retrieval method, for two reasons.
