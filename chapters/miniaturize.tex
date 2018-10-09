@@ -12,8 +12,8 @@ In this chapter, we will explore the adoption and the miniaturization of \glspl{
 We focus our investigation on reducing and evaluating deep models for embedded vision systems, i.e.\ smart cameras.
 A smart camera is an embedded camera equipped with a limited computational and communication capabilities that can be used to process, extract, and send information contained in the captured images on board of the device itself.
 % TODO [CITE] smart surveillance or campus with CNNs
-Empowering smart cameras with the generalization and robustness of \glspl{cnn} for computer vision application represents one the most promising steps towards the evolution of smart environments \cite{}.
-Their ``smart'' nature makes them suitable for automated intelligent systems able to generate event descriptions and/or make decisions \cite{belbachir2010smart}, thus making them attractive to a broad range of applications.
+Empowering smart cameras with the generalization and robustness of \glspl{cnn} for computer vision application represents one the most promising steps towards the evolution of smart environments~\cite{}.
+Their ``smart'' nature makes them suitable for automated intelligent systems able to generate event descriptions and/or make decisions~\cite{belbachir2010smart}, thus making them attractive to a broad range of applications.
 In our study, we will focus on a specific application, that is the visual occupancy detection of outdoor car parking lots in a decentralized fashion with smart cameras.
 The motivation for the choice of this specific problem is manyfold.
 \begin{itemize}
@@ -21,7 +21,7 @@ The motivation for the choice of this specific problem is manyfold.
 	% lack of deep learning solutions for the problem
 	\item The problem of visual occupancy detection of parking spaces can be easily formulated as a binary image classification problem;
 	this enable us to focus on the engineering aspects about model reduction and its evaluation;
-	moreover state-of-the-art approaches tackling this problem are based on hand-craft features and shallow machine learning, while a deep learning solution could (and will) bring an improvement of the detection accuracy and robustness.
+	moreover state-of-the-art approaches tackling this problem are based on handcrafted features and shallow machine learning, while a deep learning solution could (and will) bring an improvement of the detection accuracy and robustness.
 
 	% current systems vision solutions are centralized, with BW costs
 	\item Parking lot occupancy detection systems are commonly implemented by means of expensive magnetic ground sensors, while vision-based systems provide a more cost-effective solution;
@@ -34,7 +34,7 @@ The motivation for the choice of this specific problem is manyfold.
 
 \end{itemize}
 
-While visual approaches to parking lot occupancy detection are not new \cite{dan2002parking,wu2007robust,del2015vacant,de2015pklot}, the usage of solely visual information still poses challenges in terms of robustness.
+While visual approaches to parking lot occupancy detection are not new~\cite{dan2002parking,wu2007robust,del2015vacant,de2015pklot}, the usage of solely visual information still poses challenges in terms of robustness.
 Numerous solutions are tailored to specific scenarios and hardly generalize well to different ones, such as a different parking lot, viewpoint, light conditions, or occlusion patterns.
 
 In our investigation, we propose a decentralized and efficient vision system based on smart cameras and \gls{dl} for parking lot occupancy detection.
@@ -60,15 +60,15 @@ In the following paragraphs, we will review some of the work targeting this prob
 
 \paragraph{\gls{ml}-based approaches}
 % Occupancy Detection w/o CNNs
-Many attempts before the \gls{dl} era were implemented by classical \gls{ml} methods applied on hand-crafted visual features.
+Many attempts before the \gls{dl} era were implemented by classical \gls{ml} methods applied on handcrafted visual features.
 \citet{dan2002parking}, one of earliest work using this approach on the subject, used \glspl{svm} on color features to classify regions of the parking lot as `car` or `empty-space`.
 Among the challenges arose by the task, the problem of occlusions due to obstacles or camera angle is one of the most significant.
 \citet{wu2007robust} tried to overcome occlusion by neighboring cars by considering also the neighbor parking slots of the one to be classified.
 The \gls{svm} classifier for a slot is defined over the colour features computed across three slots (the slot itself and the two neighbor slots).
-\citet{tsai2007vehicle} used multiple hand-crafted features and a Bayesian classifier to deal with the problem of light changes, while
+\citet{tsai2007vehicle} used multiple handcrafted features and a Bayesian classifier to deal with the problem of light changes, while
 \citet{huang2013vacant} employed a Bayesian hierarchical framework based on a 3D model of the parking spaces.
 Similarly, \citet{delibaltov2013parking} proposed a method based on a 3D model of every parking slot in order to account for occlusions when classifying a slot as vacant or occupied.
-In~\cite{jermsurawong2014one}, a customized neural networks based on visual features is used to model the occupancy status of slots and the parking demand. % TODO check paper
+In~\cite{jermsurawong2014one}, a feed-forward neural network defined on multiple handcrafted visual features is used to model the occupancy status of slots and the parking demand.
 % they present robust results for night and day classifiers in a one-day long evaluation based on 126 parking spaces.
 In~\cite{de2015pklot}, the authors employed ensembles of \gls{svm} classifiers based on multiple textural features --- such as \gls{lbp}, \gls{lpq}, and their variations --- and they present a dataset of roughly 700,000 images of parking spaces coming from three different cameras used in their experiment.
 \citet{del2015vacant} proposed a temporal analysis of the video frames based on background subtraction to detect and track parking and leaving vehicles.
@@ -76,12 +76,12 @@ In a similar fashion, \citet{masmoudi2014} propose to overcome the occlusion pro
 
 \paragraph{Non-vision approaches}
 In addition to approaches using visual techniques and commercial solutions using ground sensors, there are techniques harnessing sensors installed on cars or carried by the drivers.
-In \cite{caicedo2012prediction}, the authors argue that occupancy detection can be solved by interacting with smart in-vehicle navigation systems.
+In~\cite{caicedo2012prediction}, the authors argue that occupancy detection can be solved by interacting with smart in-vehicle navigation systems.
 \citet{lan2014intelligent} instead proposed to harness sensors in smart phones and other devices to collect real-time parking availability information.
 %
 \paragraph{\gls{dl}-based approaches}
 To the best of our knowledge, the proposed approach is the first work that employs \glspl{dcnn} in the context of parking lot monitoring.
-A relevant work in a similar --- yet different --- task is \cite{chen2014vehicle}, where the authors employed a multi-scale \gls{cnn} to detect vehicles in high-resolution satellite images.
+A relevant work in a similar --- yet different --- task is~\cite{chen2014vehicle}, where the authors employed a multi-scale \gls{cnn} to detect vehicles in high-resolution satellite images.
 
 \section{\glspl{dcnn} for Occupancy Detection in Embedded Devices}
 \label{sec:mini:occupancy-detection}
@@ -148,8 +148,8 @@ We maintained the convolutional kernel sized and pooling sizes of the original a
 The obtained model has roughly 42,000 parameters, that is roughly $1360 \times$ less with respect to AlexNet.
 \ref{fig:mini:cnns} reports the details of the proposed architecture.
 As confirmed by experiments reported in \ref{sec:mini:evaluation}, using a smaller model for visual occupancy detection does not entail a severe performance degradation.
-The Caffe implementation of our model is able to perform on average 50 parking slot classifications on a single Raspberry Pi model B in roughly 15 seconds, which is an acceptable cycle time for parking lot occupancy detection systems. % TODO? note on new impl?
-The training phase, which need a considerable amount of computational resources, is performed off-line once on a powerful device, and the final classification model is deployed on multiple smart cameras once it is trained.
+The Caffe implementation of our model is able to perform on average 50 parking slot classifications on a single Raspberry Pi model B in roughly 15 seconds, which is an acceptable cycle time for parking lot occupancy detection systems. % TODO [?] note on new impl
+The training phase, which need a considerable amount of computational resources, is performed offline once on a powerful device, and the final classification model is deployed on multiple smart cameras once it is trained.
 
 \section{Datasets}
 \label{sec:mini:datasets}
@@ -346,13 +346,13 @@ The usage of multiple methods on multiple datasets also permits us to compare th
 \subsection{Comparison with the State of the Art}
 \label{sub:mini:sota}
 
-We compared mAlexNet against the state-of-the-art visual occupancy detection system proposed by \citet{de2015pklot}, which is based on \glspl{svm} classifiers with RBF kernels defined over hand-crafted textural features.
-Specifically, histograms of \gls{lbp}, \gls{lpq} features and their variations \cite{ojala2002multiresolution, ojansivu2008blur, rahtu2012local} have been tested as input features of the \gls{svm}.
+We compared mAlexNet against the state-of-the-art visual occupancy detection system proposed by \citet{de2015pklot}, which is based on \glspl{svm} classifiers with RBF kernels defined over handcrafted textural features.
+Specifically, histograms of \gls{lbp}, \gls{lpq} features and their variations~\cite{ojala2002multiresolution, ojansivu2008blur, rahtu2012local} have been tested as input features of the \gls{svm}.
 \Glspl{svm} are calibrated to output the probability of a slot to be occupied.
 The authors also shown that the performance of the classification can be improved by using ensembles of \gls{svm} classifiers each defined on a particular textural feature:
 probability values are fused using simple aggregation functions, such as \emph{Max} and \emph{Mean}, to obtain the final decision for an image slot.
 
-We follow the experimental protocol described in \cite{de2015pklot}.
+We follow the experimental protocol described in~\cite{de2015pklot}.
 We split images from each camera of the PKLot dataset (UFPR04, UFPR05, and PUC) into a training and test set with roughly a 50\%--50\% proportion;
 for a fair evaluation, we ensure that images collected in a particular day do not appear in both training and test set.
 We then train both mAlexNet and the \glspl{svm} on each of the three training set, and tested on all the available test sets.
@@ -382,7 +382,7 @@ LPQ features are extracted using window size of 3x3.
 The $C$ and $\gamma$ parameters of \glspl{svm} are chosen with grid search and a 5-fold cross-validation on the training set.
 We choose the parameters $(C,\gamma)$ obtaining the best 5-fold accuracy, i.e., the best accuracy obtained classifying each fold of the dataset with the model trained on the other folds.
 The final SVM is then trained on the entire training set using the chosen parameters, and evaluated on the test set.
-We followed the same strategy used in \cite{de2015pklot} to obtain a probabilistic score from the output of the \gls{svm}, which evaluates the posterior probability fitting a sigmoid function with two parameters \cite{platt1999probabilistic}.
+We followed the same strategy used in~\cite{de2015pklot} to obtain a probabilistic score from the output of the \gls{svm}, which evaluates the posterior probability fitting a sigmoid function with two parameters~\cite{platt1999probabilistic}.
 
 \begin{table}
     \newcolumntype{C}{>{\centering\arraybackslash}X}
@@ -391,13 +391,13 @@ We followed the same strategy used in \cite{de2015pklot} to obtain a probabilist
         \textsc{Method} & \textsc{Input Dim.}     & \textsc{Input Description} \\
         \midrule
         mAlexNet         & $224\times 224\times 3$ & a 224x224 RGB image \\
-        SVM + LBP        & $256$                     & histograms of classical \acrfull{lbp} \cite{ojala2002multiresolution} \\
-        SVM + LBPu       & $59$                      & histograms of uniform LBP \cite{ojala2002multiresolution} \\
-        SVM + LBPri      & $36$                      & histograms of rotational invariant LBP \cite{ojala2002multiresolution}  \\
-        SVM + LBPuri     & $10$                      & histograms of uniform and rotational invariant LBP \cite{ojala2002multiresolution} \\
-        SVM + LPQu       & $256$                     & histograms of \acrfull{lpq} (uniform initialization) \cite{ojansivu2008blur} \\
-        SVM + LPQg       & $256$                     & histograms of LPQ (gaussian initialization) \cite{rahtu2012local} \\
-        SVM + LPQgd      & $256$                     & histograms of LPQ (gaussian derivative initialization) \cite{rahtu2012local} \\
+        SVM + LBP        & $256$                     & histograms of classical \acrfull{lbp}~\cite{ojala2002multiresolution} \\
+        SVM + LBPu       & $59$                      & histograms of uniform LBP~\cite{ojala2002multiresolution} \\
+        SVM + LBPri      & $36$                      & histograms of rotational invariant LBP~\cite{ojala2002multiresolution}  \\
+        SVM + LBPuri     & $10$                      & histograms of uniform and rotational invariant LBP~\cite{ojala2002multiresolution} \\
+        SVM + LPQu       & $256$                     & histograms of \acrfull{lpq} (uniform initialization)~\cite{ojansivu2008blur} \\
+        SVM + LPQg       & $256$                     & histograms of LPQ (gaussian initialization)~\cite{rahtu2012local} \\
+        SVM + LPQgd      & $256$                     & histograms of LPQ (gaussian derivative initialization)~\cite{rahtu2012local} \\
         \bottomrule
      \end{tabularx}
      \caption{Summary of state-of-the-art methods compared against our approach for parking slot occupancy detection.}
@@ -494,8 +494,8 @@ As stated by \citet{de2015pklot}, we do not observed an absolute best textural f
 % However, we noticed that in most of the cases, LPQu and LPQg (Local Phase Quantization with respectively uniform and Gaussian initialization), give better performance.
 % We noticed in their results that taking the mean of the confidence coming from different classifiers (to which we refer with \emph{Mean Ensemble}) usually improves the performance.
 
-% We also report the experiments performed in a preliminary work \cite{amato2016car} in which we
-% compared mAlexNet to the techniques proposed in \cite{de2015pklot} using \emph{CNRPark} dataset.
+% We also report the experiments performed in a preliminary work~\cite{amato2016car} in which we
+% compared mAlexNet to the techniques proposed in~\cite{de2015pklot} using \emph{CNRPark} dataset.
 % For each experiment, we report only the variant of LBP or LPQ that yielded the best performance.
 
 \subsection{Evaluation of the generalization between datasets}
@@ -702,7 +702,7 @@ The view angles of the camera are 53.50$^{\circ}$ horizontally and 41.41$^{\circ
 We capture still pictures at a full-sensor resolution of $2592 \times 1944$ pixels.
 We used the OpenCV\footnote{http://opencv.org/} library to elaborate the frames acquired by the cameras, and Caffe~\cite{jia2014caffe} to train and use neural networks.
 
-Periodically, cameras capture an image of a portion of the parking lot, segment individual slots using manually defined masks, and determine the occupancy status for each slot using the \gls{cnn} trained off-line.
+Periodically, cameras capture an image of a portion of the parking lot, segment individual slots using manually defined masks, and determine the occupancy status for each slot using the \gls{cnn} trained offline.
 \ref{fig:mini:detection-example} shows an example of the occupancy detection performed by one camera in which common challenging aspects --- such as shadows, obstacles (trees or lamps) or even people occupying the parking slots --- are correctly managed.
 In total, the cameras monitor 164 parking spaces organized in five rows, the first comprised by 18 parking spaces each, and the others by 35 parking slots each.
 The number of parking slots monitored by each camera spans from 20 to more than 50, roughly, depending on the position of the parking slots with respect to the building on which cameras are mounted.
@@ -727,7 +727,7 @@ The predicted occupancy status for each slot is submitted to a server for visual
 
 We proposed and evaluated a reduced \acrlong{cnn} architecture for image classification that enables smart vision applications in embedded devices.
 In the scope of visual parking lot occupancy detection, we defined mAlexNet, a reduced version of the famous AlexNet classifier, which is obtained by pruning layers and reducing the number of parameters of the original architecture.
-Experiments on public datasets shown that our proposed architecture outperforms state-of-the-art approaches for visual parking lot occupancy detection based on shallow models and hand-crafted features while requiring a computational budget suitable for embedded devices.
+Experiments on public datasets shown that our proposed architecture outperforms state-of-the-art approaches for visual parking lot occupancy detection based on shallow models and handcrafted features while requiring a computational budget suitable for embedded devices.
 Specifically, our architecture exhibits very high accuracies even in presence of challenging light conditions variation, shadows, and partial occlusions.
 Moreover, multi-dataset experiments shown that the architectural reduction does not introduce a performance degradation in real scenarios, and it produces only a slight acceptable degradation of the generalization capability, i.e., the ability of classifying images coming from different parking lots with different imaging conditions.
 
@@ -745,19 +745,14 @@ This makes the dataset more compatible with real scenarios of outdoor parking lo
 
 %==========================
 
-% Thanks to the use of deep CNN, the proposed solution is robust to disturbances created by partial occlusions, by the presence of shadows and by the variation of light conditions. % TODO integrate
-% Moreover, it exhibits a good generalization property: in fact, the quality of the results is maintained when we consider parking lots and scenarios significantly different from the ones used during the CNN training phase.
-
-%==========================
-
-% \emph{mLeNet} is based on LeNet-5, proposed by \cite{lecun1998gradient}, having two convolutional layers followed by max pooling and two fully connected layers.
-% The first layer (\emph{conv1}) is similar to the one proposed by \cite{krizhevsky2012imagenet} to be more suitable for a 224x224x3 input image.
-% Layers \emph{conv2} and \emph{fc4} have a reduced number of filters and neurons with respect to \cite{lecun1998gradient} to better suit a binary classification task without overfitting.
+% \emph{mLeNet} is based on LeNet-5, proposed by~\cite{lecun1998gradient}, having two convolutional layers followed by max pooling and two fully connected layers.
+% The first layer (\emph{conv1}) is similar to the one proposed by~\cite{krizhevsky2012imagenet} to be more suitable for a 224x224x3 input image.
+% Layers \emph{conv2} and \emph{fc4} have a reduced number of filters and neurons with respect to~\cite{lecun1998gradient} to better suit a binary classification task without overfitting.
 % For \emph{fc5}, the last Gaussian RBF (radial basis function) layer is replaced with a classical inner product layer and a 2-way soft max classifier.
 
-% Unlike \cite{krizhevsky2012imagenet} and \cite{lecun1998gradient}, both  architectures have a dense connection between convolutional layers.
+% Unlike~\cite{krizhevsky2012imagenet} and~\cite{lecun1998gradient}, both  architectures have a dense connection between convolutional layers.
 
-% We used the Caffe framework \cite{jia2014caffe} to train the neural network and to initialize the classifier.
+% We used the Caffe framework~\cite{jia2014caffe} to train the neural network and to initialize the classifier.
 
 % We first compared the two proposed CNN architectures to select the one that offers the best performance.
 % Afterwards, we compared our approach against other state-of-the-art methods.
@@ -811,7 +806,7 @@ This makes the dataset more compatible with real scenarios of outdoor parking lo
 
 % Training images are randomly cropped to 224x224 and randomly flipped
 % horizontally, while for test images the central 224x224 crop is taken.
-% We train our CNN models using the Caffe framework \cite{jia2014caffe} with
+% We train our CNN models using the Caffe framework~\cite{jia2014caffe} with
 % gradient descend with momentum. The following hyper-parameters are used:
 % momentum $0.9$; weight decay $5\cdot10^{-4}$. The initial learning rates are
 % chosen independently for each experiment and they are reported in
@@ -910,7 +905,7 @@ This makes the dataset more compatible with real scenarios of outdoor parking lo
 % techniques to generalize from the particular statistics of the
 % training dataset.
 
-% For more details about these experiments, see \cite{cnr.isti2015-TR-0402015}.
+% For more details about these experiments, see~\cite{cnr.isti2015-TR-0402015}.
 
 
 % For \emph{intra-dataset} experiments, both datasets have been
@@ -935,7 +930,7 @@ This makes the dataset more compatible with real scenarios of outdoor parking lo
 % Table~\ref{tbl:intra-inter-experiments}.
 
 % In the \emph{intra-dataset} experiments, our method is
-% comparable with the ones proposed in \cite{de2015pklot}.
+% comparable with the ones proposed in~\cite{de2015pklot}.
 % Using the highest confidence as classification output (having a
 % threshold of $0.5$), the mAlexNet achieves slightly higher
 % accuracy values with respect to the other methods.
@@ -988,7 +983,7 @@ This makes the dataset more compatible with real scenarios of outdoor parking lo
 % achieved accuracies.
 
 % In the \emph{intra-dataset} experiments, our method is
-% comparable with the ones proposed in \cite{de2015pklot} in terms
+% comparable with the ones proposed in~\cite{de2015pklot} in terms
 % of AUC. In fact, our mAlexNet method reaches AUCs of
 % $0.943$ on \emph{CNRParkEven}, $0.920$ on \emph{CNRParkOdd},
 % and $0.996$ on \emph{PKLotNot2Days}, which are very close to

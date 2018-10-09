@@ -46,7 +46,7 @@
 % TODO [+CITE] speech analysis \citep{yan2014age}, object recognition tasks \citep{ciresan2012multi}
 
 In this chapter, we present the basic concepts about \gls{dl}, and we introduce the research fields on which its application has been investigated in this thesis, namely Image Classification and \gls{cbir}.
-% TODO add some more intro to the bg chapter?
+% TODO [?] add some more intro to the bg chapter
 The chapter is organized as follows.
 In \ref{sec:back:deep-learning}, we provide the reader with a quick introduction to \acrlong{dl}, focusing on deep neural networks for image and text processing and gradient-based optimization.
 In \ref{sec:back:image-classification}, an introduction to image classification using \acrfullpl{cnn} is presented together with a review of successful approaches in this field.
@@ -62,8 +62,8 @@ In \ref{sec:back:image-retrieval}, we describe the main aspects of \gls{cbir} ba
 %For historical reasons, \gls{dl} models are also referred to as \emph{\glspl{dnn}} due to the resemblance of layers and their organization to the way neurons are interconnected and organized in the mammalian brain~\cite{}.
 % TODO add reference to similarities to mammalian brain (in addition to perceptron?)
 Inspired by nature, \acrlong{dl} models are often implemented as \glspl{dnn} --- a computational model comprised by multiple layers of processing units that mimics the structure and the interconnection of neurons in the mammalian brain~\cite{rosenblatt1958perceptron}.
-Recent years have witnessed a rapid rise in the use of \gls{dl} approaches to solve complex tasks, reaching even super-human performance in perceptual~\cite{he2015delving}, control~\cite{mnih2015human}, and planning~\cite{silver2016mastering} activities. % TODO add reasoning?
-Interestingly, the representations learned with \gls{dl} methodologies resemble the structures of signals in the neocortex build by our brain to implement intelligent behaviors, suggesting strong parallelism between the two domains~\cite{cadieu2014deep,kubilius2016deep}. % TODO dire meglio?
+Recent years have witnessed a rapid rise in the use of \gls{dl} approaches to solve complex tasks, reaching even super-human performance in perceptual~\cite{he2015delving}, control~\cite{mnih2015human}, and planning~\cite{silver2016mastering} activities. % TODO [?] add reasoning
+Interestingly, the representations learned with \gls{dl} methodologies resemble the structures of signals in the neocortex build by our brain to implement intelligent behaviors, suggesting strong parallelism between the two domains~\cite{cadieu2014deep,kubilius2016deep}. % TODO [?] dire meglio
 
 \acrlongpl{dnn} are organized as a sequence (or more generally a graph) of non-linear parametric transformations, known as \emph{layers}, that acts like features extractors;
 starting from raw data, each layer searches for useful patterns in its input and provides a higher-level representation of the data to the next layer.
@@ -367,7 +367,7 @@ With abuse of notation, the complete \gls{lstm} formulation can be compactly wri
 \end{align}
 %
 where $\W \in \R^{(n+m) \times 4p}$ summarizes all the parameters of all the fully-connected layers forming the gates.
-% TODO: [FIG] lstm?
+% TODO [?] [FIG] lstm
 A depiction of the \gls{lstm} cell is also available in \ref{fig:back:lstm}.
 
 \begin{figure}
@@ -623,8 +623,7 @@ Finally, moments estimates are used to formulate the \gls{adam} update rule
 where $\m^{(k)}_i$ and $\hat{\v}^{(k)}_i$ are the first and second moments estimates of the gradients corresponding to parameter $\theta_i$, and $\epsilon$ is a small value to prevent division by zero.
 Commonly used values for hyperparameters are $\beta_1 = 0.9$, $\beta_2 = 0.999$, and $\epsilon = 10^{-8}$, as suggested by the authors.
 
-
-% TODO move dropout?
+% TODO? move dropout
 \paragraph{Dropout}
 Regularization is not limited to regularization loss terms only.
 \emph{Dropout}~\cite{hinton2012improving} is a common regularization technique for \glspl{dnn} which consists in deactivatiting (drop) some neurons of an internal layer (by setting their activations to zero) during the training phase and thus enabling the back-propagation of the error only in the survived neurons.
@@ -776,7 +775,7 @@ On the \gls{roc} plot, this threshold setting corresponds to the point where the
 \label{subsec:back:classif-relwork}
 
 \paragraph{Before \acrlong{dl}}
-% TODO divide f in features and classifier, manually (?)
+% TODO [?] divide f in features and classifier, manually
 Traditional approaches to image classification required to design the classifier $f(\cdot)$ manually.
 % ESWA: The traditional approaches to the classification problem use ad-hoc functions to extract from an image specific features that are considered to be indicative of certain objects.
 In particular, hand-crafted features detectors and descriptors --- such as \acrshort{sift}~\cite{lowe2004distinctive}, \acrshort{surf}~\cite{bay2006surf}, \acrshort{orb}~\cite{rublee2011orb}, \acrshort{mser}~\cite{matas2004robust}, KAZE~\cite{alcantarilla2012kaze} to cite some --- were employed to extract information from the image considered indicative for the presence of certain objects.
@@ -788,8 +787,8 @@ Shallow classifiers based on \gls{ml} methods --- such as logistic regressors~\c
 However, manually engineered solutions are feasible for very specific problems --- such as image stitching~\cite{brown2007automatic} and 3d reconstruction~\cite{schonberger2016structure} --- where the conditions are well known and modeled.
 In general, thinking of features that are invariant to transformations, reliable for many types of objects, and robust to noise and other exogenous factors is often very difficult and time-consuming.
 % ESWA: it is often very complex to develop robust and reliable feature detectors and descriptors by hand.
-% TODO better definition of VSA
-As an example, consider the problem of visual sentiment analysis (further discussed in \ref{ch:cross-media}), which, in a nutshell, consists of detecting the emotions conveyed by images.
+% TODO? better definition of VSA
+As an example, consider the problem of visual sentiment analysis (further discussed in \ref{ch:cross-media}), which, in a nutshell, consists of detecting emotions conveyed by images.
 Manually defining a good set of features to extract from images to solve this task is a cumbersome process and usually leads to suboptimal solutions.
 
 \paragraph{ImageNet Challenge and the Deep Learning era}
@@ -823,7 +822,7 @@ The main advantage of this kind of approach is its general applicability even to
 Recent results in the \gls{ilsvrc} are striking evidence of the success of \gls{dl} methods in image classification.
 \gls{ilsvrc} is an annual challenge in which competitors are asked to recognize generic objects in images and classify them accordingly choosing from a vast label space (in the order of 1,000 labels).
 Before \gls{dl} methods were applied in this competition, leading solutions were based on combinations and aggregation of hand-made local features~\cite{harada2012graphical,akata2014good,sanchez2011high,mensink2012metric}.
-Interestingly, in the edition of the challenge occurred in 2012, a \gls{dl} method based on \acrlongpl{cnn}~\cite{krizhevsky2012imagenet} outperformed non-\gls{dl} solutions by a large margin ($16.4 \%$ top-5 error vs.\ $26.2 \%$ of the second place, see \ref{tab:ilsvrc12-results}), marking the beginning of the \gls{dl}-era in the computer vision field.
+Interestingly, in the edition of the challenge occurred in 2012, a \gls{dl} method based on \acrlongpl{cnn}~\cite{krizhevsky2012imagenet} outperformed non-\gls{dl} solutions by a large margin (16.4\% top-5 error vs.\ 26.2\% of the second place, see \ref{tab:ilsvrc12-results}), marking the beginning of the \gls{dl}-era in the computer vision field.
 Since then, we experienced an exponential growth of interest by research communities in \gls{dl} technologies.
 While the theories and concepts behind \gls{dl} approaches --- such as artificial neural networks and \acrlong{ml} --- were already studied and formalized in the past~\cite{rosenblatt1958perceptron,rumelhart1985learning,lecun1989backpropagation,widrow199030}, in the last years, the combination of different factors has allowed \acrlong{dl} to flourish.
 Most importantly, vast amounts of data --- collected and labeled exploiting Web technologies and crowd-sourcing --- provided the supervision needed by very deep models having millions of parameters to properly train, and modern hardware and accelerators --- such as \glspl{gpu} --- provided the computing power needed to speed up training and evaluation procedures.
@@ -856,7 +855,7 @@ trained feature detectors in deep models tend to be difficult to comprehend and 
 To alleviate this problem, \citet{zeiler2014visualizing} proposed a visualization technique based on deconvolutions to shed light on the representations learned by intermediate convolutional layers.
 \ref{fig:back:filter-visualization} shows an example of the proposed approach applied to a trained model.
 The usage of these visualizations lead the authors to debug the AlexNet architecture and to suggest a new one, informally called \emph{ZFNet} in the research community, which incorporates some modifications, namely the reduction of the size and stride of the filters of the first layer, that enables the model to learn a more balanced set of feature extractors.
-This improved architectures won the \gls{ilsvrc}'13 classification task with a $11.7 \%$ top-5 error.
+This improved architectures won the \gls{ilsvrc}'13 classification task with a 11.7\% top-5 error.
 
 \begin{figure}
     \centering
@@ -873,7 +872,7 @@ The authors proposed two different architectures: a \emph{fast} model having the
 \citet{simonyan2014very} of the \gls{vgg} of Oxford University studied the effects of the depth of convolutional networks for large-scale image classification.
 Employing small 3$\times$3 kernels for convolutions allowed them to stack more layers while keeping roughly the same amount of parameters.
 They proposed deeper architectures comprised of up to 19 learnable layers and demonstrated that the increased depth of \glspl{cnn} is beneficial for the classification accuracy.
-Their best-performing network composed of 19 layers achieved the second place in the \gls{ilsvrc}'14 classification task with $7.3 \%$ a top-5 error.
+Their best-performing network composed of 19 layers achieved the second place in the \gls{ilsvrc}'14 classification task with 7.3\% a top-5 error.
 In this work, we will refer to the best-performing architectures, namely the 16-layer and 19-layer ones, respectively as \gls{vgg}-16 and \gls{vgg}-19.
 
 % Girshick et al., 2014
@@ -885,7 +884,7 @@ Moreover, 1x1 convolutions and max-pooling operations are used as a way to reduc
 The usage of this module permitted to increase both the width and the depth of networks without adding a substantial computational overhead.
 The first network architecture leveraging Inception modules proposed by the authors, called GoogLeNet, is composed by 19 learnable layers, but it has 12 times fewer parameters with respect to AlexNet while being significantly more accurate, as demonstrated by its first place in the \gls{ilsvrc}'14 classification leaderboard.
 
-% TODO add BatchNorm paper? together with DropOut \cite{ioffe2015batch}
+% TODO add BatchNorm paper? together with DropOut~\cite{ioffe2015batch}
 
 \paragraph{Residual Networks}
 Despite having more capacity, deeper models are more prone to optimization problems.
@@ -898,7 +897,7 @@ Residual learning can be easily implemented in \gls{dcnn} by adding skip-connect
 this kind of architectures are called \glspl{resnet}.
 The authors proposed multiple \glspl{resnet} with an increasing number of layers.
 Due to its increased depth, the number of filters of convolution layers can be reduced, requiring a low computational budget.
-\gls{resnet}-152 --- their best-performing 152-layer model --- won the \gls{ilsvrc}'15 classification task with a top-5 error of $3.57 \%$, while having a computation cost of roughly 11 billion FLOPs (still lower than the 19 billion FLOPs of \gls{vgg}-19).
+\gls{resnet}-152 --- their best-performing 152-layer model --- won the \gls{ilsvrc}'15 classification task with a top-5 error of 3.57\%, while having a computation cost of roughly 11 billion FLOPs (still lower than the 19 billion FLOPs of \gls{vgg}-19).
 On smaller datasets, such as CIFAR-10 and CIFAR-100, the authors experimented with up to 1,000-layers networks when overfitting occurred.
 The extended generalization power of deeper representations lead these architectures to win in many challenging vision competitions, such as the \gls{ilsvrc} 2015 classification, detection and localization tasks, and the \acrshort{coco} 2015 detection and segmentation tasks.
 
@@ -916,7 +915,7 @@ In a nutshell, an SE block is designed as a gating function that weights and rec
 a \emph{squeeze} operation aggregates feature maps in the spatial dimensions, and the following \emph{excitation} operation relies on this information to produce the weights for recalibration via a per-channel sigmoid function;
 feature maps are then multiplied by this set of weights to obtain the recalibrated output.
 With a minimal additional computation cost, this block can be applied to convolutions or set of convolutions in \glspl{cnn} to improve their generalization power.
-A small ensemble of SENet-154 --- a modified version of a ResNeXt-152 network~\cite{xie2017aggregated} equipped with SE blocks --- won the first place in the \gls{ilsvrc}'17 classification challenge with a top-5 error of $2.25 \%$.
+A small ensemble of SENet-154 --- a modified version of a ResNeXt-152 network~\cite{xie2017aggregated} equipped with SE blocks --- won the first place in the \gls{ilsvrc}'17 classification challenge with a top-5 error of 2.25\%.
 
 % ESWA :
 % A Deep Learning approach particularly effective for vision tasks exploits Convolutional Neural Networks (CNN) (Krizhevsky et al., 2012; Simonyan & Zisserman, 2014; Girshick et al., 2014).
@@ -950,37 +949,34 @@ We indicate as \acrfull{cbir} the task of retrieving from a (potentially large) 
 In general, it provides an orthogonal access method to a large imagery corpus which is solely based on the visual content of images.
 
 \begin{figure}
-    % TODO change "Represent." in CBIR figure
     \includegraphics[width=\linewidth]{figures/cbir}
     \caption{General structure of a \acrfull{cbir} system. Round rectangles indicate inputs or outputs of the system.}
     \label{fig:back:cbir}
 \end{figure}
 The general structure of a \gls{cbir} system is depicted in \ref{fig:back:cbir};
-in its core, it consists of an off-line indexing stage and an on-line query stage, which include different steps such as generating a representation for both database images and queries, indexing, and scoring images~\cite{zhou2017recent}.
+in its core, it consists of an offline indexing stage and an online query stage, which include different steps such as generating a representation for both database images and queries, indexing, and scoring images~\cite{zhou2017recent}.
 
 % image representation
-In the off-line stage, the image database from which we want to retrieve elements is first transformed to represent semantic concepts present in images in a compact and uniform fashion (\emph{Image Representation}).
+In the offline stage, the image database from which we want to retrieve elements is first transformed to represent semantic concepts present in images in a compact and uniform fashion (\emph{Image Representation}).
 Most of the existing approaches to \gls{cbir} are feature-based;
 starting from raw pixels, the content of an image is encoded in a compact numerical representation, commonly called \emph{feature vector}, on which we rely to assess similarity between images.
 Image descriptors are then indexed to enable fast and effective retrieval on large-scale scenarios (\emph{Image Indexing}), and the output of this phase is an indexed database of feature vectors representing our initial collection.
 
 % query formulation
-In the on-line phase, the user first formulates a query to inject in the system its concept of the content to be retrieved.
+In the online phase, the user first formulates a query to inject in the system its concept of the content to be retrieved.
 Different paradigms can be used to provide the query.
 The simplest one is the \emph{query-by-example} paradigm, in which the user provides an image similar to the ones to be retrieved.
 However, more complex paradigms are also possible, such as query by tag, sketch, color map, etc.
 In this work, we will also explore \emph{cross-modal} image retrieval, i.e.,  the case in which the query comes from a modality different from images (e.g., a textual description).
 Once the query has been formulated, the system must map it in the feature space used to represent the images in the search collection (\emph{Query Representation}).
 This stage is usually strongly coupled with the Image Representation one.
-For the query-by-example paradigm, Image and Query Representation phases are identical and shared in both the on-line and off-line stages, since the image given as query can be transformed and represented the same way as a database image.
-% TODO? [REF] section on cross-modal
-For other paradigms, this step may be arbitrarily complex depending on the query modality;
+For the query-by-example paradigm, Image and Query Representation phases are identical and shared in both the online and offline stages, since the image given as query can be transformed and represented the same way as a database image.
+For other paradigms, this step may be arbitrarily complex depending on the query modality, but usually enables advanced useful search possibilities, such as cross-media image retrieval that will be discussed in \ref{ch:text2vis};
 we refer the interested reader to~\cite{zhou2017recent} for a more detailed discussion on the subject.
-%and we will be discussed later in \ref{subsec:back:cross-modal}.
 The query mapped in the representation space can be finally compared to images in the search collection through a scoring function, that produces a rank of images to be shown to the user as results of the retrieval process (\emph{Image Scoring}).
 For scoring large collections, the system leverages the pre-built database index to perform this operation efficiently.
 
-\acrlong{cbir} presents two intrinsic problematics in its structure, known in the literature as the \emph{intention gap} and the \emph{semantic gap} \cite{datta2008image}.
+\acrlong{cbir} presents two intrinsic problematics in its structure, known in the literature as the \emph{intention gap} and the \emph{semantic gap}~\cite{datta2008image}.
 
 With intention gap, we refer to the difficulty of a user to precisely express the content to be retrieved given the query paradigm provided by the system;
 the \emph{Query Formulation} and \emph{Query Representation} modules are responsible for minimizing this gap.
@@ -1071,7 +1067,7 @@ The obtained representations outperform methods based on local features and spat
 \label{subsec:back:ir-metrics}
 The image retrieval problem is not so different from classical textual information retrieval problem, thus it borrows from it much of the terminology, formulations and evaluation metrics.
 % accuracy, computational cost, memory consumption
-The main aspects to be considered in the evaluation of a retrieval system are its accuracy and its computational \& memory consumption in both the off-line and on-line stages.
+The main aspects to be considered in the evaluation of a retrieval system are its accuracy and its computational \& memory consumption in both the offline and online stages.
 While measuring computational and memory resources in this scenario is straightforward, researches dedicated multiple metrics to measure the accuracy of a retrieval system.
 In the following paragraphs, we will introduce the notation and some of the conventionally used evaluation metrics.
 

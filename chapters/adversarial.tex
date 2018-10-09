@@ -14,10 +14,10 @@
 
 As we can notice from the previous chapters, deep neural networks are more and more pervading an increasing number of computer vision applications.
 Noteworthy applications not considered in this thesis include image tagging~\cite{li2016socializing}, video captioning~\cite{baraldi2016hierarchical}, face verification~\cite{schroff2015facenet,parkhi2015deep}, super resolution~\cite{dong2016image}, just to name a few.
-As the spread of \gls{dl}-based solution increases, also its adoption in sensible applications --- such as image forensics \cite{tuama2016camera,bayar2016deep,zhang2016image,amerini2017localization}, spam/malware detection \cite{dahl2013large}, and self-driving cars \cite{cirecsan2012multi} --- increases accordingly.
+As the spread of \gls{dl}-based solution increases, also its adoption in sensible applications --- such as image forensics~\cite{tuama2016camera,bayar2016deep,zhang2016image,amerini2017localization}, spam/malware detection~\cite{dahl2013large}, and self-driving cars~\cite{cirecsan2012multi} --- increases accordingly.
 
 Unfortunately, researchers shown that machine learning models, including deep learning methods, are highly vulnerable to adversarial examples~\cite{klarreich2016learning,goodfellow2014explaining,szegedy2013intriguing,papernot2016practical}.
-An \emph{adversarial example} is a malicious input sample typically created applying a small but intentional perturbation such that the attacked model misclassifies it with high confidence \cite{goodfellow2014explaining}.
+An \emph{adversarial example} is a malicious input sample typically created applying a small but intentional perturbation such that the attacked model misclassifies it with high confidence~\cite{goodfellow2014explaining}.
 In most of the cases, the difference between the original and perturbed image is imperceptible to a human observer.
 Moreover, adversarial examples created for a specific neural network have been shown to be able to
 fool different models with different architecture and/or trained on similar but different data~\cite{szegedy2013intriguing,papernot2016practical}.
@@ -25,8 +25,8 @@ These properties are known as cross-model and cross-dataset generalization of ad
 
 It becomes crucial to understand how adversarial actions are perpetrated in order to consequently build up solutions to be robust against such attacks.
 Most of the effort of the research community in defending from adversarial attacks had gone into increasing the model robustness to adversarial examples via enhanced training strategies, such as adversarial training~\cite{goodfellow2014explaining,papernot2016limitations} or defensive distillation~\cite{papernot2016distillation,grosse2016adversarial}.
-%Fast adversarial generation methods \cite{goodfellow2014explaining,papernot2016limitations} enable simple strategies such as adversarial training, that is the inclusion of adversarial examples generated on-the-fly in the training set.
-%Other approaches \cite{papernot2016distillation,szegedy2013intriguing} suggest to reduce or mask the classifier's decision surface and reduce the magnitude of the gradients towards adversarial points an attacker would exploit, or even completely mask the gradients using non-differentiable classifiers, such as kNNs.
+%Fast adversarial generation methods~\cite{goodfellow2014explaining,papernot2016limitations} enable simple strategies such as adversarial training, that is the inclusion of adversarial examples generated on-the-fly in the training set.
+%Other approaches~\cite{papernot2016distillation,szegedy2013intriguing} suggest to reduce or mask the classifier's decision surface and reduce the magnitude of the gradients towards adversarial points an attacker would exploit, or even completely mask the gradients using non-differentiable classifiers, such as kNNs.
 However, studies have shown~\cite{papernot2016practical} that those techniques only increase the cost of adversarial example generation without completely solving the problem.
 % - till now research tried to train models which are robust to this type of attacks, while no much work on detecting adversarial images
 A parallel strategy recenly studied is to defend from adversarial attacks by distinguishing adversarial inputs from authentic inputs.
@@ -80,10 +80,10 @@ The research presented in this chapter was published in~\cite{carrara2017detecti
 One of the first works exploring adversarial examples for image classifiers implemented with convolutional neural network is the one of \citet{szegedy2013intriguing}.
 The authors used a quasi-newtonian optimization method, namely L-BFGS, to find an image $\x_{adv}$ close to an original one $\x$ in terms of L2 distance, yet differently classified.
 They also have shown that the obtained adversarial images were also affecting different models trained on the same training set (\emph{cross-model generalization}) and also models trained with other yet similar training sets (\emph{cross-training set generalization}).
-Cross-model and cross-training set generalization properties of adversarial examples are also confirmed in \cite{tabacof2016exploring}, where the authors explored the pixel space around adversarial images moving in random directions applying different kinds of noise.
+Cross-model and cross-training set generalization properties of adversarial examples are also confirmed in~\cite{tabacof2016exploring}, where the authors explored the pixel space around adversarial images moving in random directions applying different kinds of noise.
 They show that adversarial images are not isolated, spurious points, but they occupy large regions of the pixel space that mislead models with similar classification boundaries.
 While multipletheories has been proposed, the causes of the adversarial vulnerability of \gls{ml} models remain an open question.
-Early explanations suggested that it is due to non-linearity of a deep neural networks and over-fitting \cite{tabacof2016exploring}, while \citet{goodfellow2014explaining} argued that the primary cause of neural networks' vulnerability to adversarial perturbation is their linear nature.
+Early explanations suggested that it is due to non-linearity of a deep neural networks and over-fitting~\cite{tabacof2016exploring}, while \citet{goodfellow2014explaining} argued that the primary cause of neural networks' vulnerability to adversarial perturbation is their linear nature.
 In particular, the alignment between adversarial perturbations and weights in a high-dimensional dot product can cause high spourious activations even if small perturbations are given as input.
 
 % \paragraph{Crafting algorithms}
@@ -95,13 +95,13 @@ this resulted in adversarial images with an improved transferability among model
 % attacks we did not test but relevant to the field
 Other attack strategies aim to find smaller perturbations using a higher computational cost.
 \citet{nguyen2015deep} used evolutionary algorithms and gradient ascent optimization to produce fooling images which are unrecognizable to human eyes but are classified with high confidence by \glspl{dnn}.
-% \cite{papernot2016limitations} used forward derivatives to compute adversarial saliency maps that show which input feature have to be increased or decreased to produce the maximum perturbation of the last classification layer towards a chosen adversarial class.
+%~\cite{papernot2016limitations} used forward derivatives to compute adversarial saliency maps that show which input feature have to be increased or decreased to produce the maximum perturbation of the last classification layer towards a chosen adversarial class.
 % JSMA
 In~\cite{papernot2016limitations}, a Jacobian-based saliency map is computed and used to greedily identify the best pixel to modify in order to steer the classification to the desired output.
 % They also derived different metrics from adversarial saliency maps, such as \emph{hardness}, \emph{adversarial distance} and \emph{robustness}, to measure the ability of a model to cope with adversarial attacks.
 % DeepFool
 In~\cite{moosavi2016deepfool}, the classifier is locally linearized and a step toward the simplified classification boundary is taken, repeating the process until a true adversarial is reached.
-% In \cite{moosavi2016universal}, Moosavi et al. presented an algorithm to find image-agnostic (universal) adversarial perturbations for a given trained model, that are able fool the classifier with high probability when added to any input. % The authors also observed that universal adversarial perturbations show cross-model and cross-dataset generalization properties.
+% In~\cite{moosavi2016universal}, Moosavi et al. presented an algorithm to find image-agnostic (universal) adversarial perturbations for a given trained model, that are able fool the classifier with high probability when added to any input. % The authors also observed that universal adversarial perturbations show cross-model and cross-dataset generalization properties.
 % Carlini Wagner
 \citet{carlini2016towards} relied on a modified formulation of the adversarial optimization problem initially formalized by \citet{szegedy2013intriguing}.
 They move the misclassification constraint in the objective function by adding a specifically designed loss term, and they change the variable of the optimization to ensure the obtained image is valid without enforcing the box constraint;
@@ -114,7 +114,7 @@ In fact, the authors successfully performed adversarial attacks to remotely host
 % - defenses
 \paragraph{Defensive Strategies}
 In the recent literature, a considerable amount of work has been dedicated to increasing the robustness of the attacked models to adversarial inputs.
-In \cite{szegedy2013intriguing}, the authors suggest to add a regularization term to the training loss based on the Lipschitz upper bound, that resembles a L2 regularization, to limit the magnitude of the changes in the activations of a network caused by perturbations of the input.
+In~\cite{szegedy2013intriguing}, the authors suggest to add a regularization term to the training loss based on the Lipschitz upper bound, that resembles a L2 regularization, to limit the magnitude of the changes in the activations of a network caused by perturbations of the input.
 \citet{gu2014towards} shown that denoising autoencoders can remove substantial amounts of the adversarial noise.
 However, when stacking the autoencoders with the original neural network, the resulting network can again be attacked by new adversarial examples with even smaller distortion.
 Thus, the authors proposed Deep Contractive Network, a model with an end-to-end training procedure that includes a smoothness penalty.
@@ -132,7 +132,7 @@ Other defenses aim at removing the adversarial perturbation via image processing
 Despite performing well on specific attacks with very stringent threat models, they usually fail on white-box attacks~\cite{he2017adversarial}.
 
 % - detection
-Detection of adversarial examples is still an open problem \cite{papernot2016limitations}.
+Detection of adversarial examples is still an open problem~\cite{papernot2016limitations}.
 In this direction, \citet{gong2017adversarial,metzen2017detecting} employed addidional sub-networks to detect whether the input is an adversarial example.
 However, the proposed sub-network is still vulnerable to adversarial attacks, and a more complicate adversarial training procedure is needed to increase the robustness of the whole system.
 \citet{feinman2017detecting,grosse2017statistical} relied on statistical tests for estimating the authenticity of a batch of samples by comparing against the disrtibution describing authentic inputs.
@@ -161,7 +161,7 @@ An adversarial perturbation is found by solving \ref{eq:adv:box-optim} using the
 A first feasible value of $C$ is found with a coarse grid search and then tuned with a binary search.
 
 \paragraph{\acrlong{fgsm}~\cite{goodfellow2014explaining}}
-% This algorithm was first presented in \cite{goodfellow2014explaining}.
+% This algorithm was first presented in~\cite{goodfellow2014explaining}.
 In the \acrfull{fgsm}, the adversarial perturbation is proportional to the sign of the gradient back-propagated from the output to the input layer.
 Mathematically speaking, let $\Theta$ the parameters of the model, $\x$ its input, $\y$ the targets (desired output) associated with $\x$, and $\L\( \x, \y, \Theta \)$ the loss function used to train the neural network.
 The cost function can be linearized around the current value of $\Theta$, obtaining an optimal max-norm constrained perturbation
@@ -199,7 +199,7 @@ A half-way scenario is the one with a \emph{limited-knowledge} adversary, that i
 
 In this preliminary work, we focus on the \emph{zero-knowledge} scenario and plan to test our approach in the other scenarios in future work.
 
-% A preliminary version of the method we are proposing has been presented in \cite{carrara2017detecting}.
+% A preliminary version of the method we are proposing has been presented in~\cite{carrara2017detecting}.
 %We extended that work taking into consideration different intermediate layers form which extract deep features to perform the detection.
 %This led to the analysis of the robustness of the detection when varying different combinations of type of adversarial attacks and deep features, uncovering interesting aspects about the depth-wise transformation of the information represented in the network.
 
@@ -212,14 +212,14 @@ In this preliminary work, we focus on the \emph{zero-knowledge} scenario and pla
 % The main skill of \glspl{dnn} is the ability to take a raw input and transform it several times into representations each at a higher, slightly more abstract level, until the final output encodes the information needed to easily solve a given task.
 %
 
-%Deep learning methods are ``representation-learning methods with multiple levels of representation, obtained by composing simple but non-linear modules that each transform the representation at one level (starting with the raw input) into a representation at a higher, slightly more abstract level'' \cite{lecun2015deep}.
+%Deep learning methods are ``representation-learning methods with multiple levels of representation, obtained by composing simple but non-linear modules that each transform the representation at one level (starting with the raw input) into a representation at a higher, slightly more abstract level''~\cite{lecun2015deep}.
 
-%Starting from 2012, deep learning has become state-of-the-art in image classification given the excellent results in ILSVRC challenges based on ImageNet  \cite{krizhevsky2012imagenet,sermanet2013overfeat,Simonyan14c,szegedy2015going,he2016deep}.
+%Starting from 2012, deep learning has become state-of-the-art in image classification given the excellent results in ILSVRC challenges based on ImageNet ~\cite{krizhevsky2012imagenet,sermanet2013overfeat,Simonyan14c,szegedy2015going,he2016deep}.
 %In the context of Content-Based Image Retrieval, deep learning architectures are used to generate high level features.
-%The relevance of the internal representation learned by the neural network during training have been proved by many recent works \cite{Bengio2013,lecun2015deep,amato2016yfcc100m,donahue2014decaf%,girshick2014rich}.
-%In particular, the activation produced by an image within the intermediate layers of a deep convolutional neural network can be used as a high-level descriptor of the image visual content \cite{sermanet2013overfeat,chandrasekhar2015practical,razavian2014cnn,amato2016yfcc100m, amato2016visual}.
+%The relevance of the internal representation learned by the neural network during training have been proved by many recent works~\cite{Bengio2013,lecun2015deep,amato2016yfcc100m,donahue2014decaf%,girshick2014rich}.
+%In particular, the activation produced by an image within the intermediate layers of a deep convolutional neural network can be used as a high-level descriptor of the image visual content~\cite{sermanet2013overfeat,chandrasekhar2015practical,razavian2014cnn,amato2016yfcc100m, amato2016visual}.
 
-%In this work, we employed the image representations extracted using OverFeat~\cite{sermanet2013overfeat}, a well-known and successful deep convolutional network architecture that have been studied for the analysis of adversarial attacks to convolutional neural networks \cite{tabacof2016exploring}, and for which implementations of adversarial generation algorithms are publicly available (see \ref{sec:adv:experiments}).
+%In this work, we employed the image representations extracted using OverFeat~\cite{sermanet2013overfeat}, a well-known and successful deep convolutional network architecture that have been studied for the analysis of adversarial attacks to convolutional neural networks~\cite{tabacof2016exploring}, and for which implementations of adversarial generation algorithms are publicly available (see \ref{sec:adv:experiments}).
 %Specifically, we used the Fast OverFeat network pre-trained on ImageNet\footnote{Code and weights for OverFeat are publicly available at \url{https://github.com/sermanet/OverFeat}}, and we selected the activations of the \emph{pool5} layer as deep features for images.
 
 \section{Detecting adversarial examples}
@@ -228,7 +228,7 @@ In this preliminary work, we focus on the \emph{zero-knowledge} scenario and pla
 %Even if adversarial images activate the last layers of the \gls{dnn} very differently than the original images, the corresponding activations of the lower layers, that is the deep features of an original and its adversarial image, still contains lower level informations common to both inputs.
 %The internal representations of the \gls{dnn}, corresponding to the original and its adversarial image, diverge proceeding toward the output of the network. % not confirmed, hedging needed..
 
-% Adversarial images are not isolated, spurious points of the pixel space near original images. Instead they are known to occupy large and compact regions of the input space near classification boundaries \cite{tabacof2016exploring}.
+% Adversarial images are not isolated, spurious points of the pixel space near original images. Instead they are known to occupy large and compact regions of the input space near classification boundaries~\cite{tabacof2016exploring}.
 
 We propose to detect adversarial examples analyzing the representation learned in the hidden layers (deep features) of the fooled convolutional neural networks.
 %Being deep learning a subset of representation learning methods, we expect the learned representation to be more robust than the final classification to adversarial examples.
@@ -306,7 +306,7 @@ Please note that we do not rely on additional models or data other than the fool
 An overview of our complete pipeline is depicted in \ref{fig:adv:overview}.
 %only rely on training data and we use the very same fooled neural network for extracting the deep features.
 
-% As better detailed in next section, we used the OverFeat fast network \cite{sermanet2013overfeat} pre-trained on ImageNet \gls{ilsvrc}'12 as \gls{dnn}. % considering \emph{pool5} as deep features.
+% As better detailed in next section, we used the OverFeat fast network~\cite{sermanet2013overfeat} pre-trained on ImageNet \gls{ilsvrc}'12 as \gls{dnn}. % considering \emph{pool5} as deep features.
 % We performed tests using kNN classifiers defined on the \emph{pool5}, \emph{fc6}, and \emph{fc7} deep features.
 
 %To decide whether an image being classified by OverFeat is an adversarial example or not, we used a kNN classifier choosing the \gls{ilsvrc}'12 training set as search set and the euclidean distance between deep features as the distance function $d(\cdot,\cdot)$.
@@ -336,7 +336,7 @@ Therefore, we tested our method on the network used as baseline in the competiti
 In the experiments reported in this section, we selected the \emph{OverFeat-Fast} \gls{dnn}~\cite{sermanet2013overfeat} given that this network (trained network on \gls{ilsvrc}'12) was used in the papers in which both L-BFGS and \acrlong{fgsm} (see \ref{sec:adv:algos}) were presented.
 
 As reported in \ref{sec:adv:detection}, our approach performs a kNN similarity search over the images that were used for training the attacked \gls{dnn} (the \gls{ilsvrc}'12 training set).
-%We used the \gls{ilsvrc}'12 dataset \cite{ILSVRC15} as a labeled set $X$ for the kNN classifiers and to generate adversarials images.
+%We used the \gls{ilsvrc}'12 dataset~\cite{ILSVRC15} as a labeled set $X$ for the kNN classifiers and to generate adversarials images.
 %It is composed by a training set of \textasciitilde 1.3M labeled images belonging to 1000 different classes (each having roughly between 900 and 1300 images), and a validation set containing 50 images for each of the 1000 classes, for a total of 50k labeled images.
 %\paragraph{Image Selection}
 For generating adversarial examples, we selected images from the \gls{ilsvrc}'12 validation set.
@@ -460,7 +460,7 @@ As a positive side-effect, we also discard around $10\%$ of images the \gls{dnn}
 The low threshold values reveal that while the DW-kNN score would not be effective in classifying the images, values below $0.003$ are unlikely for authentic images.
 
 The same results can be observer in the score densities reported in \ref{fig:adv:score-densities}, in which emerges a distinction between the score densities of adversarial images and the ones of authentic images.
-Some simple statistics on those densities (such as the mean) could be computed on-line in the system hosting the model to isolate a particular source of adversarial examples, hence denying the access to the service to an attacker.
+Some simple statistics on those densities (such as the mean) could be computed online in the system hosting the model to isolate a particular source of adversarial examples, hence denying the access to the service to an attacker.
 
 %In this paper, we focused on detecting individual adversarial examples. However, the results show that
 %identifying as authentic more than $98\%$ of the images.

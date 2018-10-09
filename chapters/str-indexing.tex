@@ -91,8 +91,8 @@ Also in this case, although authors claim that their BoW-based representation is
 An approximate nearest neighbor algorithms based on \acrfull{pq}, which exploits an inverted index is presented in~\cite{jegou2011product}.
 In \gls{pq}, the original vector is divided into $M$ sub-vectors which are then independently quantized.
 A codebook is learned via $k$-means for each of the $M$ sub-division, and each sub-vector is compressed by storing the nearest centroid index.
-% In particular, the FAISS library \cite{johnson2017billion} is further improvement of the above approach, which is an implementation of PQ-compressed inverted indexes, denoted IVFPQ.
-In particular, we focus on \gls{pq}-compressed inverted indexes, denoted IVFPQ, which are implemented in the open source FAISS library \cite{johnson2017billion}.
+% In particular, the FAISS library~\cite{johnson2017billion} is further improvement of the above approach, which is an implementation of PQ-compressed inverted indexes, denoted IVFPQ.
+In particular, we focus on \gls{pq}-compressed inverted indexes, denoted IVFPQ, which are implemented in the open source FAISS library~\cite{johnson2017billion}.
 In IVFPQ, the feature space is partitioned into $N$ Voronoi cells, each associated with a particular posting list of the inverted file.
 Each posting list contains the \gls{pq}-compressed difference between samples belonging to that cell and its centroid.
 When building the index, both the cell centroids and the \gls{pq}-compression codebooks have to be pretrained on a subset of the data.
@@ -152,13 +152,13 @@ $ n_i \in \mathbb{N}$                          & Number of elements in the $i$-t
 % XXX check if useful in background chapter
 % Recently, a new class of image descriptor, built upon Convolutional Neural Networks, have been used as an effective alternative to descriptors built using local features such as SIFT, ORB, BRIEF, etc.
 % CNNs have attracted an enormous interest within the Computer Vision community because of the state-of-the-art results achieved in challenging image classification tasks such as the ImageNet Large Scale Visual Recognition Challenge (\url{http://www.image-net.org}).
-% In computer vision, CNNs have been used to perform several tasks, including image classification, as well as image retrieval \cite{donahue2013decaf,babenko2014neural} and object detection \cite{girshick2014rich}, to cite some.
-% Moreover, it has been proved that the representations learned by CNNs on specific tasks (typically supervised) can be transferred successfully across tasks \cite{donahue2013decaf,razavian2014cnn}.
+% In computer vision, CNNs have been used to perform several tasks, including image classification, as well as image retrieval~\cite{donahue2013decaf,babenko2014neural} and object detection~\cite{girshick2014rich}, to cite some.
+% Moreover, it has been proved that the representations learned by CNNs on specific tasks (typically supervised) can be transferred successfully across tasks~\cite{donahue2013decaf,razavian2014cnn}.
 % The activation of neurons of specific layers, in particular the last ones, can be used as features to semantically describe the visual content of an image.
 
-%In order to extract Deep Features, we used a trained model publicly available for the popular Caffe framework \cite{jia2014caffe}. Many deep neural network models, in particular trained models, are available for this framework\footnote{\url{https://github.com/BVLC/caffe/wiki/Model-Zoo}} .
-%Among them, we chose the HybridNet for several reasons: first, its architecture is the very same of the famous AlexNet \cite{krizhevsky2012imagenet}; second, the HybridNet has been trained not only on the ImageNet subset used for ILSVRC competitions (as many others), but also on the Places Database \cite{zhou2014learning}; last, but not least, experiments conducted on various datasets demonstrate the good transferability of the learning \cite{zhou2014learning,chandrasekhar2015practical,azizpour2015generic}.
-%We decided to use the activation of the first fully connected layer, the fc6 layer, given the results reported on \cite{donahue2013decaf,babenko2014neural,chandrasekhar2015practical}.
+%In order to extract Deep Features, we used a trained model publicly available for the popular Caffe framework~\cite{jia2014caffe}. Many deep neural network models, in particular trained models, are available for this framework\footnote{\url{https://github.com/BVLC/caffe/wiki/Model-Zoo}} .
+%Among them, we chose the HybridNet for several reasons: first, its architecture is the very same of the famous AlexNet~\cite{krizhevsky2012imagenet}; second, the HybridNet has been trained not only on the ImageNet subset used for ILSVRC competitions (as many others), but also on the Places Database~\cite{zhou2014learning}; last, but not least, experiments conducted on various datasets demonstrate the good transferability of the learning~\cite{zhou2014learning,chandrasekhar2015practical,azizpour2015generic}.
+%We decided to use the activation of the first fully connected layer, the fc6 layer, given the results reported on~\cite{donahue2013decaf,babenko2014neural,chandrasekhar2015practical}.
 
 %The activations at the fc6 layer is a vector of 4,096 of floats. Generally, the rectified linear unit (ReLU) is used to bring to zero all negative activation values. In this way, feature vectors contain only values greater or equal to zero. Feature vectors are sparse so that on average about 75\% of elements are zero.
 %\noindent {\large \textbf{R-MAC Features}}\\
@@ -166,16 +166,16 @@ $ n_i \in \mathbb{N}$                          & Number of elements in the $i$-t
 %\label{sec:rmacfeatures}
 % Recently, image descriptors built upon activations of convolutional layers
 % have shown brilliant results in image instance retrieval
-% \cite{razavian2014visual, babenko2015aggregating, tolias2015particular}.
+%~\cite{razavian2014visual, babenko2015aggregating, tolias2015particular}.
 
 
-%Tolias et al. \cite{tolias2015particular} proposed the R-MAC (Regional Maximum Activations of Convolutions) feature representation, which encodes and aggregates several regions of the image in a dense and compact global image representation.
+%Tolias et al.~\cite{tolias2015particular} proposed the R-MAC (Regional Maximum Activations of Convolutions) feature representation, which encodes and aggregates several regions of the image in a dense and compact global image representation.
 %To compute an R-MAC feature, an input image is fed to a fully convolutional network pre-trained on ImageNet.
 %The output of the last convolutional layer is max-pooled over different spatial regions at different position and scales, obtaining a feature vector for each region.
 %These vectors are then $\ell_2$-normalized, PCA-whitened, $\ell_2$-normalized again, and finally aggregated by summing them together and $\ell_2$-normalizing the final result.
 %The obtained representation is an effective aggregation of local convolutional features at multiple position and scales that it can be compared with the cosine similarity function.
 
-% \cite{gordo2016end} built on the work of \cite{tolias2015particular}
+%~\cite{gordo2016end} built on the work of~\cite{tolias2015particular}
 % and inserted the R-MAC feature extractor in an end-to-end differentiable
 % pipeline in order to learn a representation optimized for visual instance
 % retrieval through back-propagation.
@@ -186,13 +186,13 @@ $ n_i \in \mathbb{N}$                          & Number of elements in the $i$-t
 % that outperforms methods based on costly local features and spatial geometry verification.
 
 % An additional performance boost is obtained using state-of-the-art deep
-% convolutional architectures, such as very deep residual networks \cite{he2015deep},
+% convolutional architectures, such as very deep residual networks~\cite{he2015deep},
 % and aggregating descriptors extracted at multiple resolutions. A multi-resolution R-MAC descriptor is obtained feeding the network with images at different resolutions and then aggregating the obtained representations by summing them together and then performing a final $l2$-normalization.
 
 
 %%LUCIA: ma questa parte non sarebbe meglio metterla negli esperimenti? qun mi sembra stoni un po'..
-% In our work, we used the ResNet-101 trained model provided by Gordo et al. \cite{gordo2016end} as an R-MAC feature extractor, which has been shown to achieve the best performance on standard benchmarks.
-% We extracted the R-MAC features using fixed regions at two different scales as proposed in \cite{tolias2015particular} instead of using the region proposal network.
+% In our work, we used the ResNet-101 trained model provided by Gordo et al.~\cite{gordo2016end} as an R-MAC feature extractor, which has been shown to achieve the best performance on standard benchmarks.
+% We extracted the R-MAC features using fixed regions at two different scales as proposed in~\cite{tolias2015particular} instead of using the region proposal network.
 %Defined $S$ as the size in pixel of the minimum side of an image, we computed the multi-resolution descriptor aggregating the ones extracted at $S=550$, $800$ and $1,050$, resulting in a dense $2048$-dimensional real-valued image descriptor.
 
 %%%%%%%%%%%%%%%%%%
@@ -221,7 +221,7 @@ where, by abuse of notation, we denote the space-separated concatenation of the 
 Thus, by construction, the integer values of the $i$-th component of the vector $\bb{f}_o$ is the frequency of the codeword $\tau_i$ in the text $\text{STR}_f(o)$.
 For example, given $\bb{f}_o=[1,3,0,2]$ and a codebook $\{\tau_1=``A'',\,  \tau_2=``B'',\, \tau_3=``C'', \,\tau_4=``D''\}$, we have $\text{STR}_f(o)=``A \, B \, B \, B \, D \, D''$.
 
-The rational of this approach is that a full-text search engine based on the \emph{vector space model} \cite{salton1986introduction} will generate a vector representation of the $\text{STR}_f(o)$ by counting the number of occurrences of the words in it, i.e., the term frequencies.
+The rational of this approach is that a full-text search engine based on the \emph{vector space model}~\cite{salton1986introduction} will generate a vector representation of the $\text{STR}_f(o)$ by counting the number of occurrences of the words in it, i.e., the term frequencies.
 In facts, these systems transform the text into vector representations using the well-known \gls{tf} scheme and practically use the dot product as a function of similarity between vectors.
 So, the abstract transformation $f(\cdot)$ represents a function that exactly generates the vectors that are internally represented by the search engine in the case of the simple term-weighting scheme.
 Using this representation, the search engine indexes the text by using inverted files, i.e., each object $o$ is stored in the posting lists associated to the codewords appearing in $\text{STR}_f(o)$ (\ref{fig:str:posting-list}).
@@ -286,7 +286,7 @@ The basic idea of permutation-based indexing techniques is to represent feature 
 Traditionally, the permutation representations are built using the identifiers of a set of reference objects as permutants.
 This approach is more general than the one we adopt in this article, as it admits as objects not only vectors but more generally metric objects for which there exists a distance function providing a measure of the closeness of two data objects.
 
-Formally, given a domain $\D$, a distance $d:\D\times \D\to \R+$, and a fixed set  $\{p_1\ldots p_n\}\subset\D$ of \emph{reference objects} (or \emph{pivots}), we define a permutation-based representation $\Pi_{o}$ (briefly \emph{permutation}) of an object $o\in \mathcal{D}$ as the sequence of pivots identifiers sorted in ascending order by their distance from $o$ \cite{amato2014mi,amato2014some}.
+Formally, given a domain $\D$, a distance $d:\D\times \D\to \R+$, and a fixed set  $\{p_1\ldots p_n\}\subset\D$ of \emph{reference objects} (or \emph{pivots}), we define a permutation-based representation $\Pi_{o}$ (briefly \emph{permutation}) of an object $o\in \mathcal{D}$ as the sequence of pivots identifiers sorted in ascending order by their distance from $o$~\cite{amato2014mi,amato2014some}.
 In other words, the permutation-based representation $\Pi_{o}=$ $[\Pi_{o}(1), \ldots , \Pi_{o}(n)]$ lists the pivot identifiers $\{1, 2, \ldots, n\}$ in an order such that $\forall\, i,j \in \{1,\ldots, n\}$
 \begin{equation}
 \begin{matrix}
@@ -305,7 +305,7 @@ The inverted representation of the permutations is often used in practice since 
 %Permutations are generally compared using Spearman rho, Kendall Tau, or Spearman Footrule distances.
 In this work, we use the Spearman rho, which can be defined as the Euclidean distances between inverted permutations: $S_\rho (\Pi_{o_1},\Pi_{o_2})=\ell_2(\Pi^{-1}_{o_1},\Pi^{-1}_{o_2})$.
 
-The original \gls{str} approach, \cite{gennaro2010approach} is based on a double transformation process.
+The original \gls{str} approach,~\cite{gennaro2010approach} is based on a double transformation process.
 First, each data object $o$ is transformed in a permutation vector (the inverted permutation) $\Pi^{-1}_{o}$ using the approach presented above, and then it transforms the permutation into a textual representation $t_o$.
 The textual representation is obtained by associating each pivot $p_i$ with an unique alphanumeric codeword $\tau_i$ and the permutation $\Pi^{-1}_{o}$ with a sequence of codewords.
 Specifically, the text $t_o$ is built in such a way that the occurrence of the codeword $\tau_i$ in it reflects the closeness of the pivot $p_i$ to the object $o$: the lower the value $\Pi^{-1}_{o}(i)$ the higher the frequency of the term $\tau_i$ in the document $t_o$.
@@ -329,8 +329,8 @@ Note that we have no theoretical guarantees that the transformation
 \Pi^{-1} : (\D,d) &\to (\mathbb{N}^n, \ell_2)\\
 o &\mapsto \Pi^{-1}_{o}
 \end{align}
-is order-preserving in a strict sense, however several works \cite{amato2014mi,gonzalez2008effective,esuli2009mipai} experimentally proved that the rankings obtained in the permutation space are good approximations of the rankings obtained in the original space.
-Moreover, it can be easily proved that the cosine similarity between any two term frequency vectors is a monotonic transformation of the squared Euclidean distance between the associated inverted permutations: $sim_{cos}(f_{perms}(o_1), f_{perms}(o_2))=\alpha - \beta\,\ell_2(\Pi^{-1}_{o_1},\Pi^{-1}_{o_2})^2 $, where $\alpha \in R{}$, $\beta \in \R+$ are constants (see \cite{vadicamo2016using,vadicamo2018enhancing}).
+is order-preserving in a strict sense, however several works~\cite{amato2014mi,gonzalez2008effective,esuli2009mipai} experimentally proved that the rankings obtained in the permutation space are good approximations of the rankings obtained in the original space.
+Moreover, it can be easily proved that the cosine similarity between any two term frequency vectors is a monotonic transformation of the squared Euclidean distance between the associated inverted permutations: $sim_{cos}(f_{perms}(o_1), f_{perms}(o_2))=\alpha - \beta\,\ell_2(\Pi^{-1}_{o_1},\Pi^{-1}_{o_2})^2 $, where $\alpha \in R{}$, $\beta \in \R+$ are constants (see~\cite{vadicamo2016using,vadicamo2018enhancing}).
 Therefore, a ranking obtained using the cosine similarity on term frequency vectors is equivalent to that obtained in the permutation space using the Spearman rho distance, which in turn is an approximation of the ranking obtained in the original data space.
 
 So far, we have presented the general approach of \gls{str} based on the traditional permutation representations.
@@ -421,7 +421,7 @@ It is equivalent to say that instead of using the full-length inverted permutati
                                 k+1                       & \text{otherwise}
                              \end{cases} \,.
 \end{equation}
-Note that, in the permutation-based indexing context, using the positions of the {nearest} $k$ out of $n$ pivots often leads to obtaining better or similar effectiveness then using the full-length permutation \cite{amato2014mi,amato2014some}, resulting also in a more compact data encoding.
+Note that, in the permutation-based indexing context, using the positions of the {nearest} $k$ out of $n$ pivots often leads to obtaining better or similar effectiveness then using the full-length permutation~\cite{amato2014mi,amato2014some}, resulting also in a more compact data encoding.
 To transform the truncated inverted permutation into a term frequency vectors, we use $f_{\text{DP},\,k} : \v \mapsto (k+1)\e -\tilde{\Pi}^{-1}_{\v,k}$.
 
 The thresholding adopted for \gls{sq} simply discards by setting to zero the dimension of the vector $\v$ having absolute values above a specified threshold:
@@ -456,7 +456,7 @@ hus, we exploit the roto-traslation transform seen above to center the mean valu
 % Given a domain $\mathcal{D}$,
 % a \emph{distance function} $d:\mathcal{D}\times\mathcal{D}\rightarrow\mathbb{R}$,
 % and a fixed set of reference objects $P=\{p_1\ldots p_n\}\subset\mathcal{D}$ that we call \emph{pivots},
-% we define a permutation-based representation $\Pi_{o}$ (briefly \emph{permutation}) of an object $o\in \mathcal{D}$ as the sequence of pivots identifiers sorted in ascending order by their distance from $o$ \cite{mtap12}.
+% we define a permutation-based representation $\Pi_{o}$ (briefly \emph{permutation}) of an object $o\in \mathcal{D}$ as the sequence of pivots identifiers sorted in ascending order by their distance from $o$~\cite{mtap12}.
 
 % \sloppy Formally, the permutation-based representation
 % %$\Pi_{o}=(\Pi_{o}(1), \Pi_{o}(2), ... , \Pi_{o}(n))$
@@ -475,7 +475,7 @@ hus, we exploit the roto-traslation transform seen above to center the mean valu
 % The inverted representation of permutations $\Pi^{-1}_{o}$, is a vector that we refer to as \emph{vector of permutations}, and which allows us to easily define most of the distance functions between permutations.
 % Permutations are generally compared using Spearman rho, Kendall Tau, or Spearman Footrule distances.
 
-% So far, we have presented the general approach of permutation-based indexing. However, when objects to be indexed are \emph{real-valued vectors} as in the case of deep features, we can use the approach presented in \cite{amato2016deep}. It allows us to generate a sequence of identifiers not associated with pivots. The basic idea is as follows. Permutants are the indexes of elements of the deep feature vectors. Given a deep feature vector, the corresponding permutation is obtained by sorting the indexes of the elements of the vector, in descending order with respect to the values of the corresponding elements. Suppose for instance the feature vector is $fv=[0.1,0.3,0.4,0,0.2]$ (in reality, the number of dimensions is 2,048 or more). The permutation-based representation of $fv$ is $\Pi_{fv}=(3,2,5,1,4)$, that is permutant (index) 3 is in position 1, permutant 2 is in position 2, etc. The vector of permutations introduced above is therefore $\Pi^{-1}_{fv}=(4,2,1,5,3)$, that is permutant (index) 1 is in position 4, permutant 2 is in position 2, etc.
+% So far, we have presented the general approach of permutation-based indexing. However, when objects to be indexed are \emph{real-valued vectors} as in the case of deep features, we can use the approach presented in~\cite{amato2016deep}. It allows us to generate a sequence of identifiers not associated with pivots. The basic idea is as follows. Permutants are the indexes of elements of the deep feature vectors. Given a deep feature vector, the corresponding permutation is obtained by sorting the indexes of the elements of the vector, in descending order with respect to the values of the corresponding elements. Suppose for instance the feature vector is $fv=[0.1,0.3,0.4,0,0.2]$ (in reality, the number of dimensions is 2,048 or more). The permutation-based representation of $fv$ is $\Pi_{fv}=(3,2,5,1,4)$, that is permutant (index) 3 is in position 1, permutant 2 is in position 2, etc. The vector of permutations introduced above is therefore $\Pi^{-1}_{fv}=(4,2,1,5,3)$, that is permutant (index) 1 is in position 4, permutant 2 is in position 2, etc.
 
 %  \subsection{Scalar Quantization-Based Approach}\label{subsec:str:sq} \noindent
 % The idea behind Scalar Quantization is to map the real-valued vector components independently into a smaller set of output values  which make up as codebook. This is very similar to the way Scalar Quantization works. However, as for more generic Product Quantization, the Scalar Quantization has mainly the purpose of making a compact representation suitable for approximate nearest neighbor search.
@@ -497,7 +497,7 @@ hus, we exploit the roto-traslation transform seen above to center the mean valu
 
 % \subsection{Surrogate Text Representation}\label{sec:srt}
 
-% So far, we have only seen theoretical approaches to vector encoding and we only vaguely mentioned, at the beginning of this section, something about how to transform these encodings into text. The basic idea is to exploit the approach presented in \cite{gennaro2010approach}, called surrogate text representation (SRT), in which the integer value represented by the component of the vector is encoded in the frequency of a codeword that is associated with the component itself. The rational is that a full-text search engine will generate a vector representation of \gls{str} counting the number of occurrences of words in SRT, i.e., their term-frequencies. Moreover, the similarity of full-text search engine is usually based on dot product, which is exactly what we wanted to use. This approach of SRT generation is straightforward for the case of Thresholding method, in case of deep permutation a more fuhrer step is needed,  which consists in complementing the rank vector of permutations, with the number of permutants plus one. For instance, if our rank vector is $\Pi^{-1}_{fv}=(4,2,1,5,3)$., its complemented version is $\overline{P}i^{-1}_{fv}=(6-4,6-2,6-1,6-5,6-3)=(2,4,5,1,3)$.
+% So far, we have only seen theoretical approaches to vector encoding and we only vaguely mentioned, at the beginning of this section, something about how to transform these encodings into text. The basic idea is to exploit the approach presented in~\cite{gennaro2010approach}, called surrogate text representation (SRT), in which the integer value represented by the component of the vector is encoded in the frequency of a codeword that is associated with the component itself. The rational is that a full-text search engine will generate a vector representation of \gls{str} counting the number of occurrences of words in SRT, i.e., their term-frequencies. Moreover, the similarity of full-text search engine is usually based on dot product, which is exactly what we wanted to use. This approach of SRT generation is straightforward for the case of Thresholding method, in case of deep permutation a more fuhrer step is needed,  which consists in complementing the rank vector of permutations, with the number of permutants plus one. For instance, if our rank vector is $\Pi^{-1}_{fv}=(4,2,1,5,3)$., its complemented version is $\overline{P}i^{-1}_{fv}=(6-4,6-2,6-1,6-5,6-3)=(2,4,5,1,3)$.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -529,7 +529,7 @@ However, this transformation allows us to apply the deep permutation approach wi
 The aim of this section is to assess the performance of the proposed solution in a content-based retrieval task both in terms of effectiveness and efficiency.
 To this end, we are able to evaluate the approximation introduced with respect to the exact similarity search algorithm against the impact of this approximation with respect to the user perception of the retrieval task.
 %\subsection{Experimental Settings}
-%For assessing the proposed technique in a pure similarity search task, we used the CNN Features extracted as discussed in \ref{sec:deepfeatures} from the \emph{Yahoo Flickr Creative Commons 100 Million dataset (YFCC100M)} \cite{thomee2016yfcc100m}.
+%For assessing the proposed technique in a pure similarity search task, we used the CNN Features extracted as discussed in \ref{sec:deepfeatures} from the \emph{Yahoo Flickr Creative Commons 100 Million dataset (YFCC100M)}~\cite{thomee2016yfcc100m}.
 %The assessment of the proposed algorithm of a multimedia information retrieval task was performed using
 
 We extracted the \gls{rmac} features from the images of two different benchmarks: \emph{INRIA Holidays} and \emph{Oxford Buildings}.
@@ -540,7 +540,7 @@ Oxford Buildings~\cite{philbin2007object} is composed of 5,062 images of 11 Oxfo
 A manually labeled groundtruth is available for five queries for each landmark, for a total of 55 queries.
 As for INRIA Holidays, we merged the dataset with the distraction dataset Flickr100k including 100k images \footnote{\url{http://www.robots.ox.ac.uk/~vgg/data/oxbuildings/}}.
 
-We compared the performance of our approach with state-of-the-art approximate nearest neighbor algorithms based on \gls{pq} FAISS \cite{johnson2017billion}, which we presented in \ref{sec:str:related-work}.
+We compared the performance of our approach with state-of-the-art approximate nearest neighbor algorithms based on \gls{pq} FAISS~\cite{johnson2017billion}, which we presented in \ref{sec:str:related-work}.
 In the implementation of FAISS, the number of Voronoi cells $N$ controls the number and length of the postings lists, while the number of \gls{pq} sub-quantizer $M$ controls the amount of memory occupied by a sample, also known as code size $C$.
 Moreover, we directly choose the code size $C$, and $M$ is set accordingly by the software.
 Since FAISS is an in-memory index, $C$ is usually set to the maximum code size to fit the whole dataset we want to index in main memory.
@@ -555,7 +555,7 @@ As the goal of our approach is to work in a context of large scale image search,
 If the total size of the database in bytes is $B_\text{DB}$, then the following equality holds: $C_\text{DB} = B_\text{DB} \cdot S_\text{DB}$.
 
 
-% Previous work \cite{icmr17} compares mAP values in function of the sparsity of the vectors to be indexed.
+% Previous work~\cite{icmr17} compares mAP values in function of the sparsity of the vectors to be indexed.
 % We believe that the level of sparsity introduced by the truncation at $K$ may be misleading in measuring the number of accesses to the inverted file.
 % In fact, \gls{crelu} increases the dimensionality and the sparsity of a vector, but only the original elements of the vector are actually stored in our index.
 % Hence, the sparsity could be artificially increased without changing the number of elements really accessed at query time.

@@ -176,7 +176,7 @@ The text extracted from the collected tweets has been classified according to th
 This system was successfully employed in the SENTIment POLarity Classification task~\cite{barbieri2016overview}, which was organized within Evalita 2016, the 5th evaluation campaign of Natural Language Processing and Speech tools for Italian.
 This classifier is based on a tandem LSTM-SVM architecture.
 \gls{svm} classifiers usually rely on ``sparse" and ``discrete" features in document classification tasks, making difficult the detection of relationships in sentences, which is often the key factor in detecting the overall sentiment polarity in documents~\cite{tang2015document}.
-On the contrary, \glspl{lstm} was recently tested on Sentiment Analysis and proved to outperform previous systems \cite{nakov2016semeval} thanks to their ability to capture long-term dependencies sentences.
+On the contrary, \glspl{lstm} was recently tested on Sentiment Analysis and proved to outperform previous systems~\cite{nakov2016semeval} thanks to their ability to capture long-term dependencies sentences.
 In the tandem architecture, \glspl{lstm} learn the feature space and capture temporal dependencies between words, while \glspl{svm} are used for the final classification.
 \glspl{svm} combine the document embedding produced by the \gls{lstm} with a wide set of general-purpose features qualifying the lexical and grammatical structure of the text.
 In particular, the system employs a bidirectional \gls{lstm} architecture due to their ability to capture long-range dependencies analyzing the text in both directions~\cite{schuster1997bidirectional}.
@@ -190,7 +190,7 @@ The same stages are involved in the classification phase: for each document, the
 
 The textual sentiment classifier has been evaluated by means of a 10-fold cross validation over 6,293 tweets belonging to the dataset distributed for the SemEval-2013 Task on Sentiment Analysis in Twitter.
 Using the subset of approximately 60\% of the original dataset which was still available, the textual classifier reported an average $F_1$-score of $66.15$.
-This result is comparable to the state of the art considering that the winner of the competition, the NRC-Canada team \cite{mohammad2013nrc}, achieved an $F_1$-score of 69.02 using all the available training data.
+This result is comparable to the state of the art considering that the winner of the competition, the NRC-Canada team~\cite{mohammad2013nrc}, achieved an $F_1$-score of 69.02 using all the available training data.
 
 We used the tandem \gls{lstm}-\gls{svm} model to analyze the text of the large set of user-generated tweets collected.
 After predicting the sentiment polarity of all the tweets, we selected the ones having the most confident textual sentiment predictions using a threshold, and we used these predictions to automatically assign sentiment labels to the corresponding images.
@@ -207,9 +207,9 @@ Thus, we initialize the weights of layers with the ones of the pre-trained netwo
 We used a balanced subset of our dataset \gls{t4sa} to perform fine-tuning.
 
 As \gls{cnn} architecture, we tested \emph{HybridNet}~\cite{zhou2014learning} and \emph{VGG-19}~\cite{simonyan2014very} models.
-The architecture of \emph{HybridNet} is the same of the \emph{BVLC Reference CaffeNet}~\cite{jia2014caffe}, which mimics the original AlexNet \cite{krizhevsky2012imagenet} with minor variations as described in~\cite{zhou2014learning}.
+The architecture of \emph{HybridNet} is the same of the \emph{BVLC Reference CaffeNet}~\cite{jia2014caffe}, which mimics the original AlexNet~\cite{krizhevsky2012imagenet} with minor variations as described in~\cite{zhou2014learning}.
 The model --- comprised by $5$ convolutional and $2$ fully-connected layers --- is pre-trained on $1,183$ categories ($205$ scene categories from Places205~\cite{zhou2014learning} and $978$ object categories from the train data of ImageNet~\cite{russakovsky2015imagenet}) with about $3.6$ million images.
-The \emph{VGG-19} is an improved version of the model used by the \gls{vgg} team of the University of Oxford in the ILSVRC-2014 competition, as described in \cite{simonyan2014very}.
+The \emph{VGG-19} is an improved version of the model used by the \gls{vgg} team of the University of Oxford in the ILSVRC-2014 competition, as described in~\cite{simonyan2014very}.
 The model is pre-trained on $1,000$ categories of ImageNet~\cite{russakovsky2015imagenet} with about $1.5$ million images.
 It contains $19$ learnable layers; $16$ convolutional and $3$ fully-connected.
 % %________________________________________________________
@@ -228,7 +228,7 @@ All the $\sim$3.4M tweets collected as reported in \ref{subsec:vsa:dataset} are 
 In order to produce a reliable dataset for learning a visual sentiment classifier, we selected only the tweets classified with a confidence $\geqslant 0.85$.
 We used as threhold the value achieving state of the art in textual sentiment classification challenge with an $F$-score of $0.71$.
 The resulting dataset contains $371,341$ positive, $629,566$ neutral, and $31,327$ negative labeled tweets.
-As expected, the dataset proved to be very imbalanced, a frequent and known issue in social media sentiment data \cite{li2011semi}.
+As expected, the dataset proved to be very imbalanced, a frequent and known issue in social media sentiment data~\cite{li2011semi}.
 In order to increase the number of negative tweets, we selected a lower filtering threshold for this class, obtaining $179,050$ examples.
 Notably, in our experiments conducted on \gls{t4sa}, the difference in precision on the classification of positive, neutral, and negative never exceeds $1\%$; thus, the lower threshold used for selecting negative examples did not impact the quality of the learning.
 Starting from this dataset, we selected a balanced subset of images to train visual sentiment classifiers.
@@ -268,8 +268,8 @@ However, in order to avoid possible biases in our analyses, we deliberately avoi
 \paragraph{Text Analysis Settings}
 As described in \ref{subsec:vsa:method}, we employed a bidirectional \gls{lstm} to learn a document embedding into a feature space.
 For training, we applied a dropout factor of $0.45$ to both input gates and to the recurrent connections in order to prevent  overfitting~\cite{gal2016theoretically}.
-A cross-entropy loss is employed and optimized by means of the \emph{rmsprop} optimizer \cite{tieleman2012lecture}.
-% We used the Keras \cite{libkeras} deep learning framework to develop the \gls{lstm} network.
+A cross-entropy loss is employed and optimized by means of the \emph{rmsprop} optimizer~\cite{tieleman2012lecture}.
+% We used the Keras~\cite{libkeras} deep learning framework to develop the \gls{lstm} network.
 
 Each input word to the \gls{lstm} is represented by a low dimensional, continuous and real-valued vector, also known as word embedding~\cite{mikolov2013distributed}, and all the word vectors are stacked in a word embedding matrix.
 For this work, we used GloVe~\cite{pennington2014glove} pre-trained vectors. % since these are computed considering the word context information.
@@ -291,14 +291,14 @@ We replaced the last fully connected layer \emph{fc8} with a new one having 3 ou
 In \emph{FT-A}, we fine-tune all the trainable layers, while in \emph{FT-F} the parameters of convolutional layers are fixed, and only the last fully connected layers \emph{fc6-8} are trained.
 %In \emph{FT-C} we keep the first three convolutional layer fixed (or the first three groups of convolutions for the VGG-19) and we finetune layers from \emph{conv4} to the end of the networks.
 
-We trained both networks with both the fine-tune strategies using Caffe \cite{jia2014caffe}for $15$ epochs using SGD with momentum $\mu = 0.9$, a learning rate of $0.001$ divided by $10$ every $5$ epochs, and L2 regularization with a weight decay of $10^{-5}$.
+We trained both networks with both the fine-tune strategies using Caffe~\cite{jia2014caffe}for $15$ epochs using SGD with momentum $\mu = 0.9$, a learning rate of $0.001$ divided by $10$ every $5$ epochs, and L2 regularization with a weight decay of $10^{-5}$.
 For HybridNet, we used a batch size of $128$, while for VGG-19 we used a batch size of $32$ with batch accumulation of $2$ to lower the GPU memory footprint.
 
 We assessed the performance of our models using \BTSA{} test set and \acrfull{ttd}~\cite{you2015robust}.
 The latter contains a total of $1,269$ images manually labeled with a positive or negative sentiment by manually by five Amazon Mechanical Turk (AMT) workers.
 The images are partitioned into three subsets, namely ``Five agree", ``At least four agree", and ``At least three agree", on the basis of the labeling results from the five AMT workers.
 The details of this dataset are reported in \ref{tab:vsa:ttd}.
-\gls{ttd} was also used in \cite{campos2017pixels,islam2016visual,li2018image,you2015robust}, allowing for a through comparison of our systems with the state-of-the-art approaches.
+\gls{ttd} was also used in~\cite{campos2017pixels,islam2016visual,li2018image,you2015robust}, allowing for a through comparison of our systems with the state-of-the-art approaches.
 
 \begin{table}
 \centering
@@ -315,7 +315,7 @@ Negative           & 301              & 427                              & 500  
 Total              & 882              & 1,116                            & 1,269 \\
 \bottomrule
 \end{tabularx}
-\caption{Twitter Testing Dataset \cite{you2015robust}.}
+\caption{Twitter Testing Dataset~\cite{you2015robust}.}
 \label{tab:vsa:ttd}
 \end{table}
 
@@ -343,7 +343,7 @@ In \ref{tab:vsa:results}, we reported the accuracy obtained by the fine-tuned mo
 	\caption{Prediction accuracy on the different test sets.}
     \label{tab:vsa:results}
 \end{table}
-As baseline references, we report the results obtained by the random classifier and by the CNN and PCNN models \cite{you2015robust}.
+As baseline references, we report the results obtained by the random classifier and by the CNN and PCNN models~\cite{you2015robust}.
 The results show that the models trained with our cross-media approach effectively classify the images of \gls{ttd} which were manually annotated.
 In particular, our best model ({\ourFtVGG} FT-A) correctly classifies $78.5\%$ of the \emph{five agree} testing images, outperforming similar models trained on high-quality sentiment-related hand-labeled data~\cite{you2015robust}.
 Since \gls{ttd} only provides binary labels (positive/negative) as ground-truth, we obtained a binary classification from our three-way model taking the maximum confidence between the positive and the negative confidences.
@@ -359,7 +359,7 @@ Since the textual sentiment analysis was used to label both testing and training
 Moreover, we observed that the use of the \emph{neutral} class is particularly suitable for analyzing web images, which often depict simple objects or commercial products.
 For this reason we used a three-way model, unlike other state-of-the-art approaches which use a binary classification model~\cite{campos2017pixels,islam2016visual,you2015robust}.
 
-% Many papers on visual sentiment analysis also report the 5-fold cross-validation accuracy on the Twitter Testing Dataset \cite{Campos2016,islam2016visual,li2018image,you2015robust}, in which the prediction of each fold is computed with a model fine-tuned on the other four folds. This measure tends to highlight how well a pretrained model adapts to a specific task or dataset. While we think that this measure is inappropriate for our cross-media approach, we also report it in Table \ref{tab:Twitter882_5fold} for comparison with other state-of-the-art methods.
+% Many papers on visual sentiment analysis also report the 5-fold cross-validation accuracy on the Twitter Testing Dataset~\cite{Campos2016,islam2016visual,li2018image,you2015robust}, in which the prediction of each fold is computed with a model fine-tuned on the other four folds. This measure tends to highlight how well a pretrained model adapts to a specific task or dataset. While we think that this measure is inappropriate for our cross-media approach, we also report it in Table \ref{tab:Twitter882_5fold} for comparison with other state-of-the-art methods.
 % As evidenced by the results, the 5-fold accuracy of models trained on generic (not sentiment-related) datasets, like AlexNet and VGG-19, are comparable to the ones of the same models that have been previously finetuned on a sentiment-related dataset.
 
 \begin{figure}
@@ -384,7 +384,7 @@ Taken together, these results indicate that our cross-media learning approach is
 
 %Differently by other visual sentiment classifiers
 
-% In order to compare the performance of our model to other state-of-the-art methods, we also performed a 5-fold cross-validation on the testing subsets (as also done in \cite{Campos2016,islam2016visual,li2018image,you2015robust}), in which we compute the prediction of each fold with a model fine-tuned again on the other four folds. Results for 5-fold cross-validation are reported in Table \ref{tab:Twitter882_5fold}.
+% In order to compare the performance of our model to other state-of-the-art methods, we also performed a 5-fold cross-validation on the testing subsets (as also done in~\cite{Campos2016,islam2016visual,li2018image,you2015robust}), in which we compute the prediction of each fold with a model fine-tuned again on the other four folds. Results for 5-fold cross-validation are reported in Table \ref{tab:Twitter882_5fold}.
 \begin{table}
 \small
 \renewcommand{\tabcolsep}{2.7pt}
@@ -417,7 +417,7 @@ VGG-19 $\bullet$   &   \gls{ilsvrc}12  &   0.881   &   0.835   &   0.800   \\
 
 PCNN~\cite{you2015robust} $\bullet$   &   Flickr (VSO) + \emph{ft} Flickr (VSO)  &   0.773   &   0.759   &   0.723   \\
 DeepSentiBank~\cite{chen2014deepsentibank} {\footnotesize (from~\cite{campos2017pixels})} $\circ$ $\bullet$ &   \gls{ilsvrc}12 + \emph{ft} Flickr (VSO)  &   0.804   &   -   &   -   \\
-MVSO [EN]~\cite{jou2015visual}   {\footnotesize (from~\cite{campos2017pixels})} $\circ$ $\bullet$ & DeepSentiBank~\cite{chen2014deepsentibank} + \emph{ft} MVSO-EN \cite{jou2015visual}  &   0.839   &   -   &   -   \\
+MVSO [EN]~\cite{jou2015visual}   {\footnotesize (from~\cite{campos2017pixels})} $\circ$ $\bullet$ & DeepSentiBank~\cite{chen2014deepsentibank} + \emph{ft} MVSO-EN~\cite{jou2015visual}  &   0.839   &   -   &   -   \\
 \ourFtAlex\, FT-A (Ours) $\bullet$   &   (\gls{ilsvrc}12 + Places205) + \emph{ft} \BTSA    &   0.864   &   0.830   &   0.800   \\
 \ourFtAlex\, FT-F (Ours) $\bullet$   &   (\gls{ilsvrc}12 + Places205) + \emph{ft} \BTSA   &   0.873   &   0.832   &   0.810   \\
 \ourFtVGG\, FT-F (Ours) $\bullet$   &   (\gls{ilsvrc}12 + Places205) + \emph{ft} \BTSA   &   0.889   &   0.857   &   0.815   \\
@@ -436,7 +436,7 @@ $\ast=$ based on low-level features, $\circ=$ based on mid-level features, $\bul
 \end{table}
 
 % \subsubsection{Results on Phototweet Sentiment Benchmark(?)} %LUCIA%rivedere il titolo e decidere se inserire gli exp
-% \cite{borth2013large}
+%~\cite{borth2013large}
 % Ground-truth obtained by AMT annotation
 
 %-------------------------------------------------------------------------
