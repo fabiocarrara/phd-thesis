@@ -4,14 +4,14 @@ import flowchart;
 
 string [] off = {
     "Image Database",
-    "Image Represent.",
+    "Image\\ Representation",
     "Image Indexing",
     "Database Index"
 };
 
 string [] on = {
     "Query Formulation",
-    "Query Represent.",
+    "Query\\ Representation",
     "Image Scoring",
     "Rank"
 };
@@ -20,9 +20,9 @@ Label [] offs = new Label[off.length];
 Label [] ons = new Label[on.length];
 
 for (int i = 0; i < off.length; ++i)
-    offs[i] = minipage('\centering ' + off[i], 70);
+    offs[i] = minipage('\small \centering ' + off[i], 70);
 for (int i = 0; i < off.length; ++i)
-    ons[i] = minipage('\centering ' + on[i], 70);
+    ons[i] = minipage('\small \centering ' + on[i], 70);
 
 real h = .6;
 
