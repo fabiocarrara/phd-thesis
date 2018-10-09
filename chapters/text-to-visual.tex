@@ -379,7 +379,7 @@ Although other datasets for image retrieval exist (e.g., the one proposed by \ci
 We believe \gls{coco} to be more fit to the scenario we want to explore, since the captions associated to the images are expressed in natural language, thus semantically richer than a short list of keywords composing a query.
 
 \gls{coco} contains $82,783$ training images (\emph{Train2014}), $40,504$ validation images (\emph{Val2014}), and about 40K and 80K test images corresponding to two different competitions~\cite{chen2015microsoft} (\emph{Test2014} and \emph{Test2015}).
-Since \gls{coco} was proposed for caption generation, the captions are only accessible in the \emph{Train2014} and \emph{Val2014} sets, while they are not yet released for \emph{Test2014} and \emph{Test2015}. % TODO check this statement
+Since \gls{coco} was proposed for caption generation challenges, the only accessible captions were the one in the \emph{Train2014} and \emph{Val2014} sets, while \emph{Test2014} and \emph{Test2015} were kept by the evaluation servers.
 We have thus taken the \emph{Train2014} set for training, and randomly split the \emph{Val2014} into two disjoint sets of 20K images each for validation and test.
 
 Each image in \gls{coco} has five different captions associated\footnote{Actually in the dataset there are few images with more than five captions available for processing. In such cases we took the first five listed.}, each of which written by a different individual.
