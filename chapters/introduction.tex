@@ -71,7 +71,7 @@ Unlike manually engineered solutions, we usually do not have particular guarante
 Despite being effective and highly optimized for the training data distribution, the high dimensionality of the parameter space usually leads to unexpected behavior for out-of-distribution data.
 A severe consequence of this behavior of deep models, and thus of \glspl{cnn}, is its high vulnerability to evasion attacks, i.e., algorithms that aim to bypass filters by crafting malicious inputs --- called \emph{adversarial examples} --- that are usually undetectable for human eyes but lead to a blatant misclassification.
 In the scenario in which \gls{dl}-based classifier are more and more employed in sensitive applications, such as spam/malware filtering or pornographic/violent content moderation, the robustness to this kind of attacks is essential.
-In this context, \ref{ch:adversarial} presents a novel detection scheme for adversarial examples in \glspl{dnn} for increasing the robustness of \glspl{cnn} classifiers to out-of-distribution data.
+In this context, \ref{ch:adversarial} presents a novel detection scheme for adversarial examples in \glspl{dnn} for increasing the robustness of \glspl{cnn} classifiers to out-of-distribution data.\\
 
 % -- briding gap between technology of text and image search
 In the second part of the dissertation, we investigate the adoption of \glspl{cnn} and image representations learned with them in the context of content-based image retrieval, and we propose practical solutions to the constraints imposed by large-scale scenarios.
@@ -92,6 +92,6 @@ While the technology of textual search engines evolved rapidly in the last years
 In particular, most of the available solutions for content-based image retrieval do not scale to large-scale scenarios as well as extensively developed decentralized full-text inverted indexes.
 \ref{ch:surrogate} investigates the adoption of \emph{surrogate text representations}, an approach that enables content-based image search on existing full-text search engine backends based on inverted indexes, e.g., Apache Lucene, Elasticsearch.
 We analyze, formalize and improve the transformations that map image descriptors into surrogate texts which can be indexed and searched by full-text engines without requiring additional software, and we compare them with state-of-the-art main-memory indices on large-scale image retrieval datasets.
-Experimental results show that we obtain a comparable performance while scaling beyond main memory by exploiting the available search engine software.
+Experimental results show that we obtain a comparable performance while scaling beyond main memory by exploiting the available search engine software.\\
 
 Finally, \ref{ch:conclusion} concludes the dissertation by discussing our contributions and defining new research directions to foster visual data accessibility through data-driven learned models and representations.
