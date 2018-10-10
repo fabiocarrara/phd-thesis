@@ -45,11 +45,17 @@
 
 % TODO [+CITE] speech analysis \citep{yan2014age}, object recognition tasks \citep{ciresan2012multi}
 
-In this chapter, we present the basic concepts about \gls{dl}, and we introduce the research fields on which its application has been investigated in this thesis, namely Image Classification and \gls{cbir}.
-% TODO [?] add some more intro to the bg chapter
+In this chapter, we provide the reader with the basic concepts about \acrlong{dl} and \acrfullpl{cnn}.
+Specifically, we introduce their fields of application investigated in this thesis, namely Image Classification and \gls{cbir}.
+Image classification provides a general and straightforward framework for many applications and thus represents one of the most typical usages of \glspl{cnn}.
+In the first part of the thesis (\ref{ch:miniaturization,ch:cross-media,ch:adversarial}), we will investigate solutions to general limitations of \glspl{cnn}, and, without loss of generality, we will evaluate them in practical applications of image classification.
+Thus, we will provide the reader with an overview of state-of-the-art approaches in this field.
+The second part of the thesis (\ref{ch:text2vis,ch:surrogate}) will investigate novel solutions for large-scale \gls{cbir}, focusing on the interfaces and indexing patterns users are most familiar with, i.e., the one for textual documents.
+Therefore, in this chapter we will provide some background about \gls{cbir}, focusing on \gls{cnn}-based image representations, and we will also give an overview on standard models for text representation, which are used in \ref{ch:cross-media,ch:text2vis} for harnessing text to build better image representations.
+
 The chapter is organized as follows.
 In \ref{sec:back:deep-learning}, we provide the reader with a quick introduction to \acrlong{dl}, focusing on deep neural networks for image and text processing and gradient-based optimization.
-In \ref{sec:back:image-classification}, an introduction to image classification using \acrfullpl{cnn} is presented together with a review of successful approaches in this field.
+In \ref{sec:back:image-classification}, an introduction to image classification using \glspl{cnn} is presented together with a review of successful approaches in this field.
 In \ref{sec:back:image-retrieval}, we describe the main aspects of \gls{cbir} based on image representations extracted from deep neural networks, and we discuss some state-of-the-art methodologies to build effective descriptions of images and to efficiently index them in large-scale scenarios.
 \ref{sec:back:datasets} summarizes the public datasets used in the experiments presented in this thesis.
 
@@ -57,8 +63,8 @@ In \ref{sec:back:image-retrieval}, we describe the main aspects of \gls{cbir} ba
 \section{Deep Learning}
 \label{sec:back:deep-learning}
 
-\acrfull{dl} defines a subfield of Artificial Intelligence, specifically of \gls{ml}, in which a \emph{hierarchy of data representations} (or \emph{features}) is learned from data for solving a particular task~\cite{bengio2007scaling,goodfellow2016deep}.
-% TODO add representation learning?, what is and cites
+% TODO [?] expand on representation learning, what is and cites
+\acrfull{dl} defines a subfield of Artificial Intelligence, specifically of \gls{ml} and Representation Learning, in which a \emph{hierarchy of data representations} (or \emph{features}) is learned from data for solving a particular task~\cite{bengio2007scaling,goodfellow2016deep}.
 %For historical reasons, \gls{dl} models are also referred to as \emph{\glspl{dnn}} due to the resemblance of layers and their organization to the way neurons are interconnected and organized in the mammalian brain~\cite{}.
 % TODO add reference to similarities to mammalian brain (in addition to perceptron?)
 Inspired by nature, \acrlong{dl} models are often implemented as \glspl{dnn} --- a computational model comprised by multiple layers of processing units that mimics the structure and the interconnection of neurons in the mammalian brain~\cite{rosenblatt1958perceptron}.
@@ -265,6 +271,7 @@ The state of the network acts as a memory which is updated at each input, allowi
 This architecture is naturally able to process sequences of inputs;
 the elements of a sequence can be fed to the network one by one, updating the internal state of the network to compactly represent the sequence processed so far regardless of its length.
 % This is achieved by adding a cycle in the computation graph ---
+% TODO add usage of RNN in thesis
 
 \begin{figure}
     \centering
@@ -516,12 +523,12 @@ Nevertheless, recent developments showed that non-convex model --- albeit having
 The most common approach to find suboptimal (but valuable) solutions to \ref{eq:back:optim} is using iterative gradient-based optimization.
 
 \paragraph{Gradient Descent}
-In gradient-based optimization, given a training set $\X$ and a parameter configuration $\Theta$, we search for a new solution following the direction of the gradient of the loss function $\nabla\L\(\X, \Theta\)$ with respect to the parameters $\Theta$.
-The direction given by $\nabla\L\(\X, \Theta\)$ is the one of maximum steepness of the loss surface in the parameter space, that is, the one that maximizes the loss change locally.
+In gradient-based optimization, given a training set $\X$ and a parameter configuration $\Theta$, we search for a new solution following the direction of the gradient of the loss function $\nabla\L\(\X; \Theta\)$ with respect to the parameters $\Theta$.
+The direction given by $\nabla\L\(\X; \Theta\)$ is the one of maximum steepness of the loss surface in the parameter space, that is, the one that maximizes the loss change locally.
 A new parameter configuration $\Theta^\star$ is chosen \emph{descending} the loss surface along the direction of maximum steepness with a step size of $\lambda$, that is
 %
 \begin{equation} \label{eq:back:gradient-descent}
-    \Theta^\star = \Theta - \lambda \nabla\L\(\X, \Theta\) \,.
+    \Theta^\star = \Theta - \lambda \nabla\L\(\X; \Theta\) \,.
 \end{equation}
 %
 This update rule can be iterated until a (local or global) minimum of the loss function is reached.
@@ -529,7 +536,7 @@ This procedure is called \emph{gradient descent} optimization, and in the \gls{m
 \begin{figure}
     \centering
     \includegraphics[width=\linewidth]{figures/gradient-descent}
-    \caption{Example of gradient descent optimization on a loss surface $\L(\X)$ defined over a 2D parameter space $(\w_1, \w_2)$ with two different starting points.}
+    \caption{Example of gradient descent optimization on a loss surface $\L(\X)$ defined over a 2D parameter space $\Theta = (\w_1, \w_2)$ with two different starting points.}
     \label{fig:back:gradient-descent}
 \end{figure}
 A depiction of this algorithm for a 2D toy example is reported in \ref{fig:back:gradient-descent}.
@@ -639,11 +646,10 @@ The activations of the layers trained with dropout are scaled by $p$ to approxim
 \label{sec:back:image-classification}
 
 % TODO intro to img classification, examples and applications
-% Examples (simple classif., sentiment analysis, etc.)
-% Classifying images is super cool bla bla
+% Examples (simple classif., sentiment analysis, etc.), classifying images is super cool bla bla
 In this section, we formally define the problem of image classification, and we analyze and review recent solutions based on \acrlong{dl} --- in particular, Deep \acrlongpl{cnn} --- proposed in the literature.
 
-Many real-world problems in image understanding, such as object and face recognition, anomaly detection, and ..., can be formalized as classification problems.
+Many real-world problems in image understanding can be formalized as classification problems, such as object and face recognition, anomaly detection, automatic tagging, occupancy detection (discussed in \ref{ch:miniaturization}), visual sentiment analysis (discussed in \ref{ch:cross-media}), to name few.
 For this reason, classification methods for images have received increasing attention in the last decade.
 
 \subsection{Problem Setting}
@@ -653,16 +659,14 @@ We refer to \emph{single-label} $L$-way classification if only one label has to 
 If multiple labels can be assigned to a piece of data, we talk about \emph{multi-label} classification.
 A multi-label $L$-way classification problem is often decomposed in $L$ independent binary classification sub-problems, each of them focusing on predicting the presence or the absence of one of the available $L$ labels.
 
-Let $I$ the image space;
+In the case of image classification, the data on which classifiers must rely on is raw pixel data, usually organized in a tensor with shape $(H, W, C)$, respectively representing the height, the width, and the number of channels of the image.
+Let $I$ the image space as the space of all valid raw pixel values;
 given an image to be classified $\x \in I$, a single-label $L$-way classifier is a function $f$ mapping $\x$ into the label space.
 % Solving a classification problem reduces to find a suitable classifier $f$ that agrees with observed data labels.
 The commonly used form of classification is \emph{probabilistic}, in the sense that soft assignments to the available labels are considered instead of hard ones.
 In this case, an image $\x$ is mapped into its posterior probability $p_i = p(\y = i | \x)$ of belonging to category $i$, for each category $i \in \{1, \dots, L\}$.
 Thus, the classifier is a function $f: I \to \p$ which maps an image to the parameters $\p = (p_1, \ldots, p_L), \sum_{i=1}^L p_i = 1$ of a categorical distribution defined over the label space.
 Soft assignments present a broad range of advantages with respect to hard assignments, the most important one being differentiability, which enables and facilitates gradient-based learning of models for $f$.
-
-% TODO sentence dropped here at random
-In the case of image classification, the data on which classifiers must rely on is raw pixel data, usually organized in a tensor with shape $(H, W, C)$, respectively representing the height, the width, and the number of channels of the image.
 
 % TODO expand image classification problem setting?
 
