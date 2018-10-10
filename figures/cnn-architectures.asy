@@ -91,10 +91,10 @@ void net(string[] net, string name="", bool[] residual = new bool[]{}, int[] rep
 string[] alexnet = new string[] {
     "input $224{\x}224{\x}3$",
     "conv $11{\x}11/4\,(96)$",
-    "",
+    "lrn",
     "maxpool $3{\x}3/2$",
     "conv $5{\x}5{\p}2\,(256)$",
-    "",
+    "lrn",
     "maxpool $3{\x}3/2$",
     "conv $3{\x}3{\p}1\,(384)$",
     "conv $3{\x}3{\p}1\,(384)$",
