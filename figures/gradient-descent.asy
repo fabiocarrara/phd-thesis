@@ -24,26 +24,30 @@ pair gradLoss(pair z) {
 surface s = surface(loss, (0, 0), (side, side), 20, Spline);
 
 pen[] cmap = Grayscale()[70:];
-draw(s, surfacepen=mean(palette(s.map(zpart), cmap)), meshpen=black+linewidth(.2bp), nolight);
+draw(s, surfacepen=mean(palette(s.map(zpart), cmap)), meshpen=gray(0.25)+linewidth(.2bp), nolight);
 
 // SGD
-void descent(pair w, real lr, real m, int steps=15, pen p=black) {
+void descent(pair w, real lr, real m, int steps=15, pen p=black, bool gradLabel=false) {
     pair next, grad = gradLoss(w);
     triple cur3, next3;
     cur3 = (w.x, w.y, loss(w));
-    dot(cur3, dotsize + p);
+    if (gradLabel) { dot("$\Theta$", cur3, dotsize + p); }
+    else { dot(cur3, dotsize + p); }
+
     for (int i = 0; i < steps; ++i) {
         grad = m * grad + (1 - m) * gradLoss(w);
         next = w - lr * unit(grad);
         next3 = (next.x, next.y, loss(next));
-        draw(cur3 .. next3 + 0.15 * (cur3 - next3), p, arrow=Arrow3(arrowsize));
+        string lab = (i == 0 && gradLabel) ? "$-\lambda\nabla\mathcal{L}(\mathbf{X};\Theta)$": "";
+        draw(cur3 .. next3 + 0.15 * (cur3 - next3), p, arrow=Arrow3(arrowsize), L=lab);
         w = next;
         cur3 = (w.x, w.y, loss(w));
-        dot(cur3, dotsize + p);
+        if (i == 0 & gradLabel) { dot("$\Theta^\star$", cur3, dotsize + p); }
+        else { dot(cur3, dotsize + p); }
     }
 }
 
-descent(w=(5.4, 4.4), lr=0.5, m=0.7, steps=12);
+descent(w=(5.4, 4.4), lr=0.5, m=0.7, steps=12, gradLabel=true);
 descent(w=(5.7, 3.9), lr=0.5, m=0, steps=7);
 
 // GRID AND AXES
