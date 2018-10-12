@@ -21,20 +21,20 @@ Early approaches employed Computer Vision to create image descriptors relying on
 However, these descriptors are usually unable to capture high-level concepts like the one assigned by human taggers to images.
 Thus, much of the effort focused on manually defining the right combination and aggregation of low-level features to represent higher-level concepts and performing well for the specific task under analysis, which requires a considerable amount of hand engineering and domain expertise.
 Classical Machine Learning methodologies --- such as \acrlongpl{svm}, decision trees, and naive Bayes classifiers --- provide a considerable boost to the performance of models, helping in feature selection, weighting, and combination.
-Nevertheless, the definition and extraction of fine-tuned problem-specific features still plays an essential role in complex perception tasks such as vision.
+Still, the definition and extraction of fine-tuned problem-specific features still plays an essential role in complex perception tasks such as vision.
 
 % . AI for vision in last years exploded
-In the last years, a new wave in a field of Artificial Intelligence, called \gls{dl}, enabled researchers to automatize perception and understanding of visual data by extracting information with high-level of abstraction from raw pixels, drastically limiting the human intervention in the process.
-With the term Deep Learning, the research community indicates the family of Machine Learning techniques which aim to automatically learn from data a hierarchy of features extractors which map the input data in a high-level feature space tailored to a specific task to solve.
+In the last years, a new wave in a field of Artificial Intelligence, called \gls{dl}, enabled researchers to automatize perception and understanding of visual data by extracting information with high-level of abstraction from raw pixels, drastically limiting the human labor in the process.
+With the term Deep Learning, the research community indicates the family of Machine Learning methods which aim to automatically learn from data a hierarchy of features extractors which map the input data in a high-level feature space tailored to a specific task to solve.
 % -- img repre
-In the context of computer vision and image representation, \acrlong{dl}, and in particular \glspl{cnn}, revolutionized feature engineering and visual understanding, outperforming handcrafted models on multiple vision tasks such as object recognition and detection, image description and retrieval,  and many more.
+In the context of computer vision and image representation, \acrlong{dl}, and in particular \acrlongpl{cnn}, revolutionized feature engineering and visual understanding, outperforming handcrafted models on multiple vision tasks such as object recognition and detection, image description and retrieval,  and many more.
 Convolutional Neural Networks are artificial neural networks specifically tailored to process image data and trained in a supervised end-to-end fashion.
 % -- hand-crafted prima del 2012
 Although \glspl{cnn} have been around for many years, we pinpoint their turning point in 2012, year in which a deep convolutional neural network model outperformed approaches based on handcrafted features in the \acrlong{ilsvrc}, a fine-grained image classification task including a thousand of high-level concepts and semantics.
 Following this trend, the last six years experienced an overwhelming adoption of deep neural network models which set the new state of the art in numerous applications spanning multiple fields, including visual perception and image understanding.
 % -- convnet e end2end grazie a ...
 This reborn of \glspl{cnn} is attributed to multiple factors, the most important ones being the availability of large-scale datasets of labeled images (such as ImageNet) and the computational power offered by modern hardware accelerators such as GPUs.
-Both of these factors contributed to training bigger models with millions of parameters that can achieve astonishing performance in challenging problems.
+These factors contributed to training models with millions of parameters that can achieve astonishing performance in challenging problems.
 
 % . this thesis
 Nevertheless, deep-learning-based solutions pose non-trivial engineering challenges in their adoption.
@@ -47,7 +47,7 @@ Excluding the first two chapters, which introduce our work and provide the reade
 % -- simplest formulation of image understanding (classif) -- limits
 In the first part, we focus our investigation on one of the most diffuse and successful problem in which \glspl{cnn} shine, that is, image classification.
 % --- engineering solutions to practical CNN problems in classif
-In this context, we investigate some of the most common and well-known limitations \gls{dl}-based approaches --- which are of general interest and not solely relevant to image classification, and we propose solutions to mitigate their effect and evaluate their potential in practical applications.
+In this context, we investigate some of the most common and well-known limitations of \gls{dl}-based approaches --- which are of general interest and not solely relevant to image classification --- and we propose solutions to mitigate their effect and evaluate their potential in practical applications.
 Specifically, we report in the following the major drawback we analyzed together with the contributions we propose in this study to tackle them.
 
 \paragraph{Resource Hunger}
@@ -61,9 +61,9 @@ Results show that our reduced models outperform state of the art in visual parki
 
 \paragraph{Human Supervision}
 The increased model size also requires a larger amount of human supervision (in terms of the size of data manually labeled) needed to learn the parameters of the model properly.
-Even if the creation of training sets for d\gls{dl} models is a one-time process, the amount of manual labor needed for its preparation still represents one of the highest cost of this kind of solutions.
+Even if the creation of training sets for \gls{dl} models is a one-time process, the amount of manual labor needed for its preparation still represents one of the highest cost of this kind of solutions.
 To overcome this problem, in \ref{ch:cross-media}, we explore alternative methods for the generation of training sets that rely on weakly-labeled data, i.e., data with noisy labels.
-The motivation of the investigation of this direction is that weakly-labeled data is easily obtained in vast amounts by scraping the Web.
+The motivation of the investigation of this direction is that weakly-labeled data can be easily obtained in vast amounts by scraping the Web.
 Thus, we propose a fully automated pipeline for building an image classification training set, which leverages the co-occurrence of text and images in posts of the Twitter social media platform.
 
 \paragraph{Unexpected Behaviors}
@@ -79,7 +79,8 @@ To this aim, we focus our effort on bridging the gap between the user-friendline
 Specifically, we discuss the contributions of this part in the following paragraphs.
 
 \paragraph{Metadata-free textual search of images}
-The natural query method for content-based image searches is \emph{query-by-example}, in which the user is asked to upload an image with a content similar to the one he or she wants to retrieve, and the system them extracts a descriptor from the query image and performs the search comparing it to the database in the descriptor space.
+The natural query paradigm for content-based image searches is \emph{query-by-example}:
+the user is asked to upload an image with a content similar to the one he or she wants to retrieve, and the system extracts from it a descriptor which compares to the database in the descriptor space in order to perform the search.
 Despite the simplicity of this paradigm, which does not require additional data, a metadata-based web image search engine featuring textual queries usually offers more flexibility to the user and do not require him to first obtain a query image.
 However, most of the created data does not come with metadata describing its content.
 In \ref{ch:text2vis}, we introduce a cross-media image retrieval approach that aims to retain the ability to both express textual queries and perform metadata-free content-based image searches.
@@ -88,7 +89,7 @@ We argue that this choice brings essential advantages in large-scale scenarios, 
 A change in the search paradigm, e.g., support a new language, requires only to update the mapping function accordingly without recomputing the image descriptors of the entire database.
 
 \paragraph{Image search on Full-Text Search Engines}
-While the technology of textual search engines evolved rapidly in the last years and brought to the creation of many open source projects (e.g., Apache Solr, Lucene, Elasticsearch), most of the content-based image search engines are either closed-source solutions or research projects of difficult accessibility.
+While the technology of textual search engines evolved rapidly in the last years and brought to the creation of many open source projects (e.g., Apache Solr, Elasticsearch), most of the content-based image search engines are either closed-source solutions or research projects of difficult usability.
 In particular, most of the available solutions for content-based image retrieval do not scale to large-scale scenarios as well as extensively developed decentralized full-text inverted indexes.
 \ref{ch:surrogate} investigates the adoption of \emph{surrogate text representations}, an approach that enables content-based image search on existing full-text search engine backends based on inverted indexes, e.g., Apache Lucene, Elasticsearch.
 We analyze, formalize and improve the transformations that map image descriptors into surrogate texts which can be indexed and searched by full-text engines without requiring additional software, and we compare them with state-of-the-art main-memory indices on large-scale image retrieval datasets.
