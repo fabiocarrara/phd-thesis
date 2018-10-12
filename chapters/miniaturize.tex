@@ -101,7 +101,7 @@ A relevant work in a similar --- yet different --- task is~\cite{chen2014vehicle
 % 		             & LRN, ReLU      & LRN, ReLU      & ReLU           &              &              \\ \hline
 % 	\end{tabularx}
 \caption{Comparison between the AlexNet (on top) and mAlexNet (on bottom) architectures.
-Parameters of convolutions and max-pooling operations are specified as ``$\text{size} \times \text{size}/\text{stride}\, (\text{\# conv filters})$''.
+Parameters of convolutions and max-pooling operations are specified as $<$filter width$>\times<$filter height$>$/$<$stride$>+<$padding$>$ (\# features).
 For fully connected layers, we report their dimensionality.
 Trainable layers are depicted in darker color.
 }
@@ -122,7 +122,7 @@ Trainable layers are depicted in darker color.
 % \end{table}
 
 \noindent The main objective of our proposal is to design a \gls{cnn}-based classifier for the problem of occupancy detection runnable by smart cameras and low-power embedded devices in general.
-Due to its popularity and wide-spread adoption, we adopted the Raspberry Pi 2 model B \footnote{\url{https://www.raspberrypi.org/products/raspberry-pi-2-model-b/}} equipped with the standard Raspberry Pi camera module \footnote{{https://www.raspberrypi.org/documentation/hardware/camera.md}} as a reference hardware implementation of a smart camera.
+Due to its popularity and wide-spread adoption, we adopted the Raspberry Pi 2 model B \footnote{\url{https://www.raspberrypi.org/products/raspberry-pi-2-model-b/}} equipped with the standard Raspberry Pi camera module \footnote{\url{https://www.raspberrypi.org/documentation/hardware/camera.md}} as a reference hardware implementation of a smart camera.
 
 As done in previous work, we formulate the visual occupancy detection of a parking slot as a binary classification problem in which an image of a single parking space is either labelled as \emph{vacant} or \emph{occupied}.
 We assume that the cameras are fixed, and each of them monitors several parking slots.
@@ -235,7 +235,7 @@ We split the dataset in two non-overlapping sets named \emph{CNRParkOdd} and \em
 This permitted us to test the generalization of our approach by training on some slots and test on unseen slots.
 
 \paragraph{CNRPark-EXT}
-We subsequently extended the CNRPark dataset gathering more images of the complete parking lot --- comprised by 164 parking slots --- captured by 9 additional cameras from November 2015 to February 2016.
+We subsequently extended the CNRPark dataset gathering more images of the complete parking lot --- comprised by 164 parking slots --- captured by nine additional cameras from November 2015 to February 2016.
 \ref{fig:mini:cam-1,fig:mini:cam-8} report the cameras with respectively the most and least skewed views.
 Images were collected in multiple days spanning multiple seasons of the year, and the number of slots monitored by each camera roughly spans from 10 to 50.
 To extract the images of individual slots, we followed the same strategy of CNRPark.
@@ -336,7 +336,7 @@ Our investigation focused on getting insight on three main aspects of the propos
 \item How much the proposed solution for visual occupancy detection is robust to weather and viewpoint changes?
 \end{enumerate}
 
-To answer these question, we extensively evaluated our approach using the two datasets described in \ref{sec:mini:datasets}, i.e., PKLot and CNRPark-EXT.
+To answer these questions, we extensively evaluated our approach using the two datasets described in \ref{sec:mini:datasets}, i.e., PKLot and CNRPark-EXT.
 We performed experiments by splitting the datasets into several subsets that we will described in the following subsections.
 Details about data splits are summarized in \ref{tab:mini:datasets}.
 The usage of multiple methods on multiple datasets also permits us to compare the quality of our newly collected dataset for learning to detect occupancy detection robustly in real scenarios.
@@ -367,9 +367,9 @@ The former gives us an overall evaluation of the systems assuming a slot is occu
 
 \paragraph{Training and implementation details for mAlexNet}
 Input images are squashed to a resolution of $256\times256$ before being fed to the network.
-During the training phase, we perform data augmentation by taking a $224\times224$ random crop of the resized image and flipping it horizontally with $\sfrac{1}{2}$ probability.
+During the training phase, we perform data augmentation by taking a $224\times224$ random crop of the resized image and flipping it horizontally with probability $\sfrac{1}{2}$.
 In the test phase, images are resized to $224\times224$ resolution and no flipping is performed.
-All the mAlexNet models are trained with \gls{sgd} with momentum for 18 epochs, with a learning rate of $0.01$ halved every 6 epochs, a batch size of $64$, a momentum of $0.9$, and a weight decay of $5e^{-4}$;
+All the mAlexNet models are trained with \gls{sgd} with momentum for 18 epochs, with a learning rate of 0.01 halved every 6 epochs, a batch size of 64, a momentum of 0.9, and a weight decay of $5\times 10^{-4}$;
 due to the low model complexity, no dropout regularization is used.
 To avoid overfit on the test set, we validate our models at each training epoch by evaluating it on a validation set.
 As validation sets, we used the training splits of the PKLot cameras --- e.g., when testing on PUC test subset, we use PUC training subset as validation set.
@@ -454,7 +454,7 @@ All the methods perform well when training and test images comes from the same c
 in fact, most of them reach a classification error less than 1\%.
 However, our \gls{cnn}-based solution exhibits a stronger generalization power, reaching errors 3--10\% lower when training and test images comes from different cameras.
 % In fact, mAlexNet reaches accuracy values of 98.27\% in the UFPR04/PUC training/test set configuration.
-% This is roughly $10\%$ more accurate than the best compared method, that is \emph{Max Ensemble}, which reaches 88.40 \%.
+% This is roughly 10\% more accurate than the best compared method, that is \emph{Max Ensemble}, which reaches 88.40 \%.
 
 To stress test the generalization capabilities, we also performed experiments when training and test sets comes from completely different dataset, which is a common assumption in the setup and deployment of real systems.
 We used both PKLot and CNRPark dataset respectively as training and test set, and vice-versa.
@@ -488,7 +488,7 @@ The test phase is still performed on the whole PKLot dataset.
 Results in \ref{tab:mini:x-dataset} clearly show how features learned by the \gls{cnn} are more transferable to different domains with respect to the manually engineered textural features.
 Moreover, as expected, classifying the CNRPark dataset while training on PKLot is more challenging than its counterpart.
 Despite being smaller, the higher variability and the additional occlusion patterns captured by our dataset comprises a richer training set for learning-based methods.
-In fact, the whole PKLot can be annotated with roughly 10\% error while training on CNRPark which contains $60\times$ less images.
+In fact, the whole PKLot can be annotated with roughly 10\% error while training on CNRPark which contains 60$\times$ less images.
 Again, mAlexNet still outperforms the other compared classifiers in this configuration.
 As stated by \citet{de2015pklot}, we do not observed an absolute best textural feature among the tested one.
 % However, we noticed that in most of the cases, LPQu and LPQg (Local Phase Quantization with respectively uniform and Gaussian initialization), give better performance.
@@ -508,11 +508,11 @@ We perform multiple experiments using different sets of images to also measure t
 As training sets, we separately employed \emph{CNRPark}, \emph{CNRPark} plus cameras \emph{C1} and \emph{C8} of \emph{CNRPark-EXT}, \emph{CNRPark-EXT}, and \emph{PKLot}.
 Validation is performed on the corresponding validation sets, while evaluation metrics --- i.e., percentage error and \gls{auc} --- are reported for CNRPark-EXT and PKLot test sets.
 The set composed by \emph{CNRPark} plus cameras \emph{C1} and \emph{C8} of \emph{CNRPark-EXT} is chosen to built a balanced set of different viewpoints.
-While \emph{CNRPark-EXT} is comprised by 9 different cameras, most of them share the same frontal viewpoint of the parking lot.
+While \emph{CNRPark-EXT} is comprised by nine different cameras, most of them share the same frontal viewpoint of the parking lot.
 Thus, we selected \emph{C1} and \emph{C8} --- which have the most dissimilar views of the parking lot --- and we combined them with CNRPark, which is composed by other two different viewpoints (see \ref{fig:mini:cam-overview}).
 
-All the models are trained for 6 epochs, with a learning rate of $8e^{-4}$, which is multiplied by $0.75$ every 2 epochs.
-Other hyper-parameters are the following: batch size $64$, momentum $0.9$, and weight decay $5e^{-4}$.
+All the models are trained for 6 epochs, with a learning rate of $8e^{-4}$, which is multiplied by 0.75 every 2 epochs.
+Other hyper-parameters are the following: batch size 64, momentum 0.9, and weight decay $5e^{-4}$.
 The final models are chosen as the ones obtaining the best performance on the validation sets.
 Details about the subsets used in these experiments are reported in \ref{tab:mini:datasets}.
 
@@ -573,14 +573,14 @@ Details about the subsets used in these experiments are reported in \ref{tab:min
 
 Results are reported in \ref{tab:mini:malex-vs-alex}.
 We can notice that our reduced architecture does not suffer from a performance degradation with respect to the original AlexNet when data comes from the same domain;
-in fact, the percentage errors of both models differ at most of $1\%$ in all experiments where training and test subsets are taken from the same dataset.
+in fact, the percentage errors of both models differ at most of 1\% in all experiments where training and test subsets are taken from the same dataset.
 When training and test is performed on different datasets, AlexNet reaches higher accuracy values.
 It is clear that the reduced architecture limits the degree of generalization the model can reach;
-when using a viewpoint-balanced training set (i.e., \emph{CNRPark} and \emph{Train on CNRPark+EXT TRAIN C1,C8}), AlexNet is able to reach a percentage error on \emph{PKLot} of $3.49\%$, while our method perform worse still obtaining less than 10\% error.
+when using a viewpoint-balanced training set (i.e., \emph{CNRPark} and \emph{Train on CNRPark+EXT TRAIN C1,C8}), AlexNet is able to reach a percentage error on \emph{PKLot} of 3.49\%, while our method perform worse still obtaining less than 10\% error.
 
 In the best case, there is practically no difference between the two methods, while in the worst case, we measured a difference of $\sim 9\%$ with respect to mAlexNet.
 Obviously, a bigger model offers a greater generalization performance at the cost of more resources needed:
-the computation time for mAlexNet --- measured on the Raspberry Pi model B --- allows to perform a classification in roughly $300ms$, while AlexNet takes roughly $20s$.
+the computation time for mAlexNet --- measured on the Raspberry Pi model B --- allows to perform a classification in roughly 300ms, while AlexNet takes roughly 20s.
 
 \subsection{Evaluation of the generalization between cameras and weather}
 
@@ -603,7 +603,7 @@ We measure the robustness of our approach to these scenarios performing \emph{in
 With the former, we indicate experiments where we train on a particular viewpoint and test on other unseen viewpoints, while with the latter, we indicate experiments where we train using images collected during a particular weather condition --- sunny, overcast, or rainy ---, and we test on the others.
 
 For both experiments, we employed our extended \emph{CNRPark-EXT} dataset.
-For inter-camera experiments, we trained mAlexNet using images of one camera among the 9 available, and measured the accuracy obtained on images coming from the other cameras.
+For inter-camera experiments, we trained mAlexNet using images of one camera among the nine available, and measured the accuracy obtained on images coming from the other cameras.
 We repeat this experiment using both the cameras with most and less skewed viewpoints (respectively \emph{C1} and \emph{C8}) to analyze the classifier robustness to challenging viewpoint changes.
 For inter-weather experiments, we performed three experiments training respectively on \emph{CNRPark-EXT SUNNY}, \emph{OVERCAST}, and \emph{RAINY} subsets and evaluating the obtained classifiers on the other weather conditions.
 For both kind of experiments, we report also the performance evaluated on the PKLot dataset for completeness.
@@ -653,9 +653,9 @@ CNRPark-EXT RAINY    & 6.47 & 1.73  &    - &  9.42 \\
 \ref{tab:mini:inter-camera,tab:mini:inter-weather} respectively report the percentage classification error values obtained in \emph{inter-camera} and \emph{inter-weather} experiments.
 % The histograms compare the accuracy of a classifier trained on a specific scenario (a specific camera or a specific whether condition) when tested on all other possible scenarios.
 
-In \emph{inter-camera} experiments, the model trained on \emph{C8} --- which has a clean anc central view of the parking lot --- exhibits the best performance on most of the other cameras since their viewpoint do no differ significantly;
+In \emph{inter-camera} experiments, the model trained on \emph{C8} --- which has a clean and central view of the parking lot --- exhibits the best performance on most of the other cameras since their viewpoint do no differ significantly;
 in fact, the worst performance among all cameras is obtained on \emph{C1} --- which mainly captures partially occluded images and has the most skewed viewpoint that differs the most from \emph{C8}.
-For the same reason, the model trained on \emph{C1} has a worse performance, but still is able to reach less than $10\%$ error on cameras coming from the same dataset.
+For the same reason, the model trained on \emph{C1} has a worse performance, but still is able to reach less than 10\% error on cameras coming from the same dataset.
 The PKLot dataset is mainly composed by images with no occlusions and with a central and vertical view of the parking lots, and thus it is better classified by the model trained on \emph{C8}.
 
 In \emph{inter-weather} experiments, we observed a strong generalization pattern.
@@ -692,7 +692,7 @@ in fact, we notice that these are similar between images in the \emph{PKLot} dat
 
 In this section, we describe the details of the deployment of a prototype of our proposed solution for parking lot visual occupancy detection in the campus of the National Research Council (CNR) in Pisa.
 
-We deployed 9 smart cameras on the roof of the building in front of a section of the campus parking lot.
+We deployed nine smart cameras on the roof of the building in front of a section of the campus parking lot.
 Each smart camera is built from a Rasbperry Pi 2 model B equipped with standard Raspberry Pi camera module and mounted on an outdoor camera box (see \ref{fig:mini:camera-box}).
 The total cost for a single camera is roughly 80\euro.
 Hardware and software details are briefly reported for completeness.
@@ -732,9 +732,9 @@ Specifically, our architecture exhibits very high accuracies even in presence of
 Moreover, multi-dataset experiments shown that the architectural reduction does not introduce a performance degradation in real scenarios, and it produces only a slight acceptable degradation of the generalization capability, i.e., the ability of classifying images coming from different parking lots with different imaging conditions.
 
 We tested our approach on a real scenario in the parking lot of the campus of the CNR Area in Pisa.
-We deployed a decentralized system comprised by 9 smart cameras which monitors multiple slots and perform the occupancy detection for each slot on board.
+We deployed a decentralized system comprised by nine smart cameras which monitors multiple slots and perform the occupancy detection for each slot on board.
 The delegation of parking slot occupancy detection to smart cameras provides a twofold advantage.
-First, with a cost of a single camera (roughly 80\euro), we are able to monitor at most 50 slots in our configuration, drastically reducing the cost per single slot that is nearly 100\euro for magnetic ground sensors while maintaining the same level of accuracy;
+First, with a cost of a single camera (roughly 80\euro), we are able to monitor at most 50 slots in our configuration, drastically reducing the cost per single slot that is nearly 100\euro{} for magnetic ground sensors while maintaining the same level of accuracy;
 Second, the decentralized nature of our solution enables a higher degree of scalability, since there is no need of a central server to analyze images and a high bandwidth to transfer them.
 In addition, the flexibility of the infrastructure does not limit the applications only to occupancy detection;
 the spare computational resources can be used to perform other analyses such as video surveillance activities.
@@ -808,7 +808,7 @@ This makes the dataset more compatible with real scenarios of outdoor parking lo
 % horizontally, while for test images the central 224x224 crop is taken.
 % We train our CNN models using the Caffe framework~\cite{jia2014caffe} with
 % gradient descend with momentum. The following hyper-parameters are used:
-% momentum $0.9$; weight decay $5\cdot10^{-4}$. The initial learning rates are
+% momentum 0.9; weight decay $5\cdot10^{-4}$. The initial learning rates are
 % chosen independently for each experiment and they are reported in
 % Table~\ref{tbl:cnn-experiments} (\emph{base lr} column). The learning rate is
 % decreased two times by a factor 10 when the loss stabilizes, or after at most 10
@@ -862,15 +862,15 @@ This makes the dataset more compatible with real scenarios of outdoor parking lo
 % Both CNNs, when tested in the single camera scenario, perform
 % better on the subset \emph{CNRPark A}, which contains less
 % occlusions and in which there are less variations between parking
-% spaces. In fact, mAlexNet reaches an accuracy of $0.996$
+% spaces. In fact, mAlexNet reaches an accuracy of 0.996
 % in \emph{CNRPark A}. However, very good results are also obtained
 % on subset \emph{CNRPark B}, where mAlexNet reaches an
-% accuracy of $0.911$, despite the very skewed viewpoint and the
+% accuracy of 0.911, despite the very skewed viewpoint and the
 % higher number of obstacles in the field of view. For the multi
 % camera scenario, higher values of accuracy are obtained when
 % training on the more complex subset \emph{CNRPark B}, from which
 % the model can extract richer information and better generalize. In
-% this case, mAlexNet reaches an accuracy of $0.907$.
+% this case, mAlexNet reaches an accuracy of 0.907.
 
 % In all configurations mAlexNet offers the best
 % performance, thanks to the use of a larger model that always
@@ -932,7 +932,7 @@ This makes the dataset more compatible with real scenarios of outdoor parking lo
 % In the \emph{intra-dataset} experiments, our method is
 % comparable with the ones proposed in~\cite{de2015pklot}.
 % Using the highest confidence as classification output (having a
-% threshold of $0.5$), the mAlexNet achieves slightly higher
+% threshold of 0.5), the mAlexNet achieves slightly higher
 % accuracy values with respect to the other methods.
 
 % In the \emph{inter-dataset} experiments, our method demonstrates
