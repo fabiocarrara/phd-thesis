@@ -6,11 +6,12 @@ texpreamble("\renewcommand{\rmdefault}{\sfdefault}");
 real w = 4.0, wgap = .45, w_c = w/2, W = w + wgap;
 real h =  .8, hgap = .5 , h_c = h/2, H = h + hgap;
 
-void layer(string s, pair o, pair d=(w, h)) {
+void layer(string s, pair o, pair d=(w, h), bool param=true) {
     pair boxStart = (o.x - d.x/2, o.y);
     pair boxEnd = (o.x + d.x/2, o.y + d.y);
     path b = box(boxStart, boxEnd);
-    fill(b, mediumgray);
+    pen p = param ? mediumgray : gray(0.95);
+    fill(b, p);
     label(s, (boxStart + boxEnd)/2);
 }
 
@@ -34,7 +35,7 @@ arr(h, H+3*h, L="$\mathbf{y}$");
 
 real w_loss_in = w/2 + 2*wgap;
 // Loss
-layer("$\mathcal{L}_\text{MSE}$", (w_loss_in/2, H+4*h), (w_loss_in + 4*wgap, h));
+layer("$\mathcal{L}_\text{MSE}$", (w_loss_in/2, H+4*h), (w_loss_in + 4*wgap, h), param=false);
 
 // y*
 label("$\mathbf{y^\star}$", (w_loss_in, h_c));

@@ -3,14 +3,15 @@ usepackage("amsmath");
 texpreamble("\renewcommand{\rmdefault}{\sfdefault}");
 
 // TODO tune w,h
-real w = 4.0, wgap = .45, w_c = w/2, W = w + wgap;
-real h =  .8, hgap = .5 , h_c = h/2, H = h + hgap;
+real w = 3.5, wgap = .4 , w_c = w/2, W = w + wgap;
+real h =  .8, hgap = .7 , h_c = h/2, H = h + hgap;
 
-void layer(string s, pair o, pair d=(w, h)) {
+void layer(string s, pair o, pair d=(w, h), bool param=true) {
     pair boxStart = (o.x - d.x/2, o.y);
     pair boxEnd = (o.x + d.x/2, o.y + d.y);
     path b = box(boxStart, boxEnd);
-    fill(b, mediumgray);
+    pen p = param ? mediumgray : gray(0.95);
+    fill(b, p);
     label(s, (boxStart + boxEnd)/2);
 }
 
@@ -31,7 +32,7 @@ layer("fc [$\mathbf{W}_1, \mathbf{b}_1$]", (0, H));
 path f1 = (0, h + H) -- (0, 2*H);
 path f2 = (0, 2*H) -- (- W/2, 2*H) -- (- W/2, hgap + 2*H);
 path f3 = (0, 2*H) -- (  W/2, 2*H) -- (  W/2, hgap + 2*H);
-draw(f1, L="$\mathbf{z}$");
+draw(f1, L=Label("$\mathbf{z}$"));
 draw(f2, arrow=ArcArrow);
 draw(f3, arrow=ArcArrow);
 
@@ -47,7 +48,7 @@ arr(h, 3*H, x=W/2, L="$\mathbf{y}$");
 real w_tloss_in = -(1.5*wgap + w);
 path rec = (-0.1*w, h_c) -- (w_tloss_in, h_c) -- (w_tloss_in, 3*H+h);
 draw(rec, arrow=ArcArrow);
-layer("$\mathcal{L}_t = \mathcal{L}_\text{MSE}$", ((w_tloss_in - W/2)/2, 3*H+h), (abs(w_tloss_in + W/2) + 4*wgap, h));
+layer("$\mathcal{L}_t = \mathcal{L}_\text{MSE}$", ((w_tloss_in - W/2)/2, 3*H+h), (abs(w_tloss_in + W/2) + 4*wgap, h), param=false);
 
 // y*
 // real w_vloss_in = W + wgap;
@@ -56,5 +57,5 @@ label("$\mathbf{y^\star}$", (w_vloss_in, h_c));
 arr(3*H, h, x=w_vloss_in);
 
 // Visual Loss
-layer("$\mathcal{L}_v = \mathcal{L}_\text{MSE}$", ((w_vloss_in + W/2)/2, 3*H+h), (w_tloss_in - W/2 + 4*wgap, h));
+layer("$\mathcal{L}_v = \mathcal{L}_\text{MSE}$", ((w_vloss_in + W/2)/2, 3*H+h), (w_tloss_in - W/2 + 5*wgap, h), param=false);
 
