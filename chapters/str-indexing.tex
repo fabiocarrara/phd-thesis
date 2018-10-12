@@ -408,7 +408,7 @@ The two approaches presented above are intended to encode a vector of real numbe
 However, this approach does not solve the problem that in most cases these vectors are dense, which means having low efficiency performance if the inverted files are used to index the textual documents.
 %This is because the next step will be to encode these integer vectors into textual documents to index with standard text-based techniques (based on inverted indices).
 In order to sparsify the term frequency vectors, that is to cancel the less significant components of the vectors, we must accept a further loss in precision.
-To achieve this we propose two ways: keep the top-$k$ larger components of the vector or maintain components above a certain threshold $1/\gamma$ by zeroing all the others.
+To achieve this we propose two ways: keep the top-$k$ larger components of the vector or maintain components above a certain threshold $\sfrac{1}{\gamma}$ by zeroing all the others.
 Where $\gamma \in \mathbb{N}$ is the parameter we use to control the sparseness of the thresholded feature.
 The first approach (\emph{top-$k$}) is better suited to the permutation-based approach and the latter (\emph{thresholding}) to the \gls{sq} approach.
 
@@ -638,7 +638,7 @@ Indeed, we see the impact of this aspect is really strong, and it could, in real
 Our solution has an intermediate performance but does not require any training procedure and therefore any re-adjustments.
 
 To sum up, based on the results of the experiments we can conclude that the proposed approach, i.e., the \gls{sq}, outperforms the deep permutations one.
-Note how the \gls{crelu} technique has a negligible impact on the \gls{sq} for suitable values of \gls{map} --- i.e., greater than $0.7$.
+Note how the \gls{crelu} technique has a negligible impact on the \gls{sq} for suitable values of \gls{map} --- i.e., greater than 0.7.
 Therefore, we suggest to use the optimal value for $\gamma=32$, which exhibits good performance both in terms of effectiveness and efficiency.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
