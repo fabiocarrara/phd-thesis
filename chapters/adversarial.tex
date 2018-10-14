@@ -624,18 +624,17 @@ Moreover, our method is able to recover around 80\% of natural errors committed 
 
 \begin{figure}
 \centering%
-% TODO [FIGURE] rigenerare BW
 \begin{subfigure}[t]{0.5\linewidth}%
 \centering
 \textbf{mixed\_6d}\\
-\includegraphics[width=\linewidth]{score_distribution_mixed_6d_dwknn}%
+\includegraphics[width=\linewidth]{rates-mixed_6d-dwknn}%
 \label{fig:adv:score-density-mixed_6e}%
 \end{subfigure}%
 %
 \begin{subfigure}[t]{0.5\linewidth}%
 \centering
 \textbf{mixed\_7a}\\
-\includegraphics[width=\linewidth]{score_distribution_mixed_7a_dwknn}%
+\includegraphics[width=\linewidth]{rates-mixed_7a-dwknn}%
 \label{fig:adv:score-density-mixed_7a}%
 \end{subfigure}%
 %
@@ -645,9 +644,8 @@ DW-kNN scoring scheme was selected for both.}
 \end{figure}
 
 \begin{figure}
-% TODO [FIGURE] rigenerare BW
 \centering
-\includegraphics[width=\columnwidth]{incepv3_eer-acc}
+\includegraphics[width=\columnwidth]{incepv3-eer-acc}
 \caption{The \acrlong{eer} accuracy obtained on the NIPS DEV set using different intermediate activations of the \emph{InceptionV3} as deep features.
 Note that the effectiveness of the detection increases when using deeper representations and rapidly decreases when we reach the fooled layers at the end of the network.}
 \label{fig:adv:i3-eer}
