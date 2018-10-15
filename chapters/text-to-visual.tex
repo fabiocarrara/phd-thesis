@@ -2,6 +2,7 @@
 
 \graphicspath{{img/t2v/}}
 
+\def\xt{\mathbf{\tilde{x}}} % x tilde
 \def\t{\mathbf{t}} % t
 \def\s{\mathbf{s}} % s
 \def\e{\mathbf{e}} % e
@@ -158,6 +159,16 @@ As a starting poing, we take a simple feed-forward regressor (\ref{subsec:t2v:vi
 \label{subsec:t2v:vis-reg}
 
 As a reference baseline, we started with a simple feed-forward regressor model with a hidden layer trained on the sparse one-hot representation of the textual input --- i.e. a dictionary-size vector having value 1 on dimensions corresponding to occurring words, 0 otherwise --- to directly predict the visual representation of the image (\ref{fig:t2v:visreg:arch}).
+The model is formalized as
+%
+\begin{align} \label{eq:t2v:vis-reg}
+%\begin{split}
+\z & = \text{ReLU} \( \W_1 \x + \b_1 \) \\
+\y & = \text{ReLU} \( \W_2 \z + \b_2 \) \,,
+%\end{split}
+\end{align}
+%
+where $\x$ is the \acrlong{bow} one-hot encoding of the textual caption, and $\y$ the regressed visual features.
 We observed a strong tendency to overfit (\ref{fig:t2v:visreg:loss}), thus degrading the applicability of the method to unseen images.
 
 \begin{figure}
@@ -214,19 +225,17 @@ The linguistic loss works at higher level of abstraction than the visual one, ac
 
 \sparsettv{} consists of two overlapped feed-forward neural nets with a shared hidden layer.
 %The shared hidden layer causes a regularization effect during the combined optimization; i.e., the hidden state is constrained to be a good representation to accomplish with two different goals.
-The feed-forward computation is described by the following equations:
+The feed-forward computation is described by
 %
 \begin{align} \label{eq:t2v:s-t2v}
-%\begin{split}
-\z  & = \text{ReLU} \( \W_1 \t + \b_1 \) \\
-\t' & = \text{ReLU} \( \W_2 \z + \b_2 \) \\
-\v' & = \text{ReLU} \( \W_3 \z + \b_3 \) \,,
-%\end{split}
+\z  & = \text{ReLU} \( \W_1 \x + \b_1 \) \\
+\xt & = \text{ReLU} \( \W_2 \z + \b_2 \) \\
+\y  & = \text{ReLU} \( \W_3 \z + \b_3 \) \,,
 \end{align}
 %
-\noindent where $\t$ represents the sparse one-hot encoding for the textual descriptor given as input to the net, $\z$ is the hidden representation, $\v'$ and $\t'$ are the visual and textual predictions, respectively, obtained from the hidden representation $\z$, $\Theta=\{W_i,b_i\}, i \in \{1,2,3\}$ are the model parameters to be learned. %, and $ReLU$ is the activation function, defined by $ReLU(x)=\max\{0,x\}$.
+where $\x$ represents the sparse one-hot encoding for the textual descriptor given as input to the net, $\z$ is the hidden representation, $\y$ and $\xt$ are the visual and textual predictions, respectively, obtained from the hidden representation $\z$, $\Theta=\{W_i,b_i\}, i \in \{1,2,3\}$ are the model parameters to be learned. %, and $ReLU$ is the activation function, defined by $ReLU(x)=\max\{0,x\}$.
 
-Both predictions $\v'$ and $\t'$ are then compared with the expected outputs, i.e.,  the visual embedding representation $\v$, and a textual descriptor $\t'$ that is either $\t$ or semantically equivalent to $\t$ (we expand on this below).
+Both predictions $\y$ and $\xt$ are then compared with the expected outputs, i.e.,  the visual embedding representation $\y^\star$, and a textual descriptor $\x^\star$ that is either $\x$ or semantically equivalent to $\x$ (we expand on this below).
 We used the \acrfull{mse} as the loss function both for the visual loss and the textual loss, denoted by $\L_v$ and $\L_t$, respectively.
 %
 %\begin{equation}
@@ -237,13 +246,13 @@ We used the \acrfull{mse} as the loss function both for the visual loss and the 
 The model is thus multi-objective, and many alternative strategies could be followed at this point in order to set the $\Theta$ parameters so that both criteria are jointly minimized.
 A simple strategy to jointly optimize the two losses consists of defining a single loss as a parametrized aggregation
 \begin{equation} \label{eq:t2v:optim}
-\Theta^\star =  \argmin_\Theta \( \L_t(\t, \t') + \alpha \L_v(\v, \v') + \lambda ||\Theta||_2 \) \,,
+\Theta^\star =  \argmin_\Theta \( \L_t(\xt, \x^\star) + \alpha \L_v(\y, \y^\star) + \lambda ||\Theta||_2 \) \,,
 \end{equation}
-where $\alhpa$ is a parameter controlling the relative contribution of the losses~\cite{feng2014cross}.
+where $\alpha$ is a parameter controlling the relative contribution of the losses~\cite{feng2014cross}.
 We also add an $L_2$ regularization term parametrized by $\lambda$ to further counter overfitting.
-Note that the net is fed with a triplet $\left \langle \v, \t, \t' \right \rangle$ at each iteration.
-When $\t'=\t$ the text-to-text branch is an \emph{autoencoder}.
-It is also possible to have $\t \neq \t'$, with the two pieces of text being semantically equivalent --- e.g., $\t = $``\texttt{a woman cutting a pizza with a knife}'', $\t'=$``\texttt{a woman holds a knife to cut pizza}'').
+Note that the net is fed with a triplet $\left \langle \x, \x^\star, \y^\star \right \rangle$ at each iteration.
+When $\x^\star=\x$ the text-to-text branch is an \emph{autoencoder}.
+It is also possible to have $\x^\star \neq \x$, with the two pieces of text being semantically equivalent --- e.g., $\x = $ ``\texttt{a woman cutting a pizza with a knife}'', $\x^\star=$ ``\texttt{a woman holds a knife to cut pizza}'').
 %In the latter case the text-to-text branch might be reminiscent of the \emph{SkipGram} and \emph{CBOW} architectures.
 The text-to-image branch is, in any case, a regressor.
 Notwithstanding, since our final goal is to project the textual descriptor into the visual space, the text-to-text branch might be though as an additional constraint (of linguistic nature)
@@ -253,7 +262,7 @@ to the visual reconstruction (and, more specifically, to its internal encoding).
 The main strength of \sparsettv{} regards its simplicity, specially in the use of the most simple representation for the input (the sparse encoding); yet it produces effective results (as discussed bellow).
 That being said, the model presents some flaws too, i.e.,
 (i) the sparse encoding results in a high dimensionality, thus constraining the net to optimize a large number of parameters, and
-(ii) the model is agnostic to word order, thus losing relevant information from text, e.g.: ``\texttt{a white cat and a black dog}'' vs ``\texttt{a black cat and a white dog}''.
+(ii) the model is agnostic to word order, thus losing relevant information from text, e.g., ``\texttt{a white cat and a black dog}'' vs. ``\texttt{a black cat and a white dog}''.
 
 %----------------------------------------
 \subsection{\densettv{}}
@@ -275,43 +284,41 @@ We constrain the internal memory state of the last memory cell to be a good repr
 \label{fig:t2v:d-t2v-arch}
 \end{figure}
 
-The computation is described by the following equations:
+The computation is described by
 %
 \begin{align} \label{eq:t2v:d-t2v}
-%\begin{split}
-\e_i  & = \text{lookup} \( \E, \t_i \) \\ \label{eq:t2v:d-t2v:1}
+\e_i  & = \text{lookup} \( \E, \x_i \) \\ \label{eq:t2v:d-t2v:1}
 \o_i, \s_i & = \text{LSTM} \( \e_i, \s_{i-1} \) \\ \label{eq:t2v:d-t2v:2}
-\t'_i  & = \text{softmax} \( \W_1 \o_i + \b_1 \) \\ \label{eq:t2v:d-t2v:3}
-\v' & =  \text{ReLU} \( \W_2 \s_f + \b_2 \) \,,
-%\end{split}
+\xt_i  & = \text{softmax} \( \W_1 \o_i + \b_1 \) \\ \label{eq:t2v:d-t2v:3}
+\y & =  \text{ReLU} \( \W_2 \s_L + \b_2 \) \,,
 \end{align}
 %
-where $\text{lookup}()$ returns the word-embedding $\e_i$ from the (trainable) matrix $\E$ for the $i$-th word in the textual descriptor with index $\t_i$, $\text{LSTM}$ is the memory cell, $\o_i$ and $\s_i$ represent the \emph{output} and \emph{hidden state} signals produced after processing $\e_i$ and $\s_{i-1}$ (the state signal produced in the precedent step), and $\s_f$ is the state of the last memory cell.
-The softmax function transforms the output signal into a probability distribution on the vocabulary-length space. Finally, $\v'$ and $\t'_i$ are the visual vector and term predictions, respectively.
+where $\text{lookup}()$ returns the word-embedding $\e_i$ from the (trainable) matrix $\E$ for the $i$-th word in the textual descriptor $\x_i$, $\text{LSTM}$ is the memory cell with $\o_i$ and $\s_i$ representing the \emph{output} and \emph{hidden state} signals produced after processing $\e_i$ and $\s_{i-1}$ (the state signal produced in the precedent step), and $\s_L$ is the state of the last memory cell.
+The softmax function transforms the output signal into a probability distribution on the vocabulary-length space. Finally, $\y$ and $\xt_i$ are the visual vector and term predictions, respectively.
 
 Note that in addition to the parameters $\E$, $\W_{\{1,2\}}$ and $\b_{\{1,2\}}$, the \gls{lstm} cell internally maintains an \emph{input}, \emph{output}, and \emph{forget} gates with their own parameters; as the memory cell we used the implementation described in~\cite{sak2014long}.
 
-The sequence of term vectors predictions $\t'_i$ and the visual prediction $\v'$ are then compared to the expected textual and visual outputs.
+The sequence of term vectors predictions $\xt_i$ and the visual prediction $\y$ are then compared to the expected textual and visual outputs.
 %, i.e., the sequence of words $w_i$ and the visual embedding $v$, respectively.
 For the visual loss $\L_v$ we use the \gls{mse} as before.
-Each predicted term $\t'_i$ is a $|V|$-dimensional vector that could be though as a probability distribution over the term indexes, where $V$ is the vocabulary.
+Each predicted term $\xt_i$ is a $|V|$-dimensional vector that could be though as a probability distribution over the term indexes, where $V$ is the vocabulary.
 
-Analogously, each term $w$ can be codified as a \emph{one-hot} vector, i.e.,  a $|V|$-dimensional vector with all zero values except the dedicated dimension indexing $\t_i$, which is set to one.
+Analogously, each term can be encoded as a \emph{one-hot} vector, i.e.,  a $|V|$-dimensional vector with all zero values except the dedicated dimension indexing $\x_i$, which is set to one.
 Note that a one-hot encoding could be interpreted as a probability distribution as well.
-(When not confusing, we use $\t_i$ both to refer to the term symbol and to its one-hot encoding.)
+% (When not confusing, we use $\x_i$ both to refer to the term symbol and to its one-hot encoding.)
 The error between both distributions is compared via the cross-entropy loss $\L_{CE}$.
-Given the sequence $\t$ of expected terms $\t_i$ and the sequence $\t'$ of predicted signals $\t'_i$ outputted by the net, the textual loss is computed as the averaged cross-entropy
+Given the sequence $\x^\star$ of expected terms $\x^\star_i$ and the sequence $\xt$ of predicted signals $\xt_i$ outputted by the net, the textual loss is computed as the averaged cross-entropy
 %For the sequence of predicted textual outputs we use the (averaged) cross-entropy error (Equation \ref{eq:crossentropy}) as the loss function $\L_t$.
 %
 \begin{equation} \label{eq:t2v:textual-loss}
-\L_t \( \t,\t' \) = \frac{1}{n} \sum_{i=1}^{n} \L_{CE} \( \t_i, \t'_i \) \,,
+\L_t \( \xt, \x^\star \) = \frac{1}{n} \sum_{i=1}^{n} \L_{CE} \( \xt_i, \x^\star_i \) \,.
 \end{equation}
 %
 %The model is, again, multi-objective.
 %In this case, we found that a simple sum of the losses, without a weighting parameter, allowed the optimizer algorithm to find a good set of parameters (as demonstrated by our experiments).
 %For this reason we did not explore the use of SL, left to future investigation.
 %where $y,y'$ represent any pair of true and predicted distributions.
-As before, the net is fed with a triple $\left \langle \v, \t, \t' \right \rangle$ where, given a caption $[\t_0 \ldots \t_{L}]$, the input ant output textual sequences are defined as $ \t = [\t_0 \ldots \t_{L-1}]$ and $ \t' = [\t_1 \ldots \t_{L}]$, being $\t_L=\text{EOS}$ a special symbol delimiting end of the sequence.
+As before, the net is fed with a triple $\left \langle \x, \x^\star, \y^\star \right \rangle$ where, given a caption $[\x_0 \ldots \x_{L}]$, the input and output textual sequences are defined as $ \x = [\x_0 \ldots \x_{L-1}]$ and $ \x^\star = [\x_1 \ldots \x_{L}]$, being $\x_L=\text{EOS}$ a special symbol delimiting end of the sequence.
 That is, the expected sequence corresponds to the input sequence shifted one position since the \gls{lstm} part is trained to predict the next term in the sequence.
 As the model is, again, multi-objective, we apply the weighted aggregation described by \ref{eq:t2v:optim} to set the optimization problem.
 
@@ -336,13 +343,13 @@ Our last proposal, dubbed \widedeepttv{}, combines the sparse and dense represen
 \widedeepttv{} combines the deep \gls{lstm} (borrowed from \densettv{}) with a wide regressor.
 Linear models with non-linear feature transformations are known to be useful for large-scale regression problems with sparse inputs (as is the case for short text descriptions).
 This model emerged from the belief, discussed in~\cite{cheng2016wide}, that the deep part contributes to model \emph{generalization} while the wide part contributes to model \emph{memory}, and therefore their combination might be beneficial.
-
+%
 \begin{figure}
 \includegraphics[width=\linewidth]{figures/wd-t2v-arch}
 \caption{Architecture of \widedeepttv{}.}
 \label{fig:t2v:widendeep}
 \end{figure}
-
+%
 The fundamental difference with respect to~\cite{cheng2016wide} is that we use a recurrent neural network as the deep part (instead of a feed-forward network) since \glspl{lstm} are particularly fit to learn from sequential data such as our textual descriptions.
 
 The computations reuse \ref{eq:t2v:d-t2v:1,eq:t2v:d-t2v:2,eq:t2v:d-t2v:3} from \densettv{} and incorporate the following set of equations for the wide part:
@@ -350,11 +357,11 @@ The computations reuse \ref{eq:t2v:d-t2v:1,eq:t2v:d-t2v:2,eq:t2v:d-t2v:3} from \
 %we_i &=& lookup(WE,w_i)\\
 %o_i,s_i &=& LSTMcell(we_i,s_{i-1})\\
 %t'_{i} &=& \sigma(W_{1} o_i + b_{1})\\
-\text{deep} &= \W_2 \s_f + \b_2 \\
-\text{wide} &= \W_3 \( \sum_{i=0}^L \text{onehot}(\t_i) \) + \b_3 \\
-\v'  &= \text{ReLU} \( \text{wide} + \text{deep} \) \,,
+\y_d &= \W_2 \s_L + \b_2 \\
+\y_w &= \W_3 \( \sum_{i=0}^{L-1} \x_i \) + \b_3 \\
+\y   &= \text{ReLU} \( \y_w + \y_d \) \,,
 \end{align}
-where $\text{onehot}(\t_i)$ returns the one-hot encoding vector for term $\t_i$.
+where $\x_i$ is the one-hot encoding vector for the $i$-th term, $\y_d$ is the output of the deep part of the model, and $\y_w$ the output of the wide one.
 As in \densettv{}, we used the \gls{mse} loss for the visual loss $\L_v$ and the averaged cross-entropy (\ref{eq:t2v:textual-loss}) for the textual loss $\L_t$.
 The optimization problem is set as in \ref{eq:t2v:optim}.
 %The definitions of the loss functions and the optimization is as in \densettv{}, i.e., the visual loss $\L_v$ is the $MSE$ (\ref{eq:mse}) and the textual loss $\L_t$ is the cross entropy (\ref{eq:crossentropy}). The optimization search is thus defined as:
@@ -378,17 +385,25 @@ We used the \emph{Microsoft \acrfull{coco}} dataset\footnote{Publicly available 
 Although other datasets for image retrieval exist (e.g., the one proposed by \citet{hua2013clickage}), they are more oriented to keyword-based queries.
 We believe \gls{coco} to be more fit to the scenario we want to explore, since the captions associated to the images are expressed in natural language, thus semantically richer than a short list of keywords composing a query.
 
-\gls{coco} contains 82,783 training images (\emph{Train2014}), 40,504 validation images (\emph{Val2014}), and about 40K and 80K test images corresponding to two different competitions~\cite{chen2015microsoft} (\emph{Test2014} and \emph{Test2015}).
+\sloppy \gls{coco} contains 82,783 training images (\emph{Train2014}), 40,504 validation images (\emph{Val2014}), and about 40K and 80K test images corresponding to two different competitions~\cite{chen2015microsoft} (\emph{Test2014} and \emph{Test2015}).
 Since \gls{coco} was proposed for caption generation challenges, the only accessible captions were the one in the \emph{Train2014} and \emph{Val2014} sets, while \emph{Test2014} and \emph{Test2015} were kept by the evaluation servers.
 We have thus taken the \emph{Train2014} set for training, and randomly split the \emph{Val2014} into two disjoint sets of 20K images each for validation and test.
 
 Each image in \gls{coco} has five different captions associated\footnote{Actually in the dataset there are few images with more than five captions available for processing. In such cases we took the first five listed.}, each of which written by a different individual.
 Let $\langle I, C \rangle$ be any labeled instance in \gls{coco}, where $I$ is an image and $C = \{ c_1, \ldots, c_5\}$ is a set of captions describing the content of $I$.
-Given a $\langle I, C \rangle$ pair, we define a training labeled instance in our model as $\left \langle \v,\t \right \rangle$ where $\v \in \R^{2,048}$ is the visual representation of the image $I$ taken from the \emph{pool5} layer, or $\v \in \R^{4,096}$ when the representation comes from the \emph{fc6} or \emph{fc7} layer (each representation has been tested in distinct experiments), and $\t$ is a textual descriptor randomly chosen from $C$ representing the input descriptor for the model.
-In the exceptional case of \sparsettv{}, a training label instance is defined as $\left \langle \v, \t, \t' \right\rangle$, where $\t'$ is the output textual descriptor randomly chosen from $C$ (the meanings for $\v$ and $\t$ remain untouched).
-Note that, in this case, $\t$ and $\t'$ are not imposed to be different, thus leading to a total of 25 possible combinations of training instances one could extract from a single pair $\langle I, C \rangle$;
+Given a $\langle I, C \rangle$ pair, we define a training labeled instance in our model as $\left \langle \x,\y^\star \right \rangle$ where $\y \in \R^{2,048}$ is the visual representation of the image $I$ taken from the \emph{pool5} layer, or $\y \in \R^{4,096}$ when the representation comes from the \emph{fc6} or \emph{fc7} layer (each representation has been tested in distinct experiments), and $\x$ is a textual descriptor randomly chosen from $C$ representing the input descriptor for the model.
+In the exceptional case of \sparsettv{}, a training label instance is defined as $\left \langle \x, \x^\star, \y^\star \right \rangle$, where $\x^\star$ is the output textual descriptor randomly chosen from $C$ (the meanings for $\x$ and $\y^\star$ remain untouched).
+Note that, in this case, $\x$ and $\x^\star$ are not imposed to be different, thus leading to a total of 25 possible combinations of training instances one could extract from a single pair $\langle I, C \rangle$;
 this increases the variability of the training set a lot along the different epochs.
-The training triplet $\langle \v, \t, \t' \rangle$ for \densettv{} and \widedeepttv{} models are extracted from the instance $\langle I, C \rangle$ by randomly choosing $\t$ from $C$ and then defining $\t'$ as $\t$ shifted one position (as explained above, see \ref{subsec:t2v:dense-t2v}).
+The training triplet $\langle \x, \x^\star, \y^\star \rangle$ for \densettv{} and \widedeepttv{} models are extracted from the instance $\langle I, C \rangle$ by randomly choosing $\x$ from $C$ and then defining $\x^\star$ as $\x$ shifted one position (as explained above, see \ref{subsec:t2v:dense-t2v}).
+
+The visual features $\y^\star$ are preprocessed with \gls{pca} and whitening due to their spread use in retrieval processes based on vector similarity;
+they are commonly adopted to reduce the dimensionality and to improve the retrieval effectiveness of visual features.
+Projecting the dataset onto the eigenvectors results in no correlation between the components, while whitening normalizes the vectors to have unit variance for all components.
+This is done by simply dividing each component by the square root of its eigenvalue.
+Originally proposed for local features aggregations such as \gls{vlad}~\cite{jegou2012negative}, \gls{pca} and whitening are also largely used for processing the activation of neurons~\cite{sharif2014cnn,gong2014multi,gordo2016deep}.
+As reported in \ref{subsec:t2v:results}, we observed relevant improvement by applying \gls{pca} and whitening to the visual features.
+
 
 %--------------------------------------------------------
 
@@ -404,11 +419,10 @@ In our experiments, we considered the first 256 components obtained after \gls{p
 \subsection{Training}
 
 We tackle the optimization problems using the Adam optimizer~\cite{kingma2014adam} with default parameters (learning rate 0.001, $\beta_1=\text{0.9}$, $\beta_2=\text{0.999}$, and $\epsilon=1e^{-0.8}$) in all cases.
-
 We set the size of the training batch to 64 examples, each of which was extracted from a different image.
-Each training example in the batch corresponds to the visual features $\v$ of a different image $I$, and a textual descriptor $\t$ picked at random from the set $C$ of captions associated to $I$ in \gls{coco}.
+Each training example in the batch corresponds to the visual features $\y^\star$ of a different image $I$, and a textual descriptor $\x$ picked at random from the set $C$ of captions associated to $I$ in \gls{coco}.
 
-As explained above, \sparsettv{} requires an additional $\t'$ which is also picked at random from $C$ during training.
+As explained above, \sparsettv{} requires an additional $\x^\star$ which is also picked at random from $C$ during training.
 During test, we consider all captions as different queries.
 We set the maximum number of iterations to 300,000 in \sparsettv{}, and to 50,000 in \densettv{} and \widedeepttv{}, but apply an early-stop policy when the model starts overfitting (as reflected in the validation error).
 The training set is shuffled each time a complete pass over all images is performed.
@@ -456,7 +470,7 @@ That is, to avoid constructing as many computational graphs as different caption
 
 For \densettv{} and \widedeepttv{}, we have also considered stacking \gls{lstm} cells as a mean to give the model a greater expressive power.
 We denote those variations by the suffix `-$\langle n\rangle$' where $n$ indicates the height of the stack.
-For example, \densettv{}$-1$ corresponds to the vanilla model in \ref{fig:t2v:d-t2v-arch}, while \widedeepttv{}$-4$ is the wide \& deep approach with 4 \gls{lstm} cells stacked.
+For example, \densettv{}-1 corresponds to the vanilla model in \ref{fig:t2v:d-t2v-arch}, while \widedeepttv{}-4 is the wide \& deep approach with four \gls{lstm} cells stacked.
 In all cases, we set the dimensionality of the embedding space to 100 and the size of the internal \gls{lstm} nodes to 512;
 again, those values were chosen during preliminary experiments run on the validation set.
 
@@ -473,7 +487,7 @@ again, those values were chosen during preliminary experiments run on the valida
 % \label{tab:t2v:paramsmodel}
 % \end{table}
 
-A Tensorflow implementation of all our methods, and of all the compared methods described in the next section, is available at \url{https://github.com/AlexMoreo/tensorflow-Tex2Vis}.
+A Tensorflow implementation of all our methods, and of all the compared methods described in the next section, is publicly available\footnote{\url{https://github.com/AlexMoreo/tensorflow-Tex2Vis}}.
 
 %--------------------------------------------------------
 \subsection{Compared methods}
@@ -502,7 +516,7 @@ We have experimented with two variants: \emph{short} (\wordvisual{}-S), which tr
 We have only experimented with the variant that adopts the same \gls{mse} loss function as our model\footnote{They reported slightly better results with the Marginal Ranking Loss (MRL), a cost function that takes two visual vectors for each example, one considered relevant, and another irrelevant, to the textual description. However, relevance judgments to generate the training triplets relied on the user-click logs available in their dataset.}. %In spite of the user-click logs we preferred not to involve the $ROUGE_L$ measure as a relevance estimator, as it is a fundamental part of the evaluation criterion. We believe the MRL could bring similar improvements to our method, an hypothesis we led to future research.}.
 In order to carry out a fair comparison, we have implemented the exact same retrieval for \wordvisual{} as our method (i.e.,  euclidean distance after PCA and whitening -- see \ref{sec:t2v:method}) instead of the originally proposed \emph{cosine similarity}.
 The reason for doing so is that we have observed a consistent improvement of about 3\% in our experiments, and verified similar improvements to be achieved in the case of \wordvisual{} as well;
-concretely, \wordvisual{} improved its \gls{dcg} average by 0.073 (with a standard deviation of $\pm4.8e^{-3}$) due to the use of this retrieval method in place of the cosine similarity.
+concretely, \wordvisual{} improved its \gls{dcg} average by 0.073 (with a standard deviation of $\pm 4.8 \times 10^{-3}$) due to the use of this retrieval method in place of the cosine similarity.
 
 %--------------------------------------------------------
 \subsection{Evaluation Measures}
@@ -522,7 +536,7 @@ Details about the definitions of \gls{dcg} and \gls{tdcg} can be found in \ref{s
 Because the relevance values for \gls{dcg} are not provided in \gls{coco}, we estimate them by using the $\text{ROUGE}_L$~\cite{lin2004rouge} metric, a measure often used for the evaluation of the results of text summarization algorithms and one of the evaluation measures for the \gls{coco} caption generation competition\footnote{\url{https://github.com/tylin/coco-caption}}~\cite{chen2015microsoft}.
 This is a metric based on finding the Longest Common Subsequence (LCS) between the two strings being compared\footnote{LCS is a way to find a common exact sequence of words that is similar to matching word n-grams but less stringent (i.e.,  inside the LCS sequence other words may appear).} and then measuring a weighted harmonic mean ($F_\beta$, with $\beta=1.2$) of the coverage ratios of the subsequence with the two strings.
 Using a $\beta$ value greater than one ($\beta=1.2$ is the default value in the \gls{coco} evaluation software) gives a little more importance to producing a good coverage of the gold standard caption.
-We compute $r_i = \text{ROUGE}_L ( \t, C_i ) $, where $\t$ is the query caption, and $C_i$ are the five captions associated to the retrieved image at rank $i$.
+We compute $r_i = \text{ROUGE}_L ( \x, C_i ) $, where $\x$ is the query caption, and $C_i$ are the five captions associated to the retrieved image at rank $i$.
 This caption-to-caption relevance model is thus aimed at measuring how much the concepts expressed in the query appear as relevant parts of the retrieved images.
 
 As a final note on the evaluation, it is noteworthy that many related methods so far~\cite{mao2014deep,ma2015multimodal,klein2014fisher,karpathy2015deep,donahue2015long,kiros2015skip,wang2016learning} have been tested in \gls{coco} as well.
@@ -579,7 +593,7 @@ The rank-centered metrics \gls{r@k} and \gle{medR} present a higher dependency o
 \label{subsec:t2v:results}
 
 \begin{table}
-\renewcommand{\tabcolsep}{3pt}
+\renewcommand{\tabcolsep}{2.8pt}
 \newcolumntype{R}{>{\raggedleft\arraybackslash}X}
 \begin{tabularx}{\linewidth}{lRRRRRRR}
   \toprule
@@ -775,9 +789,9 @@ Our \widedeepttv{} model improved over \wordvisual{} by a statistical significan
 \widedeepttv{} has more parameters than \wordvisual{} but converges much faster.
 
 %In the future we also plan to compare \ttv{} against the recently proposed \emph{Word2VisualVec}~\cite{dong2018predicting} model.
-An interesting aspect that proved to be effective in our experiments is the use of a different $\t'$ as a constraint for the hidden representation.
-When $\t$ and $\t'$ are different, though semantically similar, the autoencoder branch becomes semantically constrained.
+An interesting aspect that proved to be effective in our experiments is the use of a different $\x^\star$ as a constraint for the hidden representation.
+When $\x$ and $\x^\star$ are different, though semantically similar, the autoencoder branch becomes semantically constrained.
 We have investigated this idea in the \sparsettv{}, and we believe the same principle could also bring similar benefits for the \densettv{} and \widedeepttv{} models.
-We thus plan to investigate the effects of such ``semantic-autoencoding'' principle by adopting a  \emph{Seq2Seg}~\cite{cho2014learning} architecture, i.e.,  by constraining the final memory state from an encoding \gls{lstm} after processing the input $\t$ to be a good representation to generate a different, but semantically similar, $\t'$ with a decoder \gls{lstm}.
+We thus plan to investigate the effects of such ``semantic-autoencoding'' principle by adopting a  \emph{Seq2Seg}~\cite{cho2014learning} architecture, i.e.,  by constraining the final memory state from an encoding \gls{lstm} after processing the input $\x$ to be a good representation to generate a different, but semantically similar, $\x^\star$ with a decoder \gls{lstm}.
 We believe such an intermediate state to be able to produce better projections to the visual features.
 

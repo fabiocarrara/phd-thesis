@@ -2,7 +2,6 @@ unitsize(.8cm);
 usepackage("amsmath");
 texpreamble("\renewcommand{\rmdefault}{\sfdefault}");
 
-// TODO tune w,h
 real w = 3.5, wgap = 1., w_c = w/2, W = w + wgap;
 real h =  .9, hgap = .5, h_c = h/2, H = h + hgap;
 
@@ -52,22 +51,22 @@ cell(1, x=W);
 real midH = H + h + w/2;
 label("\dots", (1.5*W + 1.5*wgap, midH));
 real dStartW = 1.5*W + 2.35*wgap;
-draw((dStartW, midH) -- (dStartW + wgap, midH), arrow=ArcArrow, L=Label("$\mathbf{s}_{t-2}$", align=N));
+draw((dStartW, midH) -- (dStartW + wgap, midH), arrow=ArcArrow, L=Label("$\mathbf{s}_{L-2}$", align=N));
 
-cell(2, "{t-1}", "t", x=dStartW + wgap + w/2);
-cell(3, "t", x=dStartW + wgap + w/2+W, state=false);
+cell(2, "{L-1}", "L", x=dStartW + wgap + w/2);
+cell(3, "L", x=dStartW + wgap + w/2+W, state=false);
 
 pair sfStart = (dStartW + 2*W, midH);
 pair sfEnd = (dStartW + 2*W + w/2, H + 2*h + w);
 
 path s = sfStart -- (sfEnd.x, sfStart.y) -- sfEnd;
-draw(s , arrow=ArcArrow, L=Label("$\mathbf{s}_t$", position=BeginPoint, align=N+E)); // s_i
+draw(s , arrow=ArcArrow, L=Label("$\mathbf{s}_L$", position=BeginPoint, align=N+E)); // s_i
 // fc2
 layer("fc [$\mathbf{W}_2, \mathbf{b}_2$]", sfEnd);
 // arr(H, H + 3*h + w, x=sfEnd.x, L=Label("$\mathbf{y}$", align=S+E)); // y
 
 // wide
-string[] idx = new string[] {"0", "1", "", "t-1", "t"};
+string[] idx = new string[] {"0", "", "i", "", "L-1"};
 for (int i = 0; i < idx.length; ++i) {
     real startW = sfEnd.x + wgap + w/2 + (i + 1)*w/(idx.length + 1);
     if (length(idx[i]) != 0) {
@@ -78,7 +77,7 @@ for (int i = 0; i < idx.length; ++i) {
     }
 }
 
-layer("$\sum_{i=1}^t \mathbf{x}_i$", (sfEnd.x + W, H+h), (w, w), param=false);
+layer("$\displaystyle \sum_{i=0}^{L-1} \mathbf{x}_i$", (sfEnd.x + W, H+h), (w, w), param=false);
 arr(h, H+h+w, x=sfEnd.x + W);
 // fc3
 layer("fc [$\mathbf{W}_3, \mathbf{b}_3$]", sfEnd + (W,0));
