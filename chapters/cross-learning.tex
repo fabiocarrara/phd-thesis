@@ -14,7 +14,7 @@ While in previous work the cost of human interaction was spent on the manual eng
 Even if the labeling task is simpler and more accessible, correctly labeling huge datasets is still a labor-intensive and expensive job, which is usually carried out by crowd-sourcing.
 Current large-scale datasets, such as ImageNet, are in fact limited in their scalability due to the labeling cost on which their collectors incur.
 Thus, the attention of recent research shifted to the exploitation of the huge amount of data coming from the web and social media which became easily available in the last years~\cite{sun2017revisiting,mahajan2018exploring}.
-The main objective is to reduce the amount of human interaction needed to train an image classifier and obtain good features by exploiting correlation that can emerge in large-scale datasets.
+The main objective of our investigation is to reduce the amount of human interaction needed to train an image classifier and obtain good features by exploiting correlation that can emerge in large-scale datasets.
 Despite having the advantage of being free and constantly growing, this source of data poses challenges in its usage, since it commonly presents noisy or incomplete information.
 This usually limits the amount of supervision that can be extracted from this kind of data, but the possibility to scale the training procedures to a huge amount of data often compensates this limitation.
 
@@ -130,9 +130,9 @@ We formulate this task as learning a three-way image classifier that can assign 
 As other state-of-the-art approaches, we exploit deep learning models to build our visual sentiment classifiers.
 However, differently from previous supervised approaches, we propose an end-to-end pipeline to train the visual classifier starting from a large-scale dataset of unlabeled tweets.
 As source of multi-modal information, we choose Twitter, from which we crawled tweets from the random stream of global tweets with a minimum set of restriction.
-We exploit the correspondence of text and images present in tweets to distill affective information from the textual modality to the visual one.
-In particular, we use a pre-trained textual predictor --- based on a tandem \gls{LSTM}-\gls{SVM} architecture --- to infer the sentiment polarity from the textual part of a tweet
-Then, we transfer this sentiment polarity to the images attached to the same tweet, obtaining a dataset of labeled images we can use as training set to fine-tune \glspl{dcnn} architectures for the task of visual sentiment polarity prediction.
+We exploit the correspondence of text and images present in tweets to distill affective information from the textual modality to the visual one using a student-teacher learning scheme.
+In particular, we use a pre-trained textual predictor based on a tandem \gls{LSTM}-\gls{SVM} architecture (teacher) to infer the sentiment polarity from the textual part of a tweet.
+Then, we transfer this sentiment polarity to the images attached to the same tweet, obtaining a dataset of labeled images we can use as training set to fine-tune \glspl{dcnn} architectures (students) for the task of visual sentiment polarity prediction.
 Although the text of the tweets is often noisy or misleading with respect to the image content (e.g., irrelevant comments), we show that our cross-media approach can be profitably used for learning visual sentiment classifiers in the wild.
 At test time, the trained \glspl{dcnn} can be used to infer the sentiment polarity of an image without the need of textual data.
 
@@ -440,7 +440,7 @@ $\ast=$ based on low-level features, $\circ=$ based on mid-level features, $\bul
 
 %-------------------------------------------------------------------------
 
-\section{Conclusions}
+\section{Summary}
 \label{sec:vsa:conclusion}
 
 In this chapter, we tackle the problem of reducing the cost of building datasets for training deep models for image classification.
