@@ -5,14 +5,13 @@
 \chapter{Miniaturization of Convolutional Neural Networks for Embedded Devices}
 \label{ch:miniaturization}
 
-One of the most important limitations of \glspl{dcnn} is that they often rely on computationally expensive deep models, which are slow for many applications including image classification.
+One of the most important limitations of \glspl{cnn} is that they often rely on computationally expensive deep models, which are slow for many applications including image classification.
 Due to this limitation, methods based on efficient hand-crafted local features --- such as \acrshort{surf}, \acrshort{orb}, \acrshort{lbp}, etc.\ --- are predominantly adopted in vision systems where a computational power of a full-featured server is not available, e.g., mobile phones or embedded devices.
 
-In this chapter, we will explore the adoption and the miniaturization of \glspl{dcnn} for efficient image classification.
+In this chapter, we will explore the adoption and the miniaturization of \glspl{cnn} for efficient image classification.
 We focus our investigation on reducing and evaluating deep models for embedded vision systems, i.e.\ smart cameras.
 A smart camera is an embedded camera equipped with a limited computational and communication capabilities that can be used to process, extract, and send information contained in the captured images on board of the device itself.
-% TODO [CITE] smart surveillance or campus with CNNs
-Empowering smart cameras with the generalization and robustness of \glspl{cnn} for computer vision application represents one the most promising steps towards the evolution of smart environments~\cite{}.
+Empowering smart cameras with the generalization and robustness of \glspl{cnn} for computer vision application represents one the most promising steps towards the evolution of smart environments~\cite{valera2005intelligent}.
 Their ``smart'' nature makes them suitable for automated intelligent systems able to generate event descriptions and/or make decisions~\cite{belbachir2010smart}, thus making them attractive to a broad range of applications.
 In our study, we will focus on a specific application, that is the visual occupancy detection of outdoor car parking lots in a decentralized fashion with smart cameras.
 The motivation for the choice of this specific problem is manyfold.
@@ -33,18 +32,18 @@ The motivation for the choice of this specific problem is manyfold.
 	moreover, an intelligent infrastructure provides flexibility in its application, e.g., the same cameras could be used for perimeter surveillance during night hours.
 
 \end{itemize}
-
+%
 While visual approaches to parking lot occupancy detection are not new~\cite{dan2002parking,wu2007robust,del2015vacant,de2015pklot}, the usage of solely visual information still poses challenges in terms of robustness.
 Numerous solutions are tailored to specific scenarios and hardly generalize well to different ones, such as a different parking lot, viewpoint, light conditions, or occlusion patterns.
 
 In our investigation, we propose a decentralized and efficient vision system based on smart cameras and \gls{dl} for parking lot occupancy detection.
-We present a reduced \gls{dcnn} suitable for embedded devices with which we implement the classification logic under the occupancy detection task.
+We present a reduced \gls{cnn} suitable for embedded devices with which we implement the classification logic under the occupancy detection task.
 A strong experimental protocol on publicly available datasets is applied to compare the proposed approach to the state-of-the-art methods and deep models and assess the its generalization properties.
 In addition, we contribute with a publicly available dataset of the parking lot images captured by multiple cameras called \emph{CNRPark-EXT} that enables us to thoroughly test the robustness of our solution to multiple source of errors.
 
 The chapter is organized as follows.
 In \ref{sec:mini:related-work}, we introduce the work related to parking lot occupancy detection, focusing on vision-based solutions more related to our proposal.
-In \ref{sec:mini:occupancy-detection}, we propose and describe the \gls{dcnn} model specifically designed to be executed on smart cameras which implements the parking slot classification pipeline.
+In \ref{sec:mini:occupancy-detection}, we propose and describe the \gls{cnn} model specifically designed to be executed on smart cameras which implements the parking slot classification pipeline.
 In \ref{sec:mini:datasets}, we presents the already available and newly collected datasets used to evaluate and compare our approach.
 \ref{sec:mini:evaluation} presents the proposed experimental setup to compare the our approach to the state of the art and evaluate its robustenss to multiple aspects.
 \ref{sec:mini:deployment} briefly describes the deployment of our solution in a real scenario and gives an overview of the overall system.
@@ -722,10 +721,10 @@ The predicted occupancy status for each slot is submitted to a server for visual
 % bottleneck and a single point of failure. Moreover, the network may
 % be easily congested with increasing number of parking lots to be monitored.
 
-\section{Conclusions}
+\section{Summary}
 \label{sec:mini:conclusions}
 
-We proposed and evaluated a reduced \acrlong{cnn} architecture for image classification that enables smart vision applications in embedded devices.
+In this chapter, we proposed and evaluated a reduced \acrlong{cnn} architecture for image classification that enables smart vision applications in embedded devices.
 In the scope of visual parking lot occupancy detection, we defined mAlexNet, a reduced version of the famous AlexNet classifier, which is obtained by pruning layers and reducing the number of parameters of the original architecture.
 Experiments on public datasets shown that our proposed architecture outperforms state-of-the-art approaches for visual parking lot occupancy detection based on shallow models and handcrafted features while requiring a computational budget suitable for embedded devices.
 Specifically, our architecture exhibits very high accuracies even in presence of challenging light conditions variation, shadows, and partial occlusions.
@@ -734,7 +733,7 @@ Moreover, multi-dataset experiments shown that the architectural reduction does 
 We tested our approach on a real scenario in the parking lot of the campus of the CNR Area in Pisa.
 We deployed a decentralized system comprised by nine smart cameras which monitors multiple slots and perform the occupancy detection for each slot on board.
 The delegation of parking slot occupancy detection to smart cameras provides a twofold advantage.
-First, with a cost of a single camera (roughly 80\euro), we are able to monitor at most 50 slots in our configuration, drastically reducing the cost per single slot that is nearly 100\euro{} for magnetic ground sensors while maintaining the same level of accuracy;
+First, with a cost of a single camera (roughly 80\euro), we are able to monitor at most 50 slots in our configuration, drastically reducing the cost per single slot that is nearly 100\euro{} for magnetic ground sensors while maintaining the same level of accuracy.
 Second, the decentralized nature of our solution enables a higher degree of scalability, since there is no need of a central server to analyze images and a high bandwidth to transfer them.
 In addition, the flexibility of the infrastructure does not limit the applications only to occupancy detection;
 the spare computational resources can be used to perform other analyses such as video surveillance activities.
