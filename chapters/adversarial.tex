@@ -40,7 +40,7 @@ A parallel strategy recenly studied is to defend from adversarial attacks by dis
 \label{fig:adv:overview}
 \end{figure}
 
-In this work, we present an approach to detect adversarial examples in deep neural networks based on the analysis of activations of the neurons in hidden layers --- also known as \emph{deep features} --- of the attacked neural network.
+In this chapter, we present an approach to detect adversarial examples in deep neural networks based on the analysis of activations of the neurons in hidden layers --- also known as \emph{deep features} --- of the attacked neural network.
 Being deep learning a subset of representation learning methods, we expect the learned representation to be more robust than the final classification to adversarial examples.
 Moreover, adversarial images are generated in order to look similar to humans, and deep features have shown impressive results in visual similarity related tasks such as content-based image retrieval~\cite{sharif2014cnn,gordo2016deep}.
 % Our main conjecture is the following,
@@ -78,7 +78,7 @@ The research presented in this chapter was published in~\cite{carrara2017detecti
 \label{sec:adv:rel-work}
 
 One of the first works exploring adversarial examples for image classifiers implemented with convolutional neural network is the one of \citet{szegedy2013intriguing}.
-The authors used a quasi-newtonian optimization method, namely L-BFGS, to find an image $\x_{adv}$ close to an original one $\x$ in terms of L2 distance, yet differently classified.
+The authors used a quasi-newtonian optimization method, namely L-BFGS, to find an image $\x_{adv}$ close to an original one $\x$ in terms of $L_2$ distance, yet differently classified.
 They also have shown that the obtained adversarial images were also affecting different models trained on the same training set (\emph{cross-model generalization}) and also models trained with other yet similar training sets (\emph{cross-training set generalization}).
 Cross-model and cross-training set generalization properties of adversarial examples are also confirmed in~\cite{tabacof2016exploring}, where the authors explored the pixel space around adversarial images moving in random directions applying different kinds of noise.
 They show that adversarial images are not isolated, spurious points, but they occupy large regions of the pixel space that mislead models with similar classification boundaries.
@@ -114,7 +114,7 @@ In fact, the authors successfully performed adversarial attacks to remotely host
 % - defenses
 \paragraph{Defensive Strategies}
 In the recent literature, a considerable amount of work has been dedicated to increasing the robustness of the attacked models to adversarial inputs.
-In~\cite{szegedy2013intriguing}, the authors suggest to add a regularization term to the training loss based on the Lipschitz upper bound, that resembles a L2 regularization, to limit the magnitude of the changes in the activations of a network caused by perturbations of the input.
+In~\cite{szegedy2013intriguing}, the authors suggest to add a regularization term to the training loss based on the Lipschitz upper bound, that resembles a $L_2$ regularization, to limit the magnitude of the changes in the activations of a network caused by perturbations of the input.
 \citet{gu2014towards} shown that denoising autoencoders can remove substantial amounts of the adversarial noise.
 However, when stacking the autoencoders with the original neural network, the resulting network can again be attacked by new adversarial examples with even smaller distortion.
 Thus, the authors proposed Deep Contractive Network, a model with an end-to-end training procedure that includes a smoothness penalty.
@@ -197,7 +197,7 @@ Instead, a \emph{perfect-knowledge} adversary is aware of both the classifier an
 this is the worst-case scenario in which the adversary has full control and on which many of the detection schemes are bypassed~\cite{carlini2017adversarial}.
 A half-way scenario is the one with a \emph{limited-knowledge} adversary, that is aware of the particular defensive strategy being deployed, but does not have access to its parameters or training data.
 
-In this preliminary work, we focus on the \emph{zero-knowledge} scenario and plan to test our approach in the other scenarios in future work.
+In this work, we focus on the \emph{zero-knowledge} scenario and plan to test our approach in the other scenarios in future work.
 
 % A preliminary version of the method we are proposing has been presented in~\cite{carrara2017detecting}.
 %We extended that work taking into consideration different intermediate layers form which extract deep features to perform the detection.
@@ -246,7 +246,7 @@ We then use the score assigned by a kNN classifier to the class predicted by the
 Please note, we do not rely on the classification produced by the kNN, but we only use the score assigned to the class predicted by the deep neural network as a measure of confidence.
 
 Formally, given a set of labeled images $\X = \{(\x_i, c_i)\}$ where $\x_i$ is an image and $c_i$ is its class label, a kNN classifier assigns labels to an unknown image $\q$ considering the ordered results of its $k$ nearest neighbors $NN(\q,k)=\{(\x_1,c_1) \ldots (\x_k,c_k)\}$ obtained performing a kNN search over $\X$ for a predefined distance function $d(\x, \y)$ between any two images.
-We define the distance function as $d(\x,\y) = || \phi(\x) - \phi(\y) ||_2$, where $\phi(\x)$ is the internal activation extracted from the image $\x$ using the classifier, and $||\cdot||_2$ is the L2 norm.
+We define the distance function as $d(\x,\y) = || \phi(\x) - \phi(\y) ||_2$, where $\phi(\x)$ is the internal activation extracted from the image $\x$ using the classifier, and $||\cdot||_2$ is the $L_2$ norm.
 A score $s(\q,c)$ is assigned to every class $c$ found in the retrieved nearest neighbors of $\q$ as follows:
 %Then, the class with the highest score is assigned to the unknown image $q$.
 %The most common kNN classifier score function is:
@@ -360,7 +360,7 @@ Following~\cite{simonyan2014very}, we applied global average pooling (GAP) to th
 For the kNN classifier, we used the features extracted from \gls{ilsvrc}'12 train set as labeled set $X$, and we defined the distance function $d(\q,\x)$ as the euclidean distance between the extracted features.
 We chose $k=1,000$ to have a number of nearest neighbors of the same order of magnitude of the number of images per class in the labeled set. %because for each class we have roughly 1,000 images per class in the labeled set.
 %For XXX we took the output before the ReLU activation function.
-We tested also feature L2 normalization and dimensionality reduction on extracted features using \gls{pca}+Whitening with 256 dimensionality.
+We tested also feature $L_2$-normalization and dimensionality reduction on extracted features using \gls{pca}+Whitening with 256 dimensionality.
 
 %\paragraph{Adversarial detection and classification}
 Given an input image $x$, we compute the kNN score $s(\x, c)$ for the class $c = f(\x)$ predicted by OverFeat, and we discard this classification if the score is below a certain threshold.
@@ -652,14 +652,14 @@ Note that the effectiveness of the detection increases when using deeper represe
 \end{figure}
 
 
-\section{Conclusions and Future Work}
+\section{Summary}
 \label{sec:adv:conclusions}
 
 In this chapter, we presented an approach to detect adversarial examples crafted for fooling deep neural network classifiers.
 The overall goal is filtering out malicious images.
-To perform the detection, we relied on activations of neurons in hidden layers in order to detect adversarials.
+To perform the detection, we relied on activations of neurons in hidden layers in order to detect adversarial examples.
 In particular, we inspect the activations of intermediate layers for both adversarial and authentic inputs, and we defined an authenticity confidence score based on kNN similarity searching among the images used for training.
-Experiments on the two most cited adversarial generation techniques (L-BFGS and \gls{fgsm}) on the very same neural network used in the original papers (i.e., Overfeat, InceptionV3) have been carried out.
+Experiments on the two most cited adversarial generation techniques (L-BFGS and \gls{fgsm}) on the very same neural network used in the original papers (i.e., OverFeat, InceptionV3) have been carried out.
 In the experiments, we considered various kNN score functions and hidden layers.
 
 %The results show that we were able to filter out roughly 85\% of adversarial images when looking to lower level activations (such as \emph{pool5}).
@@ -671,8 +671,9 @@ We also showed that the probability density function of our authenticity confide
 Moreover, some examples are suggesting that hard adversarial examples are the ones for which actual and target classes are similar or have similar visual patterns. %there are same visual patterns in both classes.
 
 We also tested our method on the InceptionV3 \gls{cnn}, generating adversarial images from the NIPS 2017 Adversarial Attacks and Defenses Kaggle Competitions.
-Using this dataset, we performed a thorough analysis of the detectability of adversarial exampels when varying the internal layer extracted from the \gls{cnn}.
+Using this dataset, we performed a thorough analysis of the detectability of adversarial examples when varying the internal layer extracted from the \gls{cnn}.
 Best results were obtained using layer \emph{\textbf{mixed\_6d}} with an overall EER Accuracy of 80\%, confirming the effectiveness of our approach and its general applicability to deep neural network classifiers.
-Future work may test the detection scheme under a more stringent threat model, in which the attacker is aware of the detection scheme used.
-The comparison of multiple layers for the detection performed in this study suggested that current adversarial crafting algorithms do not steer all the internal semantic representations inside the network, but focus on the last layers.
-Given these considerations, possible future work may also improve the presented detection scheme by relying on multiple intermediate layers, thus increasing the difficulty for a generation algorithm to craft adversarial images able to control multiple activations at once.
+% TODO [MOVE] to conclusion chapter
+%Future work may test the detection scheme under a more stringent threat model, in which the attacker is aware of the detection scheme used.
+%The comparison of multiple layers for the detection performed in this study suggested that current adversarial crafting algorithms do not steer all the internal semantic representations inside the network, but focus on the last layers.
+%Given these considerations, possible future work may also improve the presented detection scheme by relying on multiple intermediate layers, thus increasing the difficulty for a generation algorithm to craft adversarial images able to control multiple activations at once.
