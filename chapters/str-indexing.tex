@@ -17,62 +17,54 @@
 % We validate our approach on a recent convolutional neural network feature, namely \acrfull{rmac}, which is a state-of-art descriptor for image retrieval. Its effectiveness has been proved through several instance-level retrieval benchmarks.
 % An extensive experimental evaluation conducted on the standard benchmarks show the effectiveness and efficiency of the proposed approach and how it compares to state-of-the-art main-memory indexes.
 
-Search engines on the Web have in the past achieved great results in terms of efficiency thanks to the use of inverted index technology.
+Search engines on the Web have in the past achieved significant results in terms of efficiency thanks to the use of inverted index technology.
 This development was not as rapid in the case of retrieval of other forms of expression such as images.
-This was initially due in part to the ineffectiveness of hand-crafted features used by instance-level and content-based image retrieval.
-However, since 2014 we have had a great development of new learned features obtained by training neural networks -- in particular \acrfullpl{cnn}.
+This was initially due in part to the \emph{semantic gap}, i.e., the ineffectiveness of hand-crafted features used by instance-level and content-based image retrieval.
+However, since 2014, new features learned by \acrlong{dl} --- in particular, \acrlongpl{cnn} --- guided a significant development in this field and hugely mitigate the semantic gap problem.
 In consequence, the remarkable development in the effectiveness of these features has not been matched by a similar development in image retrieval systems; why?
 We do not have a clear answer.
 One reason could be that people are not very interested in searching for image content on the Web and as a result, major Web search service providers have not invested many resources in this regard.
-On the other hand, if the image retrieval were simple and above all scalable as that of the text, perhaps today we would have seen a greater development of these services.
+On the other hand, if the image retrieval were simple and above all scalable as that of the text, perhaps today we would have seen a more significant development of these services.
 
-The aim of this article is to explore new approaches to make image retrieval as similar as possible to text so as to reuse the technologies and platforms exploited today for text retrieval without the need for dedicated access methods.
-In a nutshell, the idea is to use image representation extracted from a \gls{cnn}, often referred to as \emph{deep features}, and to transform them into text so that they can be indexed with a standard text search engine.
-
-The application focus of this work is on a scenario of image retrieval in a large-scale context, with an eye to scalability.
-This aspect is often overlooked by the literature, most of the image retrieval systems are designed to work in main memory and many of these cannot be distributed across a cluster of nodes~\cite{navarro2016new}.
-Many techniques present in literature try to tackle this problem by heavily compressing the representation of visual features to adapt more and more data to the secondary memory.
+In this chapter, we explore new approaches for making image retrieval as similar as possible to text to reuse the technologies and platforms exploited today for text retrieval without the need for dedicated access methods.
+In a nutshell, the idea is to use image representation extracted from a \gls{cnn}, often referred to as \emph{deep features}, and to transform them into a surrogate text that standard text search engine can index.
+The main focus of this investigation is on a scenario of image retrieval in a large-scale context, with an eye to scalability.
+The literature often overlooks this aspect, most of the image retrieval systems are designed to work in main memory, and many of these cannot be distributed across a cluster of nodes~\cite{navarro2016new}.
+Many techniques in literature try to tackle this problem by heavily compressing the representation of visual features to adapt more and more data to the secondary memory.
 However, these approaches to indexing are not able to scale because sooner or later response times become unacceptable as the size of the data to be managed increases.
+Moreover, we must not neglect to consider the effort that it takes to design and implement from scratch an image retrieval system that provides, in addition to the above-mentioned requirements, also others such as allowing simultaneous update and searching, providing support for incremental indexing and for CRUD (Create, Read, Update, and Delete) operations, etc.
 
-Moreover, we must not neglect to consider the effort that it takes to design and implement from scratch an image retrieval system that provides, in addition to the above mentioned requirements, also others such as: allowing simultaneous update and searching, providing support for incremental indexing and for CRUD (Create, Read, Update, and Delete) operations, etc.
+Our general approach is based on the transformation of deep features, which are (dense) vectors of real numbers, into sparse vectors of integer numbers.
+The transformation in integers is necessary to deal with textual representations of the vectors, as we will explain better below, in which the components of the vectors are translated by ``term frequency'' of these textual representations.
+Moreover, sparseness is necessary to achieve sufficient levels of efficiency as it does for search engines for text documents.
+To obtain this twofold result, we introduce a novel approach for surrogate text representation of deep features based on \acrfull{sq} and compare it to an existing permutation-based surrogate text approach.
+As a further contribution, we formalize the analyzed approaches in a unified mathematical framework for surrogate text transformations of visual features.
 
-In particular, our general approach is based on the transformation of deep features, which are (dense) vectors of real numbers, into sparse vectors of integer numbers.
-The transformation in integers is necessary to deal with textual representations of the vectors, as it will be explained better below, in which the components of the vectors are in fact translated by ``term frequency'' of these textual representations.
-Sparseness is necessary to achieve sufficient levels of efficiency exactly as it does for search engines for text documents.
-To obtain this twofold result, we will analyze two approaches: one based on permutations and one based on \acrfull{sq}.
+% The original contribution of the present work consists in introducing a new approach of surrogate representation for deep features based on \emph{\gls{sq}}.
+%We present this approach in a unified framework of representation of deep features using surrogate text together with the technique based on deep permutations, and we compare it with the \gls{sq} technique.
+%We have also extended the experimental evaluation by adding two more benchmarks and, regarding efficiency, we also considered the size of the indexes as well as their percentage of use.
 
-The present paper is the evolution of previous works~\cite{amato2014mi,gennaro2010approach,amato2016deep,amato2017efficient,amato2018large}.
-In~\cite{amato2014mi}, the idea of representing metric objects as permutations of reference objects to construct an inverted index that allows us to perform approximate nearest neighbor queries has been presented.
-In~\cite{gennaro2010approach}, this method has been extended by transforming permutations into surrogate text representations and allowing us to take advantage of a standard text search engine without having to implement the inverted index.
-\citet{amato2016deep} introduced the idea of deep permutations that applies to the deep feature vectors and in which the components of the vectors themselves are permuted.
-\citet{amato2017efficient,amato2018large} presented an extension of the technique of deep permutations, in the former using the surrogate text representation and \gls{rmac}, and in the latter taking into account the negative components of \gls{rmac}.
-In~\cite{amato2018large}, we have also proved that this general approach can be implemented on top of Elasticsearch by showing how such a retrieval system is able to scale to multiple nodes.
-In the earlier attempt~\cite{amato2016large}, we have presented a preliminary draft of quantization approach on deep features extracted from the Hybrid CNN\footnote{\url{http://github.com/BVLC/caffe/wiki/Model-Zoo}}, which is less effective but has the advantage of being partly sparse.
-
-The original contribution of the present work consists in introducing a new approach of surrogate representation for deep features based on \emph{\gls{sq}}.
-We present this approach in a unified framework of representation of deep features using surrogate text together with the technique based on deep permutations, and we compare it with the \gls{sq} technique.
-We have also extended the experimental evaluation by adding two more benchmarks and, regarding efficiency, we also considered the size of the indexes as well as their percentage of use.
-
-The rest of the paper is organized as follows: \ref{sec:str:related-work} surveys the relevant related work.
+The chapter is organized as follows.
+\ref{sec:str:related-work} surveys the relevant related work.
 % \ref{sec:str:background} provides a brief background about the Deep Features.
-In \ref{sec:str:surrogate}, the main contribution of this paper, namely the Surrogate Text Representation is presented.
+In \ref{sec:str:surrogate}, the main contribution of this paper, namely the formalization of the \acrfull{str} is presented.
 \ref{sec:str:experiments} shows experimental results, and finally \ref{sec:str:conclusion} gives concluding remarks.
-\ref{tab:str:notation} summarizes the  notation used throughout this manuscript.
+\ref{tab:str:notation} summarizes the notation used throughout the chapter.
 
 The research presented in this chapter was partially published in~\cite{amato2017efficient,amato2018large}.
 
 \section{Related Work}
 \label{sec:str:related-work}
-To frame our work in the context of scientific literature, we refer to the survey of \citet{zheng2018sift}, which organizes the literature according to the codebook size, i.e., large/medium-sized/small codebooks.
+To frame our work in the context of scientific literature, we refer to the survey of \citet{zheng2018sift}, which organizes the reviewed approaches according to the codebook size, i.e., large/medium-sized/small codebooks.
 Although this organization, according to the authors, is relevant to local features (which were defined as ``sift-based'' by the authors), we think it can be extended to deep features.
-We think our work belongs to medium-sized (or even large-sized codebooks), which rely on their sparsity to exploit inverted indexes and the trade-off between accuracy and efficiency is a major influencing factor.
+We think our work belongs to medium-sized (or even large-sized codebooks), which rely on their sparsity to exploit inverted indexes, and the trade-off between accuracy and efficiency is a major influencing factor.
 
 In this respect, the scientific literature devoted to mitigating the complexity of computing the matching between local features and based on the generation of visual words, i.e., \acrfull{bow}, are very close to our work in the spirit.
-If we limit ourselves to consider only the works that exploit the sparsity of the BoW model (originated from a work by \citet{sivic2003video}), \citet{philbin2007object} use an inverted index on secondary memory to implement a scalable visual object-retrieval system based on the SIFT descriptor.
+If we limit ourselves to consider only the works that exploit the sparsity of the BoW model (originated from the work of \citet{sivic2003video}), \citet{philbin2007object} use an inverted index on secondary memory to implement a scalable visual object-retrieval system based on the SIFT descriptor.
 We refer the reader to the survey of \citet{zheng2018sift} for more information about other approaches that quantize local features into visual words.
 In the following discussion, we concentrate our attention on techniques that try to deal with deep features with an inverted index.
 
-A permutation-like approach, which relies on the use of special anchor objects called pivots, were used in PPP-Codes index~\cite{novak2015large} to index a collection of 20 million images processed by a deep convolutional neural network.
+A permutation-like approach, which relies on the use of particular anchor objects called pivots, were used in PPP-Codes index~\cite{novak2015large} to index a collection of 20 million images processed by a deep convolutional neural network.
 However, the proposed approach relies on an index specifically developed to manage permutations in secondary memory called \emph{recursive Voronoi partitioning}.
 
 \citet{liu2015indexing} proposed a framework that adapts the BoW model and inverted table to deep feature indexing, which is similar to the one we propose.
@@ -83,7 +75,7 @@ Moreover, it has been tested only with sparse outdated deep features that exhibi
 Some other works try to treat the features in a convolutional layer as local features~\cite{arandjelovic2015netvlad,yue2015exploiting}.
 This way, a single forward pass of the entire image through the \gls{cnn} is enough to obtain the activation of its local patches, which are then encoded using \acrfull{vlad}.
 A similar approach uses the BoW encoding instead of \gls{vlad} to take advantage of sparse representations for fast retrieval in large-scale databases.
-However, although authors claim that their approach is very scalable in terms of search time, they did not report any efficiency measurements and experiments have been carried out on datasets of limited size.
+However, although authors claim that their approach is very scalable in terms of search time, they did not report any efficiency measurements, and experiments have been carried out on datasets of limited size.
 
 \citet{mohedano2016bags} quantized the deep features coming from a \gls{vgg}-16 pre-trained network with a codebook of size 25k and employed an inverted index for efficiency.
 Also in this case, although authors claim that their BoW-based representation is highly sparse, allowing for fast retrieval using inverted indices, no experimental evidence was offered.
@@ -95,9 +87,19 @@ A codebook is learned via $k$-means for each of the $M$ sub-division, and each s
 In particular, we focus on \gls{pq}-compressed inverted indexes, denoted IVFPQ, which are implemented in the open source FAISS library~\cite{johnson2017billion}.
 In IVFPQ, the feature space is partitioned into $N$ Voronoi cells, each associated with a particular posting list of the inverted file.
 Each posting list contains the \gls{pq}-compressed difference between samples belonging to that cell and its centroid.
-When building the index, both the cell centroids and the \gls{pq}-compression codebooks have to be pretrained on a subset of the data.
+When building the index, both the cell centroids and the \gls{pq}-compression codebooks have to be pre-trained on a subset of the data.
 When querying the index, FAISS probes the posting lists of the $P$ Voronoi cells nearest to the query, and it reconstructs the samples using the codebooks.
 In the section devoted to the experimental evaluation, we will discuss the performance of FAISS in comparison with our approach.
+
+\paragraph{\acrlong{str}}
+Seminal works on \gls{str} originated from permutation-based approaches for metric space indexing.
+% The present paper is the evolution of previous works~\cite{amato2014mi,gennaro2010approach,amato2016deep,amato2017efficient,amato2018large}.
+\citet{amato2014mi} introduced the idea of representing metric objects as permutations of reference objects to construct an inverted index that allows us to perform approximate nearest neighbor queries.
+In~\cite{gennaro2010approach}, this method has been extended by transforming permutations into surrogate text representations and allowing us to take advantage of a standard text search engine without having to implement the inverted index.
+\citet{amato2016deep} introduced the idea of deep permutations that applies to the deep feature vectors and in which the components of the vectors themselves are permuted.
+\citet{amato2017efficient,amato2018large} presented an extension of the technique of deep permutations, in the former using the surrogate text representation and \gls{rmac}, and in the latter taking into account the negative components of \gls{rmac}.
+In~\cite{amato2018large}, we have also proved that this general approach can be implemented on top of Elasticsearch by showing how such a retrieval system can scale to multiple nodes.
+In the earlier attempt~\cite{amato2016large}, we have presented a preliminary draft of quantization approach on deep features extracted from the HybridNet  CNN\footnote{\url{http://github.com/BVLC/caffe/wiki/Model-Zoo}}, which is less effective but has the advantage of being partly sparse.
 
 \begin{table}
 \begin{tabularx}{\linewidth}{rX}
@@ -197,8 +199,7 @@ $ n_i \in \mathbb{N}$                          & Number of elements in the $i$-t
 
 %%%%%%%%%%%%%%%%%%
 
-%Lucia%
-\section{Surrogate Text Representation} % (?? o un titolo migliore)
+\section{Surrogate Text Representation}
 \label{sec:str:surrogate}
 As we explained in the introduction, we aim to index and search a data set of feature vectors by exploiting off-the-shelf text search engines.
 So our main goal is to define a family of transformations that map a feature vector into a textual representation without the need for tedious training procedures.
@@ -362,7 +363,7 @@ The term frequencies vector will be $f_\text{DP}(\v) = [1, 3, 4, 0, 2]$, and thu
 \subsection{Scalar Quantization-Based Approach}
 \label{subsec:str:sq}
 In this section, we propose an alternative approach to provide a surrogate text representation for feature vectors.
-The idea behind our \acrfull{sq} approach is to map the real-valued vector components independently into a smaller set of integer values which act as the term frequencies of a predefined set of codewords.
+The idea behind our \gls{sq} approach is to map the real-valued vector components independently into a smaller set of integer values which act as the term frequencies of a predefined set of codewords.
 %This is very similar to the way Scalar Quantization works (?????). %questa frase c'era già ma non ho capito cosa volevi dire
 However, as for more generic \gls{pq}, the \gls{sq} has mainly the purpose of making a compact representation suitable for approximate nearest neighbor search.
 
@@ -643,14 +644,15 @@ Therefore, we suggest to use the optimal value for $\gamma=32$, which exhibits g
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Conclusions and Future Works}
+\section{Summary}
 \label{sec:str:conclusion}
 In this chapter, we proposed a simple and effective methodology to index and retrieve convolutional features without the need for a time-consuming codebook learning step.
 To get an idea, consider that FAISS takes about three hours for learning the codebook from about a million \gls{rmac} features with the configuration used in the experiments.
-This aspect is often left out by the authors; nevertheless, in the context of Web-scale applications --- in which we frame our work --- we think that not only processing time is a relevant aspect, but also being as independent as possible from data distribution during the indexing phase is a crucial point to be robust to data distribution drifting through time.
+This aspect is often left out by the authors;
+nevertheless, in the context of Web-scale applications --- in which we frame our work --- we think that not only processing time is a relevant aspect, but also being as independent as possible from data distribution during the indexing phase is a crucial point to be robust to data distribution drifting through time.
 
-Another important aspect of our work is that our technique is completely independent from the technology used for indexing.
+Another important aspect of our approach is its completely independence from the technology used for indexing.
 We can rely on the latest text search engine technologies, without having to worry about issues related to implementation problems, such as software maintenance, updates to new hardware technologies, bugs, etc.
 Furthermore, with our approach, it is possible to include in the image records, in addition to the visual features (which are in textual form), other information such as text metadata, geotags, etc.
-
-We plan to extend our work by investigating the possibility of modifying the \gls{rmac} extraction network to directly learn a ``discretized vector'' similar to the one we get with the proposed hand-crafted method while trying to maximize sparsity and increase the cardinality of the codebook as much as possible.
+% TODO [MOVE] to conclusion chapter
+% We plan to extend our work by investigating the possibility of modifying the \gls{rmac} extraction network to directly learn a ``discretized vector'' similar to the one we get with the proposed hand-crafted method while trying to maximize sparsity and increase the cardinality of the codebook as much as possible.
