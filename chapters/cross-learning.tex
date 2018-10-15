@@ -306,7 +306,7 @@ The details of this dataset are reported in \ref{tab:vsa:ttd}.
 \begin{tabularx}{\linewidth}{lRRR}
 \toprule
                    & \multicolumn{3}{c}{\textsc{Twitter Testing Dataset}} \\
-                     \cmidrule(lr){2-4}
+                     \cmidrule(l){2-4}
 \textsc{Sentiment} & \textbf{5 agree} & \textbf{$\mathbf{\geq 4}$ agree} & \textbf{$\mathbf{\geq 3}$ agree} \\
 \midrule
 Positive           & 581              & 689                              & 769   \\
@@ -392,16 +392,16 @@ Taken together, these results indicate that our cross-media learning approach is
 \begin{tabularx}{\linewidth}{llRRR}
 \toprule
                 &                           & \multicolumn{3}{c}{\textsc{Twitter Testing Dataset}} \\
-                                              \cmidrule(lr){3-5}
-\textsc{Method} & \textsc{Training Datasets} & \textbf{5 agree} & \textbf{$\mathbf{\geq 4}$ agree} & \textbf{$\mathbf{\geq 3}$ agree} \\
+                                              \cmidrule(l){3-5}
+\textsc{Method} & \textsc{Training Datasets} & \textbf{\footnotesize 5 agree} & \textbf{\footnotesize $\mathbf{\geq 4}$ agree} & \textbf{\footnotesize  $\mathbf{\geq 3}$ agree} \\
 \midrule
 \multicolumn{5}{l}{\textbf{Approaches without intermediate fine-tuning}} \\
 \midrule
 GCH~\cite{siersdorfer2010analyzing}              {\footnotesize (from~\cite{you2015robust})} $\ast$  &   -   &   0.684   &   0.665   &   0.66    \\
 SentiBank~\cite{borth2013large}  {\footnotesize (from~\cite{you2015robust})} $\circ$ &   -   &   0.709   &   0.675   &   0.662   \\
 LCH~\cite{siersdorfer2010analyzing}              {\footnotesize (from~\cite{you2015robust})} $\ast$  &   -   &   0.710   &   0.671   &   0.664   \\
-GCH+ \gls{bow}~\cite{siersdorfer2010analyzing}         {\footnotesize (from~\cite{you2015robust})} $\ast$  &   -   &   0.710   &   0.685   &   0.665   \\
-LCH+ \gls{bow} ~\cite{siersdorfer2010analyzing}        {\footnotesize (from~\cite{you2015robust})} $\ast$  &   -   &   0.717   &   0.697   &   0.664   \\
+GCH+BoW~\cite{siersdorfer2010analyzing}         {\footnotesize (from~\cite{you2015robust})} $\ast$  &   -   &   0.710   &   0.685   &   0.665   \\
+LCH+BoW~\cite{siersdorfer2010analyzing}        {\footnotesize (from~\cite{you2015robust})} $\ast$  &   -   &   0.717   &   0.697   &   0.664   \\
 Sentribute~\cite{yuan2013sentribute}   {\footnotesize (from~\cite{you2015robust})} $\circ$ &   -   &   0.738   &   0.709   &   0.696   \\
 
 CNN~\cite{you2015robust} $\bullet$   &   Flickr (VSO)    &   0.783   &   0.755   &   0.715   \\
@@ -421,12 +421,11 @@ MVSO [EN]~\cite{jou2015visual}   {\footnotesize (from~\cite{campos2017pixels})} 
 \ourFtAlex\, FT-A (Ours) $\bullet$   &   (\gls{ilsvrc}12 + Places205) + \emph{ft} \BTSA    &   0.864   &   0.830   &   0.800   \\
 \ourFtAlex\, FT-F (Ours) $\bullet$   &   (\gls{ilsvrc}12 + Places205) + \emph{ft} \BTSA   &   0.873   &   0.832   &   0.810   \\
 \ourFtVGG\, FT-F (Ours) $\bullet$   &   (\gls{ilsvrc}12 + Places205) + \emph{ft} \BTSA   &   0.889   &   0.857   &   0.815   \\
-\ourFtVGG\, FT-A (Ours) $\bullet$   &   (\gls{ilsvrc}12 + Places205) + \emph{ft} \BTSA &   \textbf{0.896   }&  \textbf{0.866}  &   \textbf{0.820}  \\
-
+\ourFtVGG\, FT-A (Ours) $\bullet$   &   (\gls{ilsvrc}12 + Places205) + \emph{ft} \BTSA &   \textbf{0.896} &  \textbf{0.866}  &   \textbf{0.820}  \\
 \midrule
 \end{tabularx}
 $\ast=$ based on low-level features, $\circ=$ based on mid-level features, $\bullet=$ based on deep learning
-\footnotesize
+%
 %\item[$\ast$]  Approch based on low-level features
 %\item[$\circ$]  Approch based on mid-level features
 %\item[$\bullet$] Approch based on deep learning
