@@ -2,7 +2,7 @@ unitsize(.8cm);
 usepackage("amsmath");
 texpreamble("\renewcommand{\rmdefault}{\sfdefault}");
 
-real w = 3.5, wgap = 1., w_c = w/2, W = w + wgap;
+real w = 3.5, wgap = 1.1, w_c = w/2, W = w + wgap;
 real h =  .9, hgap = .5, h_c = h/2, H = h + hgap;
 
 void layer(string s, pair o, pair d=(w, h), bool param=true) {

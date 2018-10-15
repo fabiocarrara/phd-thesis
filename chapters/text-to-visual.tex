@@ -27,15 +27,19 @@
 %The \ttv{} models we explore include (i) a relatively simple regressor network relying on a \acrlong{bow} representation for the textual descriptors, (ii) a deep recurrent network that is sensible to word order, and (iii) a wide and deep model that combines a stacked LSTM deep network with a wide regressor network.
 %We compare the models we propose with other search strategies, also including textual search methods that exploit state-of-the-art caption generation models to index the image collection.
 
+In previous chapters, we studied \glspl{cnn} and proposed solutions to tackle some of the general obstacles and limitations commonly encountered in their usage.
+In the rest of the thesis, we will investigate their application in content-based image retrieval.
+Specifically, we will focus on their integration in existing textual-based retrieval systems, arguing that textual interaction represents the most commonly adopted access method to global information and is powered by highly developed technologies.
 Text-based image retrieval is a very common cross-media search task, as text is the most efficient media to describe the kind of image the user is searching for.
 Each media has its own representation space, which is modeled on a collection of representative content for that media.
 For example, text can be represented by means of a simple \acrlong{bow} feature space, with the feature space being defined by a dictionary of observed words; or by means of more complex distributional semantic models, such as those based on neural networks, e.g., Word2Vec~\cite{mikolov2013distributed}.
 Similarly, a visual space can be modeled by identifying a set of relevant visual features in a collection on images, e.g., as those extracted by the deeper layers of \glspl{cnn}~\cite{krizhevsky2012imagenet}.
 
 In cross-media retrieval, the actual retrieval process can be implemented in a number of ways, depending on how the two feature spaces are joined.
-The cross-media search space can be i) a textual feature space, i.e.,  a space whose definition is determined exclusively by observing textual content, ii)
-a visual feature space, i.e.,  a space whose definition is determined exclusively by observing visual content,
-or iii) a common latent space in which textual and visual features are projected into.
+The cross-media search space can be %
+i) a textual feature space, i.e.,  a space whose definition is determined exclusively by observing textual content, %
+ii) a visual feature space, i.e.,  a space whose definition is determined exclusively by observing visual content, or %
+iii) a common latent space in which textual and visual features are projected into.
 
 Using textual features is the most common solution. %, specially at the Web scale.
 Each image is associated with a set of textual features extracted from its context of use --- e.g., the text surrounding the image in the Web page, description fields in metadata --- and eventually enriched by means of classifiers that assign textual labels related to the presence of certain relevant entities or abstract properties in the image.
@@ -55,16 +59,17 @@ Another advantage is that --- since the visual space is language-independent ---
 In this chapter, we explore the use of a visual space for cross-media retrieval.
 Methods that use a common space projection may be able to produce better results because they can exploit cross-correlations between the two media, while the other two approaches are constrained to leverage on correlations that come from one single direction.
 However, we deem that the ability of using a single static collection of visual representations for images --- irrespectively to how many text-to-visual projection models are used and how often they change --- is a practical advantage of visual space-based methods that counters such possible loss of quality in results.
-
-We propose %the preliminary results on learning
-\ttv{}, a family of neural network models that convert textual descriptions into visual representations in the same space of those extracted from \glspl{dcnn} such as the AlexNet~\cite{krizhevsky2012imagenet} or \resnet{}~\cite{he2016deep} trained on \gls{ilsvrc}'12~\cite{russakovsky2015imagenet} and Places~\cite{zhou2014learning} datasets.
-Specifically, we developed different neural network models of increasing complexity, including i) \sparsettv{}, a simple regressor network relying on sparse representations (bag-of-words and bag-of-bigrams) for the textual descriptors; ii) \densettv{}, a deep recurrent network relying on a continuous dense representations (word embeddings); and iii) \widedeepttv{}, a wide and deep architecture relying on both sparse and dense representations.
+%
+We propose \ttv{}, a family of neural network models that convert textual descriptions into visual representations in the same space of those extracted from \glspl{dcnn} such as the AlexNet~\cite{krizhevsky2012imagenet} or \resnet{}~\cite{he2016deep} trained on \gls{ilsvrc}'12~\cite{russakovsky2015imagenet} and Places~\cite{zhou2014learning} datasets.
+Specifically, we developed different neural network models of increasing complexity, including %
+i) \sparsettv{}, a simple regressor network relying on sparse representations (bag-of-words and bag-of-bigrams) for the textual descriptors; %
+ii) \densettv{}, a deep recurrent network relying on a continuous dense representations (word embeddings); and %
+iii) \widedeepttv{}, a wide and deep architecture relying on both sparse and dense representations.
 We first introduce cross-media image retrieval and review relevant works in \ref{sec:t2v:related}.
 We describe our proposal in \ref{sec:t2v:method}, and we report experimental results in \ref{sec:t2v:experiments}, comparing with other methods that use different projection approaches.
 \ref{sec:t2v:conclusions} concludes and outlines possible directions for future research.
 
 The research presented in this chapter was published in~\cite{carrara2016picture,carrara2018picture}.
-
 
 %---------------------------------------------------------------------
 
@@ -127,7 +132,7 @@ an image representation is extracted by a convolutional sub-network and combined
 Inspired by \gls{devise}, \citet{norouzi2013zero} proposed the ConSE method, in which the image is classified by a pre-trained AlexNet, and a combination of textual embeddings is produced leveraging the most probable labels and its degree of confidence assigned by the network.
 
 \paragraph{Search in Visual Space}
-Methods that maps a textual query in a visual space are less explored and thus object of our investigation in this thesis (see \ref{ch:text2vis}).
+Methods that maps a textual query in a visual space are less explored and thus object of our investigation in this chapter.
 We argue that this kind of solution is suitable in the cases in which we need to access a large dataset of images for which visual features have already been extracted and indexed, and we want to exploit the same data structures to perform a textual search.
 Being the visual space independent from a particular language, multiple text-to-visual-code models can be trained and deployed to support textual search in various languages without the need to replicate data representations.
 One of the most relevant and recent work in this subfield is Word2VisualVec~\cite{dong2018predicting}, in which a deep \gls{mlp} is trained to predict visual features extracted from a pre-trained \gls{cnn} starting from a textual encoding obtained by a combination of Word2Vec representations.
@@ -172,13 +177,14 @@ where $\x$ is the \acrlong{bow} one-hot encoding of the textual caption, and $\y
 We observed a strong tendency to overfit (\ref{fig:t2v:visreg:loss}), thus degrading the applicability of the method to unseen images.
 
 \begin{figure}
-\begin{subfigure}{0.37\textwidth}
-\includegraphics[width=\linewidth]{figures/visreg-t2v-arch}
+\begin{subfigure}{0.46\textwidth}
+\centering
+\includegraphics[width=.69\linewidth]{figures/visreg-t2v-arch}
 \caption{Architecture of a simple regressor model with one hidden layer of size 1,024.}
 \label{fig:t2v:visreg:arch}
 \end{subfigure}
 \hfill
-\begin{subfigure}{0.55\textwidth}
+\begin{subfigure}{0.5\textwidth}
 \includegraphics[width=\linewidth]{visreg-loss}
 \caption{The training and validation loss (on y-axis) in function of the training iteration (on x-axis).
 Notice the model overfits in the early phase of the training process.}
@@ -208,13 +214,15 @@ The linguistic loss works at higher level of abstraction than the visual one, ac
 %As detailed in the next section, we implemented the use of the two losses with a stochastic process, in which at each iteration one of the two is selected for optimization.
 
 \begin{figure}
-\begin{subfigure}{0.53\linewidth}
+\begin{subfigure}{0.47\linewidth}
+\vspace{3ex}
 \includegraphics[width=\linewidth]{figures/s-t2v-arch}
+\vspace{1ex}
 \caption{Architecture of our proposed \sparsettv{} which controls overfitting by adding an autoencoding constraint on the hidden state.}
 \label{fig:t2v:s-t2v:arch}
 \end{subfigure}
 \hfill
-\begin{subfigure}{0.43\linewidth}
+\begin{subfigure}{0.5\linewidth}
 \includegraphics[width=\linewidth]{s-t2v-loss}
 \caption{The training and validation loss (on y-axis) in function of the training iteration (on x-axis).}
 \label{fig:t2v:s-t2v:loss}
