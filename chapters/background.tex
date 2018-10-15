@@ -1164,10 +1164,14 @@ It is a subset of roughly 1.3 million images taken from the larger ImageNet\foot
 Images are assigned a single label chosen from the 1,000 classes selected for the competition, spanning general objects, animals, etc.
 Each class has roughly 1,000 images in the training set (the number oscillates between 700 and 1,300), and exactly 50 and 100 images respectively in the validation and test set, for a total of 1,281,167 images for the train set, 50,000 for the validation set, and 100,000 in the test set.
 Only the training and validation sets are publicly available.
+Due to its relevancy in large-scale image classification, it is extensively used, and many models pre-trained on this dataset are publicly available.
+We adopt models pre-trained on \gls{ilsvrc} in \ref{ch:adversarial,ch:text2vis}.
 
 \paragraph{Places205~\cite{zhou2014learning}}
 The Places205 dataset is composed by roughly 2.5 million images collected from image search engines labelled with 205 semantic scene categories and attributes representing visual environments all over the world.
 It is a subset of the bigger Places dataset~\cite{zhou2016places}.
+We employ models pre-trained on \gls{ilsvrc} and Places205, also called HybridNets, in \ref{ch:cross-media}, where we fine-tune them for the specific task of visual sentiment analysis.
+This combination of training sets leads to models with a general representation capability of generic objects and scenes.
 
 \paragraph{PKLot~\cite{de2015pklot}}
 The PKLot dataset is an car parking occupancy detection dataset comprised of 12,417 images of 3 parking lots, named UFPR04, UFPR05, and PUC, took in different days and weather conditions.
@@ -1176,13 +1180,13 @@ Each segmented image is labelled with the vacancy status of the slot, which can 
 
 \paragraph{CNRPark+EXT~\cite{amato2016car,amato2017deep}}
 The CNRPark+EXT dataset is a car parking occupancy detection dataset collected during this thesis from the parking lots of the campus of the National Research Council (CNR) in Pisa.
-It is comprised of roughly 150,000 images of parking spaces taken from 9 smart cameras with different viewpoints, in different days with different weather and light conditions, and includes occlusion and shadow situations that make the occupancy detection task challenging.
-More details about the CNRPark-EXT dataset will
-be given in \ref{ch:miniaturization}.
+It is comprised of roughly 150,000 images of parking spaces taken from nine smart cameras with different viewpoints, in different days with different weather and light conditions, and includes occlusion and shadow situations that make the occupancy detection task challenging.
+Both CNRPark-EXT and PKLot datasets are used in \ref{ch:miniaturization} to test the generalization performance of miniaturized \glspl{cnn} for embedded devices in the context of decentralized parking lot occupancy detection.
+More details about the CNRPark-EXT dataset will be provided in \ref{ch:miniaturization}.
 
 \paragraph{Twitter Testing Dataset~\cite{you2015robust}}
-The Twitter Testing Dataset is a dataset for image sentiment analysis composed by 1269 images labelled with crowd-sourcing (Amazon Mechanical Turk) following a binary positive/negative sentiment polarity scheme.
-Each image has been annotated as positive or negative by five workers, and three different subsets have been created, respectively comprised of images where 5 workers agree on the sentiment of the image (5-agree, 882 images), where at least 4 workers agree (4-agree, 1,116 images), and where at least 3 workers agree (3-agree, whole set of images).
+The Twitter Testing Dataset is a dataset for image sentiment analysis composed by 1,269 images labelled with crowd-sourcing (Amazon Mechanical Turk) following a binary positive/negative sentiment polarity scheme.
+Each image has been annotated as positive or negative by five workers, and three different subsets have been created, respectively comprised of images where five workers agree on the sentiment of the image (5-agree, 882 images), where at least four workers agree (4-agree, 1,116 images), and where at least three workers agree (3-agree, whole set of images).
 
 \paragraph{\acrfull{t4sa}~\cite{vadicamo2017cross}}
 The \acrlong{t4sa} dataset is a large-scale weakly-labelled dataset for sentiment analysis collected during this thesis to evaluate the weakly-labelled cross-media training procedure for image classifiers presented in \ref{ch:cross-media}.
@@ -1194,11 +1198,10 @@ More details are available in \ref{ch:cross-media}.
 \subsection{Retrieval Datasets}
 
 \paragraph{INRIA Holidays~\cite{jegou2008hamming}}
-
-The INRIA Holidays image set is an image retrieval dataset comprised of 1491 high-resolution holidays photos containing various scenes types.
+The INRIA Holidays image set is an image retrieval dataset comprised of 1,491 high-resolution holidays photos containing various scenes types.
 The authors chose 500 queries and manually selected from the set the images relevant for each query.
 A frequently used variant of this dataset is the one augmented with \emph{MIRFlickr1M}, a distractor set of 1 million images collected by the Flickr service;
-we refer to this new dataset as \emph{Holidays-MIRFlickr1M}.
+we refer to this variant as \emph{Holidays-MIRFlickr1M}.
 
 \paragraph{Oxford Buildings~\cite{philbin2007object}}
 The Oxford Buildings dataset, also known as \emph{Oxford5k}, is an image retrieval dataset comprised of 5,062 images of various buildings present in Oxford.
@@ -1214,6 +1217,7 @@ tortion;
     \item \emph{absent} --- if the building is not present.
 \end{itemize}
 In this work, we will adopt the version of this dataset augmented with a distractor set of 100k images collected from Flickr, and we will refer to it as \emph{Oxford-Flickr100k}.
+We employ both \emph{Holidays-MIRFlickr1M} and \emph{Oxford-Flickr100k} in \ref{ch:surrogate} to evaluate the large-scale image retrieval performance.
 
 % \paragraph{Paris~\cite{philbin2008lost}}
 % \paragraph{Flickr100k and Flickr1M ~\cite{philbin2007object}}
