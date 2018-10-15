@@ -770,7 +770,7 @@ In average, the \widedeepttv{} variants required 18K steps, followed by \densett
 % For the other two queries the results are pretty similar, with \ttv{} placing in second position an image that is a perfect match for the query, while \emph{VisReg} places it in fifth position.
 
 %--------------------------------------------------------
-\section{Conclusions}
+\section{Summary}
 \label{sec:t2v:conclusions}
 
 We have investigated various neural network models designed to learn a projection from a textual space to a visual space in order to enable cross-media similarity search.
@@ -796,6 +796,7 @@ The improved \wordvisual{} model obtained among the best results, together with 
 Our \widedeepttv{} model improved over \wordvisual{} by a statistical significant margin.
 \widedeepttv{} has more parameters than \wordvisual{} but converges much faster.
 
+% TODO [MOVE] to conclusion chapter
 %In the future we also plan to compare \ttv{} against the recently proposed \emph{Word2VisualVec}~\cite{dong2018predicting} model.
 An interesting aspect that proved to be effective in our experiments is the use of a different $\x^\star$ as a constraint for the hidden representation.
 When $\x$ and $\x^\star$ are different, though semantically similar, the autoencoder branch becomes semantically constrained.
