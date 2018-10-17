@@ -5,39 +5,96 @@
 
 Empowering machines with visual perception abilities can help us managing and exploring the exponentially growing amount of digital visual data produced every day.
 In this context, novel AI techniques based on \acrlong{dl} are currently enabling high-quality computer vision thanks to their ability to learn from data effective high-level representations of visual data.
-Specifically, \acrfullpl{cnn} shown impressive results in recent research of visual perception and representation, and its adoption improved the state of the art in many vision related tasks, including large-scale image understanding and content-based image retrieval.
+Specifically, \acrfullpl{cnn} shown impressive results in recent research of visual perception and representation, and its adoption improved state of the art in many vision related tasks, including large-scale image understanding and content-based image retrieval.
 
-In this thesis, we investigate and enhance the usability of \glspl{cnn} for visual data management.
+In this thesis, we investigated and enhanced the usability of \glspl{cnn} for visual data management.
 In particular,
 \begin{itemize}
     \item we identified and proposed mitigations to three common and general limitations belonging to \glspl{cnn} usage, namely the high computational cost, the high data labeling cost, and the poor robustness to out-of-distribution data, and
-    \item we propose practical solutions to integrate \gls{cnn}-based content-based image retrieval in the primarily used textual-search paradigm by %
+    \item we proposed engineered solutions to integrate \gls{cnn}-based content-based image retrieval in the primarily used textual-search paradigm by %
 i) enabling text-based image search in unlabeled sets of images, and %
 ii) adopting surrogate text representations of images to index them in existing textual search engines technologies.
 \end{itemize}
 
-\ref{ch:introduction,ch:background} provides an introduction and background knowledge about \acrlong{dl}, \glspl{cnn}, and their usage in the context of visual data understanding and retrieval.
-\ref{ch:miniaturization,ch:cross-media,ch:adversarial} tackles respectively three drawbacks of \gls{cnn}, propose practical solutions, and experimentally evaluate them in the context of image classification tasks.
+\ref{ch:introduction,ch:background} provided an introduction and background knowledge about \acrlong{dl}, \glspl{cnn}, and their usage in the context of visual data understanding and retrieval.
+\ref{ch:miniaturization,ch:cross-media,ch:adversarial} tackled respectively three drawbacks of \gls{cnn}, proposed practical solutions, and experimentally evaluated them in the context of image classification tasks.
 
-Specifically, \ref{ch:miniaturization} tackles the problem of the high computational cost usually required by deep models, and thus its limited usability in resource-bounded devices.
-We investigate of the reduction of \glspl{cnn} architectures to enable edge computing in low-resources embedded devices.
+Specifically, in \ref{ch:miniaturization}, we tackled the problem of the high computational cost usually required by deep models, and thus its limited usability in resource-bounded devices.
+We investigated the reduction of \glspl{cnn} architectures to enable edge computing in low-resources embedded devices.
 We proposed a miniaturized version of the famous AlexNet image classifier, named mAlexNet, tailored to smart camera devices.
 The designed architecture has two orders of magnitude fewer parameters, and on the tested smart camera hardware (i.e., Raspberry Pi), it delivers a two order of magnitude more throughput in terms of images classified per second.
 We extensively evaluated our proposed architecture on the task of decentralized parking lot visual occupancy detection, which served as an instance of problems that largely benefit from an edge computing paradigm and the robust visual perception offered by \glspl{cnn}.
 We collected and published a novel dataset for parking lot visual occupancy detection, named CNRPark-EXT, which includes challenging patterns such as highly occluded slots, and daily and seasonal light changes,
 Experiments on multiple datasets showed that our architecture outperforms state-of-the-art techniques (which at the time did not leverage learned features) both in terms of accuracy and generalization to unseen situations while incurring only in a slight degradation of the generalization performance compared to the fully featured AlexNet architecture.
 
-In \ref{ch:cross-media}, we propose and evaluate an automated pipeline to train image classifiers drastically limiting the cost of data labeling by exploiting weakly-labeled data scraped from the Web.
-In particular, we exploit the co-occurrence of textual and visual data in social media posts and adopt a student-teacher cross-media learning approach in which a model relying on textual data provide supervision to a visual classifier without manual label assignments.
+To drastically limit the cost of data labeling for training deep models, in \ref{ch:cross-media}, we proposed and evaluated an automated pipeline to train image classifiers that exploits weakly-labeled data scraped from the Web.
+In particular, we exploited the co-occurrence of textual and visual data in social media posts and adopted a student-teacher cross-media learning approach in which a model relying on textual data provide supervision to a visual classifier without manual label assignments.
 We demonstrated the potential of the proposed approach in the specific task of visual sentiment analysis, in which good image labels are particularly expensive to obtain.
 We collected from the Twitter social media platform a large-scale dataset of text-and-image tweets and used a pre-trained textual sentiment predictor to assign a noisy sentiment to the correspondent images, thus automatically creating a huge noisy dataset for visual sentiment classification at a precedently unmet scale.
 We argued that the vast amount of data obtainable from the Web compensates for the noisy labels and produces better classifiers in the long run.
-We showed through experimental evaluation that \glspl{cnn} trained on this dataset outperform state-of-the-art visual sentiment predictors trained on small manually labeled data.
+We showed through experimental evaluation that \glspl{cnn} trained on this dataset outperform state-of-the-art visual sentiment predictors trained on smaller currently available manually labeled datasets.
 
-In \ref{ch:adversarial}, we investigated a diffuse problem of \gls{ml}-based models, that is, the vulnerability to evasion attacks through adversarial examples.
-Adversarial examples represent a particular set of out-of-distribution inputs which looks like a valid, authentic input but instead produces an unexpected behavior of the model that can be exploited by an attacker, e.g., to bypass content-moderation filters or induce a reaction in \gls{ml}-based agents.
+In \ref{ch:adversarial}, we investigated a severe drawback carried by \glspl{cnn}, and \gls{ml}-based models in general, that is, the vulnerability to evasion attacks through adversarial examples.
+Adversarial examples represent a particular set of out-of-distribution inputs which looks like a valid, authentic input but instead produces an unexpected behavior of the model that can be exploited by an attacker, e.g., to bypass content-moderation filters, generate a corrupted image representation, or induce a reaction in \gls{ml}-based agents.
 In the case of images, adversarial perturbations are small, often imperceptible distortions crafted and added to an authentic input to lead the model to misclassify it with high confidence.
-This easily exploitable vulnerability mainly derives from the low robustness of models to points belonging to underrepresented parts of input space.
+Evidence suggests that this easily exploitable vulnerability mainly derives from the low robustness of models to points belonging to underrepresented parts of input space.
 We proposed a general detection scheme for adversarial images to counteract possible evasion attacks to image classifiers implemented with \glspl{cnn}.
-Exploiting the distribution of internal activations of the network of training images, we adopted kNN classifiers to generate an authenticity score of the classification given by the attacked classifier that we employed to discern adversarial examples from authentic ones.
-Experiments on multiple \glspl{cnn} architectures and on multiple adversarial generation algorithms showed we are able to detect roughly 80\% of adversarial examples while retaining roughly 90\% of authentic images in zero-knowledge attacks.
+Exploiting the distribution of internal activations of the network of training images, we adopted kNN schemes to assign a score to the classification given by the attacked classifier measuring its authenticity;
+we then employed this authenticity score to discern adversarial examples from authentic ones.
+Experiments on multiple \glspl{cnn} architectures and on multiple adversarial generation algorithms showed we could detect roughly 80\% of adversarial examples while retaining roughly 90\% of authentic images in zero-knowledge attacks.
+
+\ref{ch:text2vis,ch:surrogate} discuss the integration of \gls{cnn}-powered content-based image retrieval in commonly used interfaces belonging to textual search engines.
+Specifically, we investigated approaches to enable image search i) while maintaining the currently preferred query frontend, i.e., textual queries, and ii) reusing highly developed and scalable textual search engines backends based on inverted indexes.
+
+In \ref{ch:text2vis}, we presented an approach to enable cross-modal image retrieval by mapping representations coming from a different medium to the visual space defined by \gls{cnn}-based image representations.
+In particular, we proposed \ttv{}, a family of models which maps textual queries into the visual space.
+We argued that searching in visual spaces provides an improved flexibility to large-scale image retrieval: being the visual description of the content a language-agnostic and non-evolving space, we can introduce new search options in our system by changing the mapping to this space, while in other approaches, such as common or textual space search, the entire image collection has to be reprocessed.
+During the experimental evaluation, we discussed the drawbacks of currently adopted evaluation metrics in text-based image retrieval and proposed an alternative metric, which includes textual semantic similarity, which better captures the goodness of a set of images retrieved by textual queries.
+Results showed that our visual-space based models outperform textual-space based retrieval systems;
+moreover, they have better or comparable performance with respect to very recent similar methods based on visual-space projections.
+
+Finally, in \ref{ch:surrogate}, we investigated and improved \acrfull{str} techniques to enable content-based image retrieval on currently available large-scale textual search engine technology.
+We formalized the transformation of dense vector features --- category in which state-of-the-art image representation belong --- to surrogate text in a mathematical framework in which we compared existing \gls{str} approaches based on \acrlong{dp} to a newly proposed one based on \acrfull{sq}.
+We performed experiments on large-scale image retrieval datasets and showed that \gls{sq}-based solutions outperform other existing \gls{str} approaches in terms of effectiveness-efficiency trade-off.
+Results also showed that \gls{str} approaches incur in a slight performance degradation with respect to state-of-the-art main-memory indexes for dense features, but we argue that this degradation is negligible with respect
+ to the advantages brought to large-scale scenarios, i.e., avoid data-dependent training of the index and the ability to reuse decentralized and highly-scalable secondary memory indexes.
+
+\section{Future Work}
+
+Our investigation led to practical mitigations of existing problems in the adoption of deep models for visual data management and content-based retrieval.
+Due to the thriving research throughput in \acglong{dl} and Computer Vision, there are multiple aspects discussed in this thesis that are worth further investigating in light of the very recent developments in the field.
+We report in the following the most promising research directions.
+
+% miniaturization
+\paragraph{Handling computational cost}
+In \ref{ch:miniaturization}, we presented one of the first successful attempts to engineer deep models to have a low computational budget while retaining their robust visual perception ability.
+However, recent studies proposed novel approaches to reduce the memory and computational needs of image classifiers based on advanced architectures~\cite{iandola2016squeezenet,howard2017mobilenets} or weights quantization~\cite{rastegari2016xnor}.
+A very recent approach propose adaptive architectures~\cite{veit2018convolutional} in which the model decides whether to avoid processing some of its layers depending on the input complexity.
+These models provide a reduced cost per inference on average while maintaining an upper bound for the computation cost that is equal to the classical forward pass of the network.
+Combining advanced architectures with an adaptive computational graph represents an attractive research direction worth exploring for the miniaturization of deep models.
+
+% adversarial
+\paragraph{Adversarial detection under more stringent attack models}
+The adversarial detection strategy we proposed in \ref{ch:adversarial} relies on the activation of a particular intermediate layer of the \gls{cnn} under attack.
+The comparison of multiple layers for the detection performed in this study suggested that current adversarial crafting algorithms do not steer all the internal semantic representations inside the network, but focus on the last layers.
+However, in our evaluation, we assumed a zero-knowledge attack, i.e., an attack model in which the attacker is not aware of the detection scheme.
+Since attacks to intermediate layers already have been demostrated~\cite{sabour2015adversarial}, a future research direction may include the definition of attacks to this kind of detection schemes and thus the analysis of more stringent attack models, such as partial- or full-knowledge attacks.
+Moreover, an extension of the proposed detection scheme could rely upon multiple intermediate layers, thus enforcing attack algorithms to steer multiple internal representations, which we believe would increase the attack cost in terms of perturbation search time or magnitude.
+%Future work may test the detection scheme under a more stringent threat model, in which the attacker is aware of the detection scheme used.
+%Given these considerations, possible future work may also improve the presented detection scheme by relying on multiple intermediate layers, thus increasing the difficulty for a generation algorithm to craft adversarial images able to control multiple activations at once.
+
+% t2v
+\paragraph{Enhanced visual-space mapping}
+In \ref{ch:text2vis}, we proposed different models to map textual data into the visual space domain to enable cross-modal image retrieval.
+An interesting aspect that proved to be effective in our experiments is the use of a textual regularization part in our models as a constraint for the hidden representation.
+Specifically, in the \sparsettv{} model, we asked the model to reconstruct text representations of similar (but not identical) caption, thus enforcing the autoencoder branch to become semantically constrained.
+We believe the same principle could also bring similar benefits to the \densettv{} and \widedeepttv{} models.
+Thus, a future direction is to investigate the effects of such ``semantic-autoencoding'' principle by adopting an encoder-decoder \gls{rnn} architecture~\cite{cho2014learning}, i.e.,  by constraining the final memory state from an encoding \gls{lstm} after processing the input caption to be a good representation to generate a different, but semantically similar caption with a decoder \gls{lstm}.
+We believe such an intermediate state to be able to produce better projections to the visual features.
+
+% str
+\paragraph{End-to-end learned surrogate text representations}
+In \ref{ch:surrogate}, we formalized and improved transformations that map visual features into indexable text to enable content-based image search in textual search engines.
+While this approach is general and can handle every dense vector, we argue that we can jointly optimize this transformation together with the network responsible for extracting image representations in the first place.
+Thus, an interesting idea worth exploring is to modify the \gls{rmac} extraction network to directly learn a ``discretized vector'' similar to the one we get with the proposed hand-crafted method while trying to maximize sparsity and increase the cardinality of the codebook as much as possible.
+We believe that this end-to-end optimization will bring to an improvement of the effectiveness-efficiency trade-off of surrogate text representations in content-based image retrieval.
