@@ -795,12 +795,3 @@ In our experimental setup, we improved the performance obtained by the original 
 The improved \wordvisual{} model obtained among the best results, together with \densettv{} and \widedeepttv{}.
 Our \widedeepttv{} model improved over \wordvisual{} by a statistical significant margin.
 \widedeepttv{} has more parameters than \wordvisual{} but converges much faster.
-
-% TODO [MOVE] to conclusion chapter
-%In the future we also plan to compare \ttv{} against the recently proposed \emph{Word2VisualVec}~\cite{dong2018predicting} model.
-An interesting aspect that proved to be effective in our experiments is the use of a different $\x^\star$ as a constraint for the hidden representation.
-When $\x$ and $\x^\star$ are different, though semantically similar, the autoencoder branch becomes semantically constrained.
-We have investigated this idea in the \sparsettv{}, and we believe the same principle could also bring similar benefits for the \densettv{} and \widedeepttv{} models.
-We thus plan to investigate the effects of such ``semantic-autoencoding'' principle by adopting a  \emph{Seq2Seg}~\cite{cho2014learning} architecture, i.e.,  by constraining the final memory state from an encoding \gls{lstm} after processing the input $\x$ to be a good representation to generate a different, but semantically similar, $\x^\star$ with a decoder \gls{lstm}.
-We believe such an intermediate state to be able to produce better projections to the visual features.
-
