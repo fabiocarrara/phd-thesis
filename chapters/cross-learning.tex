@@ -27,6 +27,15 @@ We demonstrate via experimental evaluation on existing manually-labeled benchmar
 Overall, we collect and analyze more than 3 million tweets from which we build \emph{\acrfull{t4sa}} --- a dataset of about 1 million high-confidence tweets, for which we provide the textual sentiment classification, and the corresponding 1.4M images.
 We make all the collected tweets, the \gls{t4sa} dataset, and trained models publicly available to foster new research on the field of visual sentiment analysis.
 
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{figures/vsa-overview}
+    \caption{Overview of our cross-media learning approach.
+Data coming from the Web is filtered to keep only posts with multimedia content.
+The textual pipeline (teacher) provides supervision for the training of the visual classifier (student).}
+    \label{fig:vsa:overview}
+\end{figure}
+
 The chapter is structured as follows.
 In \ref{sec:vsa:introduction}, the problem of visual sentiment analysis is presented, together with a discussion about the challenges it poses and an overview of the current state of the art.
 \ref{subsec:vsa:dataset} presents the methodology used to collect and preprocess the social media data used in our experiments.
@@ -137,14 +146,7 @@ Although the text of the tweets is often noisy or misleading with respect to the
 At test time, the trained \glspl{dcnn} can be used to infer the sentiment polarity of an image without the need of textual data.
 
 In the next sections, we will describe the data collection process, the pre-trained textual sentiment classifier that provides us with weak supervision, and the training process of visual models.
-%An overview of our approach is depicted in \ref{fig:vsa:overview}.
-% TODO [FIGURE] VSA overview
-%\begin{figure}
-%    \centering
-%    \includegraphics{}
-%    \caption{.}
-%    \label{fig:vsa:overview}
-%\end{figure}
+An overview of our approach is depicted in \ref{fig:vsa:overview}.
 
 % We follow the current trend of facing sentiment ``in the wild", that is, in all sort of varying conditions of the everyday world that we share with others (as opposed to testing situation in laboratories).
 % For this scope, social networks, such as Twitter and Facebook, are particularly suitable as sources of data for our analysis, thanks to the huge variation of contents shared by their users.
