@@ -2,7 +2,6 @@ unitsize(.8cm);
 usepackage("amsmath");
 texpreamble("\renewcommand{\rmdefault}{\sfdefault}");
 
-// TODO tune w,h
 real w = 3.5, wgap = .4 , w_c = w/2, W = w + wgap;
 real h = 0.9, hgap = .7 , h_c = h/2, H = h + hgap;
 
