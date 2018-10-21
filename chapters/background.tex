@@ -56,7 +56,7 @@ Therefore, in this chapter we will provide some background about \gls{cbir}, foc
 The chapter is organized as follows.
 In \ref{sec:back:deep-learning}, we provide the reader with a quick introduction to \acrlong{dl}, focusing on deep neural networks for image and text processing and gradient-based optimization.
 In \ref{sec:back:image-classification}, an introduction to image classification using \glspl{cnn} is presented together with a review of successful approaches in this field.
-In \ref{sec:back:image-retrieval}, we describe the main aspects of \gls{cbir} based on image representations extracted from deep neural networks, and we discuss some state-of-the-art methodologies to build effective descriptions of images and to efficiently index them in large-scale scenarios.
+In \ref{sec:back:image-retrieval}, we describe the main aspects of \gls{cbir} based on image representations extracted from deep neural networks, and we discuss some state-of-the-art methodologies to build effective descriptions of images and to index them in large-scale scenarios efficiently.
 \ref{sec:back:datasets} summarizes the public datasets used in the experiments presented in this thesis.
 
 
@@ -66,8 +66,8 @@ In \ref{sec:back:image-retrieval}, we describe the main aspects of \gls{cbir} ba
 % TODO [?] expand on representation learning, what is and cites
 \acrfull{dl} defines a subfield of Artificial Intelligence, specifically of \gls{ml} and Representation Learning, in which a \emph{hierarchy of data representations} (or \emph{features}) is learned from data for solving a particular task~\cite{bengio2007scaling,goodfellow2016deep}.
 %For historical reasons, \gls{dl} models are also referred to as \emph{\glspl{dnn}} due to the resemblance of layers and their organization to the way neurons are interconnected and organized in the mammalian brain~\cite{}.
-% TODO add reference to similarities to mammalian brain (in addition to perceptron?)
-Inspired by nature, \acrlong{dl} models are often implemented as \glspl{dnn} --- a computational model comprised by multiple layers of processing units that mimics the structure and the interconnection of neurons in the mammalian brain~\cite{rosenblatt1958perceptron}.
+% TODO add references to similarities to the mammalian brain (in addition to perceptron?)
+Inspired by nature, \acrlong{dl} models are often implemented as \glspl{dnn} --- a computational model comprised of multiple layers of processing units that mimics the structure and the interconnection of neurons in the mammalian brain~\cite{rosenblatt1958perceptron}.
 Recent years have witnessed a rapid rise in the use of \gls{dl} approaches to solve complex tasks, reaching even super-human performance in perceptual~\cite{he2015delving}, control~\cite{mnih2015human}, and planning~\cite{silver2016mastering} activities. % TODO [?] add reasoning
 Interestingly, the representations learned with \gls{dl} methodologies resemble the structures of signals in the neocortex build by our brain to implement intelligent behaviors, suggesting strong parallelism between the two domains~\cite{cadieu2014deep,kubilius2016deep}. % TODO [?] dire meglio
 
@@ -115,14 +115,15 @@ Thus, when computing of the whole chain from inputs to outputs, called the \emph
 
 \begin{figure}
     \includegraphics[ width=\linewidth]{figures/activations}
-    \caption{Commonly used activation functions in \glspl{dnn}. The \acrfull{relu} on the left, the sigmoid $\sigma$ in the middle, and hyperbolic tangent on the right.}
+    \caption{Commonly used activation functions in \glspl{dnn}.
+    The \acrfull{relu} on the left, the sigmoid $\sigma$ in the middle, and hyperbolic tangent on the right.}
     \label{fig:back:activations}
 \end{figure}
 
 The \gls{mlp} is the simplest form of artificial neural network in the \Acrlong{dl} field.
 An \gls{mlp} is comprised by a cascade of \emph{inner-product} (or \emph{fully-connected}) layers, which are the basic building block for \glspl{dnn}.
 An inner-product layer performs a linear projection of the input followed by a usually non-linear element-wise activation function.
-Formally, given an input comprised by $n$ features $\x \in \R^n$, the output  $\y \in \R^m$ of the layer is obtained as
+Formally, given an input comprised of $n$ features $\x \in \R^n$, the output  $\y \in \R^m$ of the layer is obtained as
 %
 \begin{equation} \label{eq:back:fully-connected}
     \y = \a \( \W \x + \b \) \,,
@@ -130,12 +131,12 @@ Formally, given an input comprised by $n$ features $\x \in \R^n$, the output  $\
 %
 where $\W \in \R^{n \times m}$ and $\b \in \R^m$ are learnable parameters of a linear projection to a $m$-dimensional space.
 Commonly used activation functions $\a: \R \to \R$ are the \gls{relu}, the sigmoid $\sigma\(\cdot\)$, and $\tanh\(\cdot\)$ functions (depicted in~\ref{fig:back:activations}).
-The dimensionality of the input $n$ and the output $m$ are referred to as respectively the number of \emph{input features} and \emph{output features}.
+The dimensionalities of the input $n$ and the output $m$ are referred to as respectively the number of \emph{input features} and \emph{output features}.
 
 \begin{figure}
     \centering
     \includegraphics[width=0.8\linewidth]{figures/neuron}
-    \caption{Parallelism between a real neuron and the artificial one used in \glspl{mlp}.}
+    \caption{The parallelism between a real neuron and the artificial one used in \glspl{mlp}.}
     \label{fig:back:neuron}
 \end{figure}
 
@@ -145,7 +146,7 @@ As a neuron cell, it is composed by $n$ inputs $\x_i$ ($i=1 \dots n$), usually c
 Each input connection is associated with a weight $\w_i$ ($i=1 \dots n$) expressing how much of the signal coming through that connection is promoted or inhibited.
 Weights in a perceptron are interpreted as the strength of the interconnection between neuron cells.
 The neuron ``fires'' when the combination of their weighted inputs gets above a certain threshold;
-this is modelled in the perceptron defining its output as the activation function $\a(\cdot)$ applied to the inner product between input and weights
+this is modeled in the perceptron defining its output as the activation function $\a(\cdot)$ applied to the inner product between input and weights
 %
 \begin{equation}
     \y_j = \a \( \sum_{i=1}^n \w_i \x_i + b\) \,,
@@ -271,12 +272,13 @@ The state of the network acts as a memory which is updated at each input, allowi
 This architecture is naturally able to process sequences of inputs;
 the elements of a sequence can be fed to the network one by one, updating the internal state of the network to compactly represent the sequence processed so far regardless of its length.
 \Glspl{rnn} set the state of the art on many sequence modeling tasks, such as the ones concerning textual and language representations.
-In \ref{ch:cross-media,ch:text2vis}, we will adopt these kind of models to extract information from texts accompanying images, and thus we provide the reader with the basic concepts and models involved.
+In \ref{ch:cross-media,ch:text2vis}, we will adopt this kind of models to extract information from texts accompanying images, and thus we provide the reader with the basic concepts and models involved.
 
 \begin{figure}
     \centering
     \includegraphics[width=.9\linewidth]{figures/rnn}
-    \caption{Basic architecture of a \acrlong{rnn} (left). On the right, its unrolled version for a sequence of length 5.}
+    \caption{Basic architecture of a \acrlong{rnn} (left).
+    On the right, its unrolled version for a sequence of length 5.}
     \label{fig:back:rnn}
 \end{figure}
 
@@ -287,8 +289,7 @@ Given a sequence of inputs of length $L$ $\x_t \in \R^n, t = 1 \dots L$, and an 
 \end{equation}
 %
 where $f(\cdot)$ is the \emph{recurrent cell} of the \gls{rnn} parametrized by the weights $\W$, and $\h_t \in \R^m, t = 1 \dots L$ is the hidden state at timestep $t$, i.e., the state of the network after all inputs until $\x_t$ have been processed.
-In its simplest form, the recurrent cell $f$ can be implemented using a fully-connected layer that operates
-on the concatenation of the current state and input
+In its simplest form, the recurrent cell $f$ can be implemented using a fully-connected layer that operates on the concatenation of the current state and input
 %
 \begin{equation}
     \h_t = \W [ \x_t | \h_{t-1} ] + \b \,,
@@ -314,7 +315,7 @@ The concatenation of the internal states of both past-to-future and future-to-pa
 \begin{figure}
     \centering
     \includegraphics[width=.9\linewidth]{figures/bidir-rnn}
-    \caption{Unrolled version of a Bidirectional \gls{rnn} for a sequence of length 5.}
+    \caption{The unrolled version of a Bidirectional \gls{rnn} for a sequence of length 5.}
     \label{fig:back:bidir-rnn}
 \end{figure}
 
@@ -393,7 +394,7 @@ A loss function is usually defined as one or more terms summed together.
 The main term $\L_d\(\X; \Theta\)$ is defined as the average of the individual loss values computed on each sample of the dataset $\L\(\y_i, \y^\star_i\)$ --- we denote it the \emph{data term}.
 An optional secondary term $\L_r(\Theta)$ is often used to regularize the network and depends only on the model parameters $\Theta$ --- we indicate this as \emph{regularization term}.
 Regularization consists of model constraints added to avoid other undesired properties during training such as \emph{overfitting} --- i.e., the tendency of a model to predict well-known data while failing to make correct predictions for unseen data.
-Regularization has gained importance in the \gls{dl} field due to the huge amount of parameters models are usually comprised of, thus increasing the risk of overfitting on the train data.
+Regularization has gained importance in the \gls{dl} field due to the vast amount of parameters models are usually comprised of, thus increasing the risk of overfitting on the train data.
 The regularization term is usually multiplied by a hyperparameter $\alpha$ and then added to the loss function.
 A general formulation of the loss function is
 %
@@ -429,7 +430,7 @@ the cross-entropy loss between the predicted distribution $\z$ and the target on
     \L_\text{CE}(\z, \z^\star) = - \sum_{i=1}^N \z^\star_i \log \z_i \,.
 \end{equation}
 %
-Classification models are often designed to output a $N$-dimensional vector $\z$ that is mapped to a categorical distribution via the \emph{softmax} function
+Classification models are often designed to output an $N$-dimensional vector $\z$ that is mapped to a categorical distribution via the \emph{softmax} function
 %
 \begin{equation} \label{eq:back:softmax}
     \text{softmax}(\z)_i = \frac{e^{\z_i}}{\sum_{j=1}^N e^{\z_j}} \,.
@@ -442,7 +443,7 @@ Classification models are often designed to output a $N$-dimensional vector $\z$
             \begin{subfigure}{\linewidth}
                 \centering
                 \includegraphics[width=.85\linewidth,trim={0 2em 0 0},clip]{figures/learn-to-rank}
-                \caption{A ranking loss tends to pull similar elements (black dots) near to an anchor $\x_a$ (i.e., the query point) and push dissimilar ones (gray dots) away from it.
+                \caption{A ranking loss tends to pull similar elements (black dots) near to an anchor $\x_a$ (i.e., the query point) and to push dissimilar ones (gray dots) away from it.
                 The parameter $m$ defines the minimum margin under which two elements are considered similar.}
                 \label{fig:back:ranking-loss}
             \end{subfigure}
@@ -522,7 +523,7 @@ The most common approach to find suboptimal (but valuable) solutions to \ref{eq:
 
 \paragraph{Gradient Descent}
 In gradient-based optimization, given a training set $\X$ and a parameter configuration $\Theta$, we search for a new solution following the direction of the gradient of the loss function $\nabla\L\(\X; \Theta\)$ with respect to the parameters $\Theta$.
-The direction given by $\nabla\L\(\X; \Theta\)$ is the one of maximum steepness of the loss surface in the parameter space, that is, the one that maximizes the loss change locally.
+The direction given by $\nabla\L\(\X; \Theta\)$ is the one having maximum steepness of the loss surface in the parameter space, that is, the one that maximizes the loss change locally.
 A new parameter configuration $\Theta^\star$ is chosen \emph{descending} the loss surface along the direction of maximum steepness with a step size of $\lambda$, that is
 %
 \begin{equation} \label{eq:back:gradient-descent}
@@ -564,8 +565,7 @@ The gradient $\frac{\partial \L}{\partial \theta_i}$ of the loss function $\L$ w
 \end{equation}
 %
 where the partial derivatives $\frac{\partial \o_{i+1}}{\partial \o_i}$ and $\frac{\partial \o_i}{\partial \theta_i}$ are well defined and depend on the implementation of the $i$-th layer $f_i$.
-The formulations of the loss function $\L$ and intermediate layers $f_i$ are chosen to be differentiable to ensure that also the entire model --- being a composition of differentiable functions --- is, in turn, differentiable, and that back-propagation can be applied to efficiently compute gradients.
-
+The formulations of the loss function $\L$ and intermediate layers $f_i$ are chosen to be differentiable to ensure that also the entire model --- being a composition of differentiable functions --- is, in turn, differentiable, and that back-propagation can be applied to compute gradients efficiently.
 
 \paragraph{Stochastic Gradient Descent}
 In our presentation of gradient-based optimization so far, the computation of the loss function $\L\(\X; \Theta\)$ and its gradient depend on the whole dataset $\X$.
@@ -631,9 +631,9 @@ Commonly used values for hyperparameters are $\beta_1 = 0.9$, $\beta_2 = 0.999$,
 % TODO? move dropout
 \paragraph{Dropout}
 Regularization is not limited to regularization loss terms only.
-\emph{Dropout}~\cite{hinton2012improving} is a common regularization technique for \glspl{dnn} which consists in deactivatiting (drop) some neurons of an internal layer (by setting their activations to zero) during the training phase and thus enabling the back-propagation of the error only in the survived neurons.
+\emph{Dropout}~\cite{hinton2012improving} is a common regularization technique for \glspl{dnn} which consists in deactivating (drop) some neurons of an internal layer (by setting their activations to zero) during the training phase and thus enabling the back-propagation of the error only in the survived neurons.
 The choice of the neurons to deactivate is random: each neuron on which dropout is applied has a given probability $p$ to survive.
-The employment of this technique usually increases the number of training iterations needed to a model to converge, because only the subset of weights of the survived neuron are updated in an optimization step.
+The employment of this technique usually increases the number of training iterations needed to a model to converge, because only the subset of weights of the survived neuron is updated in an optimization step.
 However, training a random subset of neurons at each iteration reduces the co-adaptation of neurons, which tend to learn more diversified and independent configurations of weights.
 This results in an increased ability of bigger models to exploit their capacity and limit overfit.
 At test time, all neurons are used, virtually utilizing and combining the predictions of many independently trained models.
@@ -653,7 +653,7 @@ For this reason, classification methods for images have received increasing atte
 \subsection{Problem Setting}
 \label{subsec:back:classification}
 Image classification consists of assigning one or more labels to an image $\x$ choosing from a finite set of $L$ labels.
-We refer to \emph{single-label} $L$-way classification if only one label has to be picked among the $L$ available, referring to the special case in which $L=2$ as \emph{binary} classification.
+We refer to \emph{single-label} $L$-way classification if only one label has to be picked among the $L$ available, referring to the particular case in which $L=2$ as \emph{binary} classification.
 If multiple labels can be assigned to a piece of data, we talk about \emph{multi-label} classification.
 A multi-label $L$-way classification problem is often decomposed in $L$ independent binary classification sub-problems, each of them focusing on predicting the presence or the absence of one of the available $L$ labels.
 
@@ -679,7 +679,7 @@ One of the fundamental tools for evaluating a set of label assignments is the \e
 The element $c_{ij}$ of the matrix indicates the number of times the model predicted the class $i$ for a sample belonging to class $j$.
 We report in \ref{tab:back:confusion} the confusion matrix for the binary case ($L=2$) together with the terminology used to refer to particular values in the matrix.
 For the binary case, many useful metrics can be computed from the confusion matrix, and we will introduce some of them in the next paragraphs.
-Notice that the same metrics can be applied to cases with $L > 2$ by reformulating them as $L$ binary problems, where one class is the positive class, and the other $(L-1)$ are condensed in the negative class;
+Notice that the same metrics can be applied to cases with $L > 2$ by reformulating them as $L$ binary problems, where one class is the positive class, and the other $(L-1)$ are grouped in the negative class;
 metrics can be computed considering each class as the positive one and then aggregated to obtain a global metric for the classification.
 
 \begin{table}
@@ -700,7 +700,8 @@ metrics can be computed considering each class as the positive one and then aggr
 \end{table}
 
 % Accuracy
-\paragraph{Accuracy} The classification accuracy is defined for the binary case as
+\paragraph{Accuracy}
+The classification accuracy is defined for the binary case as
 \begin{equation} \label{eq:back:accuracy-binary}
     \text{Accuracy} = \frac{\text{TP} + \text{TN}}{\text{P} + \text{N}} = \frac{\text{TP} + \text{TN}}{\text{TP} + \text{FN} + \text{TN} + \text{FP}} \,,
 \end{equation}
@@ -778,18 +779,13 @@ On the \gls{roc} plot, this threshold setting corresponds to the point where the
 
 \paragraph{Before \acrlong{dl}}
 % TODO [?] divide f in features and classifier, manually
-Traditional approaches to image classification required to design the classifier $f(\cdot)$ manually.
-% ESWA: The traditional approaches to the classification problem use ad-hoc functions to extract from an image specific features that are considered to be indicative of certain objects.
+Traditional approaches to image classification required to manually design at least partially the classifier $f(\cdot)$.
 In particular, handcrafted features detectors and descriptors --- such as \acrshort{sift}~\cite{lowe2004distinctive}, \acrshort{surf}~\cite{bay2006surf}, \acrshort{orb}~\cite{rublee2011orb}, \acrshort{mser}~\cite{matas2004robust}, KAZE~\cite{alcantarilla2012kaze} to cite some --- were employed to extract information from the image considered indicative for the presence of certain objects.
 For example, the presence of features like hard corners and straight edges might indicate man-made objects in the image~\cite{piccinini2012real}.
 Shallow classifiers based on \gls{ml} methods --- such as logistic regressors~\cite{mensink2012metric} or \glspl{svm}~\cite{arandjelovic2012three} --- then relied on these extracted features and their aggregation (\gls{vlad}~\cite{jegou2010aggregating}, Fisher Vectors~\cite{perronnin2010improving}) to determine which label to be assigned to the image.
 
-% ESWA: it is hard to think of general, robust, reliable features, which map to specific object types; - it is a huge task to find the right combination; - of features for every type of object to classify; - it is difficult to design functions that are robust to translations, rotations and scaling of objects in the image
-% ESWA: All these problems make developing high accuracy object detectors and classifiers for a broad range of objects very hard.
-However, manually engineered solutions are feasible for very specific problems --- such as image stitching~\cite{brown2007automatic} and 3d reconstruction~\cite{schonberger2016structure} --- where the conditions are well known and modeled.
+However, manually engineered solutions are feasible for particular problems --- such as image stitching~\cite{brown2007automatic} and 3d reconstruction~\cite{schonberger2016structure} --- where the conditions are well known and modeled.
 In general, thinking of features that are invariant to transformations, reliable for many types of objects, and robust to noise and other exogenous factors is often very difficult and time-consuming.
-% ESWA: it is often very complex to develop robust and reliable feature detectors and descriptors by hand.
-% TODO? better definition of VSA
 As an example, consider the problem of visual sentiment analysis (further discussed in \ref{ch:cross-media}), which, in a nutshell, consists of detecting emotions conveyed by images.
 Manually defining a good set of features to extract from images to solve this task is a cumbersome process and usually leads to suboptimal solutions.
 
@@ -814,11 +810,11 @@ Manually defining a good set of features to extract from images to solve this ta
         \emph{SuperVision}~\citep{krizhevsky2012imagenet} \newline {\footnotesize University of Toronto} & Trained features (AlexNet \gls{cnn}) & \textbf{16.4} \\ % 34.2
         \bottomrule
     \end{tabularx}
-    \caption{ILSVRC12 leaderboard reporting the accuracy (as top-5 error percentage) on the image classification task obtained by the participating teams. Results taken from~\cite{russakovsky2015imagenet}.}
+    \caption{\gls{ilsvrc}'12 leaderboard reporting the accuracy (as top-5 error percentage) on the image classification task obtained by the participating teams.
+    Results taken from~\cite{russakovsky2015imagenet}.}
     \label{tab:ilsvrc12-results}
 \end{table}
 
-% ESWA: The Deep Learning approach, on the other hand, exploits a large number of ground-truth labeled data to discover which features and combinations of features are most discriminative for each class of objects to be recognized, and builds a combined feature extraction and classification model.
 On the other hand, \acrlong{dl} approaches rely on a large amount of labeled data to automatically discover which features and combination of them are relevant for the task.
 The main advantage of this kind of approach is its general applicability even to large-scale scenarios where thousands of different classes of images have to be recognized.
 Recent results in the \gls{ilsvrc} are striking evidence of the success of \gls{dl} methods in image classification.
@@ -841,27 +837,28 @@ it took initially two weeks on two GPUs to the authors to train the model with t
 More details about the architecture are reported in \ref{fig:back:cnn-architectures}.
 Another key ingredient of the success of this architecture is the application of \emph{dropout}~\cite{hinton2012improving} to fully-connected layers, which permitted the authors to drastically reduce overfitting.
 AlexNet won the \gls{ilsvrc}'12 competition with roughly a 10\% gap in error from the second place competitor.
-This amazing results provided a springboard for the research community for a new way to to do image classification and more in general to learn high-quality features for images.
+This amazing results provided a springboard for the research community for a new way to to do image classification and in general to learn high-quality features for images.
 In the following years, many other researchers developed \glspl{cnn} for image classification or similar vision tasks, reaching always smaller error rates on important challenges such \gls{ilsvrc}.
 
 \begin{figure}
     \centering
     \includegraphics[width=\linewidth]{figures/cnn-architectures}
     \caption{Architecture of successful \glspl{cnn}.
-Dark gray boxes represent operations with learnable parameters, while light gray ones have fixed or no parameters.
-Hyperparameters of layers are reported in the form
-$<$filter width$>\times<$filter height$>$/$<$stride$>+<$padding$>$ (\# features).
-\gls{relu} activations after convolutions are omitted for conciseness.}
+    Dark gray boxes represent operations with learnable parameters, while light gray ones have fixed or no parameters.
+    Hyperparameters of layers are reported in the form
+    $<$filter width$>\times<$filter height$>$/$<$stride$>+<$padding$>$ (\# features).
+    \gls{relu} activations after convolutions are omitted for conciseness.}
     \label{fig:back:cnn-architectures}
 \end{figure}
 
-\paragraph{ZFNet} Despite \glspl{cnn} being remarkably good in solving vision task,
+\paragraph{ZFNet}
+Despite \glspl{cnn} being remarkably good in solving vision task,
 trained feature detectors in deep models tend to be difficult to comprehend and explain.
 %it is common to treat them as black boxes without having a clear understanding of its internals.
 To alleviate this problem, \citet{zeiler2014visualizing} proposed a visualization technique based on deconvolutions to shed light on the representations learned by intermediate convolutional layers.
 \ref{fig:back:filter-visualization} shows an example of the proposed approach applied to a trained model.
 The usage of these visualizations lead the authors to debug the AlexNet architecture and to suggest a new one, informally called \emph{ZFNet} in the research community, which incorporates some modifications, namely the reduction of the size and stride of the filters of the first layer, that enables the model to learn a more balanced set of feature extractors.
-This improved architectures won the \gls{ilsvrc}'13 classification task with a 11.7\% top-5 error.
+This improved architectures won the \gls{ilsvrc}'13 classification task with an 11.7\% top-5 error.
 
 \begin{figure}
     \centering
@@ -871,7 +868,8 @@ This improved architectures won the \gls{ilsvrc}'13 classification task with a 1
     \label{fig:back:filter-visualization}
 \end{figure}
 
-\paragraph{OverFeat} \citet{sermanet2013overfeat} proposed \emph{OverFeat}, a modification of the AlexNet architecture optimized for object localization and detection in images, where the model is asked to predict also the bounding boxes of the object of interest.
+\paragraph{OverFeat}
+\citet{sermanet2013overfeat} proposed \emph{OverFeat}, a modification of the AlexNet architecture optimized for object localization and detection in images, where the model is asked to predict also the bounding boxes of the object of interest.
 The authors proposed two different architectures: a \emph{fast} model having the same architecture of AlexNet with different parameters, i.e., a smaller stride in the first convolutional layers and non-overlapping max-pool operations, and an \emph{accurate} model counting an additional convolution layer, a higher number of output features and smaller strides.
 
 \paragraph{VGG Net} % Simonyan & Zisserman, 2014
@@ -884,13 +882,13 @@ In this work, we will refer to the best-performing architectures, namely the 16-
 % Girshick et al., 2014
 \paragraph{Inception}
 While increasing the depth of networks continued to improve the performance, the major drawbacks of deeper models were the larger model size --- that makes the network more prone to overfitting --- and an increased computational budget.
-\citet{szegedy2015going} proposed to improve the efficiency of the network employing a novel architectural block called \emph{Inception module}.
+\citet{szegedy2015going} proposed to improve the efficiency of the network employing a new architectural block called \emph{Inception module}.
 To better utilize the capacity of the model, this module extracts multiple-scale features by applying different-sized convolutions ``in parallel'' to the input feature maps and concatenating them.
 Moreover, 1x1 convolutions and max-pooling operations are used as a way to reduce --- both in terms of the number of feature maps and spatial resolution --- the inputs of costly operations, such as the bigger 5x5 convolutions.
 The usage of this module permitted to increase both the width and the depth of networks without adding a substantial computational overhead.
 The first network architecture leveraging Inception modules proposed by the authors, called GoogLeNet, is composed by 19 learnable layers, but it has 12 times fewer parameters with respect to AlexNet while being significantly more accurate, as demonstrated by its first place in the \gls{ilsvrc}'14 classification leaderboard.
 
-% TODO add BatchNorm paper? together with DropOut~\cite{ioffe2015batch}
+% TODO [?] add BatchNorm paper [?] together with DropOut~\cite{ioffe2015batch}
 
 \paragraph{Residual Networks}
 Despite having more capacity, deeper models are more prone to optimization problems.
@@ -900,7 +898,7 @@ Instead of modeling directly the mapping $g$ between input $\x$ and output $\y =
 In this settings, it is easier for a layer to model the identity transformation merely pushing its weights $\w$ toward zero.
 Thus, additional layers may not introduce unstable transformations that limit the exploitation of the capacity of the network.
 Residual learning can be easily implemented in \gls{dcnn} by adding skip-connections in its computational graph;
-this kind of architectures are called \glspl{resnet}.
+this kind of architecture is called \gls{resnet}.
 The authors proposed multiple \glspl{resnet} with an increasing number of layers.
 Due to its increased depth, the number of filters of convolution layers can be reduced, requiring a low computational budget.
 \gls{resnet}-152 --- their best-performing 152-layer model --- won the \gls{ilsvrc}'15 classification task with a top-5 error of 3.57\%, while having a computation cost of roughly 11 billion FLOPs (still lower than the 19 billion FLOPs of \gls{vgg}-19).
@@ -923,40 +921,19 @@ feature maps are then multiplied by this set of weights to obtain the recalibrat
 With a minimal additional computation cost, this block can be applied to convolutions or set of convolutions in \glspl{cnn} to improve their generalization power.
 A small ensemble of SENet-154 --- a modified version of a ResNeXt-152 network~\cite{xie2017aggregated} equipped with SE blocks --- won the first place in the \gls{ilsvrc}'17 classification challenge with a top-5 error of 2.25\%.
 
-% ESWA :
-% A Deep Learning approach particularly effective for vision tasks exploits Convolutional Neural Networks (CNN) (Krizhevsky et al., 2012; Simonyan & Zisserman, 2014; Girshick et al., 2014).
-% A CNN is composed of a possibly large number of hidden layers, each of which performs mathematical computations on the input provided by the previous layer and produces an output that is given in input to the following layer.
-% A CNN differs from classical neural networks for the presence of convolutional layers, which can better model and discern the spatial correlation of neighbouring pixels than normal fully connected layers.
-% For a classification problem, the final outputs of the CNN are the classes which the network has been trained on.
-% The training phase is usually extremely expensive from a computational point of view, and may take a long time to complete.
-% Once the network has been trained and the classifier has been initialized accordingly, the run time phase of prediction is quite fast and efficient.
-
-%% probably move in the chapter
-%Adversarial Examples for DNNs
-%Definition
-%Adv example formal definition
-%Properties
-%Adv. Generation Algorithms
-%L-BFGS
-%FGSM
-%etc.
-%Defense Strategies
-%Change the net: Adversarial Training / other..
-%Detect attacks: some rel. works on that
-
-
 \section{\acrlong{cbir}}
 \label{sec:back:image-retrieval}
 In this section, we will review the key concepts about \acrlong{cbir} and some of the relevant work employing Deep Learning techniques in this field.
 
 %CBIR (query-by-example)
-We indicate as \acrfull{cbir} the task of retrieving from a (potentially large) collection of images the ones relevant to a query by looking only to their unstructured content, i.e., without exploiting additional information associated with images such as textual annotations or structured metadata as traditional approach would.
-\gls{cbir} systems are then valuable in the case image metadata --- e.g., annotations, surrounding text in documents, descriptions --- is scarce, misleading, or totally absent, and traditional approaches would fail.
+We indicate as \acrfull{cbir} the task of retrieving from a (potentially large) collection of images the ones relevant to a query by looking only to their unstructured content, i.e., without exploiting additional information associated with images such as textual annotations or structured metadata as traditional approaches would.
+\gls{cbir} systems are then valuable in the case image metadata --- e.g., annotations, surrounding text in documents, descriptions --- is scarce, misleading, or absent, and traditional approaches would fail.
 In general, it provides an orthogonal access method to a large imagery corpus which is solely based on the visual content of images.
 
 \begin{figure}
     \includegraphics[width=\linewidth]{figures/cbir}
-    \caption{General structure of a \acrfull{cbir} system. Round rectangles indicate inputs or outputs of the system.}
+    \caption{General structure of a \acrfull{cbir} system.
+    Round rectangles indicate inputs and outputs of the system.}
     \label{fig:back:cbir}
 \end{figure}
 The general structure of a \gls{cbir} system is depicted in \ref{fig:back:cbir};
@@ -965,19 +942,19 @@ in its core, it consists of an offline indexing stage and an online query stage,
 % image representation
 In the offline stage, the image database from which we want to retrieve elements is first transformed to represent semantic concepts present in images in a compact and uniform fashion (\emph{Image Representation}).
 Most of the existing approaches to \gls{cbir} are feature-based;
-starting from raw pixels, the content of an image is encoded in a compact numerical representation, commonly called \emph{feature vector}, on which we rely to assess similarity between images.
+starting from raw pixels, the content of an image is encoded in a compact numerical representation, commonly called \emph{feature vector}, on which we rely to assess the similarity between images.
 Image descriptors are then indexed to enable fast and effective retrieval on large-scale scenarios (\emph{Image Indexing}), and the output of this phase is an indexed database of feature vectors representing our initial collection.
 
 % query formulation
 In the online phase, the user first formulates a query to inject in the system its concept of the content to be retrieved.
 Different paradigms can be used to provide the query.
 The simplest one is the \emph{query-by-example} paradigm, in which the user provides an image similar to the ones to be retrieved.
-However, more complex paradigms are also possible, such as query by tag, sketch, color map, etc.
+However, more complex paradigms are also possible, such as query by tag, sketch, and color map, to name a few.
 In this work, we will also explore \emph{cross-modal} image retrieval, i.e.,  the case in which the query comes from a modality different from images (e.g., a textual description).
 Once the query has been formulated, the system must map it in the feature space used to represent the images in the search collection (\emph{Query Representation}).
 This stage is usually strongly coupled with the Image Representation one.
 For the query-by-example paradigm, Image and Query Representation phases are identical and shared in both the online and offline stages, since the image given as query can be transformed and represented the same way as a database image.
-For other paradigms, this step may be arbitrarily complex depending on the query modality, but usually enables advanced useful search possibilities, such as cross-media image retrieval that will be discussed in \ref{ch:text2vis};
+For other paradigms, this step may be arbitrarily complex depending on the query modality, but usually enables advanced search possibilities, such as cross-media image retrieval that will be discussed in \ref{ch:text2vis};
 we refer the interested reader to~\cite{zhou2017recent} for a more detailed discussion on the subject.
 The query mapped in the representation space can be finally compared to images in the search collection through a scoring function, that produces a rank of images to be shown to the user as results of the retrieval process (\emph{Image Scoring}).
 For scoring large collections, the system leverages the pre-built database index to perform this operation efficiently.
@@ -1071,7 +1048,7 @@ The obtained representations outperform methods based on local features and spat
 
 \subsection{Evaluation Metrics}
 \label{subsec:back:ir-metrics}
-The image retrieval problem is not so different from classical textual information retrieval problem, thus it borrows from it much of the terminology, formulations and evaluation metrics.
+The image retrieval problem is not so different from classical textual information retrieval problem, and thus it borrows from it much of the terminology, formulations, and evaluation metrics.
 % accuracy, computational cost, memory consumption
 The main aspects to be considered in the evaluation of a retrieval system are its accuracy and its computational \& memory consumption in both the offline and online stages.
 While measuring computational and memory resources in this scenario is straightforward, researches dedicated multiple metrics to measure the accuracy of a retrieval system.
@@ -1079,7 +1056,7 @@ In the following paragraphs, we will introduce the notation and some of the conv
 
 Given a collection of images $\X$ and a query image $\q$, the goal is to retrieve the set of images $\X_q \subset \X$ relevant to $\q$.
 In the feature-based approach, an image is represented by its feature vector $\x$, and a similarity $s(\cdot)$ (or distance $d(\cdot)$) function is defined to compare two feature vectors.
-This function permits to assign a similarity score (or a distance) to each element of our search collection and to sort them based on their relevancy to the query.
+This function permits to assign a similarity score (or a distance) to each element of our search collection and to sort them based on their relevance to the query.
 Since the top elements on the candidate list are the ones to be most plausible to be consumed by the user, many of the evaluation metrics for measuring the accuracy of a retrieval system are thought to evaluate the goodness of the initial part of the results list.
 
 Assume $\X$ %$= {\x_1, \ldots, \x_N}$
@@ -1113,9 +1090,9 @@ When multiple queries are considered for evaluation, the \emph{\acrfull{map}} is
 
 %nDCG
 \paragraph{\acrlong{dcg}}
-The \emph{\acrfull{dcg}}~\cite{jarvelin2002cumulated} is conventionally used when multiple level of relevancy are available for samples in the groundtruth.
-Its aim is to penalize highly relevant samples in the bottom part of the results;
-to do so, usually a logarithmic weighting scheme is adopted to assign a decreasing importance to samples in the lower part of the search results.
+The \emph{\acrfull{dcg}}~\cite{jarvelin2002cumulated} is conventionally used when multiple levels of relevancy are available for samples in the ground-truth.
+It aims to penalize highly relevant samples in the bottom part of the results;
+to do so,  a logarithmic weighting scheme is usually adopted to assign a decreasing importance to samples in the lower part of the search results.
 The \gls{dcg} at the rank position $n$ is defined as
 \begin{equation} \label{eq:back:dcg}
     \text{DCG}@n = \sum_{i=1}^n \frac{2^{r_i} - 1}{\log_2(i + 1)} \,,
@@ -1129,14 +1106,14 @@ In the case rankings can have ties, the \gls{tdcg}~\cite{mcsherry2008computing} 
 %
 where $m$ is the number of group of ties in the ranking of the first $n$ results, $n_i$ indicates the number of tied result in the $i$-th group, $t_i$ indicates the starting position of each tied group.
 The \gls{tdcg} is derived from \gls{dcg} by observing that the average gain for a position in a group of tied results is the average of the gain of such tied results.
-The \gls{tdcg} is obviously equivalent to \gls{dcg} in the case there are no ties in the results.
+The \gls{tdcg} is equivalent to \gls{dcg} in the case there are no ties in the results.
 
 % NDCG is divided by a normalization factor to ensure the metric is in the $[0,1]$ range.
 
 % R@K
 \paragraph{\acrlong{r@k}}
-The \acrfull{r@k} is the recall metric when considering only the top-K results of the groundtruth as relevant.
-It is conventionally used to compare two rankings in absence of an explicit relevancy labelling of the groundtruth.
+The \acrfull{r@k} is the recall metric when considering only the top-K results of the ground-truth as relevant.
+It is conventionally used to compare two rankings in the absence of an explicit relevancy labeling of the ground-truth.
 Assuming $\Y^{\star}_{\q, K}$ the set of samples relevant to $\q$ truncated at the $K$-th element, and $\Y_{\q,K}$ the top-$K$ retrieved elements to be evaluated, the \gls{r@k} is defined as
 \begin{equation} \label{eq:back:r@k}
     \text{R}@K = \frac{|\Y^{\star}_{\q, K} \cap \Y_{\q,K}|}{K} \,.
@@ -1144,14 +1121,13 @@ Assuming $\Y^{\star}_{\q, K}$ the set of samples relevant to $\q$ truncated at t
 
 %medR
 \paragraph{\acrlong{medR} and \acrlong{mrr}}
-These metrics are particularly useful when evaluating rankings in which there is only one object in the database relevant to the query that need to be retrieved.
-Cross-modal retrieval with coupled datasets is an examples in which this condition applies: using as query one modality of a sample, a common approach is to evaluate how well the system is able to retrieve the same sample in the different modality.
+These metrics are particularly useful when evaluating rankings in which there is only one object in the database relevant to the query that needs to be retrieved.
+Cross-modal retrieval with coupled datasets is an example in which this condition applies: using as query one modality of a sample, a common approach is to evaluate how well the system can retrieve the same sample in the different modality.
 Given multiple queries, the \acrfull{medR} is the median of the positions of the relevant objects in the rankings, one per query,
 % MRR
 while the \acrfull{mrr} is the mean of the reciprocals of the same quantities.
 
 %Datasets & Evaluation Metrics
-
 \section{Datasets}
 \label{sec:back:datasets}
 In this section, we will list the dataset --- either publicly available or collected --- used directly or indirectly in the experiments presented in this work.
@@ -1160,38 +1136,38 @@ In this section, we will list the dataset --- either publicly available or colle
 
 \paragraph{\acrfull{ilsvrc} 2012~~\cite{russakovsky2015imagenet}}
 The \acrfull{ilsvrc} 2012 dataset is composed by a large set of images of general objects collected for evaluating algorithms for large-scale visual object recognition.
-It is a subset of roughly 1.3 million images taken from the larger ImageNet\footnote{\url{http://www.image-net.org}} database --- a big collection of images labelled and organized following the hierarchical categorization of WordNet.
-Images are assigned a single label chosen from the 1,000 classes selected for the competition, spanning general objects, animals, etc.
+It is a subset of roughly 1.3 million images taken from the larger ImageNet\footnote{\url{http://www.image-net.org}} database --- a big collection of images labeled and organized following the hierarchical categorization of WordNet.
+Images are assigned a single label chosen from the 1,000 classes selected for the competition, spanning general objects, animals, and many others.
 Each class has roughly 1,000 images in the training set (the number oscillates between 700 and 1,300), and exactly 50 and 100 images respectively in the validation and test set, for a total of 1,281,167 images for the train set, 50,000 for the validation set, and 100,000 in the test set.
 Only the training and validation sets are publicly available.
 Due to its relevancy in large-scale image classification, it is extensively used, and many models pre-trained on this dataset are publicly available.
 We adopt models pre-trained on \gls{ilsvrc} in \ref{ch:adversarial,ch:text2vis}.
 
 \paragraph{Places205~\cite{zhou2014learning}}
-The Places205 dataset is composed by roughly 2.5 million images collected from image search engines labelled with 205 semantic scene categories and attributes representing visual environments all over the world.
+The Places205 dataset is composed of roughly 2.5 million images collected from image search engines labeled with 205 semantic scene categories and attributes representing visual environments all over the world.
 It is a subset of the bigger Places dataset~\cite{zhou2016places}.
 We employ models pre-trained on \gls{ilsvrc} and Places205, also called HybridNets, in \ref{ch:cross-media}, where we fine-tune them for the specific task of visual sentiment analysis.
 This combination of training sets leads to models with a general representation capability of generic objects and scenes.
 
 \paragraph{PKLot~\cite{de2015pklot}}
-The PKLot dataset is an car parking occupancy detection dataset comprised of 12,417 images of 3 parking lots, named UFPR04, UFPR05, and PUC, took in different days and weather conditions.
+The PKLot dataset is a car parking occupancy detection dataset comprised of 12,417 images of 3 parking lots --- named UFPR04, UFPR05, and PUC --- took in different days and weather conditions.
 The images have been segmented in 695,899 images of parking spaces by cropping along the rotated rectangles delimiting each parking space and rotating back the cropped patches in vertical or horizontal position.
-Each segmented image is labelled with the vacancy status of the slot, which can be either occupied or vacant.
+Each segmented image is labeled with the vacancy status of the slot, which can be either occupied or vacant.
 
 \paragraph{CNRPark+EXT~\cite{amato2016car,amato2017deep}}
 The CNRPark+EXT dataset is a car parking occupancy detection dataset collected during this thesis from the parking lots of the campus of the National Research Council (CNR) in Pisa.
 It is comprised of roughly 150,000 images of parking spaces taken from nine smart cameras with different viewpoints, in different days with different weather and light conditions, and includes occlusion and shadow situations that make the occupancy detection task challenging.
-Both CNRPark-EXT and PKLot datasets are used in \ref{ch:miniaturization} to test the generalization performance of miniaturized \glspl{cnn} for embedded devices in the context of decentralized parking lot occupancy detection.
+We employ both the CNRPark-EXT and PKLot datasets in \ref{ch:miniaturization} to test the generalization performance of miniaturized \glspl{cnn} for embedded devices in the context of decentralized parking lot occupancy detection.
 More details about the CNRPark-EXT dataset will be provided in \ref{ch:miniaturization}.
 
 \paragraph{Twitter Testing Dataset~\cite{you2015robust}}
-The Twitter Testing Dataset is a dataset for image sentiment analysis composed by 1,269 images labelled with crowd-sourcing (Amazon Mechanical Turk) following a binary positive/negative sentiment polarity scheme.
+The Twitter Testing Dataset is a dataset for image sentiment analysis composed by 1,269 images labeled with crowd-sourcing (Amazon Mechanical Turk) following a binary positive/negative sentiment polarity scheme.
 Each image has been annotated as positive or negative by five workers, and three different subsets have been created, respectively comprised of images where five workers agree on the sentiment of the image (5-agree, 882 images), where at least four workers agree (4-agree, 1,116 images), and where at least three workers agree (3-agree, whole set of images).
 
 \paragraph{\acrfull{t4sa}~\cite{vadicamo2017cross}}
 The \acrlong{t4sa} dataset is a large-scale weakly-labelled dataset for sentiment analysis collected during this thesis to evaluate the weakly-labelled cross-media training procedure for image classifiers presented in \ref{ch:cross-media}.
 It is comprised of 904,395 tweets and their corresponding 1,473,394 images (each tweet has one or more images);
-tweets have been collected from the 5\% random stream of global tweets provided by the Twitter APIs keeping only tweets in english with at least five words and at least one image.
+tweets have been collected from the 5\% random stream of global tweets provided by the Twitter APIs keeping only tweets in English with at least five words and at least one image.
 Each tweet is associated with a three-way sentiment polarity (positive/neutral/negative sentiment) predicted by performing textual sentiment polarity prediction.
 More details are available in \ref{ch:cross-media}.
 
@@ -1205,15 +1181,13 @@ we refer to this variant as \emph{Holidays-MIRFlickr1M}.
 
 \paragraph{Oxford Buildings~\cite{philbin2007object}}
 The Oxford Buildings dataset, also known as \emph{Oxford5k}, is an image retrieval dataset comprised of 5,062 images of various buildings present in Oxford.
-The set is composed by photos of 11 famous buildings plus distractor images collected from Flickr.
+The set is composed of photos of 11 famous buildings plus distractor images collected from Flickr.
 For each building, five queries are specified with bounding boxes delimiting the building we are interested in retrieving, for a total of 55 query images.
-For each query, images of the search set are assegned with one of the following four labels:
+For each query, images of the search set are assigned with one of the following four labels:
 \begin{itemize}
     \item \emph{ok} --- if the image contains a clear look of the building in the query;
     \item \emph{good} --- if more than 25\% of the building is clearly visible;
-    \item \emph{junk} --- if less than 25\% of the building
-is visible, or there is a very high level of occlusion or dis-
-tortion;
+    \item \emph{junk} --- if less than 25\% of the building is visible, or there is a very high level of occlusion or distortion;
     \item \emph{absent} --- if the building is not present.
 \end{itemize}
 In this work, we will adopt the version of this dataset augmented with a distractor set of 100k images collected from Flickr, and we will refer to it as \emph{Oxford-Flickr100k}.
@@ -1224,15 +1198,15 @@ We employ both \emph{Holidays-MIRFlickr1M} and \emph{Oxford-Flickr100k} in \ref{
 
 \paragraph{\acrfull{coco}~\cite{lin2014microsoft}}
 
-The Microsoft \acrfull{coco} dataset is a collection of images  for large-scale object detection, segmentation, and captioning.
-it is comprised of 2,500,000 labeled object instances belonging to 91 common object categories in 328,000 images.
+The Microsoft \acrfull{coco} dataset is a collection of images for large-scale object detection, segmentation, and captioning.
+It is comprised of 2,500,000 labeled object instances belonging to 91 common object categories in 328,000 images.
 Each image is associated with an instance-level pixel-wise segmentation of the object instances it depicts and five captions describing the whole images.
-This dataset is particularly adopted also in cross-modal retrieval due to its large scale and the presence of captions, and we will use it to compare to existing cross-modal retrieval approaches in \ref{ch:text2vis}.
+This dataset is also extensively adopted also in cross-modal retrieval due to its large scale and the presence of captions, and we will use it to compare to existing cross-modal retrieval approaches in \ref{ch:text2vis}.
 
 \subsection{Others}
 
 \paragraph{NIPS Adversarial Attacks and Defences Competition DEV set~\cite{kurakin2018adversarial}}
-The NIPS Adversarial Attacks and Defences Competition DEV set is comprised of 1,000 images that do not belong to the \gls{ilsvrc}'12 subsets but share the same label space, i.e., are labelled with one of the same 1,000 label used in \gls{ilsvrc}.
+The NIPS Adversarial Attacks and Defences Competition DEV set is comprised of 1,000 images that do not belong to the \gls{ilsvrc}'12 subsets but share the same label space, i.e., are labeled with one of the same 1,000 labels used in \gls{ilsvrc}.
 This set has been released in the context of the NIPS Adversarial Attacks and Defences Competition on Kaggle to let participants work with pre-trained \gls{ilsvrc} classifiers using images not involved in their training process.
-In particular, the set is devoted to generate adversarial examples for image classifiers, i.e., maliciously manipulated images the lead a classifier to misbehave.
+In particular, the set is devoted to generating adversarial examples for image classifiers, i.e., maliciously manipulated images the lead a classifier to misbehave.
 More details are available in \ref{ch:adversarial} in which we use this set of images to evaluate a detection scheme for adversarial attacks.

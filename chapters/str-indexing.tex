@@ -202,7 +202,7 @@ $ n_i \in \mathbb{N}$                          & Number of elements in the $i$-t
 \section{Surrogate Text Representation}
 \label{sec:str:surrogate}
 As we explained in the introduction, we aim to index and search a data set of feature vectors by exploiting off-the-shelf text search engines.
-So our main goal is to define a family of transformations that map a feature vector into a textual representation without the need for tedious training procedures.
+So our primary goal is to define a family of transformations that map a feature vector into a textual representation without the need for tedious training procedures.
 Of course, we also require that such transformations preserve as much as possible the proximity relations between the data, i.e., similar feature vectors are mapped to similar textual documents.
 
 This basic idea was firstly exploited in~\cite{gennaro2010approach}, where the authors defined the \acrfull{str} to represent a generic metric object, i.e., an object living in a space where a distance function is defined~\cite{zezula2006similarity}.
@@ -222,8 +222,8 @@ where, by abuse of notation, we denote the space-separated concatenation of the 
 Thus, by construction, the integer values of the $i$-th component of the vector $\bb{f}_o$ is the frequency of the codeword $\tau_i$ in the text $\text{STR}_f(o)$.
 For example, given $\bb{f}_o=[1,3,0,2]$ and a codebook $\{\tau_1=``A'',\,  \tau_2=``B'',\, \tau_3=``C'', \,\tau_4=``D''\}$, we have $\text{STR}_f(o)=``A \, B \, B \, B \, D \, D''$.
 
-The rational of this approach is that a full-text search engine based on the \emph{vector space model}~\cite{salton1986introduction} will generate a vector representation of the $\text{STR}_f(o)$ by counting the number of occurrences of the words in it, i.e., the term frequencies.
-In facts, these systems transform the text into vector representations using the well-known \gls{tf} scheme and practically use the dot product as a function of similarity between vectors.
+The rationale of this approach is that a full-text search engine based on the \emph{vector space model}~\cite{salton1986introduction} will generate a vector representation of the $\text{STR}_f(o)$ by counting the number of occurrences of the words in it, i.e., the term frequencies.
+In facts, these systems transform the text into vector representations using the well-known \gls{tf} scheme and practically use the dot product as a function of the similarity between vectors.
 So, the abstract transformation $f(\cdot)$ represents a function that exactly generates the vectors that are internally represented by the search engine in the case of the simple term-weighting scheme.
 Using this representation, the search engine indexes the text by using inverted files, i.e., each object $o$ is stored in the posting lists associated to the codewords appearing in $\text{STR}_f(o)$ (\ref{fig:str:posting-list}).
 
@@ -249,32 +249,32 @@ Using this representation, the search engine indexes the text by using inverted 
 
 \caption{Example of the \gls{str} encodings for a query object $q$ and three data objects $o_1, o_2, o_3$.
 The \glspl{str} are indexed using posting lists.
-The posting lists accessed at query time are the only ones associated to the codewords comparing in the surrogate text representation of the query.
+The posting lists accessed at query time are the only ones associated with the codewords comparing in the surrogate text representation of the query.
 For example, given the query $\text{STR}_f(q)=$''$\tau_1\, \tau_5\, \tau_5$'', the posting lists accessed are just those related to the codewords $\tau_1$ and $\tau_5$.}
 \label{fig:str:posting-list}
 \end{figure}
 
 Ideally, the transformation $f(\cdot)$ should be
 \begin{enumerate}
-	\item \emph{order-preserving}:  the ranked results to the query $q$ (obtained by searching the original space $\D$) exactly correspond to the ranked results to the text query $\text{STR}_f(q)$ (obtained by searching the surrogate text space);%
+    \item \emph{order-preserving}:  the ranked results to the query $q$ (obtained by searching the original space $\D$) exactly correspond to the ranked results to the text query $\text{STR}_f(q)$ (obtained by searching the surrogate text space);%
 \footnote{Note that to compare a query with a set of objects we can use either a \emph{distance} or a \emph{similarity} function.
-In the former case, we search for the objects with the greatest similarity to the query.
+In the former case, we search for objects with the greatest similarity to the query.
 In the latter case, we search for the objects with the lowest distance from the query. A similarity function is said to be \emph{equivalent} to a distance function if the ranked list of the results to a query is the same.}
-	\item \emph{sparsifying}: for any $o \in\D$, the vector $f(o)$ is sparse.
+    \item \emph{sparsifying}: for any $o \in\D$, the vector $f(o)$ is sparse.
 \end{enumerate}
 
-The order-preserving property guaranties we do not loose any solutions when using the textual representation with respect to the results that would be obtained using the original data representation.
+The order-preserving property guarantees we do not lose any solutions when using the textual representation with respect to the results that would be obtained using the original data representation.
 However, having this property is quite impossible in practice since it is likely that any hand-crafted function $f(\cdot)$ introduces some approximations when transforming the data objects into term-frequency vectors.
 Thus, the \emph{effectiveness} of a \gls{str}-based retrieval system highly depends on how good the transformation $f(\cdot)$ is in preserving the object similarities.
 The sparsifying property, instead, is requested for \emph{efficiency} issues since each data object $o$ will be stored in as many posting lists as the number of the non-zero elements in $f(o)$.
 Having dense vectors means that the search based on the inverted index would be significantly more expensive than the sequential scan, moreover also the index size would be much bigger than the original dataset.
 The ideal case is having uniformly sparse vectors so that the length of each posting list is approximately the same.
 
-Unfortunately, the sparsifying property is in contrast with the order-preserving one since the former naturally introduces some approximations in the vectors, which basically translates our problem into a trade-off between effectiveness (score approximation) and efficiency (posting-list length).
+Unfortunately, the sparsifying property is in contrast with the order-preserving one since the former naturally introduces some approximations in the vectors, which translates our problem into a trade-off between effectiveness (score approximation) and efficiency (posting-list length).
 
 In this paper, we are interested in indexing and searching \emph{$\N$-dimensional vectors} originally compared with the dot product, such as the \gls{rmac} descriptors. Note that, in this case, $\D=\R^{\N}$ and the order-preserving property with respect to dot product can be expressed as
 \begin{equation}
-\forall\, \q,\v_1,\v_2 \in \R^{\N} \quad	\bb{q}\cdot \bb{v_1} \leq \bb{q}\cdot \bb{ v_2} \Rightarrow f(\bb{q})\cdot f(\bb{v_1}) \leq f(\bb{q})\cdot f(\bb{v_2}).
+\forall\, \q,\v_1,\v_2 \in \R^{\N} \quad \bb{q}\cdot \bb{v_1} \leq \bb{q}\cdot \bb{ v_2} \Rightarrow f(\bb{q})\cdot f(\bb{v_1}) \leq f(\bb{q})\cdot f(\bb{v_2}).
 \end{equation}
 
 Below we present two text transformation techniques that can be used in this context: a Permutation-Based approach and Scalar Quantization approach.
@@ -308,7 +308,7 @@ In this work, we use the Spearman rho, which can be defined as the Euclidean dis
 
 The original \gls{str} approach,~\cite{gennaro2010approach} is based on a double transformation process.
 First, each data object $o$ is transformed in a permutation vector (the inverted permutation) $\Pi^{-1}_{o}$ using the approach presented above, and then it transforms the permutation into a textual representation $t_o$.
-The textual representation is obtained by associating each pivot $p_i$ with an unique alphanumeric codeword $\tau_i$ and the permutation $\Pi^{-1}_{o}$ with a sequence of codewords.
+The textual representation is obtained by associating each pivot $p_i$ with a unique alphanumeric codeword $\tau_i$ and the permutation $\Pi^{-1}_{o}$ with a sequence of codewords.
 Specifically, the text $t_o$ is built in such a way that the occurrence of the codeword $\tau_i$ in it reflects the closeness of the pivot $p_i$ to the object $o$: the lower the value $\Pi^{-1}_{o}(i)$ the higher the frequency of the term $\tau_i$ in the document $t_o$.
 Formally, the original \gls{str} approach uses the transformation
 $
@@ -324,7 +324,7 @@ Therefore,
 \text{STR}_{f_\text{perms}}(o)=\bigcup_{i=1}^n\,\bigcup_{j=1}^{n-\Pi^{-1}_{o}(i)} \tau_i.
 \end{equation}
 
-The rational behind this approach is that if two objects are very close one to the other, they will sort the set of pivots in a very similar way, and thus the corresponding permutations/text representations will be close as well.
+The rationale behind this approach is that if two objects are very close one to the other, they will sort the set of pivots in a very similar way, and thus the corresponding permutations/text representations will be close as well.
 Note that we have no theoretical guarantees that the transformation
 \begin{align}
 \Pi^{-1} : (\D,d) &\to (\mathbb{N}^n, \ell_2)\\
@@ -335,9 +335,9 @@ Moreover, it can be easily proved that the cosine similarity between any two ter
 Therefore, a ranking obtained using the cosine similarity on term frequency vectors is equivalent to that obtained in the permutation space using the Spearman rho distance, which in turn is an approximation of the ranking obtained in the original data space.
 
 So far, we have presented the general approach of \gls{str} based on the traditional permutation representations.
-However, when objects to be indexed are \emph{real-valued vectors}, as in the case of deep features, we can exploit the deep permutations technique~\cite{amato2016deep} that allows to generate the permutations at very low computational cost by avoiding the calculations of the distances between the pivots and the objects to be represented.
+However, when objects to be indexed are \emph{real-valued vectors}, as in the case of deep features, we can exploit the deep permutations technique~\cite{amato2016deep} that allows generating the permutations at very low computational cost by avoiding the calculations of the distances between the pivots and the objects to be represented.
 Moreover, \citet{amato2016deep} shown that this encoding is more effective than the traditional permutation-based representation for both multimedia retrieval and similarity search tasks.
-In the deep permutations approach, the permutants are the indexes of the elements of the deep feature vectors rather that a predefined set of pivots.
+In the deep permutations approach, the permutants are the indexes of the elements of the deep feature vectors rather than a predefined set of pivots.
 Specifically, the deep permutation of a feature vector $\v \in \R^{n}$ is obtained by sorting the \emph{indexes} of the elements of $\v$, in descending order with respect to the corresponding element values. In other words, the \emph{\gls{dp}} $
 \tilde{\Pi}_{\v} = [ \tilde{\Pi}_{\v}(1), \ldots, \tilde{\Pi}_{\v}(n) ]
 $
@@ -363,24 +363,23 @@ The term frequencies vector will be $f_\text{DP}(\v) = [1, 3, 4, 0, 2]$, and thu
 \subsection{Scalar Quantization-Based Approach}
 \label{subsec:str:sq}
 In this section, we propose an alternative approach to provide a surrogate text representation for feature vectors.
-The idea behind our \gls{sq} approach is to map the real-valued vector components independently into a smaller set of integer values which act as the term frequencies of a predefined set of codewords.
-%This is very similar to the way Scalar Quantization works (?????). %questa frase c'era già ma non ho capito cosa volevi dire
+The idea behind our \gls{sq} approach is to map the real-valued vector components independently into a smaller set of integer values which act like the term frequencies of a predefined set of codewords.
 However, as for more generic \gls{pq}, the \gls{sq} has mainly the purpose of making a compact representation suitable for approximate nearest neighbor search.
 
-The first step in our approach is the application of an order-preserving transformation to the vectors, that basically is a random rotation of the feature vectors.
-This step is important for efficiency issues since it prevent to have unbalanced posting lists in the inverted file.
-%Without this step, the posting list of the inverted index would be unbalanced which would therefore affect its performance.
+The first step in our approach is the application of an order-preserving transformation to the vectors, that is a random rotation of the feature vectors.
+This step is essential for efficiency issues since it prevents to have unbalanced posting lists in the inverted file.
+%Without this step, the posting list of the inverted index would be unbalanced which would, therefore, affect its performance.
 To understand why, remember that in our approach each component of the vectors is associated with a posting list in which each post stores the \emph{id} of the vector and the value of the component itself, if nonzero.
 Therefore, if on average some component is nonzero for many data vectors then the corresponding posting list will be accessed many times, provided that the queries follow the same distribution of the data.
-The ideal case occurs when the component share exactly the same distribution (same mean and variance is sufficient).
+The ideal case occurs when the component share the same distribution (same mean and variance are sufficient).
 To this end, we apply a roto-translation transform to the entire set of data vectors.
 In this way, we try to increase to cases where the dimensional components of the features vectors have same mean and variance, with mean equal to zero.
 This last constraint is because we want then sparsify the vectors, but this aspect is further investigated in the next subsection.
 
-An important aspect of the roto-translation transform is that it preserves the ranking when we search using the kNN approach by ordering the vectors on the basis of their Euclidean distance to the query.
+An important aspect of the roto-translation transform is that it preserves the ranking when we search using the kNN approach by ordering the vectors by their Euclidean distance to the query.
 Moreover, if applying the roto-translation to all the data objects and just the rotation to the query we have an ordering preserving transformation with respect to the dot-product: given a rotation matrix $R \in \R^{\N \times \N}$ and a vector $\muu \in \R^{\N}$, then
 \begin{equation}
-\forall\, \q, \v_1, \v_2 \in \R^{\N} \quad	\q \cdot \v_1 \leq \q \cdot \v_2 \Rightarrow R\q\cdot R(\v_1 - \muu) \leq R\q\cdot R(\v_2 - \muu) \,.
+\forall\, \q, \v_1, \v_2 \in \R^{\N} \quad    \q \cdot \v_1 \leq \q \cdot \v_2 \Rightarrow R\q\cdot R(\v_1 - \muu) \leq R\q\cdot R(\v_2 - \muu) \,.
 \end{equation}
 %Every transformation that does not violate the previous inequality can be applied to $f_q$ and $fv_i$ without changing the relative rankings of vectors with respect to the query.
 We found that a good transformation is the random rotation:
@@ -405,17 +404,16 @@ $.
 For instance, suppose after the random rotation we have the feature vector $\v = [0.1, 0.3, 0.4, 0, 0.2]$, by adopting a multiplication factor $s = 10$, we obtain the term frequencies vector will be $f_\text{SQ}(\v) = [1, 3, 4, 0, 2]$, and thus $\text{STR}_{f_\text{SQ}}(\v)=``A\, B\, B\, B \, C \, C\, C\, C\, E\, E"$.
 
 \subsection{Sparsification}
-The two approaches presented above are intended to encode a vector of real numbers into a vector of integers preserving as much as possible the order with respect to the the dot product.
-However, this approach does not solve the problem that in most cases these vectors are dense, which means having low efficiency performance if the inverted files are used to index the textual documents.
+The two approaches presented above are intended to encode a vector of real numbers into a vector of integers preserving as much as possible the order with respect to the dot product.
+However, this approach does not solve the problem that in most cases these vectors are dense, which means having low-efficiency performance if the inverted files are used to index the textual documents.
 %This is because the next step will be to encode these integer vectors into textual documents to index with standard text-based techniques (based on inverted indices).
-In order to sparsify the term frequency vectors, that is to cancel the less significant components of the vectors, we must accept a further loss in precision.
-To achieve this we propose two ways: keep the top-$k$ larger components of the vector or maintain components above a certain threshold $\sfrac{1}{\gamma}$ by zeroing all the others.
-Where $\gamma \in \mathbb{N}$ is the parameter we use to control the sparseness of the thresholded feature.
+In order to sparsify the term frequency vectors, that is, to cancel the less significant components of the vectors, we must accept a further loss in precision.
+To achieve this, we propose two ways: keep the top-$k$ larger components of the vector or maintain components above a certain threshold $\sfrac{1}{\gamma}$ by zeroing all the others, where $\gamma \in \mathbb{N}$ is the parameter we use to control the sparseness of the thresholded feature.
 The first approach (\emph{top-$k$}) is better suited to the permutation-based approach and the latter (\emph{thresholding}) to the \gls{sq} approach.
 
 The top-$k$ approach on the permutation-based encoding can be seen as the selection of a fixed-length prefix of the permutations.
-This approach works well since it is assumed that the greatest information is in the first $k$ elements of the permutation, i.e., the identifiers of the closest pivots to the object to be represented.
-It is equivalent to say that instead of using the full-length inverted permutation $\tilde{\Pi}^{-1}_{\v}$  we use the \emph{truncated inverted permutation}
+This approach works well since it is assumed that most of the information is in the first $k$ elements of the permutation, i.e., the identifiers of the closest pivots to the object to be represented.
+It is equivalent to say that, instead of using the full-length inverted permutation $\tilde{\Pi}^{-1}_{\v}$,  we use the \emph{truncated inverted permutation}
 \begin{equation}
 \tilde{\Pi}^{-1}_{\v,k}(i) = \begin{cases}
                                 \tilde{\Pi}^{-1}_{\v} (i) & \text{if} \quad \tilde{\Pi}^{-1}_{\v}(i) \leq k \\
@@ -505,11 +503,11 @@ hus, we exploit the roto-traslation transform seen above to center the mean valu
 \subsection{Dealing with Negative Values}
 
 In order to index \gls{rmac} features and represent them in the vector space model of text retrieval, we encode each dimension of the \gls{rmac} features as a different codeword, and we use the \gls{tf} field to represent a single value of our feature vector.
-However, the \gls{tf} must be positive (no search engine admits negative TFs even if this in principle would be possible), nonetheless, both negative and positive elements contribute to informativeness.
-In the two approaches presented above, this produces two different negative effect, but fortunately the solution we adopt is the same for both.
+However, the \gls{tf} must be positive (no search engine admits negative TFs even if this in principle would be possible); nonetheless, both negative and positive elements contribute to informativeness.
+In the two approaches presented above, this produces two different negative effects, but fortunately, the solution we adopt is the same for both.
 In the \gls{sq} case, negative quantized components are not admitted for construction; in the deep permutation-based approach, negative components are neglected since they always fall behind the positive ones in the ordering.
 In order to prevent this imbalance towards positive activations at the expense of negative ones, we use the \gls{crelu} transformation~\cite{shang2016understanding}.
-It simply makes an identical copy of vector elements, negate it, concatenate both original vector and its negation, and then apply \gls{relu} altogether.
+It merely makes an identical copy of vector elements, negates it, concatenates both original vector and its negation, and then apply \gls{relu} altogether.
 More precisely the \gls{crelu} of the vector $\v$ is defined as $\v^+ = \text{ReLU}([\v, -\v])$, where the $\text{ReLU}(\cdot) = max(\cdot, 0)$ is applied element-wise.
 After applying \gls{crelu}, we applied either $f_\text{DP}$ or $f_\text{SQ}$ (or their sparsifying versions) to $\v^+$ as described in the previous sections.
 %More precisely, we denote ReLU as $[\cdot]^+ = max(\cdot, 0)$, and define \gls{crelu} of the vector $\v$ as $\v^+ = ([\v]^+,[-\v]^+)$.%everything proceeds in the case of vectors with positive components with the two seen approaches.
@@ -527,18 +525,18 @@ However, this transformation allows us to apply the deep permutation approach wi
 \section{Experimental Evaluation}
 \label{sec:str:experiments}
 
-The aim of this section is to assess the performance of the proposed solution in a content-based retrieval task both in terms of effectiveness and efficiency.
-To this end, we are able to evaluate the approximation introduced with respect to the exact similarity search algorithm against the impact of this approximation with respect to the user perception of the retrieval task.
+This section aims to assess the performance of the proposed solution in a content-based retrieval task both in terms of effectiveness and efficiency.
+To this end, we evaluate the approximation introduced with respect to the exact similarity search algorithm against the impact of this approximation with respect to the user perception of the retrieval task.
 %\subsection{Experimental Settings}
 %For assessing the proposed technique in a pure similarity search task, we used the CNN Features extracted as discussed in \ref{sec:deepfeatures} from the \emph{Yahoo Flickr Creative Commons 100 Million dataset (YFCC100M)}~\cite{thomee2016yfcc100m}.
 %The assessment of the proposed algorithm of a multimedia information retrieval task was performed using
 
 We extracted the \gls{rmac} features from the images of two different benchmarks: \emph{INRIA Holidays} and \emph{Oxford Buildings}.
-INRIA Holidays~\cite{jegou2008hamming} is a standard benchmark for image retrieval consisting in a collection of 1,491 images representing a large variety of scene type (natural, man-made, water, etc).
+INRIA Holidays~\cite{jegou2008hamming} is a standard benchmark for image retrieval consisting of a collection of 1,491 images representing a large variety of scene type (natural, man-made, water, etc.).
 The authors of INRIA Holidays selected 500 queries and manually identified a list of qualified results for each of them.
 In the literature, this benchmark is extended with the distractor dataset MIRFlickr including 1M images called MIRFlickr1M\footnote{\url{http://press.liacs.nl/mirflickr/}}.
 Oxford Buildings~\cite{philbin2007object} is composed of 5,062 images of 11 Oxford landmarks downloaded from Flickr.
-A manually labeled groundtruth is available for five queries for each landmark, for a total of 55 queries.
+A manually labeled ground-truth is available for five queries for each landmark, for a total of 55 queries.
 As for INRIA Holidays, we merged the dataset with the distraction dataset Flickr100k including 100k images \footnote{\url{http://www.robots.ox.ac.uk/~vgg/data/oxbuildings/}}.
 
 We compared the performance of our approach with state-of-the-art approximate nearest neighbor algorithms based on \gls{pq} FAISS~\cite{johnson2017billion}, which we presented in \ref{sec:str:related-work}.
@@ -583,7 +581,7 @@ where $\hat{\delta}_i$ denotes the density of the $i$-th dimension of the \gls{c
 
 Note that, in a surrogate text representation, we associate a distinct codeword to each dimension of the vector, and the smaller the query selectivity is, the more balanced are the posting lists of the inverted index.
 The greater is $k$, the lower is the sparsity, and hence the greater is the \emph{\gls{map}} and the query selectivity.
-Since we are dealing with an approximate approach, the brute-force \gls{map}, i.e., the one computed with the original features and a sequential scan of the entire database, can be considered as an upper-bound.
+Since we are dealing with an approximate approach, the brute-force \gls{map}, i.e., the one computed with the original features and a sequential scan of the entire database, can be considered as an upper bound.
 
 \begin{figure}
 
@@ -612,7 +610,7 @@ Since we are dealing with an approximate approach, the brute-force \gls{map}, i.
 \includegraphics[width=\linewidth,height=0.39\textheight,keepaspectratio]{plot_Oxford_Flickr100k_QCost}
 \end{subfigure}
 
-\caption{Comparison of the performance of our method and \gls{pq}-compressed inverted-file-based indexes (FAISS) on Holidays + MIRFlickr1M (a-b) and on Oxford + Flickr100k (c-d), in terms of mAP and query selectivity/cost trade-off.
+\caption{Comparison of the performance of our method and \gls{pq}-compressed inverted-file-based indexes (FAISS) on Holidays + MIRFlickr1M (a-b) and Oxford + Flickr100k (c-d), in terms of mAP and query selectivity/cost trade-off.
 The curves are obtained varying $k$ (for deep permutations), $\gamma$ (for thresholded \gls{sq}), and the number of Voronoi cell accessed $P$ (for IVFPQ).
 Values of $k$ and $\gamma$ are reported near each point.
 The horizontal line represents the \gls{mAP} obtained using the original \gls{rmac} vectors and performing a sequential scan of all the dataset (brute-force approach).
@@ -640,7 +638,7 @@ Our solution has an intermediate performance but does not require any training p
 
 To sum up, based on the results of the experiments we can conclude that the proposed approach, i.e., the \gls{sq}, outperforms the deep permutations one.
 Note how the \gls{crelu} technique has a negligible impact on the \gls{sq} for suitable values of \gls{map} --- i.e., greater than 0.7.
-Therefore, we suggest to use the optimal value for $\gamma=32$, which exhibits good performance both in terms of effectiveness and efficiency.
+Therefore, we suggest using the optimal value for $\gamma=32$, which exhibits good performance both in terms of effectiveness and efficiency.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -651,6 +649,6 @@ To get an idea, consider that FAISS takes about three hours for learning the cod
 This aspect is often left out by the authors;
 nevertheless, in the context of Web-scale applications --- in which we frame our work --- we think that not only processing time is a relevant aspect, but also being as independent as possible from data distribution during the indexing phase is a crucial point to be robust to data distribution drifting through time.
 
-Another important aspect of our approach is its completely independence from the technology used for indexing.
+Another important aspect of our approach is its complete independence from the technology used for indexing.
 We can rely on the latest text search engine technologies, without having to worry about issues related to implementation problems, such as software maintenance, updates to new hardware technologies, bugs, etc.
 Furthermore, with our approach, it is possible to include in the image records, in addition to the visual features (which are in textual form), other information such as text metadata, geotags, etc.
