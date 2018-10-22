@@ -2,7 +2,7 @@
 
 \graphicspath{{img/parking/}}
 
-\chapter{Miniaturization of Convolutional Neural Networks for Embedded Devices}
+\chapter{Miniaturization of \acrlongpl{cnn} for Embedded Devices}
 \label{ch:miniaturization}
 
 One of the most important limitations of \glspl{cnn} is that they often rely on computationally expensive deep models, which are slow for many applications including image classification.
@@ -82,7 +82,7 @@ In~\cite{caicedo2012prediction}, the authors argue that occupancy detection can 
 To the best of our knowledge, the proposed approach is the first work that employs \glspl{dcnn} in the context of parking lot monitoring.
 Relevant work in a similar --- yet different --- task is~\cite{chen2014vehicle}, where the authors employed a multi-scale \gls{cnn} to detect vehicles in high-resolution satellite images.
 
-\section{\glspl{dcnn} for Occupancy Detection in Embedded Devices}
+\section{\acrlongpl{cnn} for Occupancy Detection in Embedded Devices}
 \label{sec:mini:occupancy-detection}
 
 \begin{figure}
@@ -493,7 +493,7 @@ As stated by \citet{de2015pklot}, we do not observe an absolute best textural fe
 % compared mAlexNet to the techniques proposed in~\cite{de2015pklot} using \emph{CNRPark} dataset.
 % For each experiment, we report only the variant of LBP or LPQ that yielded the best performance.
 
-\subsection{Evaluation of the generalization between datasets}
+\subsection{Evaluation of the Generalization: Parking Lot}
 \label{subsec:mini:generalization}
 
 In this section, we describe the experiments and results we performed to compare the generalization performance of our reduced \gls{cnn} architecture against the original AlexNet architecture.
@@ -577,7 +577,7 @@ In the best case, there is practically no difference between the two methods, wh
 A bigger model offers a greater generalization performance at the cost of more resources needed:
 the computation time for mAlexNet --- measured on the Raspberry Pi model B --- allows performing a classification in roughly 300ms, while AlexNet takes roughly 20s.
 
-\subsection{Evaluation of the generalization between cameras and weather}
+\subsection{Evaluation of the Generalization: Viewpoint and Weather}
 
 %Errors in the occupancy detection of parking spaces are due to many reasons.
 %For instance, the lighting condition changes during different periods of the year;

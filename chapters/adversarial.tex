@@ -140,7 +140,7 @@ However, the main drawback of this method is the inability to perform a per-samp
 
 Despite the proposal of many detection strategies, yet results are far from satisfactory for all threat models~\cite{carlini2017adversarial}, and adversarial detection still poses a challenge.
 
-\subsection{Adversarial Generation}
+\subsection{Crafting Algorithms}
 \label{sec:adv:algos}
 In this subsection, we provide a brief description of the two approaches %, namely \emph{box constrained L-BFGS} and \emph{Fast Gradient Sign},
 we used in our work to generate adversarial images.
@@ -187,7 +187,7 @@ where $\text{clip}(\cdot)$ ensures the image obtained at each step is in the val
 %\item Update the input with the perturbation such that we get the new input $x' = x + \eta$.
 %\end{itemize}
 
-\subsection{Attack Model}
+\subsection{Attack Models}
 \label{subsec:attack-model}
 
 \citet{biggio2013evasion} categorized the kind of attack based on the knowledge of the attacker.
@@ -222,7 +222,7 @@ In this work, we focus on the \emph{zero-knowledge} scenario and plan to test ou
 %In this work, we employed the image representations extracted using OverFeat~\cite{sermanet2013overfeat}, a well-known and successful deep convolutional network architecture that have been studied for the analysis of adversarial attacks to convolutional neural networks~\cite{tabacof2016exploring}, and for which implementations of adversarial generation algorithms are publicly available (see \ref{sec:adv:experiments}).
 %Specifically, we used the Fast OverFeat network pre-trained on ImageNet\footnote{Code and weights for OverFeat are publicly available at \url{https://github.com/sermanet/OverFeat}}, and we selected the activations of the \emph{pool5} layer as deep features for images.
 
-\section{Detecting adversarial examples}
+\section{Detecting Adversarial Examples}
 \label{sec:adv:detection}
 %The intuition behind the technique we propose is the following.
 %Even if adversarial images activate the last layers of the \gls{dnn} very differently than the original images, the corresponding activations of the lower layers, that is the deep features of an original and its adversarial image, still contains lower level informations common to both inputs.
@@ -331,7 +331,7 @@ Therefore, we tested our method on the network used as a baseline in the competi
 
 % Generated adversarials and other resources have been made public available\footnote{\url{http://deepfeatures.org/adversarials/}}.
 
-\subsection{\emph{OverFeat-Fast} network}
+\subsection{\emph{OverFeat-Fast} Network on \acrshort{ilsvrc}'12 Dataset}
 \label{subsec:adv:overfeat}
 In the experiments reported in this section, we selected the \emph{OverFeat-Fast} \gls{cnn}~\cite{sermanet2013overfeat} given that this network (trained network on \gls{ilsvrc}'12) was used in the papers in which both L-BFGS and \acrlong{fgsm} (see \ref{sec:adv:algos}) were presented.
 

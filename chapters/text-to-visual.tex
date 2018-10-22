@@ -16,7 +16,7 @@
 \newcommand{\wordvisual}{\textsc{Word2VisualVec}}
 \newcommand{\resnet}{\gls{resnet}-152}
 
-\chapter{\gls{cnn} Features Prediction for Cross-media Image Retrieval}
+\chapter{\acrshort{cnn} Features Prediction for Cross-media Image Retrieval}
 \label{ch:text2vis}
 
 %%% ABSTRACT
@@ -415,7 +415,7 @@ As reported in \ref{subsec:t2v:results}, we observed consistent improvement by a
 
 %--------------------------------------------------------
 
-\subsection{Visual similarity search}
+\subsection{Visual Similarity Search}
 
 We evaluated the visual similarity between any two images by comparing their visual descriptions obtained as described in \ref{sec:t2v:method}.
 In particular, given the improvement in performance in \gls{cbir} task reported in~\cite{sharif2014cnn,gong2014multi,gordo2016deep}, the Euclidean distance is used to compare the vectors obtained applying \gls{pca} and whitening~\cite{comon1994independent} to the neurons activation.
@@ -498,7 +498,7 @@ again, those values were chosen during preliminary experiments run on the valida
 A Tensorflow implementation of all our methods, and of all the compared methods described in the next section, is publicly available\footnote{\url{https://github.com/AlexMoreo/tensorflow-Tex2Vis}}.
 
 %--------------------------------------------------------
-\subsection{Compared methods}
+\subsection{Compared Methods}
 \label{subsec:t2v:compared-methods}
 
 We compare the performance of the various \ttv{} models against a selection of methods that perform the search either in the visual space or the textual space.
