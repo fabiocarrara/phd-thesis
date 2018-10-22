@@ -52,11 +52,11 @@ Specifically, we report in the following the major drawback we analyzed together
 
 \paragraph{Resource Hunger}
 \Gls{dl}-based solutions, including \glspl{cnn}, often require a considerable amount of computational resources.
-In order to learn a functional hierarchy of features, models are defined to be deep, i.e., need to stack many parametric transformations (also called layers).
+In order to learn a functional hierarchy of features, models are defined to be deep, i.e., need to stack many parametric transformations (called layers).
 The increased model size requires a considerable computational and memory budget for the model training and evaluation, thus drastically limiting the applications of this kind of solutions in restricted environments with limited power resources, such as IoT devices and smartphones, which currently delegate complex data analysis to a centralized server.
 In this context, \ref{ch:miniaturization} presents our study on the reduction of \gls{cnn} models targeting smart embedded devices with limited resources.
-We propose a miniaturized \gls{cnn} architecture for image classification capable of running in low-resources camera-equipped embedded devices, and evaluate its effectiveness in the task of visual parking lot occupancy detection, which receives highly benefits from the adoption of decentralized and cost-effective solution based on vision.
-We conduct an extensive evaluation of our approach on multiple datasets to compare it against popular fully-featured \gls{cnn} classification models and state-of-the-art vision-based approaches for parking detection that do not leverage \gls{dl}-based techniques.
+We propose a miniaturized \gls{cnn} architecture for image classification capable of running in low-resources camera-equipped embedded devices, and evaluate its effectiveness in the task of visual parking lot occupancy detection, which receives highly benefits from the adoption of decentralized and cost-effective vision-based solution.
+We conduct an extensive evaluation of our approach on multiple datasets to compare it against popular fully-featured \gls{cnn} classification models and state-of-the-art vision-based approaches for parking detection. %that do not leverage \gls{dl}-based techniques.
 Results show that our reduced models outperform state of the art in visual parking lot occupancy detection and maintain a satisfactory level of generalization in comparison to computationally expensive models.
 
 \paragraph{Human Supervision}
