@@ -244,7 +244,7 @@ Convolutional layers are stacked to build deep \glspl{cnn}, that are one of the 
 Once trained, filters in a deep \gls{cnn} tend to organize in a hierarchy of detectors, where layers near the input detect the presence of simple features in the input data, while the following layers build up from them and detect more complex features.
 A successful example of the representative power of \glspl{cnn} is object recognition.
 % TODO [CITE] object hierarchical decomposition
-The visual aspect of objects in images follows a hierarchical organization: an object can be decomposed in parts, parts in patches, patches in textures, textures in edges or blobs, and finally in pixels~\cite{}.
+The visual aspect of objects in images follows a hierarchical organization: an object can be decomposed in parts, parts in patches, patches in textures, textures in edges or blobs, and finally in pixels. %~\cite{}.
 \begin{figure}
     % TODO [KEEP?] is feat hier figure valuable?
     \centering
@@ -856,17 +856,17 @@ Despite \glspl{cnn} being remarkably good in solving vision task,
 trained feature detectors in deep models tend to be difficult to comprehend and explain.
 %it is common to treat them as black boxes without having a clear understanding of its internals.
 To alleviate this problem, \citet{zeiler2014visualizing} proposed a visualization technique based on deconvolutions to shed light on the representations learned by intermediate convolutional layers.
-\ref{fig:back:filter-visualization} shows an example of the proposed approach applied to a trained model.
+%\ref{fig:back:filter-visualization} shows an example of the proposed approach applied to a trained model.
 The usage of these visualizations lead the authors to debug the AlexNet architecture and to suggest a new one, informally called \emph{ZFNet} in the research community, which incorporates some modifications, namely the reduction of the size and stride of the filters of the first layer, that enables the model to learn a more balanced set of feature extractors.
 This improved architectures won the \gls{ilsvrc}'13 classification task with an 11.7\% top-5 error.
 
-\begin{figure}
-    \centering
-    % TODO add deconvolution figure from zeiler2014visualizing, big figure or fig 6?
-    \includegraphics[width=\linewidth]{filter-visualization}
-    \caption{Visualization of the top 9 most activated neurons in ....}
-    \label{fig:back:filter-visualization}
-\end{figure}
+% TODO [?,FIGURE] add deconvolution visualization from zeiler2014visualizing, big figure or fig 6?
+%\begin{figure}
+%\centering
+%    \includegraphics[width=\linewidth]{filter-visualization}
+%    \caption{Visualization of the top 9 most activated neurons in ....}
+%    \label{fig:back:filter-visualization}
+%\end{figure}
 
 \paragraph{OverFeat}
 \citet{sermanet2013overfeat} proposed \emph{OverFeat}, a modification of the AlexNet architecture optimized for object localization and detection in images, where the model is asked to predict also the bounding boxes of the object of interest.
