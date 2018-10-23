@@ -1,3 +1,19 @@
 \chapter*{Sommario}
-\lettrine{S}{ommario} va qui.
+\lettrine{L'}{} enorme diffusione di fotocamere e smartphone a prezzi economici ha portato a una produzione esponenziale giornaliera di dati visivi digitali, come immagini e video.
+La maggior parte dei dati prodotti non è accompagnata dai metadati, come descrizioni, tags, o altri dati manualmente assegnati, che sono necessari per la loro gestione automatica su larga scala.
+L'attenzione dei ricercatori si è quindi spostata sulla comprensione automatica del contenuto visivo di tali dati.
+I recenti sviluppi dell'Intelligenza Artificiale applicata alla Computer Vision hanno reso possibile l'estrazione automatica di informazioni di alta qualità direttamente da dati visivi grezzi (pixel).
+In particolare, modelli neurali come le reti neurali convoluzionali hanno fornito un modo per apprendere automaticamente delle rappresentazioni numeriche efficaci per immagini e altri dati visivi che hanno ottenuto risultati impressionanti in task visivi come il riconoscimento di immagini.
 
+In questa tesi, è stata studiata e migliorata l'usabilità delle reti neurali convoluzionali per la gestione dei dati visivi su larga scala.
+Nella prima parte, sono state identificate tre limitazioni principali solitamente incontrate nell'utilizzo delle reti convoluzionali e sono state proposte delle soluzioni generali che abbiamo valutato sperimentalmente nel contesto della classificazione di immagini.
+Sono state proposte architetture miniaturizzate per ridurre il costo computazionale solitamente elevato di questo tipo di reti e consentire quindi il loro utilizzo anche a bordo di dispositivi embedded a bassa potenza.
+% Abbiamo valutato la nostra proposta in un'applicazione pratica e distribuita, ovvero la rilevazione di occupazione del parcheggio visivo, confrontando ampiamente i modelli ridotti con i metodi e le architetture più avanzati.
+È stato affrontato il problema della creazione di training set per i modelli, che richiederebbero un notevole sforzo manuale, proponendo una pipeline automatica per allenare reti basata sul cross-media learning e su dati imprecisi provenienti dal Web.
+È stata analizzata la robustezza delle rappresentazioni estratte dalle reti convoluzionali per dati fuori dalla distribuzione di train, con enfasi particolare sulla vulnerabilità delle reti agli attacchi avversari (adversarial examples), proponendo un metodo di rilevamento per scartare le classificazioni spurie fornite dal modello.
+%
+In secondo luogo, ci siamo concentrati sull'integrazione della ricerca per immagini, basata su rappresentazioni estratte da reti convoluzionali, col paradigma di ricerca più comunemente adottato, cioè la ricerca testuale.
+In questo contesto, abbiamo studiato delle soluzioni per colmare il divario tra l'attuale stato dell'arte nella ricerca di immagini e le più mature tecnologie di ricerca testuale.
+In particolare, sono state integrate soluzioni per la ricerca di immagini basata sul contenuto sia con il front-end (query testuali) che con il back-end (indici invertiti distribuiti e scalabili per documenti testuali).
+Nel primo caso, è stato proposto un approccio di recupero di immagini cross-modale che consente la ricerca tramite descrizione testuale di immagini in collezioni non etichettate tramite l'apprendimento di una funzione di mapping delle rappresentazioni testuali in quelle visive.
+Nel secondo caso, sono state formalizzate, migliorate e proposte nuove rappresentazioni testuali surrogate per immagini, che consistono in una trasformazione delle rappresentazioni visive in testo surrogato che può essere indicizzato e recuperato dai motori di ricerca testuali attualmente disponibili, abilitando applicazioni di recupero di immagini senza il bisogno di indici specializzati.
