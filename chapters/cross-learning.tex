@@ -235,7 +235,11 @@ As expected, the dataset proved to be very imbalanced, a frequent and known issu
 In order to increase the number of negative tweets, we selected a lower filtering threshold for this class, obtaining 179,050 examples.
 Notably, in our experiments conducted on \gls{t4sa}, the difference in precision on the classification of positive, neutral, and negative never exceeds 1\%; thus, the lower threshold used for selecting negative examples did not impact the quality of the learning.
 Starting from this dataset, we selected a balanced subset of images to train visual sentiment classifiers.
-To do so, we performed the following steps: i) we labeled each image of \gls{t4sa} on the basis of the corresponding textual sentiment classification; ii) we removed corrupted and near-duplicate images resulting in $\sim$ 974K unique images; iii) we selected a \emph{balanced} subset composed of 156,862 images for each class, resulting in a set of 470,586 images named \BTSA{}; iv) we split {\BTSA} in training, validation and test subsets, corresponding approximately to 80\%, 10\%, and 10\% of the images.
+To do so, we performed the following steps: %
+i) we labeled each image of \gls{t4sa} on the basis of the corresponding textual sentiment classification; %
+ii) we removed corrupted and near-duplicate images resulting in $\sim$ 974K unique images; %
+iii) we selected a \emph{balanced} subset composed of 156,862 images for each class, resulting in a set of 470,586 images named \BTSA{}; %
+iv) we split {\BTSA} in training, validation and test subsets, corresponding approximately to 80\%, 10\%, and 10\% of the images.
 
 \begin{table}
 \centering

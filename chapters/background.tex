@@ -628,7 +628,7 @@ Finally, moments estimates are used to formulate the \gls{adam} update rule
 where $\m^{(k)}_i$ and $\hat{\v}^{(k)}_i$ are the first and second moments estimates of the gradients corresponding to parameter $\theta_i$, and $\epsilon$ is a small value to prevent division by zero.
 Commonly used values for hyperparameters are $\beta_1 = 0.9$, $\beta_2 = 0.999$, and $\epsilon = 10^{-8}$, as suggested by the authors.
 
-% TODO? move dropout
+% TODO [?] move dropout
 \paragraph{Dropout}
 Regularization is not limited to regularization loss terms only.
 \emph{Dropout}~\cite{hinton2012improving} is a common regularization technique for \glspl{dnn} which consists in deactivating (drop) some neurons of an internal layer (by setting their activations to zero) during the training phase and thus enabling the back-propagation of the error only in the survived neurons.
