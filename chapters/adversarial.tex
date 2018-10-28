@@ -41,16 +41,16 @@ The \gls{cnn} classifies the input image, but we consider the classification val
 \end{figure}
 
 In this chapter, we present an approach to detect adversarial examples in deep neural networks based on the analysis of activations of the neurons in hidden layers --- also known as \emph{deep features} --- of the attacked neural network.
-Being deep learning a subset of representation learning methods, we expect the learned representation to be more robust than the final classification to adversarial examples.
-Moreover, adversarial images are generated in order to look similar to humans, and deep features have shown impressive results in visual similarity related tasks such as content-based image retrieval~\cite{sharif2014cnn,gordo2016deep}.
+Being \acrlong{dl} a subset of representation learning methods, we deemed the learned representation to be more robust than the final classification to adversarial examples.
+Moreover, adversarial images are generated in order to look similar to humans, and deep features have shown impressive results in visual similarity related tasks such as \acrlong{cbir}~\cite{sharif2014cnn,gordo2016deep}.
 % Our main conjecture is the following,
 % An authentic and its adversarial samples are almost identical at the input and produce very similar activations in the first layers of the network.
 % Then, activations start diverging and produce completely different outputs.
 % Our main conjecture is that we can tell adversarial samples from authentic ones looking at the intermediate activations of the network instead of its output.
-Our investigation shows that, given an input image, searching for similar deep features among the images used for training allows us to predict the correctness of the classification produced by a \gls{cnn}.
-In particular, we employ traditional kNN scoring approaches as a measure of the confidence of the classification given by the \gls{cnn}.
+Our investigation showed that, given an input image, searching for similar deep features among the images used for training allows us to predict the correctness of the classification produced by a \gls{cnn}.
+In particular, we employed traditional kNN scoring approaches as a measure of the confidence of the classification given by the \gls{cnn}.
 The score assigned by the kNN classifier to the class predicted by the \gls{cnn} is used as a confidence measure of the reliability of the predicted class.
-The experiments show that we can filter out the majority of adversarial examples while retaining most of the correctly classified authentic images.
+The experiments showed that we can filter out the majority of adversarial examples while retaining most of the correctly classified authentic images.
 The choice of the discriminative threshold is a trade-off between accepted false negatives (FN) and true positives (TP), where positive means non-adversarial.
 %
 % In this work, we present an approach to detect adversarial examples in deep neural networks, based on the similarity of intermediate network activations.
@@ -68,8 +68,8 @@ The choice of the discriminative threshold is a trade-off between accepted false
 
 The chapter is structured as follows.
 \ref{sec:adv:rel-work} reviews relevant work in the field of adversarial attacks and their analysis, and provides background knowledge about adversarial detection and generation algorithms.
-In \ref{sec:adv:detection}, our approach to adversarial detection is presented, while in \ref{sec:adv:experiments} we describe the experimental settings we used to validate it.
-Finally, \ref{sec:adv:conclusions} summarizes the main findings and presents some future research directions.
+In \ref{sec:adv:detection}, our approach to adversarial detection is presented, while in \ref{sec:adv:experiments}, we describe the experimental settings we used to validate it.
+Finally, \ref{sec:adv:conclusions} summarizes the main findings. % and presents some future research directions.
 
 The research presented in this chapter was published in~\cite{carrara2017detecting,carrara2018adversarial}, and additional resources are available at \url{http://deepfeatures.org/adversarials/}.
 
@@ -79,9 +79,9 @@ The research presented in this chapter was published in~\cite{carrara2017detecti
 
 One of the first works exploring adversarial examples for image classifiers implemented with \glspl{cnn} is the one of \citet{szegedy2013intriguing}.
 The authors used a quasi-newtonian optimization method, namely L-BFGS, to find an image $\x_{adv}$ close to an original one $\x$ in terms of $L_2$ distance, yet differently classified.
-They also have shown that the obtained adversarial images were also affecting different models trained on the same training set (\emph{cross-model generalization}) and also models trained with other yet similar training sets (\emph{cross-training set generalization}).
-Cross-model and cross-training set generalization properties of adversarial examples are also confirmed in~\cite{tabacof2016exploring}, where the authors explored the pixel space around adversarial images moving in random directions applying different kinds of noise.
-They show that adversarial images are not isolated, spurious points, but they occupy large regions of the pixel space that mislead models with similar classification boundaries.
+They also showed that the obtained adversarial images were also affecting different models trained on the same training set (\emph{cross-model generalization}) and also models trained with other yet similar training sets (\emph{cross-training set generalization}).
+Cross-model and cross-training set generalization properties of adversarial examples were also confirmed in~\cite{tabacof2016exploring}, where the authors explored the pixel space around adversarial images moving in random directions applying different kinds of noise.
+They showed that adversarial images are not isolated, spurious points, but they occupy large regions of the pixel space that mislead models with similar classification boundaries.
 While multiple theories have been proposed, the causes of the adversarial vulnerability of \gls{ml} models remain an open question.
 Early explanations suggested that it is due to non-linearity of deep neural networks and over-fitting~\cite{tabacof2016exploring}, while \citet{goodfellow2014explaining} argued that the primary cause of neural networks' vulnerability to adversarial perturbation is their linear nature.
 In particular, the alignment between adversarial perturbations and weights in a high-dimensional dot product can cause high spurious activations even if small perturbations are given as input.
@@ -105,24 +105,24 @@ In~\cite{moosavi2016deepfool}, the classifier is locally linearized, and a step 
 % Carlini Wagner
 \citet{carlini2016towards} relied on a modified formulation of the adversarial optimization problem initially formalized by \citet{szegedy2013intriguing}.
 They move the misclassification constraint in the objective function by adding a specifically designed loss term, and they change the variable of the optimization to ensure the obtained image is valid without enforcing the box constraint;
-\gls{adam} is then employed to optimize and find better adversarial perturbations.
+the \gls{adam} optimizer is then employed to optimize and find better adversarial perturbations.
 \citet{sabour2015adversarial} explored the manipulation of a particular internal representation of the network using adversarial inputs, showing that it is possible to move the representation closer to the one of a provided guide image.
 % Features Adversarial  % to bypass our detector you have to change the evolution of all the features, not just one.
-\citet{papernot2016practical} also shown that successfully attacks are possible even if the attacker does not have direct access to the model weights or architecture.
+\citet{papernot2016practical} also showed that successfully attacks are possible even if the attacker does not have direct access to the model weights or architecture.
 The authors successfully performed adversarial attacks to remotely hosted models, and \citet{kurakin2016adversarial} also showed that attacks in physical scenarios, such as feeding a model with a printout adversarial example through a digital camera, are possible and effective.
 
 % - defenses
 \paragraph{Defensive Strategies}
 In the recent literature, a considerable amount of work has been dedicated to increasing the robustness of the attacked models to adversarial inputs.
-In~\cite{szegedy2013intriguing}, the authors suggest adding a regularization term to the training loss based on the Lipschitz upper bound, that resembles a $L_2$ regularization, to limit the magnitude of the changes in the activations of a network caused by perturbations of the input.
-\citet{gu2014towards} shown that denoising autoencoders can remove substantial amounts of the adversarial noise.
+In~\cite{szegedy2013intriguing}, the authors suggested adding a regularization term to the training loss based on the Lipschitz upper bound, that resembles a $L_2$ regularization, to limit the magnitude of the changes in the activations of a network caused by perturbations of the input.
+\citet{gu2014towards} showed that denoising autoencoders can remove substantial amounts of the adversarial noise.
 However, when stacking the autoencoders with the original neural network, the resulting network can again be attacked by new adversarial examples with even smaller distortion.
 Thus, the authors proposed Deep Contractive Network, a model with an end-to-end training procedure that includes a smoothness penalty.
 Fast crafting algorithms, such as \gls{fgsm}, enabled a defensive strategy called \emph{adversarial training}, in which adversarial examples are generated on the fly and added to the training set while training~\cite{goodfellow2014explaining,huang2015learning}.
 While models that undergo adversarial training still suffer from the presence of adversarial inputs, the perturbation needed to reach them is usually higher, resulting in a higher detectability.
 However, easily optimizable models, such as models with non-saturating linear activations, can be easily fooled due to their overly confident linear responses to points that not occur in the training data distribution~\cite{goodfellow2014explaining}.
-This concept is also discussed in~\cite{papernot2016towards}, where the authors show that there are tensions between model accuracy and resilience that has to be calibrated for each particular use case.
-They also provide a detailed description of the threat model for a machine learning system according to adversarial goals and capabilities, and a categorization of attacks and defenses in this framework.
+This concept was also discussed in~\cite{papernot2016towards}, where the authors showed that there are tensions between model accuracy and resilience that has to be calibrated for each particular use case.
+They also provided a detailed description of the threat model for a machine learning system according to adversarial goals and capabilities, and a categorization of attacks and defenses in this framework.
 %\citet{papernot2016practical} argued that defense methods based on \emph{gradient masking}, that is denying the attacker a useful direction to find adversarial points, only increase the model robustness to small perturbations of the training manifold.
 % distillation
 In~\cite{papernot2015distillation,papernot2016distillation}, a two-phase training process known as \emph{distillation} is used to increase the robustness of a model to small adversarial perturbations by smoothing the model surface around training points and vanishing the gradient in the directions an attacker would exploit.
@@ -230,11 +230,11 @@ In this work, we focus on the \emph{zero-knowledge} scenario and plan to test ou
 
 % Adversarial images are not isolated, spurious points of the pixel space near original images. Instead they are known to occupy large and compact regions of the input space near classification boundaries~\cite{tabacof2016exploring}.
 
-We propose to detect adversarial examples analyzing the representation learned in the hidden layers (deep features) of the fooled convolutional neural networks.
+We proposed to detect adversarial examples analyzing the representation learned in the hidden layers (deep features) of the fooled convolutional neural networks.
 %Being deep learning a subset of representation learning methods, we expect the learned representation to be more robust than the final classification to adversarial examples.
 
-We claim that an intermediate representation used internally by the network is more robust than the final classification to adversarial examples.
-This assumption is supported by two observations.
+We claimed that an intermediate representation used internally by the network is more robust than the final classification to adversarial examples.
+This assumption was supported by two observations.
 First, the vast majority of adversarial generation algorithms are not meant to fool the representation itself but only the final classification.
 Second, adversarial images share most of the low-level visual appearance with the authentic images from which are generated, and intermediate features have shown to capture this similarity in many visual similarity related tasks~\cite{sharif2014cnn,gordo2016deep}.
 %We decided to test kNN classifiers score assignments because they rely on those similarities among the representations.
@@ -253,7 +253,7 @@ A score $s(\q,c)$ is assigned to every class $c$ found in the retrieved nearest 
 \begin{equation} \label{eq:adv:knn-score}
 s(\q,c) = \frac{\sum_{i=1}^{k} w_i \cdot \mathbbm{1}\{c_i = c\}}{\sum_{i=1}^{k} w_i} \\,
 \end{equation}
-where $\q$ is a query image, $c$ is the class for which we are computing the score, $c_i$ is the groundtruth class of the $i$-th result in $NN(\q,k)$, $w_i$ the weight assigned to the same $i$-th result, and $\mathbbm{1}\{c_i = c\}$ has value 1 if $c_i=c$, 0 otherwise.
+where $\q$ is a query image, $c$ is the class for which we are computing the score, $c_i$ is the ground-truth class of the $i$-th result in $NN(\q,k)$, $w_i$ the weight assigned to the same $i$-th result, and $\mathbbm{1}\{c_i = c\}$ has value 1 if $c_i=c$, 0 otherwise.
 In \ref{tab:adv:knn}, we report $w_i$ assignments for famous variants of kNN classifiers.
 
 % \begin{table}
@@ -316,12 +316,12 @@ An overview of our complete pipeline is depicted in \ref{fig:adv:overview}.
 \section{Experimental Settings}
 \label{sec:adv:experiments}
 In this section, we describe the experimental setups used to evaluate the proposed adversarial detection approach.
-Our method has been evaluated as a binary classification of the correctness of the prediction given by a \gls{cnn}, in which a positive outcome means that the prediction given by the \gls{cnn} is trustful, while a negative outcome indicates that the \gls{cnn} prediction is spurious and have to be discarded.
+We evaluated our method as a binary classification of the correctness of the prediction given by a \gls{cnn}, in which a positive outcome means that the prediction given by the \gls{cnn} is trustful, while a negative outcome indicates that the \gls{cnn} prediction is spurious and have to be discarded.
 
 We employed two datasets in the evaluation protocol: the \gls{ilsvrc}'12 subset of ImageNet~\cite{russakovsky2015imagenet} and the NIPS 2017 Adversarial Attacks and Defenses Kaggle Competitions~\cite{kurakin2018adversarial} DEV image set.
 Both datasets share the same \gls{ilsvrc}'12 label space.
 We selected these datasets for the experiments because of the significant availability of classifiers pre-trained on \gls{ilsvrc}'12.
-We search for similar images on the very same data that have been used for training the neural networks --- i.e., the \gls{ilsvrc}'12 training subset.
+We searched for similar images on the very same data that have been used for training the neural networks --- i.e., the \gls{ilsvrc}'12 training subset.
 Thus, the kNN methods rely on the very same information the neural network has seen during training.
 
 We performed experiments with two \gls{cnn} architectures.
@@ -335,7 +335,7 @@ Therefore, we tested our method on the network used as a baseline in the competi
 \label{subsec:adv:overfeat}
 In the experiments reported in this section, we selected the \emph{OverFeat-Fast} \gls{cnn}~\cite{sermanet2013overfeat} given that this network (trained network on \gls{ilsvrc}'12) was used in the papers in which both L-BFGS and \acrlong{fgsm} (see \ref{sec:adv:algos}) were presented.
 
-As reported in \ref{sec:adv:detection}, our approach performs a kNN similarity search over the images that were used for training the attacked \gls{cnn} (the \gls{ilsvrc}'12 training set).
+As reported in \ref{sec:adv:detection}, our approach performed a kNN similarity search over the images that were used for training the attacked \gls{cnn} (the \gls{ilsvrc}'12 training set).
 %We used the \gls{ilsvrc}'12 dataset~\cite{ILSVRC15} as a labeled set $X$ for the kNN classifiers and to generate adversarial images.
 %It is composed by a training set of \textasciitilde 1.3M labeled images belonging to 1000 different classes (each having roughly between 900 and 1300 images), and a validation set containing 50 images for each of the 1000 classes, for a total of 50k labeled images.
 %\paragraph{Image Selection}
@@ -347,11 +347,11 @@ Thus, the two sets respectively count 1,000 and 999 images.
 We named those subsets respectively \emph{Authentic} and \emph{Authentic Errors}, where `authentic' stands for non-adversarial images.
 
 %\paragraph{Adversarial Generation}
-For each image in the \emph{Authentic} subset, we generated two adversarial images using both box constrained L-BFGS\footnote{\url{https://github.com/tabacof/adversarial}} and \gls{fgsm}\footnote{\url{https://github.com/e-lab/torch-toolbox/tree/master/Adversarial}} algorithms.
+For each image in the \emph{Authentic} subset, we generated two adversarial images using both box-constrained L-BFGS\footnote{\url{https://github.com/tabacof/adversarial}} and \gls{fgsm}\footnote{\url{https://github.com/e-lab/torch-toolbox/tree/master/Adversarial}} algorithms.
 For both methods, we used the default parameters in every generation, and we randomly selected the target class, that is the class we fool the network to predict.
 We observed that the L-BFGS algorithm failed to generate 8 adversarial images, in the sense that the class prediction of the generated adversarial image was the same as the original image.
 Those failures in the generation process could be avoided by tuning the parameters of the algorithm for each input, but for the sake of simplicity we discarded the failed adversarial examples, ending up with two sets of adversarial images respectively composed by 1,000 images generated by \gls{fgsm}, and 992 images obtained with L-BFGS.
-The generated adversarial images are made publicly available\footnote{\url{http://deepfeatures.org/adversarials/}} to make easier to reproduce the experiments.
+We made the generated adversarial images made publicly available\footnote{\url{http://deepfeatures.org/adversarials/}} to make easier to reproduce the experiments.
 
 %\paragraph{Feature extraction}
 We extracted the activations of the \emph{pool5}, \emph{fc6}, and \emph{fc7} intermediate layer of the pre-trained OverFeat fast network~\cite{sermanet2013overfeat} from the following sets of images: \emph{Authentic}, \emph{Authentic Errors}, \emph{L-BFGS Adversarial}, \emph{\gls{fgsm} Adversarial} and \emph{\gls{ilsvrc}'12 train set}.
@@ -363,21 +363,21 @@ We chose $k=1,000$ to have a number of nearest neighbors of the same order of ma
 We tested also feature $L_2$-normalization and dimensionality reduction on extracted features using \gls{pca}+Whitening with 256 dimensions.
 
 %\paragraph{Adversarial detection and classification}
-Given an input image $x$, we compute the kNN score $s(\x, c)$ for the class $c = f(\x)$ predicted by OverFeat, and we discard this classification if the score is below a certain threshold.
-We computed the kNN score for each image in the \emph{\gls{fgsm} Adversarial}, \emph{L-BFGS Adversarial} and \emph{Authentic Errors} image sets, and for each set, we measure the ability to detect an adversarial input as the performance of a binary classification problem (`trustful' / `spurious' classification).
+Given an input image $x$, we computed the kNN score $s(\x, c)$ for the class $c = f(\x)$ predicted by OverFeat, and we discarded this classification if the score was below a certain threshold.
+We computed the kNN score for each image in the \emph{\gls{fgsm} Adversarial}, \emph{L-BFGS Adversarial} and \emph{Authentic Errors} image sets, and for each set, we measured the ability to detect an adversarial input as the performance of a binary classification problem (`trustful' / `spurious' classification).
 
 % \subsection{Results}
 % \label{subsec:adv:of-results}
 
-In \ref{tab:adv:eer}, we report the detection accuracy of our proposed approach for different settings. % considering the {pool-5} hidden layer.
-The accuracy of the binary `trustful' / `spurious' classification is evaluated in the \acrfull{eer} setting, that is when we choose a threshold yielding equal false positive and false negative rates.
+\ref{tab:adv:eer} reports the detection accuracy of our proposed approach for different settings. % considering the {pool-5} hidden layer.
+The accuracy of the binary `trustful' / `spurious' classification is evaluated in the \acrfull{eer} setting, i.e., choosing the threshold yielding equal false positive and false negative rates.
 % REV\#1: The features extracted have a rather high dimension. Are there potentially problems (e.g. curse of dimensionality) with KNN? Is that the reason why the \gls{pca}-based version performs better?
 The best results were obtained processing the activations of the \emph{pool5} layer using \gls{pca} and Whitening, delivering an aggregated accuracy of roughly 85\% regardless of the adversarial generation method.
 The three scoring approaches considered (see \ref{tab:adv:knn}) revealed similar performance with DW-kNN and W-kNN being more effective in detecting L-BFGS and \gls{fgsm}, respectively.
 
 We found that adversarial examples generated with \gls{fgsm} are in general easier to detect using higher-level activations (\emph{fc6}, \emph{fc7}), while L-BFGS examples are significantly harder to filter out.
 This is reasonable because the optimization problem solved by L-BFGS produces small adversarial perturbations that are usually more difficult to detect even at higher layers at the cost of a more time-consuming generation process.
-While \emph{pool5} activations perform best when applying a considerable amount of preprocessing on them (\gls{pca}+Whitening), fully connected activations perform well when used as is.
+While \emph{pool5} activations performed best when applying a considerable amount of preprocessing on them (\gls{pca}+Whitening), fully connected activations performed well when used as is.
 We think a meaningful explanation for this behavior is given by the presence of dropout in the fully connected layers during the network training.
 Dropout is known to reduce the co-adaptation of hidden units and help to learn robust, independent representations~\cite{srivastava2014dropout}.
 This may limit the benefits brought by dimensionality reduction schemes such as \gls{pca}.
@@ -422,11 +422,11 @@ Notice that when using \emph{pool5} we obtain a detection less sensible to a par
 \label{fig:adv:roc}
 \end{figure}
 
-In \ref{fig:adv:roc}, we report the \acrfull{roc} curves of the DW-kNN scoring approach on adversarial images and authentic errors.
+\ref{fig:adv:roc} reports the \acrfull{roc} curves of the DW-kNN scoring approach on adversarial images and authentic errors.
 The curves illustrate the performance of the proposed binary classifier when varying the threshold on the score $s(\x, f(\x))$.
 %The results show that W-kNN is generally preferable when low FP rate are requested while DW-kNN is more effective when FP and TP are comparable.
-As mentioned before, although \emph{fc6} performs better at detecting \gls{fgsm} adversarial examples, using \emph{pool5} activations result in a detector more robust in general.
-However, we observed that higher kNN scores (which correspond to difficult L-BFGS adversarial to detect) usually reflects inter-class visual similarities that are independent of the adversarial nature of the input image (see \ref{tab:adv:bad-examples} for some examples).
+As mentioned before, although \emph{fc6} performed better at detecting \gls{fgsm} adversarial examples, using \emph{pool5} activations result in a detector more robust in general.
+However, we observed that higher kNN scores (which correspond to difficult L-BFGS adversarial to detect) usually reflected inter-class visual similarities that are independent of the adversarial nature of the input image (see \ref{tab:adv:bad-examples} for some examples).
 The \gls{roc} curve for errors is the worst, indicating that our approach sometimes confuses authentic images that have been correctly and incorrectly classified.
 As mentioned before, the detection of authentic images incorrectly classified (errors) would be a desirable property of our approach, but it is not our main goal.
 
@@ -451,12 +451,12 @@ The \emph{pool5} (on the left) and \emph{fc6} (on the right) layers have been us
 \label{fig:adv:tptn-distribs}
 \end{figure}
 
-Since we do not notice a prevalence of one of the three kNN weighting scheme tested, for the rest of the section, we will present results only for the DW-kNN scheme.
-In \ref{fig:adv:tptn-distribs}, we report the true positive (for correctly classified authentic images) and true negative (for adversarial images and authentic errors) rates as a function of the discriminant threshold applied on the score $s(\x, f(\x))$.
+Since we did not notice a prevalence of one of the three kNN weighting scheme tested, for the rest of the section, we present results only for the DW-kNN scheme.
+\ref{fig:adv:tptn-distribs} reports the true positive (for correctly classified authentic images) and true negative (for adversarial images and authentic errors) rates as a function of the discriminant threshold applied on the score $s(\x, f(\x))$.
 Please note that for our method positive means non-adversarial.
-We can note that using very low discrimination score values (about 0.002), it is possible to correctly filter out more than 50\% of the adversarial examples created by L-BFGS and more than 40\% of the ones created by \gls{fgsm} while retaining more than 98\% of authentic images correctly classified.
-As a positive side-effect, we also discard around 10\% of images the \gls{cnn} would misclassify.
-The low threshold values reveal that while the DW-kNN score would not be effective in classifying the images, values below 0.003 are unlikely for authentic images.
+Notice that using very low discrimination score values (about 0.002), it was possible to correctly filter out more than 50\% of the adversarial examples created by L-BFGS and more than 40\% of the ones created by \gls{fgsm} while retaining more than 98\% of authentic images correctly classified.
+As a positive side-effect, we also discarded around 10\% of images the \gls{cnn} would misclassify.
+The low threshold values revealed that while the DW-kNN score would not be effective in classifying the images, values below 0.003 are unlikely for authentic images.
 
 The same results can be observed in the score densities reported in \ref{fig:adv:score-densities}, in which emerges a distinction between the score densities of adversarial images and the ones of authentic images.
 Some simple statistics on those densities (such as the mean) could be computed online in the system hosting the model to isolate a particular source of adversarial examples, hence denying the access to the service to an attacker.
@@ -472,9 +472,9 @@ Some simple statistics on those densities (such as the mean) could be computed o
 % \end{table}
 % We also report the performance of the kNN classification approach, in which we predict the class of a given image taking the class having the maximum kNN score (see Equation \eqref{knn-classif}). Table \ref{tab:clas} shows the kNN classification accuracy for the different types of images we tested. While the kNN score helps in detecting adversarial examples, it is clear that it cannot be used to assign the correct class to adversarial examples, in particular for the images created using the FGS approach.
 
-Finally in \ref{tab:adv:examples}, we report examples of successful detections and failures of our approach applied to the generated adversarial images. %, together with the nearest neighbor image in the kNN's labeled set and the score $s(x,f(x))$.
-As anticipated, we observed that the most blatant failures (in which adversarial examples got high scores) consist of attacks in which the target class share a strong visual similarity with the source original class -- e.g., an image of a Greater Swiss Mountain dog which is misclassified as a Bernese mountain dog.
-In those difficult cases, intermediate representations of the target class are reasonable to lie around the ones of the original class in the feature space, and thus it is highly probable to erroneously obtain a confirmation of the classification of the \gls{cnn} by the kNN scoring approach.
+Finally, \ref{tab:adv:examples} reports some examples of successful detections and failures of our approach applied to the generated adversarial images. %, together with the nearest neighbor image in the kNN's labeled set and the score $s(x,f(x))$.
+As anticipated, we observed that the most blatant failures (in which adversarial examples got high scores) consisted of attacks in which the target class share a strong visual similarity with the source original class -- e.g., an image of a Greater Swiss Mountain dog which was misclassified as a Bernese mountain dog.
+In those difficult cases, intermediate representations of the target class are reasonable to reside close to the ones of the original class in the feature space, and thus it is highly probable to erroneously obtain a confirmation of the classification of the \gls{cnn} by the kNN scoring approach.
 
 \begin{table}
 \centering
@@ -605,19 +605,20 @@ The \textbf{Errors} column report the recover accuracy fo natural (non-adversari
 \label{tab:adv:i3-eer}
 \end{table}
 
-In \ref{tab:adv:i3-eer}, we report the \gls{eer} accuracy obtained on the test set for each layer used to extract deep features and for each kNN scoring scheme.
+\ref{tab:adv:i3-eer} reports the \gls{eer} accuracy obtained on the test set for each layer used to extract deep features and for each kNN scoring scheme.
 We noticed that the effectiveness of the detection increases adopting higher-level layers of the network until we reach the fooled layers, where the accuracy drops.
 The first layers of the network produce activations not representative enough of class-level semantic concepts, while the last layers are steered by the adversarial crafting algorithms.
-This behavior suggests that current adversarial crafting algorithms do not steer all the internal semantic representations inside the network.
+This behavior suggested that current adversarial crafting algorithms do not steer all the internal semantic representations inside the network.
 Thus, we are able to find a good compromise between representativeness and robustness to adversarial manipulation.
 
-In \ref{fig:adv:i3-distr}, we report the true positive (correctly classified authentic images predicted as non-adversarial) and true negatives (adversarial images and authentic errors detected by our method) rates distributions as a function of the discriminant threshold applied on the score (positive means non-adversarial).
-Although lower-level features seem not to affect the detection of less perturbed images (i.e., \gls{fgsm}), we noticed that they play a fundamental role to detect strong adversarial such as \textbf{I-\gls{fgsm}} (\ref{fig:adv:i3-distr} on the left).
+\ref{fig:adv:i3-distr} reports the true positive (correctly classified authentic images predicted as non-adversarial) and true negatives (adversarial images and authentic errors detected by our method) rates distributions as a function of the discriminant threshold applied on the score (positive means non-adversarial).
+Although lower-level features does not seem to affect the detection of less perturbed images (i.e., \gls{fgsm}), we noticed that they play a fundamental role to detect strong adversarial such as \textbf{I-\gls{fgsm}} (\ref{fig:adv:i3-distr} on the left).
 This is reasonable given that the stronger attack we analyzed, i.e., \textbf{I-\gls{fgsm}}, tends to affect multiple layers in the last stage of the network, thus being better detected using more internal lower-level activations, while \gls{fgsm} can be easily detected using higher-level layers.
 
-Weighted scoring schemes (W-kNN and DW-kNN) seem to outperform the naive kNN scheme, especially when combined with low-level features (see \ref{fig:adv:i3-eer}).
-Overall, the best performance is obtained using the \textbf{\emph{mixed\_6d}} layer and the DW-kNN scheme, reaching a mean \gls{eer} accuracy of 79.2\%.
-Moreover, our method can recover around 80\% of natural errors committed by the network. This rate is considerably higher than the ones presented in \ref{tab:adv:eer} due to the presence of \textbf{RandomNoise} images, that produced lots of easily recoverable misclassifications.
+Weighted scoring schemes (W-kNN and DW-kNN) outpreformed the naive kNN scheme, especially when combined with low-level features (see \ref{fig:adv:i3-eer}).
+Overall, the best performance was obtained using the \textbf{\emph{mixed\_6d}} layer and the DW-kNN scheme, reaching a mean \gls{eer} accuracy of 79.2\%.
+Moreover, our method recovered around 80\% of natural errors committed by the network.
+This rate is considerably higher than the ones presented in \ref{tab:adv:eer} due to the presence of \textbf{RandomNoise} images, that produced lots of easily recoverable misclassifications.
 
 \begin{figure}
 \centering%
@@ -652,16 +653,16 @@ Note that the effectiveness of the detection increases when using deeper represe
 \label{sec:adv:conclusions}
 
 In this chapter, we presented an approach to detect adversarial examples crafted for fooling deep neural network classifiers.
-The overall goal is filtering out malicious images.
+The overall goal was to filter out malicious images.
 To perform the detection, we relied on activations of neurons in hidden layers in order to detect adversarial examples.
-In particular, we inspect the activations of intermediate layers for both adversarial and authentic inputs, and we defined an authenticity confidence score based on kNN similarity searching among the images used for training.
+In particular, we inspected the activations of intermediate layers for both adversarial and authentic inputs, and we defined an authenticity confidence score based on kNN similarity searching among the images used for training.
 Experiments on the two most cited adversarial generation techniques (L-BFGS and \gls{fgsm}) on the very same neural network used in the original papers (i.e., OverFeat, InceptionV3) have been carried out.
 In the experiments, we considered various kNN score functions and hidden layers.
 
 %The results show that we were able to filter out roughly 85\% of adversarial images when looking to lower level activations (such as \emph{pool5}).
 %Specifically, results shown that adversarials generated with L-BFGS are particularly difficult to detect.
 
-When attacking the OverFeat model, the proposed approach allows filtering about 80\% of adversarial examples retaining more than 90\% of the correctly classified authentic images (see \ref{fig:adv:tptn-distribs}).
+When attacking the OverFeat model, the proposed approach allowed filtering about 80\% of adversarial examples retaining more than 90\% of the correctly classified authentic images (see \ref{fig:adv:tptn-distribs}).
 We also showed that the probability density function of our authenticity confidence obtained over adversarial examples significantly differs from the one obtained for authentic images.
 %We showed that lower-level activations (such as \emph{pool5} with global average pooling) increase the detection performance with respect to the higher-level ones.
 Moreover, some examples are suggesting that hard adversarial examples are the ones for which actual and target classes are similar or have similar visual patterns. %there are same visual patterns in both classes.
