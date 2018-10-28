@@ -127,7 +127,7 @@ We assumed that the cameras are fixed, and each of them monitors several parking
 The images of the individual slots were obtained from the entire frame by cropping fixed regions that have been manually defined off-line, and the smart camera is in charge of performing an independent classification for each image.
 
 % TODO [CITE] AlexNet applications
-As a starting point for the design of our solution, we considered the very popular AlexNet \gls{cnn} for image classification~\cite{krizhevsky2012imagenet}, which is used as a reference in many computer vision applications~\cite{}.
+As a starting point for the design of our solution, we considered the very popular AlexNet \gls{cnn} for image classification~\cite{krizhevsky2012imagenet}, which is used as a reference in many computer vision applications. %~\cite{}.
 Such architecture exploits its massive number of parameters to learn a non-linear mapping from pixels to high-level features that facilitate classification.
 However, its computational budget and memory footprint pose severe limitations on devices with limited resources, especially when taking into account that the number of monitored slots per camera can easily reach 50--100.
 Moreover, considering that a forward pass of AlexNet on the Raspberry Pi model B on a 224x224 RGB image takes roughly 20 seconds while occupying most of the RAM available on the device\footnote{Data collected using the implementation of AlexNet of the Caffe~\cite{jia2014caffe} library}, it is evident that this architecture does not scale to the size of the problem.
