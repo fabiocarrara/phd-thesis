@@ -5,7 +5,7 @@
 \chapter{Miniaturization of \acrlongpl{cnn} for Embedded Devices}
 \label{ch:miniaturization}
 
-One of the most important limitations of \glspl{cnn} is that they often rely on computationally expensive deep models, which are slow for many applications including image classification.
+One of the most significant limitations of \glspl{cnn} is that they often rely on computationally expensive deep models, which are slow for many applications including image classification.
 Due to this limitation, methods based on efficient hand-crafted local features --- such as \acrshort{surf}, \acrshort{orb}, \acrshort{lbp}, etc.\ --- are predominantly adopted in vision systems where a computational power of a full-featured server is not available, e.g., mobile phones or embedded devices.
 
 In this chapter, we explore the adoption and the miniaturization of \glspl{cnn} for efficient image classification.
@@ -13,7 +13,8 @@ We focused our investigation on reducing and evaluating deep models for embedded
 A smart camera is an embedded camera equipped with a limited computational and communication capabilities that can be used to process, extract, and send information contained in the captured images on board of the device itself.
 Empowering smart cameras with the generalization and robustness of \glspl{cnn} for computer vision application represents one the most promising steps towards the evolution of smart environments~\cite{valera2005intelligent}.
 Their ``smart'' nature makes them suitable for automated intelligent systems able to generate event descriptions and make decisions~\cite{belbachir2010smart}, thus making them attractive to a broad range of applications.
-In our study, we focused on a specific application, that is the visual occupancy detection of outdoor car parking lots in a decentralized fashion with smart cameras.
+
+In our study, we focused on a specific application that is the visual occupancy detection of outdoor car parking lots in a decentralized fashion with smart cameras.
 The motivation for the choice of this specific problem is manifold.
 \begin{itemize}
     % easy problem formulation as 2-way classification
@@ -40,6 +41,8 @@ In our investigation, we proposeed a decentralized and efficient vision system b
 We presented a reduced \gls{cnn} suitable for embedded devices with which we implement the classification logic under the occupancy detection task.
 We applied a robust experimental protocol on publicly available datasets to compare the proposed approach to the state-of-the-art methods and deep models and assess its generalization properties.
 In addition, we contributed with a publicly available dataset of the parking lot images captured by multiple cameras called \emph{CNRPark-EXT} that enabled us to thoroughly test the robustness of our solution to multiple sources of errors.
+
+Despite being evaluated on a specific application, our approach
 
 The chapter is organized as follows.
 In \ref{sec:mini:related-work}, we introduce the work related to parking lot occupancy detection, focusing on vision-based solutions more related to our proposal.
