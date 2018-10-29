@@ -48,8 +48,10 @@
 In this chapter, we provide the reader with the basic concepts about \acrlong{dl} and \acrfullpl{cnn}.
 Specifically, we introduce their fields of application investigated in this thesis, namely Image Classification and \gls{cbir}.
 Image classification provides a general and straightforward framework for many applications and thus represents one of the most typical usages of \glspl{cnn}.
+
 In the first part of the thesis (\ref{ch:miniaturization,ch:cross-media,ch:adversarial}), we will investigate solutions to general limitations of \glspl{cnn}, and, without loss of generality, we will evaluate them in practical applications of image classification.
 Thus, we will provide the reader with an overview of state-of-the-art approaches in this field.
+
 The second part of the thesis (\ref{ch:text2vis,ch:surrogate}) will investigate novel solutions for large-scale \gls{cbir}, focusing on the interfaces and indexing patterns users are most familiar with, i.e., the one for textual documents.
 Therefore, in this chapter we will provide some background about \gls{cbir}, focusing on \gls{cnn}-based image representations, and we will also give an overview on standard models for text representation, which are used in \ref{ch:cross-media,ch:text2vis} for harnessing textual data to build better image representations.
 
@@ -67,7 +69,7 @@ In \ref{sec:back:image-retrieval}, we describe the main aspects of \gls{cbir} ba
 \acrfull{dl} defines a subfield of Artificial Intelligence, specifically of \gls{ml} and Representation Learning, in which a \emph{hierarchy of data representations} (or \emph{features}) is learned from data for solving a particular task~\cite{bengio2007scaling,goodfellow2016deep}.
 %For historical reasons, \gls{dl} models are also referred to as \emph{\glspl{dnn}} due to the resemblance of layers and their organization to the way neurons are interconnected and organized in the mammalian brain~\cite{}.
 % TODO add references to similarities to the mammalian brain (in addition to perceptron?)
-Inspired by nature, \acrlong{dl} models are often implemented as \glspl{dnn} --- a computational model comprised of multiple layers of processing units that mimics the structure and the interconnection of neurons in the mammalian brain~\cite{rosenblatt1958perceptron}.
+Inspired by nature, \acrlong{dl} models are often implemented as \acrfullpl{dnn} --- a computational model comprised of multiple layers of processing units that mimics the structure and the interconnection of neurons in the mammalian brain~\cite{rosenblatt1958perceptron}.
 Recent years have witnessed a rapid rise in the use of \gls{dl} approaches to solve complex tasks, reaching even super-human performance in perceptual~\cite{he2015delving}, control~\cite{mnih2015human}, and planning~\cite{silver2016mastering} activities. % TODO [?] add reasoning
 Interestingly, the representations learned with \gls{dl} methodologies resemble the structures of signals in the neocortex build by our brain to implement intelligent behaviors, suggesting strong parallelism between the two domains~\cite{cadieu2014deep,kubilius2016deep}. % TODO [?] dire meglio
 
@@ -1098,7 +1100,7 @@ The \gls{dcg} at the rank position $n$ is defined as
     \text{DCG}@n = \sum_{i=1}^n \frac{2^{r_i} - 1}{\log_2(i + 1)} \,,
 \end{equation}
 where $r_i$ is a positive scalar representing the relevance of the $i$-th retrieved sample.
-In the case rankings can have ties, the \gls{tdcg}~\cite{mcsherry2008computing} is used, defined as
+\sloppy In the case rankings can have ties, the \gls{tdcg}~\cite{mcsherry2008computing} is used, defined as
 %
 \begin{equation}
 \text{TDCG}@n = \sum_{i=1}^{m} \( \( \frac{1}{n_i} \sum_{j=t_i+1}^{t_{i+1}}2^{r_i}-1 \) \sum_{j=t_i+1}^{\min(t_{i+1},k)} \frac{1}{\log_2(i+1)} \) \,,
