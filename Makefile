@@ -38,3 +38,7 @@ figures/%.pdf: figures/%.asy
 
 clean: $(TMP_DIR)
 	rm -rf $(TMP_DIR)
+	
+drive: thesis.pdf
+	cp thesis.pdf ../PhDThesis_Fabio_CARRARA_Draft.pdf
+	cd .. && drive push -no-prompt -ignore-conflict PhDThesis_Fabio_CARRARA_Draft.pdf 
