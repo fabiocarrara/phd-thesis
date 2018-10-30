@@ -18,12 +18,15 @@ In this context, the primary objective of our investigation was to reduce the am
 Despite having the advantage of being free and continually growing, this source of data poses challenges in its usage, since it commonly presents noisy or incomplete information.
 This usually limits the amount of supervision that can be extracted from this kind of data, but the possibility to scale the training procedures to a vast amount of data often compensates this limitation.
 
-In this chapter, we present a novel weakly-supervised cross-media approach to train visual image classifiers in an autonomous way exploiting social media data.
+In this chapter, we present a weakly-supervised cross-media approach for training visual image classifiers in an autonomous way exploiting social media data.
 We relied on textual data --- which usually accompanies images in social media posts --- to provide noisy supervision in the training phase of a visual-only classifier.
 To exhibit the advantages of our approach, we employed it to tackle \emph{\gls{vsa}} --- a problem in which the cost of data labeling is rather high --- using a \acrfull{dcnn} trained without relying on any hand-assigned ground-truth.
 We conducted an empirical study to analyze visual sentiments in the wild, starting from a large-scale dataset of \emph{unlabeled} user-generated content.
 To the best of our knowledge, this was the first work that proposed a cross-media approach to learn a classifier for predicting the sentiment polarity of a given image.
+We deem that a cross-media approach provides a consistent way to narrow the gap between the mature field of textual sentiment analysis and the somewhat new one of visual sentiment analysis.
 We demonstrated via experimental evaluation on existing manually-labeled benchmarks that models trained with our approach can extensively exploit the noisy information contained in uncontrolled social media data to build a visual sentiment polarity classifier with no human supervision that outperforms state-of-the-art classifiers trained on sentiment-related labeled images.
+Although we framed our investigation in the context of \gls{vsa}, the approach we adopted is general and broadly applicable in multiple tasks;
+as a noteworthy example, we refer to the reader the recent work of \citet{mahajan2018exploring}, which demonstrated the success of this kind of approach by applying it on a very large scale.
 Overall, we collected and analyzed more than three million tweets from which we built \emph{\acrfull{t4sa}} --- a dataset of about 1 million high-confidence tweets, for which we provide the textual sentiment classification, and the corresponding 1.4M images.
 We made all the collected tweets, the \gls{t4sa} dataset, and trained models publicly available to foster new research on the field of visual sentiment analysis.
 
