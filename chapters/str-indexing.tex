@@ -11,20 +11,24 @@
 \label{ch:surrogate}
 
 %%% ABSTRACT
-% The great success of visual features learned from deep neural networks has led to a significant effort to develop efficient and scalable technologies for image retrieval. Nevertheless, its usage in large-scale Web applications of content-based retrieval is still challenged by their high dimensionality.
-% To overcome this issue, some image retrieval systems employ the product quantization method to learn a large-scale visual dictionary from a training set of global neural network features. These approaches are implemented in main memory, preventing their usage in big-data applications.
-% The contribution of the work is mainly devoted to investigating some approaches to transform neural network features into text forms suitable for being indexed by a standard full-text retrieval engine such as Elasticsearch. The basic idea of our approaches relies on a transformation of neural network features with the twofold aim of promoting the sparsity without the need of unsupervised pre-training.
-% We validate our approach on a recent convolutional neural network feature, namely \acrfull{rmac}, which is a state-of-art descriptor for image retrieval. Its effectiveness has been proved through several instance-level retrieval benchmarks.
+% The great success of visual features learned from deep neural networks has led to a significant effort to develop efficient and scalable technologies for image retrieval.
+% Nevertheless, its usage in large-scale Web applications of content-based retrieval is still challenged by their high dimensionality.
+% To overcome this issue, some image retrieval systems employ the product quantization method to learn a large-scale visual dictionary from a training set of global neural network features.
+% These approaches are implemented in main memory, preventing their usage in big-data applications.
+% The contribution of the work is mainly devoted to investigating some approaches to transform neural network features into text forms suitable for being indexed by a standard full-text retrieval engine such as Elasticsearch.
+% The basic idea of our approaches relies on a transformation of neural network features with the twofold aim of promoting the sparsity without the need of unsupervised pre-training.
+% We validate our approach on a recent convolutional neural network feature, namely \acrfull{rmac}, which is a state-of-art descriptor for image retrieval.
+% Its effectiveness has been proved through several instance-level retrieval benchmarks.
 % An extensive experimental evaluation conducted on the standard benchmarks show the effectiveness and efficiency of the proposed approach and how it compares to state-of-the-art main-memory indexes.
 
-Search engines on the Web have in the past achieved significant results in terms of efficiency thanks to the use of inverted index technology.
-This development was not as rapid in the case of retrieval of other forms of expression such as images.
-This was initially due in part to the \emph{semantic gap}, i.e., the ineffectiveness of hand-crafted features used by instance-level and content-based image retrieval.
-However, since 2014, new features learned by \acrlong{dl} --- in particular, \acrlongpl{cnn} --- guided a significant development in this field and hugely mitigate the semantic gap problem.
-In consequence, the remarkable development in the effectiveness of these features has not been matched by a similar development in image retrieval systems; why?
-We do not have a clear answer.
-One reason could be that people are not very interested in searching for image content on the Web and as a result, major Web search service providers have not invested many resources in this regard.
-On the other hand, if the image retrieval were simple and above all scalable as that of the text, perhaps today we would have seen a more significant development of these services.
+When developing information retrieval systems, the two standard properties that are desirable are effectiveness and efficiency.
+Early approaches in image retrieval mainly suffer from effectiveness issues, initially due in part to the \emph{semantic gap}, i.e., the inability of handcrafted features used by instance-level and content-based image retrieval to precisely represent high-level visual concepts.
+However, since 2014, new features learned by \acrlong{dl} --- in particular, \acrlongpl{cnn} --- guided a significant development in this field and hugely mitigated the semantic gap problem.
+This great success of visual features learned from deep neural networks led to a significant effort to develop efficient and scalable technologies for image retrieval.
+% In consequence, the attention shifted to the efficiency of image retrieval systems;
+In comparison to previously adopted handcrafted features, novel \gls{dl}-based image representations often have a high dimensionality, thus inducing efficiency issues in their usage in large-scale Web applications of content-based retrieval.
+The scalability problem under this circumstances has been already extensively studied in the literature of textual search engines based on vector space models, where documents are represented in vector spaces with vocabulary-size --- and thus very high --- dimensionality.
+Textual search engines on the Web achieved significant results in terms of efficiency thanks to the use of inverted index technology, which exploits the sparseness of the document representation to search and match very high dimensional vectors efficiently.
 
 In this chapter, we explore new approaches for making image retrieval as similar as possible to text to reuse the technologies and platforms exploited today for text retrieval without the need for dedicated access methods.
 In a nutshell, the idea is to use image representation extracted from a \gls{cnn}, often referred to as \emph{deep features}, and to transform them into a surrogate text that standard text search engine can index.

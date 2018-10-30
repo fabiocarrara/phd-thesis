@@ -29,22 +29,23 @@
 
 In previous chapters, we studied \glspl{cnn} and proposed solutions to tackle some of the general obstacles and limitations commonly encountered in their usage.
 In the rest of the thesis, we will investigate their application in \acrlong{cbir}.
-Specifically, we focus on their integration in existing textual-based retrieval systems, arguing that textual interaction represents the most commonly adopted access method to global information and is powered by highly developed technologies.
-Text-based image retrieval is a very common cross-media search task, as text is the most efficient media to describe the kind of image the user is searching for.
+Specifically, we focus on their integration in existing textual-based retrieval systems, arguing that textual interaction represents the most commonly adopted access method to global information. % and is powered by highly developed technologies.
+Text-based image retrieval is a very common cross-media search task, as text is in many cases the most effective way to express queries.
+
 Each media has its own representation space, which is modeled on a collection of representative content for that media.
 For example, text can be represented by means of a simple \acrlong{bow} feature space, with the feature space being defined by a dictionary of observed words; or by means of more complex distributional semantic models, such as those based on neural networks, e.g., Word2Vec~\cite{mikolov2013distributed}.
 Similarly, a visual space can be modeled by identifying a set of relevant visual features in a collection of images, e.g., as those extracted by the deeper layers of \glspl{cnn}~\cite{krizhevsky2012imagenet}.
 
-In cross-media retrieval, the actual retrieval process can be implemented in multiple ways, depending on how the two feature spaces are joined.
+In cross-media retrieval, the actual retrieval process can be implemented in multiple ways, depending on how the two feature spaces are combined.
 The cross-media search space can be %
 i) a textual feature space, i.e., space whose definition is determined exclusively by observing textual content, %
 ii) a visual feature space, i.e., space whose definition is determined exclusively by observing visual content, or %
 iii) a common latent space in which textual and visual features are projected into.
 
 Using textual features is the most common solution. %, specially at the Web scale.
-Each image is associated with a set of textual features extracted from its context of use --- e.g., the text surrounding the image in the Web page, description fields in metadata --- and eventually enriched using classifiers that assign textual labels related to the presence of certain relevant entities or abstract properties in the image.
-The textual search space model can exploit the actual visual content of the image only when classifiers for the concepts of interest are available, thus requiring a considerable number of classifiers.
-This also requires to reprocess the entire image collection whenever a new classifier is made available.
+Each image is associated with a set of textual features extracted from its context of use --- e.g., the text surrounding the image in the Web page, description fields in metadata --- and enriched using classifiers that assign textual labels related to the presence of certain relevant entities or abstract properties in the image.
+The textual search space model can exploit the actual visual content of the image only when systems that detect and annotate the concepts of interest are available, thus requiring a considerable number of concepts to be supported.
+This also requires to reprocess the entire image collection whenever a new concept of interest is included.
 
 Searching in a common latent space requires learning two projections, i.e., from text-to-latent and from image-to-latent.
 The main advantage of searching in a common latent space lies on the freedom the system has to jointly model reciprocal relations between the two media, while other strategies can only learn the relations from the source media to the target media, but not vice versa.
@@ -57,14 +58,15 @@ This means that any improvement in the projection model --- e.g., in the underly
 Another advantage is that --- since the visual space is language-independent --- multiple models, e.g., for multiple languages or specialized on different domains, can be used independently on the same collection of images, without requiring multiple instances of representations for the images and multiple instances of similarity search data structures.
 
 In this chapter, we explore the use of visual spaces for cross-media retrieval.
-Methods that use a common space projection may be able to produce better results because they can exploit cross-correlations between the two media, while the other two approaches are constrained to leverage on correlations that come from one single direction.
-However, we deem that the ability to use a single static collection of visual representations for images --- irrespectively to how many text-to-visual projection models are used and how often they change --- is a practical advantage of visual space-based methods that counters such possible loss of quality in results.
+% Methods that use a common space projection may be able to produce better results because they can exploit cross-correlations between the two media, while the other two approaches are constrained to leverage on correlations that come from one single direction.
+We deem that the ability to use a single static collection of visual representations for images --- irrespectively to how many text-to-visual projection models are used and how often they change --- is a practical advantage of visual space-based methods that counters such possible loss of quality in results.
 %
 We proposed \ttv{}, a family of neural network models that convert textual descriptions into visual representations in the same space of those extracted from \glspl{dcnn} such as the AlexNet~\cite{krizhevsky2012imagenet} or \resnet{}~\cite{he2016deep} trained on \gls{ilsvrc}'12~\cite{russakovsky2015imagenet} and Places~\cite{zhou2014learning} datasets.
 Specifically, we developed different neural network models of increasing complexity, including %
 i) \sparsettv{}, a simple regressor network relying on sparse representations (bag-of-words and bag-of-bigrams) for the textual descriptors; %
 ii) \densettv{}, a deep recurrent network relying on a continuous dense representations (word embeddings); and %
 iii) \widedeepttv{}, a wide and deep architecture relying on both sparse and dense representations.
+
 We first introduce cross-media image retrieval and review relevant works in \ref{sec:t2v:related}.
 We describe our proposal in \ref{sec:t2v:method}, and we report experimental results in \ref{sec:t2v:experiments}, comparing with other methods that use different projection approaches.
 \ref{sec:t2v:conclusions} concludes and outlines possible directions for future research.

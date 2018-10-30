@@ -239,10 +239,10 @@ First, the vast majority of adversarial generation algorithms are not meant to f
 Second, adversarial images share most of the low-level visual appearance with the authentic images from which are generated, and intermediate features have shown to capture this similarity in many visual similarity related tasks~\cite{sharif2014cnn,gordo2016deep}.
 %We decided to test kNN classifiers score assignments because they rely on those similarities among the representations.
 
-To detect whether an image is tampered, we first classify it with the unsecured deep image classifier.
+To detect whether an image is tampered, we first classify it with the deep image classifier.
 Then, the activations of a hidden layer are used as a query to perform a kNN search on the training set of the model and to judge image similarity.
 %In particular, we perform a kNN similarity search among the deep features obtained from the images used for training using as query a given image classified by the \gls{dnn}.
-We then use the score assigned by a kNN classifier to the class predicted by the unsecured model as a measure of confidence of the classification.
+We then use the score assigned by a kNN classifier to the class predicted by the deep model as a measure of confidence of the classification.
 Please note, we do not rely on the classification produced by the kNN, but we only use the score assigned to the class predicted by the deep neural network as a measure of confidence.
 
 Formally, given a set of labeled images $\X = \{(\x_i, c_i)\}$ where $\x_i$ is an image and $c_i$ is its class label, a kNN classifier assigns labels to an unknown image $\q$ considering the ordered results of its $k$ nearest neighbors $NN(\q,k)=\{(\x_1,c_1) \ldots (\x_k,c_k)\}$ obtained performing a kNN search over $\X$ for a predefined distance function $d(\x, \y)$ between any two images.
