@@ -37,12 +37,11 @@ The motivation for the choice of this specific problem is manifold.
 While visual approaches to parking lot occupancy detection are not new~\cite{dan2002parking,wu2007robust,del2015vacant,de2015pklot}, the usage of solely visual information still poses challenges in terms of robustness.
 Numerous solutions are tailored to specific scenarios and hardly generalize well to different ones, such as a different parking lot, viewpoint, light conditions, or occlusion patterns.
 
-In our investigation, we proposeed a decentralized and efficient vision system based on smart cameras and \gls{dl} for parking lot occupancy detection.
+In our investigation, we proposed a decentralized and efficient vision system based on smart cameras and \gls{dl} for parking lot occupancy detection.
 We presented a reduced \gls{cnn} suitable for embedded devices with which we implement the classification logic under the occupancy detection task.
 We applied a robust experimental protocol on publicly available datasets to compare the proposed approach to the state-of-the-art methods and deep models and assess its generalization properties.
+Despite being evaluated on a specific application, the solution we adopted is general and can be easily transferred to other vision-based tasks.
 In addition, we contributed with a publicly available dataset of the parking lot images captured by multiple cameras called \emph{CNRPark-EXT} that enabled us to thoroughly test the robustness of our solution to multiple sources of errors.
-
-Despite being evaluated on a specific application, our approach
 
 The chapter is organized as follows.
 In \ref{sec:mini:related-work}, we introduce the work related to parking lot occupancy detection, focusing on vision-based solutions more related to our proposal.
