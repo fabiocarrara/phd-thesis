@@ -693,7 +693,7 @@ Each smart camera is built from a Raspberry Pi 2 model B equipped with a standar
 The total cost for a single camera is roughly 80\euro.
 Hardware and software details are briefly reported for completeness.
 The smart cameras are equipped with an ARM Cortex-A7 CPU, 1GB RAM DDR2, and a 32GB micro SD card for storage.
-The camera module is a 5MP fixed-focus camera that supports 1080p30, 720p60 and VGA90 video modes, as well as still captures.
+The camera module is a 5MP fixed-focus camera supporting 1080p30, 720p60 and VGA90 video modes, as well as still captures.
 The view angles of the camera are 53.50$^{\circ}$ horizontally and 41.41$^{\circ}$ vertically.
 We capture still pictures at a full-sensor resolution of $2592 \times 1944$ pixels.
 We used the OpenCV\footnote{http://opencv.org/} library to elaborate the frames acquired by the cameras, and Caffe~\cite{jia2014caffe} to train and use neural networks.
@@ -730,7 +730,7 @@ Moreover, multi-dataset experiments showed that the architectural reduction does
 We tested our approach on a real scenario in the parking lot of the campus of the CNR Area in Pisa.
 We deployed a decentralized system comprised of nine smart cameras which monitors multiple slots and perform the occupancy detection for each slot on board.
 The delegation of parking slot occupancy detection to smart cameras provides a twofold advantage.
-First, with a cost of a single camera (roughly 80\euro), we can monitor at most 50 slots in our configuration, drastically reducing the cost per single slot that is nearly 100\euro{} for magnetic ground sensors while maintaining the same level of accuracy.
+First, with a cost of a single camera (roughly 80 \euro{}), we can monitor at most 50 slots in our configuration, drastically reducing the cost per single slot that is nearly 100 \euro{} for magnetic ground sensors while maintaining the same level of accuracy.
 Second, the decentralized nature of our solution enables a higher degree of scalability, since there is no need for a central server to analyze images and high bandwidth to transfer them.
 Besides, the flexibility of the infrastructure does not limit the applications only to occupancy detection;
 the spare computational resources can be used to perform other analyses such as video surveillance activities.
