@@ -41,6 +41,7 @@ The cross-media search space can be %
 i) a textual feature space, i.e., space whose definition is determined exclusively by observing textual content, %
 ii) a visual feature space, i.e., space whose definition is determined exclusively by observing visual content, or %
 iii) a common latent space in which textual and visual features are projected into.
+\ref{fig:t2v:ir-spaces} depicts the main system architectures for each case.
 
 Using textual features is the most common solution. %, specially at the Web scale.
 Each image is associated with a set of textual features extracted from its context of use --- e.g., the text surrounding the image in the Web page, description fields in metadata --- and enriched using classifiers that assign textual labels related to the presence of certain relevant entities or abstract properties in the image.
@@ -56,6 +57,29 @@ A last, less explored possibility is to use a visual space to convert any textua
 A key advantage of this model is that the representation of images remains unaltered regardless of the projection model being developed.
 This means that any improvement in the projection model --- e.g., in the underlying language model --- has immediate effects on the image retrieval process without requiring to reprocess the (typically huge) whole image collection and to rebuild the similarity search data structures required for efficient retrieval.
 Another advantage is that --- since the visual space is language-independent --- multiple models, e.g., for multiple languages or specialized on different domains, can be used independently on the same collection of images, without requiring multiple instances of representations for the images and multiple instances of similarity search data structures.
+%
+\begin{figure}
+    \begin{subfigure}{.48\linewidth}
+        \includegraphics[height=1.9cm]{figures/ir-text-space}
+        \caption{Textual search space approach.}
+        \label{fig:t2v:ir-spaces:text}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{.467\linewidth}
+        \includegraphics[height=1.9cm]{figures/ir-vis-space}
+        \caption{Visual search space approach.}
+        \label{fig:t2v:ir-spaces:visual}
+    \end{subfigure}\\[3ex]
+    \begin{subfigure}{\linewidth}
+        \includegraphics[height=1.9cm]{figures/ir-comm-space}
+        \caption{Common search space approach.}
+        \label{fig:t2v:ir-spaces:common}
+    \end{subfigure}
+    \caption{Cross-media search approaches.
+    Gray circles represent the search space in each approach.
+    Our approach belongs to the class \emph{\textbf{(b)}}.}
+    \label{fig:t2v:ir-spaces}
+\end{figure}
 
 In this chapter, we explore the use of visual spaces for cross-media retrieval.
 % Methods that use a common space projection may be able to produce better results because they can exploit cross-correlations between the two media, while the other two approaches are constrained to leverage on correlations that come from one single direction.
@@ -89,7 +113,7 @@ Defining a mapping function is often not trivial, and \gls{dl} approaches shine 
 Once the data lie on the same semantic space, we can score and rank items of whichever modality following the same principles applied in the \emph{query-by-example} paradigm.
 % This problem has been attempted in different manners so far, which could be roughly grouped into three main variants, depending on whether the mapping is performed into a common latent space (Section 2.1), a textual space (Section 2.2), or a visual space (Section 2.3).
 The problem of mapping modalities has led to three main research paths that differ for the chosen destination space for the mapping, that is i) common space, ii) textual space, or iii) visual space approaches.
-In the following, we will review some of the recent works on cross-modal retrieval dividing them into these three categories, and we will refer without loss of generality to the case in which we are retrieving images starting from textual queries. %, but the same principles apply to other modalities.
+In the following, we review some of the recent works on cross-modal retrieval dividing them into these three categories, and we refer without loss of generality to the case in which we are retrieving images starting from textual queries. %, but the same principles apply to other modalities.
 
 %Textual / visual / common space retrievals
 \paragraph{Common Space Approaches}
