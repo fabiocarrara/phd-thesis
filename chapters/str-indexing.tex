@@ -1,4 +1,4 @@
-%======================= SRT FOR IMAGE INDEXING ===========================
+%======================= STR FOR IMAGE INDEXING ===========================
 
 \renewcommand{\D}{\mathcal{X}} %data domain
 \renewcommand{\N}{{D}} %vector size
@@ -261,7 +261,7 @@ For example, given the query $\text{STR}_f(q)=$''$\tau_1\, \tau_5\, \tau_5$'', t
 Ideally, the transformation $f(\cdot)$ should be
 \begin{enumerate}
     \item \emph{order-preserving}:  the ranked results to the query $q$ (obtained by searching the original space $\D$) exactly correspond to the ranked results to the text query $\text{STR}_f(q)$ (obtained by searching the surrogate text space);%
-\footnote{Note that to compare a query with a set of objects we can use either a \emph{distance} or a \emph{similarity} function.
+\footnote{Note that to compare a query with a set of objects we can use either a \emph{similarity} or a \emph{distance} function.
 In the former case, we search for objects with the greatest similarity to the query.
 In the latter case, we search for the objects with the lowest distance from the query. A similarity function is said to be \emph{equivalent} to a distance function if the ranked list of the results to a query is the same.}
     \item \emph{sparsifying}: for any $o \in\D$, the vector $f(o)$ is sparse.
@@ -292,16 +292,15 @@ The basic idea of permutation-based indexing techniques is to represent feature 
 Traditionally, the permutation representations are built using the identifiers of a set of reference objects as permutants.
 This approach is more general than the one we adopted, as it admits as objects not only vectors but more generally metric objects for which there exists a distance function providing a measure of the closeness of two data objects.
 
-Formally, given a domain $\D$, a distance $d:\D\times \D\to \R+$, and a fixed set  $\{p_1\ldots p_n\}\subset\D$ of \emph{reference objects} (or \emph{pivots}), we defined a permutation-based representation $\Pi_{o}$ (briefly \emph{permutation}) of an object $o\in \mathcal{D}$ as the sequence of pivots identifiers sorted in ascending order by their distance from $o$~\cite{amato2014mi,amato2014some}.
-In other words, the permutation-based representation $\Pi_{o}=$ $[\Pi_{o}(1), \ldots , \Pi_{o}(n)]$ lists the pivot identifiers $\{1, 2, \ldots, n\}$ in an order such that $\forall\, i,j \in \{1,\ldots, n\}$
-\begin{equation}
-\begin{matrix}
-& & d(o,p_{\Pi_{o}(i)}) <    d(o,p_{\Pi_{o}(j)})\, \\
-\Pi_{o}(i)< \Pi_{o}(j)\qquad &\Leftrightarrow\qquad & \text{or} \\
-& &\left(\, d(o,p_{\Pi_{o}(i)}) =    d(o,p_{\Pi_{o}(j)})\, \wedge\, (i<j)\, \right) \,,
-\end{matrix}
-\end{equation}
-where $p_{\Pi_o(j)}$ indicates the pivot at position $j$ in the permutation associated with object $o$.
+Given a domain $\D$, a distance $d:\D\times \D\to \R^+$, and a fixed set  $\{p_1\ldots p_n\}\subset\D$ of \emph{reference objects} (or \emph{pivots}), we defined a permutation-based representation $\Pi_{o}$ (briefly \emph{permutation}) of an object $o\in \D$ as the sequence of pivots identifiers sorted in ascending order by their distance from $o$~\cite{amato2014some,amato2014mi}.
+Formally, the permutation-based representation $\Pi_{o}=$ $[\Pi_{o}(1), \ldots, \Pi_{o}(i), \ldots , \Pi_{o}(n)]$ is a permutation such that $\forall\, i \in \{1,\ldots, n\}$,
+%\begin{equation}
+\begin{multline}
+d(o,p_{\Pi_{o}(i)}) < d(o,p_{\Pi_{o}(i+1)}) \quad \vee \\
+\left(\, d(o,p_{\Pi_{o}(i)}) = d(o,p_{\Pi_{o}(i+1)})\, \wedge\, \Pi_{o}(i) < \Pi_{o}(i+1)\, \right) \,,
+\end{multline}
+%\end{equation}
+where $p_{\Pi_o(i)}$ indicates the pivot at position $i$ in the permutation associated with object $o$~\cite{novak2016ppp}.
 An equivalent permutation-based representation is the \emph{inverted permutation}, defined as  $\Pi^{-1}_{o}=[\Pi_{o}^{-1}(1), \Pi_{o}^{-1}(2),\dots , \Pi_{o}^{-1}(n)]$, where $\Pi_{o}^{-1}(i)$ denotes the position of a pivot $p_i$ in the permutation $\Pi_{o}$, so that $\Pi_o(\Pi_o^{-1}(i))=i$.
 Thus, the coordinate $i$ in the permutation $\Pi_{o}$ is the identifier of the pivot at $i$-th position in the ranked list of the nearest pivots to $o$;
 the value at the coordinate $i$ in the inverted representation $\Pi^{-1}_{o}$ is the rank of the pivot $p_i$ in the list of the nearest pivots to $o$.
@@ -343,7 +342,8 @@ So far, we have presented the general approach of \gls{str} based on the traditi
 However, when objects to be indexed are \emph{real-valued vectors}, as in the case of deep features, we can exploit the deep permutations technique~\cite{amato2016deep} that allows generating the permutations at very low computational cost by avoiding the calculations of the distances between the pivots and the objects to be represented.
 Moreover, \citet{amato2016deep} shown that this encoding is more effective than the traditional permutation-based representation for both multimedia retrieval and similarity search tasks.
 In the deep permutations approach, the permutants are the indexes of the elements of the deep feature vectors rather than a predefined set of pivots.
-Specifically, the deep permutation of a feature vector $\v \in \R^{n}$ is obtained by sorting the \emph{indexes} of the elements of $\v$, in descending order with respect to the corresponding element values. In other words, the \emph{\gls{dp}} $
+Specifically, the deep permutation of a feature vector $\v \in \R^{n}$ is obtained by sorting the \emph{indexes} of the elements of $\v$, in descending order with respect to the corresponding element values.
+In other words, the \emph{\acrlong{dp}} $
 \tilde{\Pi}_{\v} = [ \tilde{\Pi}_{\v}(1), \ldots, \tilde{\Pi}_{\v}(n) ]
 $
 of a deep feature $\v$ is the permutation of the indexes $\{1,\dots, n\}$ such that
@@ -371,7 +371,7 @@ In this section, we present the proposed alternative approach to provide a surro
 The idea behind our \gls{sq} approach is to map the real-valued vector components independently into a smaller set of integer values which act like the term frequencies of a predefined set of codewords.
 However, as for more generic \gls{pq}, the \gls{sq} has mainly the purpose of making a compact representation suitable for approximate nearest neighbor search.
 
-The first step in our approach is the application of an order-preserving transformation to the vectors, that is a random rotation of the feature vectors.
+The first step in our approach is the application of an random orthogonal transformation to the vectors, which is order-preserving and re-balances the variance of the components of the feature vectors~\cite{jegou2010aggregating}.
 This step is essential for efficiency issues since it prevents to have unbalanced posting lists in the inverted file.
 %Without this step, the posting list of the inverted index would be unbalanced which would, therefore, affect its performance.
 To understand why, remember that in our approach each component of the vectors is associated with a posting list in which each post stores the \emph{id} of the vector and the value of the component itself, if nonzero.
@@ -379,10 +379,10 @@ Therefore, if on average some component is nonzero for many data vectors then th
 The ideal case occurs when the component share the same distribution (same mean and variance are sufficient).
 To this end, we applied a roto-translation transform to the entire set of data vectors.
 In this way, we tried to increase to cases where the dimensional components of the features vectors have same mean and variance, with mean equal to zero.
-This last constraint is because we want then sparsify the vectors, but this aspect is further investigated in the next subsection.
+This last constraint is added because we want to sparsify the vectors, but this aspect is further investigated in the next subsection.
 
 An important aspect of the roto-translation transform is that it preserves the ranking when we search using the kNN approach by ordering the vectors by their Euclidean distance to the query.
-Moreover, if applying the roto-translation to all the data objects and just the rotation to the query we have an ordering preserving transformation with respect to the dot-product:
+Moreover, if we apply the roto-translation to all the data objects and only the rotation to the query, we have an ordering preserving transformation with respect to the dot-product:
 given a rotation matrix $R \in \R^{\N \times \N}$ and a vector $\muu \in \R^{\N}$, then
 \begin{equation}
 \forall\, \q, \v_1, \v_2 \in \R^{\N} \quad    \q \cdot \v_1 \leq \q \cdot \v_2 \Rightarrow R\q\cdot R(\v_1 - \muu) \leq R\q\cdot R(\v_2 - \muu) \,.
