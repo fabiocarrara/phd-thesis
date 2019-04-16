@@ -220,7 +220,7 @@ Here, we observed that a surrogate text representation for an object $o$ of a da
 where $\bb{f}_o$ will act as the vector of the \glspl{tf} of a synthetic text document $t_o$ with respect to a dictionary of $n$ words.
 Specifically, given a dictionary $\{\tau_1, \dots, \tau_n\}$ and the transformation $f$, we defined the surrogate text $ t_o=\text{STR}_f(o)$ as
 \begin{equation}
-	\text{STR}_f(o)=\bigcup_{i=1}^n\,\bigcup_{j=1}^{f_o^{(i)}} \tau_i
+	\text{STR}_f(o)=\bigcup_{i=1}^n\,\bigcup_{j=1}^{f_o^{(i)}} \tau_i \,,
 \end{equation}
 where, by abuse of notation, we denoted the space-separated concatenation of the codewords with the union operator $\cup$.
 Thus, by construction, the integer values of the $i$-th component of the vector $\bb{f}_o$ is the frequency of the codeword $\tau_i$ in the text $\text{STR}_f(o)$.
@@ -279,7 +279,7 @@ Unfortunately, the sparsifying property is in contrast with the order-preserving
 We were interested in indexing and searching \emph{$\N$-dimensional vectors} originally compared with the dot product, such as the \gls{rmac} descriptors.
 Note that, in this case, $\D=\R^{\N}$ and the order-preserving property with respect to dot product can be expressed as
 \begin{equation}
-\forall\, \q,\v_1,\v_2 \in \R^{\N} \quad \bb{q}\cdot \bb{v_1} \leq \bb{q}\cdot \bb{ v_2} \Rightarrow f(\bb{q})\cdot f(\bb{v_1}) \leq f(\bb{q})\cdot f(\bb{v_2}).
+\forall\, \q,\v_1,\v_2 \in \R^{\N} \quad \bb{q} \cdot \bb{v_1} \leq \bb{q} \cdot \bb{v_2} \Rightarrow f(\bb{q})\cdot f(\bb{v_1}) \leq f(\bb{q}) \cdot f(\bb{v_2}) \,.
 \end{equation}
 
 Below, we present two text transformation techniques that can be used in this context: a Permutation-Based approach and Scalar Quantization approach.
@@ -325,7 +325,7 @@ $,
 where $\e=[1,\dots, 1]$ is the constant vector.
 Therefore,
 \begin{equation}
-\text{STR}_{f_\text{perms}}(o)=\bigcup_{i=1}^n\,\bigcup_{j=1}^{n-\Pi^{-1}_{o}(i)} \tau_i.
+\text{STR}_{f_\text{perms}}(o) = \bigcup_{i=1}^n\, \bigcup_{j=1}^{n-\Pi^{-1}_{o}(i)} \tau_i \,.
 \end{equation}
 
 The rationale behind this approach is that if two objects are very close one to the other, they will sort the set of pivots in a very similar way, and thus the corresponding permutations/text representations will be close as well.
@@ -389,10 +389,12 @@ given a rotation matrix $R \in \R^{\N \times \N}$ and a vector $\muu \in \R^{\N}
 \end{equation}
 %Every transformation that does not violate the previous inequality can be applied to $f_q$ and $fv_i$ without changing the relative rankings of vectors with respect to the query.
 We found that a good transformation is the random rotation
-\begin{align}
+\begin{equation}
+\begin{split}
 \v &\to R(\v - \muu) \\
 \q &\to R \q \,,
-\end{align}
+\end{split}
+\end{equation}
 where $R$ is a \emph{random} orthogonal matrix ($\|R\|_2 = 1$) and $\muu \in \R^{\N}$ can be arbitrary chosen.
 The random rotation helps to distribute information equally over the vector components.
 
@@ -406,7 +408,6 @@ In summary, the \gls{sq}-based \gls{str} is obtained using the transformation
 $
 f_\text{SQ} : \v \mapsto \lfloor s R(\v -\muu)\rfloor
 $.
-
 For instance, suppose after the random rotation we have the feature vector $\v = [0.1, 0.3, 0.4, 0, 0.2]$, by adopting a multiplication factor $s = 10$, we obtain the term frequencies vector will be $f_\text{SQ}(\v) = [1, 3, 4, 0, 2]$, and thus $\text{STR}_{f_\text{SQ}}(\v)=``A\, B\, B\, B \, C \, C\, C\, C\, E\, E"$.
 
 \subsection{Sparsification}
@@ -429,7 +430,7 @@ It is equivalent to say that, instead of using the full-length inverted permutat
 Note that, in the permutation-based indexing context, using the positions of the {nearest} $k$ out of $n$ pivots often leads to obtaining better or similar effectiveness then using the full-length permutation~\cite{amato2014mi,amato2014some}, resulting also in a more compact data encoding.
 To transform the truncated inverted permutation into a term frequency vectors, we used $f_{\text{DP},\,k} : \v \mapsto (k+1)\e -\tilde{\Pi}^{-1}_{\v,k}$.
 
-The thresholding adopted for \gls{sq} simply discards by setting to zero the dimension of the vector $\v$ having absolute values above a specified threshold:
+The thresholding adopted for \gls{sq} simply discards by setting to zero the dimension of the vector $\v$ having absolute values above a specified threshold
 \begin{equation}
 \v_{\gamma} (i) = \begin{cases}
                     \v (i) & \text{if} \quad \v (i) \geq \frac{1}{\gamma} \\
@@ -621,7 +622,7 @@ Since we are dealing with an approximate approach, the brute-force \gls{map}, i.
 \caption{Comparison of the performance of our method and \gls{pq}-compressed inverted-file-based indexes (FAISS) on Holidays + MIRFlickr1M (a-b) and Oxford + Flickr100k (c-d), in terms of mAP and query selectivity/cost trade-off.
 The curves are obtained varying $k$ (for deep permutations), $\gamma$ (for thresholded \gls{sq}), and the number of Voronoi cell accessed $P$ (for IVFPQ).
 Values of $k$ and $\gamma$ are reported near each point.
-The horizontal line represents the \gls{mAP} obtained using the original \gls{rmac} vectors and performing a sequential scan of all the dataset (brute-force approach).
+The horizontal line represents the \gls{map} obtained using the original \gls{rmac} vectors and performing a sequential scan of all the dataset (brute-force approach).
 %For our method, the sparsity of the dataset is given by $\frac{K}{2048}$.
 }
 \label{fig:str:results}
@@ -639,7 +640,7 @@ Second, the reported experiments with \gls{sq} without the \gls{crelu} transform
 
 We also reported the performance of FAISS indexes when varying the number of Voronoi cells probed $P$.
 We reported two curves related to FAISS which correspond to two different datasets used for learning the codebooks: the indexed dataset itself, on which the mAP evaluation is performed, and an uncorrelated dataset of images.
-For the latter, we employed the \gls{t4sa} dataset~\cite{vadicamo2017cross}, a large collection of images collected from the live stream of random 5\% of global tweets using the Twitter Streaming API .
+For the latter, we employed the \gls{t4sa} dataset~\cite{vadicamo2017cross}, a large collection of images collected from the live stream of random 5\% of global tweets using the Twitter Streaming API.
 The reason for this choice is to show how the performance of FAISS is sensitive to the specific dataset distribution on which it has been trained.
 Indeed, we saw the impact of this aspect is really strong, and it could, in real applications, influence the scalability of the system or require continuous codebook adjustments, forcing to re-indexing the data periodically.
 Our solution has an intermediate performance but does not require any training procedure and therefore any re-adjustments.
