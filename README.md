@@ -1,6 +1,6 @@
 # Deep Learning for Image Classification and Retrieval: Analysis and Solutions to Current Limitations
 
-PhD Thesis (Draft), October 2018, Fabio Carrara. Currently under revision.
+PhD Thesis, May 2019, Fabio Carrara.
 
 
 This repository contains the LaTeX and [Asymptote](http://asymptote.sourceforge.net/) source files of the Ph.D. thesis of Fabio Carrara.
