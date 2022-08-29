@@ -6,7 +6,7 @@ PhD Thesis, May 2019, Fabio Carrara.
 This repository contains the LaTeX and [Asymptote](http://asymptote.sourceforge.net/) source files of the Ph.D. thesis of Fabio Carrara.
 The template used is the one for Ph.D dissertations of the Department of Computer Engineering of the University of Pisa.
 
-An up-to-date PDF of the thesis is available here: [http://pc-carrara.isti.cnr.it/PhD_Thesis.pdf]
+An up-to-date PDF of the thesis is available here: [PDF](https://github.com/fabiocarrara/phd-thesis/releases/download/archive/PhD_Thesis.pdf)
 
 ## Summary
 
